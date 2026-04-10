@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/cron/ingest",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 2 * * *"
     },
     {
       "path": "/api/cron/detect-trends",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 3 * * *"
     },
     {
       "path": "/api/cron/daily-briefing",
@@ -14,19 +14,19 @@
     },
     {
       "path": "/api/cron/learn-autonomy",
-      "schedule": "*/20 * * * *"
+      "schedule": "0 4 * * *"
     },
     {
       "path": "/api/cron/ops-runbook",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 5 * * *"
     },
     {
       "path": "/api/cron/snapshot-trends",
-      "schedule": "*/20 * * * *"
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/radar-snapshot",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 7 * * *"
     }
   ]
 }
