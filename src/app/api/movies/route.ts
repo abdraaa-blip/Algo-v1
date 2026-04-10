@@ -119,6 +119,99 @@ function transformTVShow(show: RealTVShow, index: number): Movie {
   }
 }
 
+function buildDemoMovies(): Movie[] {
+  const iso = new Date().toISOString()
+  const longDesc =
+    'Exemple pour l’interface ALGO sans clé TMDB. Ajoute TMDB_API_KEY sur Vercel pour afficher les vraies sorties, affiches et séries tendance.'
+  return [
+    {
+      id: 'demo-algo-movie-1',
+      title: 'Première ligne (démo)',
+      type: 'movie',
+      year: 2024,
+      poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&h=750&fit=crop',
+      backdrop: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1280&h=720&fit=crop',
+      rating: 7.8,
+      viralScore: 84,
+      momentum: 'rising',
+      genre: ['Drame', 'Thriller'],
+      description: longDesc,
+      cast: [],
+      platforms: [
+        { name: 'Cinéma', url: '#', type: 'cinema' },
+        { name: 'Streaming', url: '#', type: 'streaming' },
+      ],
+      trendingReason: 'Démo interface',
+      buzzKeywords: ['Démo', 'Cinéma'],
+      socialMentions: 1_400_000,
+      source: 'fallback',
+      fetchedAt: iso,
+    },
+    {
+      id: 'demo-algo-movie-2',
+      title: 'Nuit urbaine (démo)',
+      type: 'movie',
+      year: 2023,
+      poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&h=750&fit=crop',
+      backdrop: 'https://images.unsplash.com/photo-1440404653325-ab12749ade1d?w=1280&h=720&fit=crop',
+      rating: 7.2,
+      viralScore: 78,
+      momentum: 'stable',
+      genre: ['Action', 'Policier'],
+      description: longDesc,
+      cast: [],
+      platforms: [{ name: 'Streaming', url: '#', type: 'streaming' }],
+      trendingReason: 'Démo interface',
+      buzzKeywords: ['Démo', 'Action'],
+      socialMentions: 980_000,
+      source: 'fallback',
+      fetchedAt: iso,
+    },
+    {
+      id: 'demo-algo-series-1',
+      title: 'Saga collective (démo série)',
+      type: 'series',
+      year: 2024,
+      poster: 'https://images.unsplash.com/photo-1574267432553-4b46cd3848df?w=500&h=750&fit=crop',
+      backdrop: 'https://images.unsplash.com/photo-1524712245354-2c4e34e713c7?w=1280&h=720&fit=crop',
+      rating: 8.1,
+      viralScore: 88,
+      momentum: 'exploding',
+      genre: ['Science-fiction', 'Drame'],
+      seasons: 2,
+      description: longDesc,
+      cast: [],
+      platforms: [{ name: 'Streaming', url: '#', type: 'streaming' }],
+      trendingReason: 'Démo interface',
+      buzzKeywords: ['Démo', 'Série'],
+      socialMentions: 2_100_000,
+      source: 'fallback',
+      fetchedAt: iso,
+    },
+    {
+      id: 'demo-algo-series-2',
+      title: 'Récit du Nord (démo série)',
+      type: 'series',
+      year: 2022,
+      poster: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=500&h=750&fit=crop',
+      backdrop: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=1280&h=720&fit=crop',
+      rating: 7.5,
+      viralScore: 76,
+      momentum: 'rising',
+      genre: ['Aventure', 'Mystère'],
+      seasons: 3,
+      description: longDesc,
+      cast: [],
+      platforms: [{ name: 'Streaming', url: '#', type: 'streaming' }],
+      trendingReason: 'Démo interface',
+      buzzKeywords: ['Démo', 'Aventure'],
+      socialMentions: 760_000,
+      source: 'fallback',
+      fetchedAt: iso,
+    },
+  ]
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const type = searchParams.get('type') || 'all'
@@ -179,6 +272,17 @@ export async function GET(request: NextRequest) {
       const hasDescription = m.description && m.description.length > 10
       return hasTitle && hasPoster && hasDescription
     })
+
+    if (movies.length === 0) {
+      const demos = buildDemoMovies()
+      movies =
+        type === 'movie'
+          ? demos.filter((m) => m.type === 'movie')
+          : type === 'series'
+            ? demos.filter((m) => m.type === 'series')
+            : demos
+      source = 'fallback'
+    }
     
     return NextResponse.json({
       success: true,
@@ -190,9 +294,20 @@ export async function GET(request: NextRequest) {
     
   } catch (error) {
     console.error('[ALGO API] Movies fetch failed:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch movies', movies: [], source: 'error' },
-      { status: 500 }
-    )
+    const demos = buildDemoMovies()
+    const type = new URL(request.url).searchParams.get('type') || 'all'
+    const movies =
+      type === 'movie'
+        ? demos.filter((m) => m.type === 'movie')
+        : type === 'series'
+          ? demos.filter((m) => m.type === 'series')
+          : demos
+    return NextResponse.json({
+      success: true,
+      movies,
+      count: movies.length,
+      source: 'fallback',
+      fetchedAt: new Date().toISOString(),
+    })
   }
 }

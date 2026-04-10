@@ -47,7 +47,7 @@
   "dailyHook": {
     "shouldHaveSeen": "Ce que tu aurais dû voir aujourd'hui",
     "goingNow":       "Ce qui est en train de partir maintenant",
-    "watchSignals":   "Surveille ça — signal précoce"
+    "watchSignals":   "Surveille ça : signal précoce"
   },
 
   "badge": {
@@ -84,7 +84,7 @@
     "timing": {
       "now":       "Poste maintenant ✅",
       "too_late":  "Trop tard ❌",
-      "too_early": "Trop tôt — surveille ⏳"
+      "too_early": "Trop tôt : surveille ⏳"
     },
     "bestPlatform":  "Plateforme idéale",
     "bestFormat":    "Format recommandé",
@@ -291,8 +291,8 @@
       "retry":   "Réessayer",
       "generic": "لا يمكن التحميل الآن. أعد المحاولة بعد لحظة."
     },
-    "offline":       "Connexion perdue — affichage des derniers signaux.",
-    "geolocRefused": "Localisation désactivée — tendances mondiales affichées.",
+    "offline":       "Connexion perdue : affichage des derniers signaux.",
+    "geolocRefused": "Localisation désactivée : tendances mondiales affichées.",
     "authRequired":  "Connecte-toi pour accéder à cette fonctionnalité."
   },
 

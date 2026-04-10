@@ -5,7 +5,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Films & séries',
-  description: 'Films et séries qui font le buzz — scores, affluence et tendances culturelles.',
+  description: 'Films et séries qui font le buzz : scores, affluence et tendances culturelles.',
   path: '/movies',
   keywords: ['films', 'séries', 'cinéma', 'streaming', 'ALGO'],
 })

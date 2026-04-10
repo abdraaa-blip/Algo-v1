@@ -149,7 +149,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
     ? videos 
     : videos.filter(v => v.country === activeRegion)
 
-  const scopeLabel = scope.type === 'global' ? '' : ` — ${scope.name}`
+  const scopeLabel = scope.type === 'global' ? '' : ` · ${scope.name}`
 
   const regionFilters: FilterOption[] = [
     { value: 'all', label: 'All Regions' },

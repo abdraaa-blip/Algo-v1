@@ -1,5 +1,5 @@
 /**
- * Chaînes UI partagées — alignées `locales/tone-guide.md` et `algo-voice.ts`.
+ * Chaînes UI partagées (alignées tone-guide / algo-voice).
  * Radar / signaux, tutoiement, pas de « Chargement… » générique ni « Oops ».
  */
 
@@ -52,27 +52,27 @@ export const ALGO_UI_EMPTY = {
 
 export const ALGO_UI_OFFLINE = {
   title: 'Connexion instable',
-  message: 'Vérifie le réseau puis réessaie — les données peuvent être en retard.',
-  banner: 'Hors ligne — les données affichées peuvent être obsolètes',
+  message: 'Vérifie le réseau puis réessaie : les données peuvent être en retard.',
+  banner: 'Hors ligne : les données affichées peuvent être obsolètes',
 } as const
 
-/** Panneau transparence — carte fiabilité des sources (API + UI intelligence). */
+/** Panneau transparence : carte fiabilité des sources (API + UI intelligence). */
 export const ALGO_DATA_RELIABILITY_PANEL = {
   summary: 'Carte fiabilité des sources (baseline, fallbacks, limites)',
   note: 'Les scores affichés sont des ordres de grandeur produit, pas des métriques mesurées en temps réel sur chaque requête.',
   apiPath: '/api/meta/data-reliability',
   loading: 'Lecture de la carte…',
-  errorShort: 'Carte indisponible pour le moment — réessaie plus tard.',
+  errorShort: 'Carte indisponible pour le moment. Réessaie plus tard.',
   linkTransparency: 'Page transparence',
 } as const
 
-/** Radar « opportunités produit » — signaux dérivés des tendances, pas de commerce sur ALGO. */
+/** Radar « opportunités produit » : signaux dérivés des tendances, pas de commerce sur ALGO. */
 export const ALGO_PRODUCT_RADAR = {
   cardTitle: 'Radar produit',
   cardIntro:
-    'Angles marché détectés à partir du corpus tendances / opportunités. Indicateurs seulement — pas de catalogue ni de vente ici.',
+    'Angles marché détectés à partir du corpus tendances / opportunités. Indicateurs seulement, pas de catalogue ni de vente ici.',
   disclaimer:
     'Pas une boutique : tu restes responsable de fournisseurs, légalité, marge et conformité. Ce radar ne remplace pas ta propre veille.',
   ctaTrends: 'Voir les tendances',
-  empty: 'Aucun angle produit mis en avant pour ce corpus — reviens après le prochain rafraîchissement.',
+  empty: 'Aucun angle produit mis en avant pour ce corpus. Reviens après le prochain rafraîchissement.',
 } as const

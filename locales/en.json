@@ -89,16 +89,16 @@
     "timing": {
       "now":       "Post now ✅",
       "too_late":  "Too late ❌",
-      "too_early": "Too early — watch ⏳"
+      "too_early": "Too early: watch ⏳"
     },
     "bestPlatform":  "Best platform",
     "bestFormat":    "Best format",
     "watchers":      "{count} people watching this signal",
     "crossPlatform": "Signal detected on multiple platforms",
     "postWindow": {
-      "optimal":   "Window open — ideal moment",
-      "saturated": "Trend saturated — reduced visibility",
-      "fading":    "Signal fading — too late"
+      "optimal":   "Window open: ideal moment",
+      "saturated": "Trend saturated: reduced visibility",
+      "fading":    "Signal fading: too late"
     }
   },
 
@@ -246,8 +246,8 @@
       "news":      "No news detected for now."
     },
     "error": { "network": "Signal lost. Retrying.", "retry": "Retry", "generic": "Can't load this right now. Try again in a moment." },
-    "offline":       "Connection lost — showing last signals.",
-    "geolocRefused": "Location disabled — showing global trends.",
+    "offline":       "Connection lost: showing last signals.",
+    "geolocRefused": "Location disabled: showing global trends.",
     "authRequired":  "Sign in to access this feature."
   },
 
@@ -272,9 +272,9 @@
     },
     "story": {
       "title": "The Story",
-      "p1": "ALGO was born from a simple observation — <strong>the internet moves faster than any human can follow</strong>.",
+      "p1": "ALGO was born from a simple observation: <strong>the internet moves faster than any human can follow</strong>.",
       "p2": "Every day, thousands of pieces of content explode across TikTok, YouTube, Twitter, Instagram and Reddit. Most people discover them too late.",
-      "p3": "ALGO exists to change that. To give everyone — creators, journalists, agencies, curious minds — <strong>the power to see what is coming before it arrives</strong>."
+      "p3": "ALGO exists to change that. To give everyone (creators, journalists, agencies, curious minds) <strong>the power to see what is coming before it arrives</strong>."
     },
     "whatIs": {
       "title": "What is ALGO",

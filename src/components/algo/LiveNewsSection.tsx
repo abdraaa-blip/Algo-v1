@@ -14,7 +14,12 @@ interface NewsItem {
   source: { name: string } | string
   url: string
   urlToImage?: string
+  image?: string
   publishedAt: string
+}
+
+function newsThumb(item: NewsItem): string | undefined {
+  return item.urlToImage || item.image
 }
 
 const NEWS_REGIONS = [...CORE_NEWS_REGIONS]
@@ -52,10 +57,10 @@ export function LiveNewsSection() {
           const validNews = data.data
             .filter((item: NewsItem) => item.title && item.title.length > 10)
             .sort((a: NewsItem, b: NewsItem) => {
-              // Prioritize items with images
-              if (a.urlToImage && !b.urlToImage) return -1
-              if (!a.urlToImage && b.urlToImage) return 1
-              // Then by recency
+              const ai = Boolean(newsThumb(a))
+              const bi = Boolean(newsThumb(b))
+              if (ai && !bi) return -1
+              if (!ai && bi) return 1
               return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
             })
             .slice(0, 8)
@@ -162,9 +167,9 @@ export function LiveNewsSection() {
           className="md:col-span-2 group relative aspect-video md:aspect-[2/1] rounded-xl overflow-hidden bg-[var(--color-card)]"
           style={{ contain: 'layout paint' }}
         >
-          {currentFeatured.urlToImage && (
+          {newsThumb(currentFeatured) && (
             <ImageWithFallback
-              src={currentFeatured.urlToImage}
+              src={newsThumb(currentFeatured)!}
               alt={currentFeatured.title}
               fill
               fallbackType="news"
@@ -232,10 +237,10 @@ export function LiveNewsSection() {
               rel="noopener noreferrer"
               className="group flex items-center gap-3 p-2 rounded-xl bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] border border-transparent hover:border-[var(--color-border)] transition-colors"
             >
-              {item.urlToImage && (
+              {newsThumb(item) && (
                 <div className="relative w-20 h-14 rounded-lg overflow-hidden flex-shrink-0">
                   <ImageWithFallback
-                    src={item.urlToImage}
+                    src={newsThumb(item)!}
                     alt=""
                     fill
                     fallbackType="news"

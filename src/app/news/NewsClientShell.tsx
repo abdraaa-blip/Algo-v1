@@ -197,6 +197,9 @@ const NewsRow = memo(function NewsRow({
 }: NewsRowProps) {
   const sourceColor = getSourceColor(source)
   const relativeTime = formatRelativeScopeTime(publishedAt, scope)
+  const thumb =
+    image ||
+    `https://picsum.photos/seed/algo${encodeURIComponent(String(id).slice(0, 24))}/80/80`
   
   return (
     <article
@@ -215,17 +218,16 @@ const NewsRow = memo(function NewsRow({
         className="flex gap-4 p-4"
       >
         {/* Image */}
-        {image && (
-          <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-[var(--color-card)]">
-            <ImageWithFallback
-              src={image}
-              alt=""
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
+        <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-[var(--color-card)]">
+          <ImageWithFallback
+            src={thumb}
+            alt=""
+            width={80}
+            height={80}
+            className="w-full h-full object-cover"
+            fallbackType="news"
+          />
+        </div>
         
         {/* Content */}
         <div className="flex-1 min-w-0">

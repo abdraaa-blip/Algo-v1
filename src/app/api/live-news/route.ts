@@ -6,6 +6,14 @@ import { sanitizeInput } from '@/lib/security'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+function fallbackNewsImage(index: number, title: string): string {
+  let h = 0
+  const s = title || `article-${index}`
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0
+  const seed = `algo${index}n${Math.abs(h)}`
+  return `https://picsum.photos/seed/${seed}/800/450`
+}
+
 /** Score d’affichage dérivé de la fraîcheur (pas une métrique NewsAPI réelle). */
 function importanceFromPublishedAt(publishedAt: string): number {
   const t = Date.parse(publishedAt)
@@ -51,18 +59,25 @@ export async function GET(request: NextRequest) {
       : 'static'
     
     // Map data to client-expected format
-    const mappedData = result.data.map((article, index) => ({
+    const mappedData = result.data.map((article, index) => {
+      const imageUrl =
+        article.urlToImage && article.urlToImage.startsWith('http')
+          ? article.urlToImage
+          : fallbackNewsImage(index, article.title)
+      return {
       id: article.id || `news_${index}_${Date.now()}`,
       title: article.title,
       source: article.source,
       sourceName: article.source, // Client expects sourceName
       url: article.url,
-      image: article.urlToImage || undefined, // Client expects image, not urlToImage
+      image: imageUrl,
+      urlToImage: imageUrl,
       publishedAt: article.publishedAt,
       fetchedAt: result.fetchedAt,
       category: 'general',
       importanceScore: importanceFromPublishedAt(article.publishedAt),
-    }))
+    }
+    })
     
     return NextResponse.json({
       success: true,

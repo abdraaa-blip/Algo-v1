@@ -3,6 +3,7 @@
  * No external imports from real-data-service to avoid Turbopack module resolution issues
  */
 import { NextResponse, type NextRequest } from 'next/server'
+import { buildDemoLiveVideos } from '@/lib/data/offline-media-demos'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -156,6 +157,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     let videos: VideoData[]
     let fetchedAt = new Date().toISOString()
+    let fromDemo = false
 
     if (all) {
       const countries = ['FR', 'US', 'GB', 'NG']
@@ -165,15 +167,20 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       videos = await fetchYouTubeVideos(country.toUpperCase())
     }
 
+    if (videos.length === 0) {
+      videos = buildDemoLiveVideos(country.toUpperCase())
+      fromDemo = true
+    }
+
     // Check cache for fetchedAt timestamp
     const cacheKey = all ? 'videos_all' : `videos_${country.toUpperCase()}`
     const cached = videoCache.get(cacheKey)
-    if (cached) {
+    if (cached && !fromDemo) {
       fetchedAt = cached.fetchedAt
     }
 
     // Calculate data freshness - honest about cache status
-    const isFromCache = cached !== undefined
+    const isFromCache = cached !== undefined && !fromDemo
     const cacheAge = cached ? Date.now() - new Date(cached.fetchedAt).getTime() : 0
     
     return NextResponse.json({
@@ -181,7 +188,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       data: videos,
       // Honest status labels
       status: videos.length > 0 ? 'active' : 'error',
-      source: isFromCache ? 'cache' : 'api',
+      source: fromDemo ? 'fallback' : isFromCache ? 'cache' : 'api',
       fetchedAt,
       count: videos.length,
       // Transparency metadata

@@ -395,7 +395,7 @@ export default function HomePage() {
                 headline={dailyHook.viral.title}
                 score={dailyHook.viral.score}
                 badgeLabel={dailyHook.viral.badge}
-                subtitle="Meta-radar ALGO — avant que le feed ne sature."
+                subtitle="Meta-radar ALGO : avant que le feed ne sature."
               />
             </div>
             </div>
@@ -464,7 +464,7 @@ export default function HomePage() {
               Contenus à fort potentiel
             </h2>
             <p className="text-[10px] sm:text-xs text-white/40 mt-0.5">
-              Signaux multi-sources — fenêtre avant saturation estimée 24–48h
+              Signaux multi-sources : fenêtre avant saturation estimée 24–48h
             </p>
           </div>
           <Link 

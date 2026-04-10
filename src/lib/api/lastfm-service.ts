@@ -4,6 +4,8 @@
  * API Docs: https://www.last.fm/api
  */
 
+import { getDemoLastFmArtists, getDemoLastFmTracks } from '@/lib/data/offline-media-demos'
+
 const LASTFM_API_KEY = process.env.LASTFM_API_KEY
 const LASTFM_BASE_URL = 'https://ws.audioscrobbler.com/2.0/'
 
@@ -106,9 +108,14 @@ export async function fetchTopTracks(country?: string, limit: number = 50): Prom
   }
   
   if (!LASTFM_API_KEY) {
-    console.error('[Last.fm] No API key configured')
-    if (cached) return { ...cached, source: 'fallback' }
-    return { data: [], fetchedAt: new Date().toISOString(), expiresAt: new Date().toISOString(), source: 'fallback' }
+    const now = new Date()
+    const demo = getDemoLastFmTracks().slice(0, Math.min(limit, 30))
+    return {
+      data: demo,
+      fetchedAt: now.toISOString(),
+      expiresAt: new Date(now.getTime() + CACHE_DURATION_MS).toISOString(),
+      source: 'fallback',
+    }
   }
   
   try {
@@ -194,8 +201,14 @@ export async function fetchTopArtists(country?: string, limit: number = 50): Pro
   }
   
   if (!LASTFM_API_KEY) {
-    if (cached) return { ...cached, source: 'fallback' }
-    return { data: [], fetchedAt: new Date().toISOString(), expiresAt: new Date().toISOString(), source: 'fallback' }
+    const now = new Date()
+    const demo = getDemoLastFmArtists().slice(0, Math.min(limit, 30))
+    return {
+      data: demo,
+      fetchedAt: now.toISOString(),
+      expiresAt: new Date(now.getTime() + CACHE_DURATION_MS).toISOString(),
+      source: 'fallback',
+    }
   }
   
   try {

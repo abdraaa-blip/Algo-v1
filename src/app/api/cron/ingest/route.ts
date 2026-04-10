@@ -4,15 +4,11 @@ import { getSupabaseSecretApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys
 
 /**
  * Automated Data Ingestion Pipeline
- * Runs every 10 minutes via Vercel Cron
- * 
- * Pipeline steps:
- * 1. Fetch new content from all connected APIs
- * 2. Deduplicate against existing database
- * 3. Score every new piece of content
- * 4. Classify content using categories
- * 5. Store results in Supabase
- * 6. Log pipeline execution
+ * Déclenché par Vercel Cron : voir `vercel.json` (ex. 1×/jour à 02:00 UTC sur Hobby).
+ * Auth entrante : `Authorization: Bearer ${CRON_SECRET}` (Vercel l’ajoute si CRON_SECRET est défini).
+ *
+ * Note : cette route agrège surtout des métriques / logs. Les réponses des APIs internes
+ * n’ont pas toutes un champ `data` : normalisation ci-dessous.
  */
 
 // Initialize Supabase client
@@ -39,26 +35,64 @@ interface PipelineLog {
   executionTimeMs: number
 }
 
+function getInternalBaseUrl(req: NextRequest): string {
+  const publicBase = process.env.NEXT_PUBLIC_BASE_URL?.trim()
+  if (publicBase?.startsWith('http')) {
+    return publicBase.replace(/\/$/, '')
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL.replace(/^https?:\/\//, '')}`
+  }
+  return new URL(req.url).origin
+}
+
+/** Les routes `/api/*` ne renvoient pas toutes `{ data: [] }`. */
+function normalizeIngestPayload(json: unknown, sourceName: string): unknown[] {
+  if (!json || typeof json !== 'object') return []
+  const o = json as Record<string, unknown>
+  if (Array.isArray(o.data)) return o.data
+
+  if (sourceName === 'Music') {
+    const tracks = o.tracks
+    const artists = o.artists
+    return [
+      ...(Array.isArray(tracks) ? tracks : []),
+      ...(Array.isArray(artists) ? artists : []),
+    ]
+  }
+
+  if (sourceName === 'Movies') {
+    return [
+      ...(Array.isArray(o.movies) ? o.movies : []),
+      ...(Array.isArray(o.tvShows) ? o.tvShows : []),
+      ...(Array.isArray(o.celebrities) ? o.celebrities : []),
+    ]
+  }
+
+  return []
+}
+
 async function fetchFromSource(
-  sourceUrl: string, 
-  sourceName: string
+  sourceUrl: string,
+  sourceName: string,
+  baseUrl: string,
 ): Promise<{ data: unknown[]; error?: string }> {
   try {
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000'
-    
+    const cronSecret = process.env.CRON_SECRET || ''
     const response = await fetch(`${baseUrl}${sourceUrl}`, {
-      headers: { 'x-cron-secret': process.env.CRON_SECRET || '' },
-      next: { revalidate: 0 }
+      headers: {
+        ...(cronSecret ? { Authorization: `Bearer ${cronSecret}` } : {}),
+        'x-cron-secret': cronSecret,
+      },
+      next: { revalidate: 0 },
     })
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`)
     }
-    
-    const json = await response.json()
-    return { data: json.data || [] }
+
+    const json: unknown = await response.json()
+    return { data: normalizeIngestPayload(json, sourceName) }
   } catch (error) {
     console.error(`[ALGO Cron] Failed to fetch ${sourceName}:`, error)
     return { data: [], error: String(error) }
@@ -90,6 +124,8 @@ export async function GET(req: NextRequest) {
 
   console.log('[ALGO Cron] Starting automated ingestion pipeline...')
 
+  const baseUrl = getInternalBaseUrl(req)
+
   try {
     // Define data sources
     const sources = [
@@ -107,7 +143,7 @@ export async function GET(req: NextRequest) {
     // Fetch from all sources in parallel
     const results = await Promise.all(
       sources.map(async (source) => {
-        const { data, error } = await fetchFromSource(source.url, source.name)
+        const { data, error } = await fetchFromSource(source.url, source.name, baseUrl)
         return { name: source.name, data, error }
       })
     )
@@ -153,6 +189,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       log,
+      baseUrl,
+      supabaseLogOk: !logError,
+      supabaseLogError: logError?.message ?? null,
       message: `Pipeline completed successfully. Fetched ${log.totalFetched} items in ${log.executionTimeMs}ms.`,
     })
   } catch (error) {

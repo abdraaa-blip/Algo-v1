@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import { getAllCircuitStats } from '@/lib/resilience/circuit-breaker'
-import { getSupabasePublicApiKey } from '@/lib/supabase/env-keys'
+import {
+  getSupabasePublicApiKey,
+  getSupabaseSecretApiKey,
+  getSupabaseUrl,
+} from '@/lib/supabase/env-keys'
 
 /**
  * Health Check Endpoint
@@ -13,6 +17,10 @@ import { getSupabasePublicApiKey } from '@/lib/supabase/env-keys'
 export async function GET() {
   const startTime = Date.now()
   
+  const supabaseUrl = getSupabaseUrl()
+  const supabasePublic = getSupabasePublicApiKey()
+  const supabaseConfigured = Boolean(supabaseUrl && supabasePublic)
+
   const checks = {
     server: true,
     timestamp: new Date().toISOString(),
@@ -24,7 +32,21 @@ export async function GET() {
       unit: 'MB'
     },
     env: process.env.NODE_ENV,
-    database: false,
+    /** Si Supabase non configuré : true (optionnel). Si configuré : joignable via REST. */
+    database: !supabaseConfigured,
+    /** Aide au debug Vercel : présence des variables (pas les valeurs). */
+    envPresent: {
+      NEXT_PUBLIC_SUPABASE_URL: Boolean(supabaseUrl),
+      supabasePublicKey: Boolean(supabasePublic),
+      supabaseSecretKey: Boolean(getSupabaseSecretApiKey()),
+      YOUTUBE_API_KEY: Boolean(process.env.YOUTUBE_API_KEY),
+      NEWSAPI_KEY: Boolean(process.env.NEWSAPI_KEY || process.env.NEWS_API_KEY),
+      TMDB_API_KEY: Boolean(process.env.TMDB_API_KEY),
+    },
+    hints: {
+      supabaseRestStatus: null as number | null,
+      youtubeApiStatus: null as number | null,
+    },
     externalApis: {
       newsapi: false,
       youtube: false,
@@ -34,40 +56,60 @@ export async function GET() {
     circuitBreakers: getAllCircuitStats(),
   }
 
-  // Check database connection
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    if (supabaseUrl) {
+  // Supabase REST (anon / publishable obligatoire pour ce test)
+  if (supabaseConfigured) {
+    try {
       const response = await fetch(`${supabaseUrl}/rest/v1/`, {
         method: 'HEAD',
         headers: {
-          apikey: getSupabasePublicApiKey() || '',
+          apikey: supabasePublic || '',
         },
         signal: AbortSignal.timeout(5000),
       })
+      checks.hints.supabaseRestStatus = response.status
       checks.database = response.ok
+    } catch {
+      checks.database = false
     }
-  } catch {
-    checks.database = false
   }
 
-  // Check external APIs (with timeout)
-  const apiChecks = await Promise.allSettled([
-    // NewsAPI
-    fetch('https://newsapi.org/v2/top-headlines?country=us&pageSize=1&apiKey=' + process.env.NEWS_API_KEY, {
-      signal: AbortSignal.timeout(3000),
-    }).then(r => r.ok),
-    // YouTube (just check if API key exists)
-    Promise.resolve(!!process.env.YOUTUBE_API_KEY),
-    // TMDB
-    fetch('https://api.themoviedb.org/3/configuration?api_key=' + process.env.TMDB_API_KEY, {
-      signal: AbortSignal.timeout(3000),
-    }).then(r => r.ok),
+  const newsKey = process.env.NEWSAPI_KEY || process.env.NEWS_API_KEY
+  const ytKey = process.env.YOUTUBE_API_KEY
+
+  // NewsAPI + YouTube (test réel si clé présente) + TMDB
+  const [newsResult, youtubeResult, tmdbResult] = await Promise.allSettled([
+    newsKey
+      ? fetch(
+          'https://newsapi.org/v2/top-headlines?country=us&pageSize=1&apiKey=' + newsKey,
+          { signal: AbortSignal.timeout(5000) }
+        ).then((r) => ({ ok: r.ok, status: r.status }))
+      : Promise.resolve({ ok: false, status: 0 }),
+    ytKey
+      ? fetch(
+          'https://www.googleapis.com/youtube/v3/videos?part=id&chart=mostPopular&regionCode=US&maxResults=1&key=' +
+            ytKey,
+          { signal: AbortSignal.timeout(8000) }
+        ).then((r) => ({ ok: r.ok, status: r.status }))
+      : Promise.resolve({ ok: false, status: 0 }),
+    process.env.TMDB_API_KEY
+      ? fetch(
+          'https://api.themoviedb.org/3/configuration?api_key=' + process.env.TMDB_API_KEY,
+          { signal: AbortSignal.timeout(5000) }
+        ).then((r) => r.ok)
+      : Promise.resolve(false),
   ])
 
-  checks.externalApis.newsapi = apiChecks[0].status === 'fulfilled' && apiChecks[0].value
-  checks.externalApis.youtube = apiChecks[1].status === 'fulfilled' && apiChecks[1].value
-  checks.externalApis.tmdb = apiChecks[2].status === 'fulfilled' && apiChecks[2].value
+  if (newsResult.status === 'fulfilled') {
+    checks.externalApis.newsapi = newsResult.value.ok
+  }
+  if (youtubeResult.status === 'fulfilled') {
+    checks.externalApis.youtube = youtubeResult.value.ok
+    checks.hints.youtubeApiStatus =
+      youtubeResult.value.status > 0 ? youtubeResult.value.status : null
+  }
+  if (tmdbResult.status === 'fulfilled') {
+    checks.externalApis.tmdb = tmdbResult.value
+  }
 
   const responseTime = Date.now() - startTime
   

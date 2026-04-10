@@ -10,6 +10,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { resilientFetch } from '@/services/Resilience'
+import { buildDemoHomeYoutubeItems } from '@/lib/data/offline-media-demos'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -34,41 +35,9 @@ interface YouTubeResponse {
   items?: YouTubeVideoItem[]
 }
 
-// Fallback data when API is unavailable
+// Fallback : démos avec miniatures YouTube réelles si pas de clé API
 function getFallbackData(regionCode: string) {
-  return [
-    {
-      id: 'youtube-fallback-1',
-      title: 'Tendance en cours de chargement...',
-      category: 'Culture',
-      platform: 'YouTube',
-      country: regionCode,
-      language: 'fr',
-      viralScore: 75,
-      badge: 'Trend',
-      views: 0,
-      growthRate: 100,
-      growthTrend: 'up' as const,
-      detectedAt: new Date().toISOString(),
-      thumbnail: '',
-      sourceUrl: 'https://youtube.com',
-      explanation: 'Données en cours de chargement...',
-      creatorTips: 'Actualise la page dans quelques instants.',
-      insight: {
-        postNowProbability: 'medium' as const,
-        timing: 'now',
-        bestPlatform: ['YouTube'],
-        bestFormat: 'reaction',
-        timingLabel: { fr: 'En attente', en: 'Loading' },
-        postWindow: { status: 'optimal' as const },
-      },
-      sourceDistribution: [
-        { platform: 'YouTube', percentage: 100, momentum: 'medium' as const },
-      ],
-      watchersCount: 0,
-      isExploding: false,
-    }
-  ]
+  return buildDemoHomeYoutubeItems(regionCode)
 }
 
 function transformYouTubeData(data: YouTubeResponse, regionCode: string) {
