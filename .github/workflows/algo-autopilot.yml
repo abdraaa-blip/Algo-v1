@@ -1,0 +1,187 @@
+name: ALGO Autopilot - The Immune System
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      full_scan:
+        description: 'Run full autopilot scan'
+        required: false
+        default: 'true'
+
+concurrency:
+  group: autopilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # QUICK CHECK - Runs on PRs
+  # ═══════════════════════════════════════════════════════════════════════════
+  quick-check:
+    name: Quick Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run TypeScript check
+        run: npx tsc --noEmit
+        continue-on-error: false
+        
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+        
+      - name: Run Autopilot Quick Check
+        run: npm run autopilot:quick
+        
+      - name: Upload quick report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autopilot-quick-report-${{ github.sha }}
+          path: reports/
+          retention-days: 7
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # FULL SCAN - Runs on push to main or scheduled
+  # ═══════════════════════════════════════════════════════════════════════════
+  full-scan:
+    name: Full Autopilot Scan
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run Full Autopilot
+        id: autopilot
+        run: npm run autopilot
+        continue-on-error: true
+        
+      - name: Build verification
+        run: npm run build
+        continue-on-error: true
+
+      - name: Check performance budget
+        run: npm run perf:budget
+        continue-on-error: true
+        
+      - name: Run tests
+        run: npm run test:run
+        continue-on-error: true
+        
+      - name: Generate summary
+        run: |
+          echo "# ALGO Autopilot Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Run Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f reports/autopilot-log.json ]; then
+            echo "## Statistics" >> $GITHUB_STEP_SUMMARY
+            cat reports/autopilot-log.json | jq -r '.runs[-1] | "- Last run: \(.timestamp)\n- Issues found: \(.totalIssues)\n- Issues fixed: \(.totalFixed)"' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+      - name: Upload full report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autopilot-full-report-${{ github.sha }}
+          path: reports/
+          retention-days: 30
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # SECURITY SCAN - Runs weekly
+  # ═══════════════════════════════════════════════════════════════════════════
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run npm audit
+        run: npm audit --json > reports/security-audit.json || true
+        
+      - name: Check for vulnerabilities
+        run: |
+          VULNS=$(cat reports/security-audit.json | jq '.metadata.vulnerabilities.total // 0')
+          echo "Found $VULNS vulnerabilities"
+          if [ "$VULNS" -gt "0" ]; then
+            echo "::warning::Found $VULNS security vulnerabilities"
+          fi
+          
+      - name: Upload security report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report-${{ github.sha }}
+          path: reports/security-audit.json
+          retention-days: 30
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NOTIFY - Send summary notification
+  # ═══════════════════════════════════════════════════════════════════════════
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [full-scan]
+    if: always() && github.event_name == 'schedule'
+    
+    steps:
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: autopilot-full-report-${{ github.sha }}
+          path: reports/
+        continue-on-error: true
+        
+      - name: Generate notification
+        run: |
+          echo "ALGO Autopilot Daily Report"
+          echo "==========================="
+          if [ -f reports/autopilot-log.json ]; then
+            cat reports/autopilot-log.json | jq '.'
+          else
+            echo "No report available"
+          fi

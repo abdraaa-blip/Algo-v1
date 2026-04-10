@@ -1,0 +1,315 @@
+{
+  "brand":   "ALGO",
+  "tagline": "L'algorithme des algorithmes",
+  "slogan":  "Vois ce qui arrive… avant tout le monde.",
+
+  "nav": {
+    "now":      "Maintenant",
+    "trends":   "Trends",
+    "videos":   "Vidéos",
+    "news":     "News",
+    "creator":  "Créateur",
+    "failLab":  "Fail Lab",
+    "search":   "Rechercher",
+    "watchlist":"Watchlist",
+    "favorites":"Favoris",
+    "profile":  "Profil",
+    "settings": "Paramètres"
+  },
+
+  "scope": {
+    "global":  "Global",
+    "country": "{country}",
+    "selector": {
+      "label":  "Zone d'observation",
+      "search": "Rechercher un pays…",
+      "title":  "Choisir une zone",
+      "global": "Vue mondiale"
+    },
+    "suggested": "Suggéré pour toi",
+    "hero": {
+      "global":  "Ce qui explose partout en ce moment",
+      "country": "Ce qui explose en {country} en ce moment"
+    },
+    "hook": {
+      "global":  "🔥 Ce qui part maintenant dans le monde",
+      "country": "🔥 Ce qui part maintenant en {country}"
+    }
+  },
+
+  "hero": {
+    "cta": {
+      "trends":  "Voir les Trends",
+      "creator": "Creator Mode"
+    }
+  },
+
+  "dailyHook": {
+    "shouldHaveSeen": "Ce que tu aurais dû voir aujourd'hui",
+    "goingNow":       "Ce qui est en train de partir maintenant",
+    "watchSignals":   "Surveille ça — signal précoce"
+  },
+
+  "badge": {
+    "Viral":       "Viral",
+    "Early":       "Signal précoce",
+    "Breaking":    "Breaking",
+    "Trend":       "Trend",
+    "AlmostViral": "Presque viral",
+    "coolOff":     "En déclin",
+    "exploding":   "En explosion"
+  },
+
+  "viralScore": {
+    "label":  "Score viral",
+    "up":     "En hausse",
+    "stable": "Stable",
+    "down":   "En baisse"
+  },
+
+  "momentum": {
+    "growth":    "+{value}% en {time}",
+    "detected":  "repéré il y a {time}",
+    "copied":    "copié {count} fois",
+    "platforms": "en hausse sur {count} plateformes"
+  },
+
+  "insight": {
+    "title": "Insight Engine",
+    "postNow": {
+      "high":   "Fort potentiel",
+      "medium": "Risqué",
+      "low":    "Trop tard"
+    },
+    "timing": {
+      "now":       "Poste maintenant ✅",
+      "too_late":  "Trop tard ❌",
+      "too_early": "Trop tôt — surveille ⏳"
+    },
+    "bestPlatform":  "Plateforme idéale",
+    "bestFormat":    "Format recommandé",
+    "watchers":      "{count} personnes surveillent ce signal",
+    "crossPlatform": "Signal détecté sur plusieurs plateformes",
+    "postWindow": {
+      "optimal":   "Fenêtre ouverte — moment idéal",
+      "saturated": "Trend saturée — visibilité réduite",
+      "fading":    "Le signal s'éteint — trop tard"
+    }
+  },
+
+  "format": {
+    "face_cam":  "Face cam",
+    "text":      "Texte animé",
+    "montage":   "Montage",
+    "narration": "Narration",
+    "duet":      "Duet",
+    "reaction":  "Réaction"
+  },
+
+  "creator": {
+    "title":    "Creator Mode",
+    "subtitle": "Comprends comment reproduire une trend",
+    "hook":     "Hook probable",
+    "structure":"Structure du contenu",
+    "duration": "Durée estimée",
+    "rhythm":   "Rythme de montage",
+    "emotion":  "Émotion déclenchée",
+    "success":  "Raison du succès",
+    "reproduce":"Reproduire l'idée",
+    "asset": {
+      "sound":    "Voir le son original",
+      "template": "Trouver un template"
+    }
+  },
+
+  "failLab": {
+    "title":      "Fail Lab",
+    "subtitle":   "Ce qui avait du potentiel mais n'a pas percé",
+    "intro":      "Analyser les échecs, c'est comprendre les règles non écrites du viral.",
+    "promising":  "Ce qui était prometteur",
+    "whyFailed":  "Pourquoi ça n'a pas décollé",
+    "couldHelp":  "Ce qui aurait pu l'aider",
+    "lesson":     "Leçon pour créateurs"
+  },
+
+  "watchlist": {
+    "title":    "Watchlist",
+    "subtitle": "Tes trends suivies en temps réel",
+    "follow":   "Suivre",
+    "unfollow": "Arrêter de suivre",
+    "exploding":"🚨 En explosion",
+    "progress": "Progression depuis le suivi",
+    "empty": {
+      "title":  "Aucune trend suivie.",
+      "sub":    "Commence par en épingler une depuis la page Trends."
+    }
+  },
+
+  "search": {
+    "placeholder": "Rechercher une trend, vidéo, sujet…",
+    "hero":        "Explorer les signaux dans le monde",
+    "noResults":   "Aucun signal pour « {query} »",
+    "suggestion":  "Essaie un autre terme",
+    "hint":        "Commence à taper pour scanner les signaux…",
+    "sections": {
+      "trends":   "Trends ({count})",
+      "contents": "Contenus ({count})"
+    }
+  },
+
+  "news": {
+    "title":       "News",
+    "importance":  "Importance",
+    "speed":       "Vitesse",
+    "readMore":    "Approfondir",
+    "tags":        "Tags"
+  },
+
+  "content": {
+    "why":        "Pourquoi ça buzz ?",
+    "creatorTips":"Ce qu'un créateur peut reprendre",
+    "context":    "Contexte & infos associées",
+    "source":     "Voir la source originale",
+    "favorite":   "Sauvegarder",
+    "like":       "J'aime",
+    "share":      "Partager",
+    "detectedAt": "Détecté {time}",
+    "views":      "{count} vues",
+    "signalSource":"Source du signal"
+  },
+
+  "trends": {
+    "title":   "Trends",
+    "subtitle":"Ce qui monte, ce qui explose, ce qui s'installe",
+    "tabs": {
+      "today":      "Aujourd'hui",
+      "week":       "Cette semaine",
+      "month":      "Ce mois",
+      "mostViewed": "Plus vues",
+      "mostPlayed": "Plus jouées",
+      "mostCopied": "Plus reprises",
+      "emerging":   "Émergentes"
+    },
+    "whyWorks":          "Pourquoi ça marche",
+    "recommendedFormat": "Format recommandé",
+    "associatedSound":   "Son associé"
+  },
+
+  "videos": {
+    "title":   "Vidéos",
+    "subtitle":"Les contenus qui explosent en ce moment",
+    "filters": {
+      "today": "Aujourd'hui",
+      "24h":   "24h",
+      "7d":    "7 jours",
+      "30d":   "30 jours"
+    }
+  },
+
+  "onboarding": {
+    "step1": {
+      "title":    "Choisir ta langue",
+      "subtitle": "Dans quelle langue veux-tu voir les signaux ?"
+    },
+"step2": {
+  "title":     "Wo bist du?",
+  "subtitle":  "Um zu sehen, was in deiner Nahe explodiert",
+  "geolocCta": "Meinen Standort verwenden",
+  "manual":    "Manuell auswahlen",
+  "global":    "Globale Ansicht",
+  "detect":    "Automatisch erkennen"
+  },
+    "step3": {
+      "title":    "Tes centres d'intérêt",
+      "subtitle": "Sélectionne les catégories qui t'intéressent"
+    },
+    "step4": {
+      "title":     "Ton profil",
+      "creator":   "Je suis créateur de contenu",
+      "creatorSub":"Je veux comprendre les trends pour créer",
+      "spectator": "Je suis spectateur curieux",
+      "spectatorSub":"Je veux comprendre ce qui explose et pourquoi"
+    },
+    "next":  "Continuer",
+    "skip":  "Passer",
+    "start": "Commencer",
+    "back":  "Retour",
+    "step":  "Étape {current} sur {total}"
+  },
+
+  "auth": {
+    "login": {
+      "title":     "Connexion",
+      "email":     "Adresse email",
+      "password":  "Mot de passe",
+      "submit":    "Se connecter",
+      "google":    "Continuer avec Google",
+      "noAccount": "Pas encore de compte ?",
+      "signup":    "S'inscrire"
+    },
+    "signup": {
+      "title":      "Créer un compte",
+      "email":      "Adresse email",
+      "password":   "Mot de passe",
+      "submit":     "Créer mon compte",
+      "google":     "Continuer avec Google",
+      "hasAccount": "Déjà un compte ?",
+      "login":      "Se connecter"
+    }
+  },
+
+  "profile": {
+    "title":     "Profil",
+    "guest":     "Explorateur ALGO",
+    "guestSub":  "Connecte-toi pour personnaliser ton expérience",
+    "login":     "Se connecter",
+    "signup":    "S'inscrire"
+  },
+
+  "settings": {
+    "title":     "Paramètres",
+    "language":  "Langue",
+    "country":   "Zone d'observation",
+    "geoloc":    "Géolocalisation",
+    "profile":   "Profil",
+    "interests": "Centres d'intérêt",
+    "save":      "Enregistrer",
+    "saved":     "✓ Enregistré"
+  },
+
+  "state": {
+    "loading":  "Lecture des signaux…",
+    "empty": {
+      "generic":   "Le radar est silencieux pour l'instant.",
+      "watchlist": "Aucune trend suivie. Commence par en épingler une.",
+      "favorites": "Ton radar est vide. Explore et sauvegarde.",
+      "search":    "Aucun signal trouvé.",
+      "news":      "Aucune info détectée pour l'instant."
+    },
+    "error": {
+      "network": "Signal perdu. On réessaie.",
+      "retry":   "Réessayer",
+      "generic": "Lädt gerade nicht. Versuch es in einem Moment erneut."
+    },
+    "offline":       "Connexion perdue — affichage des derniers signaux.",
+    "geolocRefused": "Localisation désactivée — tendances mondiales affichées.",
+    "authRequired":  "Connecte-toi pour accéder à cette fonctionnalité."
+  },
+
+  "misc": {
+    "seeAll":   "Voir tout",
+    "loadMore": "Charger plus",
+    "close":    "Fermer",
+    "back":     "Retour",
+    "confirm":  "Confirmer",
+    "cancel":   "Annuler",
+"or":       "oder"
+  },
+
+  "notifications": {
+    "title":       "Bleib wachsam",
+    "description": "Erhalte eine Benachrichtigung, wenn ein Trend deiner Watchlist explodiert.",
+    "enable":      "Aktivieren",
+    "later":       "Spater"
+  }
+}

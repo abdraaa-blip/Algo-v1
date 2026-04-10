@@ -1,0 +1,29 @@
+{
+  "name": "ALGO — L'algorithme des algorithmes",
+  "short_name": "ALGO",
+  "description": "L'appli silencieuse qui parle à tout le monde. Signaux, tendances et indicateurs pour décider vite — sans promesses creuses.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07070f",
+  "theme_color": "#07070f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "news", "entertainment"],
+  "lang": "fr",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

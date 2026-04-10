@@ -1,0 +1,307 @@
+{
+  "brand": "ALGO",
+  "tagline": "The algorithm of algorithms",
+  "slogan": "Catch the signal before the world does.",
+
+  "nav": {
+    "now": "Now",
+    "trends": "Trends",
+    "videos": "Videos",
+    "news": "News",
+    "creator": "Creator",
+    "failLab": "Fail Lab",
+    "search": "Search",
+    "watchlist": "Watchlist",
+    "favorites": "Favorites",
+    "profile": "Profile",
+    "settings": "Settings",
+    "about": "About"
+  },
+
+  "scope": {
+    "global": "Global",
+    "selector": {
+      "label": "Observation zone",
+      "search": "Search a country…",
+      "title": "Choose a zone",
+      "global": "Global view"
+    },
+    "suggested": "Suggested for you",
+    "hero": {
+      "global": "What's exploding everywhere right now",
+      "country": "What's exploding in {country} right now"
+    },
+    "hook": {
+      "global": "Going viral right now in the world",
+      "country": "Going viral right now in {country}"
+    }
+  },
+
+  "hero": {
+    "cta": {
+      "trends": "See Trends",
+      "creator": "Creator Mode"
+    }
+  },
+
+  "dailyHook": {
+    "shouldHaveSeen": "What you should have seen today",
+    "goingNow": "Going viral right now",
+    "watchSignals": "Watch these signals"
+  },
+
+  "badge": {
+    "Viral": "Viral",
+    "Early": "Early signal",
+    "Breaking": "Breaking",
+    "Trend": "Trend",
+    "AlmostViral": "Almost viral",
+    "coolOff": "Fading",
+    "exploding": "Exploding"
+  },
+
+  "viralScore": {
+    "label": "Viral score",
+    "up": "Rising",
+    "stable": "Stable",
+    "down": "Falling"
+  },
+
+  "momentum": {
+    "growth": "+{value}% in {time}",
+    "detected": "detected {time} ago",
+    "copied": "copied {count} times",
+    "platforms": "rising on {count} platforms"
+  },
+
+  "insight": {
+    "title": "Insight Engine",
+    "postNow": {
+      "high": "Strong potential",
+      "medium": "Risky",
+      "low": "Too late"
+    },
+    "timing": {
+      "now": "Post now",
+      "too_late": "Too late",
+      "too_early": "Too early — watch"
+    },
+    "bestPlatform": "Best platform",
+    "bestFormat": "Best format",
+    "watchers": "{count} people watching this signal",
+    "crossPlatform": "Signal detected on multiple platforms",
+    "postWindow": {
+      "optimal": "Window open — ideal moment",
+      "saturated": "Trend saturated — reduced visibility",
+      "fading": "Signal fading — too late"
+    }
+  },
+
+  "format": {
+    "face_cam": "Face cam",
+    "text": "Animated text",
+    "montage": "Montage",
+    "narration": "Narration",
+    "duet": "Duet",
+    "reaction": "Reaction"
+  },
+
+  "creator": {
+    "title": "Creator Mode",
+    "subtitle": "Understand how to replicate a trend",
+    "hook": "Probable hook",
+    "structure": "Content structure",
+    "duration": "Estimated duration",
+    "rhythm": "Editing rhythm",
+    "emotion": "Triggered emotion",
+    "success": "Reason for success",
+    "reproduce": "Replicate the idea",
+    "asset": {
+      "sound": "See original sound",
+      "template": "Find a template"
+    }
+  },
+
+  "failLab": {
+    "title": "Fail Lab",
+    "subtitle": "Content that had potential but didn't take off",
+    "intro": "Analyzing failures means understanding the unwritten rules of viral.",
+    "promising": "What was promising",
+    "whyFailed": "Why it didn't take off",
+    "couldHelp": "What could have helped",
+    "lesson": "Lesson for creators"
+  },
+
+  "watchlist": {
+    "title": "Watchlist",
+    "subtitle": "Your tracked trends (updated periodically)",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "exploding": "Exploding",
+    "progress": "Progress since tracking",
+    "empty": {
+      "title": "No tracked trends.",
+      "sub": "Start by pinning one from the Trends page."
+    }
+  },
+
+  "search": {
+    "placeholder": "Search a trend, video, topic…",
+    "hero": "Explore signals around the world",
+    "noResults": "No signal for \"{query}\"",
+    "suggestion": "Try another term",
+    "hint": "Start typing to scan signals…",
+    "sections": {
+      "trends": "Trends ({count})",
+      "contents": "Content ({count})"
+    }
+  },
+
+  "news": {
+    "title": "News",
+    "importance": "Importance",
+    "speed": "Speed",
+    "readMore": "Read more",
+    "tags": "Tags"
+  },
+
+  "content": {
+    "why": "Why is it buzzing?",
+    "creatorTips": "What a creator can take from this",
+    "context": "Context & related info",
+    "source": "See original source",
+    "favorite": "Save",
+    "like": "Like",
+    "share": "Share",
+    "detectedAt": "Detected {time}",
+    "views": "{count} views",
+    "signalSource": "Signal source"
+  },
+
+  "trends": {
+    "title": "Trends",
+    "subtitle": "What's rising, exploding, and settling in",
+    "tabs": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "mostViewed": "Most viewed",
+      "mostPlayed": "Most played",
+      "mostCopied": "Most copied",
+      "emerging": "Emerging"
+    },
+    "whyWorks": "Why it works",
+    "recommendedFormat": "Recommended format",
+    "associatedSound": "Associated sound"
+  },
+
+  "videos": {
+    "title": "Videos",
+    "subtitle": "Content exploding right now",
+    "filters": {
+      "today": "Today",
+      "24h": "24h",
+      "7d": "7 days",
+      "30d": "30 days"
+    }
+  },
+
+  "onboarding": {
+    "step1": {
+      "title": "Choose your language",
+      "subtitle": "In which language do you want to see signals?"
+    },
+    "step2": {
+      "title": "Where are you?",
+      "subtitle": "To see what's exploding near you",
+      "geolocCta": "Use my location",
+      "manual": "Choose manually",
+      "global": "Global view"
+    },
+    "step3": {
+      "title": "Your interests",
+      "subtitle": "Select the categories that interest you"
+    },
+    "step4": {
+      "title": "Your profile",
+      "creator": "I'm a content creator",
+      "creatorSub": "I want to understand trends to create",
+      "spectator": "I'm a curious spectator",
+      "spectatorSub": "I want to understand what explodes and why"
+    },
+    "next": "Continue",
+    "skip": "Skip",
+    "start": "Start",
+    "back": "Back",
+    "step": "Step {current} of {total}"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in",
+      "google": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up"
+    },
+    "signup": {
+      "title": "Create account",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Create my account",
+      "google": "Continue with Google",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in"
+    }
+  },
+
+  "profile": {
+    "title": "Profile",
+    "guest": "ALGO Explorer",
+    "guestSub": "Sign in to personalize your experience",
+    "login": "Sign in",
+    "signup": "Create account"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "country": "Observation zone",
+    "geoloc": "Geolocation",
+    "profile": "Profile",
+    "interests": "Interests",
+    "save": "Save",
+    "saved": "Saved"
+  },
+
+  "state": {
+    "loading": "Reading signals…",
+    "empty": {
+      "generic": "The radar is silent for now.",
+      "watchlist": "No tracked trends. Start by pinning one.",
+      "favorites": "Your radar is empty. Explore and save.",
+      "search": "No signal found.",
+      "news": "No news detected for now."
+    },
+    "error": {
+      "network": "Signal lost. Retrying.",
+      "retry": "Retry",
+      "generic": "Can't load this right now. Try again in a moment."
+    },
+    "offline": "Connection lost — showing last signals.",
+    "geolocRefused": "Location disabled — showing global trends.",
+    "authRequired": "Sign in to access this feature."
+  },
+
+  "misc": {
+    "seeAll": "See all",
+    "loadMore": "Load more",
+    "close": "Close",
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "or": "or"
+  }
+}

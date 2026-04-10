@@ -1,0 +1,223 @@
+🧠 ⚡ PROMPT ULTIME — ALGO IMMUNE SYSTEM v2.0
+🎯 OBJECTIF
+
+Créer un système autonome intelligent capable de :
+
+détecter tous les types d’erreurs connues ET inconnues
+corriger ce qui peut l’être sans risque
+proposer des solutions expertes pour le reste
+prévenir toute régression future
+maintenir une qualité production-grade en continu
+
+👉 Inspiré des pratiques réelles utilisées chez :
+
+Google (SRE + static analysis)
+Meta (linting + code health automation)
+Netflix (resilience + chaos engineering)
+Airbnb (design system + lint rules)
+Vercel (DX + performance automation)
+🧬 PRINCIPES FONDAMENTAUX
+Ne jamais casser le produit pour corriger un détail
+Automatiser sans perdre le contrôle
+Prioriser l’impact utilisateur réel
+Transformer les erreurs en données exploitables
+Prévenir > corriger
+⚙️ BUILD — ALGO AUTOPILOT SYSTEM
+
+Créer un système modulaire nommé :
+
+algo-autopilot/
+
+Avec les modules suivants :
+
+🔍 MODULE 1 — DEEP DETECTION ENGINE
+
+Scanner 100% du projet + runtime + assets externes
+
+Analyse Code
+TypeScript (strict)
+ESLint (extended rules + custom rules)
+Dead code detection
+Circular dependencies (madge)
+Bundle analysis (size anomalies)
+Console leaks
+Unsafe patterns (eval, innerHTML)
+Analyse UX/UI & Accessibilité
+alt manquants
+aria-label incohérents
+contrast ratio (WCAG)
+navigation clavier
+focus traps
+Analyse i18n
+clés manquantes
+traductions orphelines
+incohérences FR/EN
+Analyse Performance
+Lighthouse (multi-pages)
+LCP / CLS / INP
+images non optimisées
+lazy loading absent
+fonts blocking
+Analyse Assets (CRITIQUE — souvent oublié)
+
+👉 basé sur retours réels devs (forums, GitHub issues, postmortems)
+
+images cassées
+vidéos cassées
+audios cassés
+liens externes morts (HTTP 404/500)
+embeds YouTube/Vimeo expirés
+fichiers manquants CDN
+mauvaises extensions MIME
+Analyse Réseau & API
+endpoints cassés
+timeouts
+mauvaise gestion des erreurs
+absence de retry/backoff
+Analyse Sécurité
+audit dépendances
+XSS potentiel
+headers manquants
+secrets exposés
+permissions faibles
+Analyse des “erreurs invisibles” (niveau expert)
+
+👉 issues réelles souvent négligées :
+
+hydration mismatch (React / Next.js)
+memory leaks (event listeners non nettoyés)
+race conditions async
+état global incohérent
+double render inutile
+re-fetch inutiles
+Output
+{
+  "type": "error",
+  "severity": "critical | high | medium | low",
+  "file": "path",
+  "line": 42,
+  "description": "...",
+  "impact": "user | perf | security | seo",
+  "autoFixable": true/false,
+  "suggestedFix": "...",
+  "confidenceScore": 0-100
+}
+🛠 MODULE 2 — SAFE AUTO-CORRECTION ENGINE
+
+⚠️ Corrige UNIQUEMENT ce qui est sûr.
+
+Auto-fix autorisés
+unused imports
+unused variables
+console.log
+format (Prettier)
+tri imports
+petites incohérences ESLint
+images cassées → fallback automatique
+liens morts → désactivation ou fallback
+Auto-fix intelligents (avec prudence)
+alt → généré + tag “needs-review”
+aria → suggestion + fallback
+retry API automatique
+lazy loading images/vidéos
+INTERDIT en auto-fix
+logique métier
+refactor architecture
+remplacement de types complexes
+correction dépendances circulaires profondes
+
+👉 à la place → générer un plan de correction expert
+
+🧪 MODULE 3 — VERIFICATION ENGINE
+build
+typecheck
+lint
+tests
+lighthouse
+audit sécurité
+test liens (internes + externes)
+
+👉 seuils :
+
+build : 0 erreur
+lint : 0 erreur (warnings tolérés selon gravité)
+perf : score > 85 (réaliste pro)
+sécurité : aucune vulnérabilité critique
+🔁 MODULE 4 — SELF-HEAL LOOP
+maxCycles: 5
+si erreur → tentative fix safe
+sinon → suggestion détaillée
+sinon → escalade humaine
+🛡 MODULE 5 — PREVENTION SYSTEM
+Git Hooks (Husky)
+pre-commit → lint + safe fix
+pre-push → tests + typecheck
+CI/CD (GitHub Actions)
+scan complet à chaque PR
+blocage si critique
+rapport détaillé
+Monitoring continu
+scan toutes les 24h
+vérification liens + assets
+rapport automatique
+📊 MODULE 6 — INTELLIGENCE & PATTERN DETECTION
+
+Inspiré pratiques réelles :
+
+logs structurés
+détection de répétition d’erreurs
+heatmap des fichiers instables
+score qualité par module
+Génère :
+rapport hebdo
+erreurs récurrentes
+suggestions architecture
+🌐 MODULE 7 — LINK & MEDIA HEALER (ULTRA IMPORTANT)
+
+👉 basé sur problèmes réels fréquents
+
+Détecte :
+404 / 500
+timeouts
+vidéos supprimées
+audios cassés
+CDN down
+Corrige :
+retry intelligent
+fallback CDN
+placeholder visuel
+remplacement automatique si source connue
+downgrade qualité si besoin
+Exemple :
+YouTube video removed →
+→ proposer alternative
+→ ou fallback thumbnail + message
+🧠 MODULE 8 — EXPERT SUGGESTION ENGINE
+
+Quand non auto-fixable :
+
+👉 propose comme un senior dev :
+
+cause racine
+solution recommandée
+alternatives
+niveau de risque
+temps estimé
+🏁 STANDARD FINAL
+
+Après activation :
+
+aucune erreur critique en prod
+aucune ressource cassée visible
+aucune régression silencieuse
+qualité maintenue automatiquement
+dette technique sous contrôle constant
+⚡ PHILOSOPHIE FINALE
+
+Ce système n’est pas un “nettoyeur”.
+
+C’est :
+
+un organisme vivant
+qui observe, comprend, corrige avec prudence
+et alerte avec intelligence.

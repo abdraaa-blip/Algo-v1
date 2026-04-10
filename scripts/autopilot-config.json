@@ -1,0 +1,82 @@
+{
+  "name": "algo-autopilot",
+  "version": "1.0.0",
+  "description": "Automatic codebase cleaning and correction system for ALGO",
+  
+  "config": {
+    "maxCycles": 10,
+    "srcDir": "src",
+    "localesDir": "locales",
+    "reportDir": "reports",
+    
+    "enabledChecks": {
+      "typescript": true,
+      "eslint": true,
+      "unusedImports": true,
+      "hardcodedStrings": true,
+      "hardcodedColors": true,
+      "missingAltText": true,
+      "missingAriaLabels": true,
+      "anyTypes": true,
+      "consoleLogs": true,
+      "todoComments": true,
+      "missingTranslations": true,
+      "circularDependencies": true,
+      "securityVulnerabilities": true
+    },
+    
+    "autoFix": {
+      "unusedImports": true,
+      "consoleLogs": true,
+      "missingAltText": true,
+      "missingAriaLabels": false,
+      "formatting": true,
+      "sortImports": true
+    },
+    
+    "ignore": {
+      "files": [
+        "*.test.ts",
+        "*.test.tsx",
+        "*.spec.ts",
+        "*.spec.tsx"
+      ],
+      "directories": [
+        "node_modules",
+        ".next",
+        "out",
+        "dist",
+        "coverage"
+      ]
+    },
+    
+    "severity": {
+      "typescript-error": "error",
+      "eslint": "warning",
+      "unused-import": "warning",
+      "hardcoded-string": "info",
+      "hardcoded-color": "info",
+      "missing-alt": "warning",
+      "missing-aria-label": "warning",
+      "any-type": "warning",
+      "console-log": "info",
+      "todo-comment": "info",
+      "missing-translation": "warning"
+    }
+  },
+  
+  "schedule": {
+    "preCommit": true,
+    "preBuild": true,
+    "daily": "0 0 * * *",
+    "onPullRequest": true
+  },
+  
+  "reporting": {
+    "generateReport": true,
+    "reportFormat": "json",
+    "keepReportsCount": 30,
+    "sendEmailOnFailure": false,
+    "slackWebhook": null
+  }
+}

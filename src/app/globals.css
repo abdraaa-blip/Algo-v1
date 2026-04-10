@@ -1,0 +1,913 @@
+@import "tailwindcss";
+
+/* ─── Design tokens comme CSS custom properties ─────────────────────────────
+   Source : src/lib/design-tokens.ts (+ @theme ici)
+   Ces variables sont utilisées par Tailwind v4 via @theme et directement
+   dans les keyframes. Elles ne remplacent pas tokens.ts — elles en sont
+   le reflet CSS pour les animations et les valeurs non supportées par Tailwind.
+──────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Fond — profondeur, focus (PHASE 1) */
+  --color-bg-primary:    #07070f;
+  --color-bg-secondary:  #0c0c18;
+  --color-bg-elevated:   #111122;
+  --color-card:          rgba(255,255,255,0.04);
+  --color-card-hover:    rgba(255,255,255,0.07);
+  
+  /* Bordures — hiérarchie discrète */
+  --color-border:        rgba(255,255,255,0.08);
+  --color-border-strong: rgba(255,255,255,0.14);
+  --color-border-focus:  rgba(123, 97, 255, 0.45);
+  
+  /* Accents — données / vie / alertes (saturation maîtrisée) */
+  --color-violet:        #7B61FF;
+  --color-violet-muted:  rgba(123, 97, 255, 0.22);
+  --color-blue-neon:     #5ecfff;
+  --color-green-signal:  #5eead4;
+  --color-red-alert:     #e85d75;
+  --color-amber:         #e8c86a;
+  
+  /* Texte — lecture WCAG-friendly sur fond sombre */
+  --color-text-primary:  #f0f0f8;
+  --color-text-secondary: rgba(240,240,248,0.68);
+  --color-text-tertiary:  rgba(240,240,248,0.42);
+  --color-text-muted:     rgba(240,240,248,0.22);
+
+  --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Mouvement signature 200–400ms, easing naturel (PHASE 3) */
+  --algo-duration-instant: 0ms;
+  --algo-duration-tap:     200ms;
+  --algo-duration-route:   280ms;
+  --algo-duration-panel:   320ms;
+  --algo-duration-reveal:  380ms;
+  --duration-fast:    160ms;
+  --duration-normal:  260ms;
+  --duration-slow:    340ms;
+  --duration-breathe: 3200ms;
+  --duration-pulse:   4200ms;
+  --duration-curve:   12000ms;
+  --duration-ring:    8000ms;
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1);
+
+  /* Ombres — volume sans agressivité */
+  --shadow-algo-sm:  0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-algo-md:  0 12px 40px rgba(0,0,0,0.45);
+  --shadow-algo-glow-violet: 0 0 0 1px rgba(123,97,255,0.12), 0 20px 50px rgba(123,97,255,0.08);
+
+  /* Grain film — dessous le contenu (PHASE 8) */
+  --grain-opacity: 0.28;
+}
+
+/* Contexte route : lecture calme vs tendances dynamiques (PHASE 7) */
+:root[data-algo-view="calm"] {
+  --color-card: rgba(255,255,255,0.028);
+  --color-border: rgba(255,255,255,0.065);
+  --duration-breathe: 4800ms;
+  --grain-opacity: 0.16;
+}
+
+:root[data-algo-view="dynamic"] {
+  --color-card: rgba(255,255,255,0.048);
+  --color-violet: #8676ff;
+  --grain-opacity: 0.34;
+}
+
+:root[data-algo-view="focus"] {
+  --grain-opacity: 0.26;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg-primary);
+  font-family: var(--font-family-sans);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Surfaces & micro-interactions — système unifié (PHASE 2 / 5) */
+.algo-surface {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-algo-sm);
+  transition:
+    background-color var(--algo-duration-tap) var(--ease-out),
+    border-color var(--algo-duration-tap) var(--ease-out),
+    box-shadow var(--algo-duration-panel) var(--ease-out-soft);
+}
+
+.algo-interactive {
+  transition:
+    transform var(--algo-duration-tap) var(--ease-out-soft),
+    opacity var(--algo-duration-tap) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .algo-interactive:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Barres fixes — même verre dépoli que la palette (Navbar / bottom) */
+.algo-nav-chrome {
+  background: color-mix(in srgb, var(--color-bg-primary) 93%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.algo-bar-mobile {
+  background: color-mix(in srgb, var(--color-bg-primary) 93%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--color-border);
+}
+
+.algo-footer-chrome {
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-bg-primary) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Carte média / contenu — hover GPU-friendly, tokens unifiés */
+.algo-card-hit {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-algo-sm);
+  transition:
+    transform var(--algo-duration-tap) var(--ease-out-soft),
+    border-color var(--algo-duration-tap) var(--ease-out),
+    box-shadow var(--algo-duration-panel) var(--ease-out-soft);
+  contain: layout paint;
+}
+
+.algo-card-hit[data-exploding='true'] {
+  box-shadow:
+    0 0 28px color-mix(in srgb, var(--color-violet) 18%, transparent),
+    var(--shadow-algo-sm);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .algo-card-hit:hover {
+    transform: translateY(-2px) scale(1.006);
+    border-color: color-mix(in srgb, var(--color-violet) 28%, transparent);
+    box-shadow: var(--shadow-algo-glow-violet);
+  }
+}
+
+/* Modales / command palette */
+.algo-modal-panel {
+  background: color-mix(in srgb, var(--color-bg-secondary) 96%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-algo-md);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Sous-navigation collante (tabs) */
+.algo-sticky-subnav {
+  background: color-mix(in srgb, var(--color-bg-primary) 94%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Feuilles / modales bottom sheet */
+.algo-sheet-surface {
+  background: var(--color-bg-secondary);
+}
+
+/* Champs formulaire unifiés */
+.algo-input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  outline: none;
+  transition:
+    border-color var(--algo-duration-tap) var(--ease-out),
+    box-shadow var(--algo-duration-tap) var(--ease-out);
+}
+
+.algo-input-field:focus-visible {
+  border-color: color-mix(in srgb, var(--color-violet) 42%, var(--color-border));
+  box-shadow: 0 0 0 2px var(--color-violet-muted);
+}
+
+/* Grain texture — sous l’UI (z bas), opacité pilotée par contexte */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/grain.svg');
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+/* ─── Accessibility: Focus visible personnalisé ──────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* High contrast focus for keyboard users */
+:focus-visible:not(:focus-within) {
+  outline: 2px solid var(--color-violet);
+  outline-offset: 3px;
+}
+
+/* ─── Accessibility: Skip to content link ────────────────────────────────── */
+
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: auto;
+  height: auto;
+  padding: 12px 24px;
+  background: #7B61FF;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(123, 97, 255, 0.4);
+}
+
+/* prefers-reduced-motion : bloc unique en fin de fichier (PHASE 9) */
+
+/* ─── Accessibility: Minimum touch target size (48x48 for WCAG) ──────────── */
+
+.touch-target {
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure all interactive elements have minimum touch target */
+button, 
+a, 
+[role="button"],
+input[type="checkbox"],
+input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Small buttons should have padding to meet touch target */
+.btn-sm {
+  min-height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ─── CLS Prevention ─────────────────────────────────────────────────────── */
+
+/* Prevent layout shifts during live updates - use strict containment */
+.contain-layout {
+  contain: layout paint;
+  overflow: hidden;
+}
+
+/* Fixed-size content containers to prevent CLS */
+.cls-stable {
+  contain: layout paint style;
+  overflow: hidden;
+}
+
+/* Ensure cards don't cause layout shift on hover/update */
+.card-stable {
+  contain: layout paint;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Reserve space for images before they load - prevents CLS */
+.img-placeholder {
+  background: rgba(255,255,255,0.05);
+  aspect-ratio: 16/9;
+}
+
+/* Ensure images maintain aspect ratio */
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Skeleton placeholder for content loading */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: algo-shimmer 1.5s infinite;
+}
+
+/* ─── Scrollbar discrète ─────────────────────────────────────────────────── */
+
+::-webkit-scrollbar            { width: 4px; height: 4px; }
+::-webkit-scrollbar-track      { background: transparent; }
+::-webkit-scrollbar-thumb      { background: rgba(255,255,255,0.10); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.20); }
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+
+/* Rotation lente — ViralScoreRing outer arc (8s) */
+@keyframes algo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Sequenceur 3 points — AlgoLoader */
+@keyframes algo-dot-seq {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40%           { opacity: 1;   transform: scale(1);   }
+}
+
+/* Shimmer horizontal — SkeletonLoader */
+@keyframes algo-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%);  }
+}
+
+/* Glow pulsant — contenu isExploding (3.5s) - uses opacity for composite animation */
+@keyframes algo-pulse-viral {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* Glow pulsant — badge Early signal (4s) - uses opacity for composite animation */
+@keyframes algo-pulse-early {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+/* Clignotement doux — dot dans les badges animés */
+@keyframes algo-dot-blink {
+  0%, 100% { opacity: 1;   }
+  50%      { opacity: 0.3; }
+}
+
+/* Brightness — badge Early glow */
+@keyframes algo-early-glow {
+  0%, 100% { opacity: 1;   filter: brightness(1);   }
+  50%      { opacity: 0.7; filter: brightness(1.4); }
+}
+
+/* Signal Scan — ligne verticale qui traverse l'écran à l'ouverture (0.9s, une fois) */
+@keyframes algo-signal-scan {
+  0%   { transform: translateX(-2px); opacity: 0.65; }
+  100% { transform: translateX(110vw); opacity: 0;   }
+}
+
+/* Fade + slide up — apparition des cartes (staggered) */
+@keyframes algo-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Ripple — Heat Pulse sur contenu en explosion */
+@keyframes algo-ripple {
+  0%   { transform: scale(0.96); opacity: 0.5; }
+  100% { transform: scale(1.08); opacity: 0;   }
+}
+
+/* ─── Classes utilitaires d'animation ────────────────────────────────────── */
+
+.algo-exploding  { 
+  animation: algo-pulse-viral var(--duration-breathe) var(--ease-default) infinite;
+  will-change: opacity;
+}
+.algo-early-card { 
+  animation: algo-pulse-early var(--duration-pulse) var(--ease-default) infinite;
+  will-change: opacity;
+}
+.algo-dot-blink  { animation: algo-dot-blink 2s ease-in-out infinite; }
+.algo-early-glow { animation: algo-early-glow 2.5s ease-in-out infinite; }
+
+/* Stagger classes — délais 0ms à 400ms, pas de 80ms */
+.algo-s1 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 0ms   both; }
+.algo-s2 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 80ms  both; }
+.algo-s3 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 160ms both; }
+.algo-s4 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 240ms both; }
+.algo-s5 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 320ms both; }
+
+.algo-s6 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 400ms both; }
+
+/* Shorthand stagger for spec compatibility */
+.s1 { animation: algo-fade-up 0.3s ease-out 0ms both; }
+.s2 { animation: algo-fade-up 0.3s ease-out 80ms both; }
+.s3 { animation: algo-fade-up 0.3s ease-out 160ms both; }
+.s4 { animation: algo-fade-up 0.3s ease-out 240ms both; }
+.s5 { animation: algo-fade-up 0.3s ease-out 320ms both; }
+.s6 { animation: algo-fade-up 0.3s ease-out 400ms both; }
+
+/* ─── Living Algorithm Animations ───────────────────────────────────────── */
+
+/* Heartbeat ring - logo center circle */
+@keyframes heartbeat-ring {
+  0%, 100% { opacity: 0.6; }
+  14% { opacity: 1; filter: drop-shadow(0 0 4px #7B61FF); }
+  28% { opacity: 0.6; }
+  42% { opacity: 0.9; }
+  70% { opacity: 0.6; }
+}
+
+/* Heartbeat glow - logo A letter */
+@keyframes heartbeat-glow {
+  0%, 100% { text-shadow: 0 0 12px rgba(123,97,255,0.8); transform: scale(1); }
+  14% { text-shadow: 0 0 24px rgba(123,97,255,1), 0 0 48px rgba(123,97,255,0.5); transform: scale(1.15); }
+  28% { text-shadow: 0 0 12px rgba(123,97,255,0.8); transform: scale(1); }
+  42% { text-shadow: 0 0 20px rgba(123,97,255,0.9); transform: scale(1.08); }
+}
+
+/* Ripple effect for logo */
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* Slow spin for logo outer ring */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Shooting star */
+@keyframes shooting-star {
+  0% { transform: translateX(0) translateY(0) rotate(-15deg); opacity: 0; }
+  5% { opacity: 1; }
+  60% { opacity: 0.8; }
+  100% { transform: translateX(120vw) translateY(20vh) rotate(-15deg); opacity: 0; }
+}
+
+/* Ticker scroll */
+@keyframes ticker {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+/* Live dot indicator */
+@keyframes live-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+/* Breaking flash */
+@keyframes breaking-flash {
+  0%, 100% { background: rgba(255,77,109,0.15); }
+  50% { background: rgba(255,77,109,0.35); }
+}
+
+/* Subtle pulse for CTA buttons */
+@keyframes pulse-subtle {
+  0%, 100% { box-shadow: 0 0 20px rgba(123,97,255,0.3); }
+  50% { box-shadow: 0 0 40px rgba(123,97,255,0.5), 0 0 60px rgba(123,97,255,0.2); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Heartbeat — pulse cardiaque de l'algorithme */
+@keyframes algo-heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%      { transform: scale(1.05); }
+  28%      { transform: scale(1); }
+  42%      { transform: scale(1.08); }
+  70%      { transform: scale(1); }
+}
+
+/* Data Flow — flux de données entrant */
+@keyframes algo-data-flow {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* Breathing glow — respiration lumineuse */
+@keyframes algo-breathe {
+  0%, 100% { opacity: 0.3; filter: blur(20px); }
+  50%      { opacity: 0.6; filter: blur(30px); }
+}
+
+/* Number tick — changement de chiffres */
+@keyframes algo-number-tick {
+  0%   { transform: translateY(0); opacity: 1; }
+  50%  { transform: translateY(-100%); opacity: 0; }
+  51%  { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Score change flash */
+@keyframes algo-score-flash {
+  0%, 100% { background-color: transparent; }
+  50%      { background-color: rgba(123, 97, 255, 0.2); }
+}
+
+/* Orbit animation for status indicators */
+@keyframes algo-orbit {
+  from { transform: rotate(0deg) translateX(20px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(20px) rotate(-360deg); }
+}
+
+/* Wave propagation for viral spread visualization */
+@keyframes algo-wave {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Glitch effect for breaking news */
+@keyframes algo-glitch {
+  0%, 100% { transform: translate(0); }
+  20%      { transform: translate(-2px, 2px); }
+  40%      { transform: translate(-2px, -2px); }
+  60%      { transform: translate(2px, 2px); }
+  80%      { transform: translate(2px, -2px); }
+}
+
+/* Neon flicker */
+@keyframes algo-neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 4px #7B61FF,
+      0 0 11px #7B61FF,
+      0 0 19px #7B61FF;
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.8;
+  }
+}
+
+/* Utility classes for living animations */
+.algo-heartbeat { animation: algo-heartbeat 2s ease-in-out infinite; }
+.algo-breathe   { animation: algo-breathe 4s ease-in-out infinite; }
+.algo-orbit     { animation: algo-orbit 10s linear infinite; }
+.algo-wave      { animation: algo-wave 2s ease-out infinite; }
+.algo-glitch    { animation: algo-glitch 0.3s ease-in-out; }
+.algo-neon      { animation: algo-neon-flicker 2s linear infinite; }
+
+/* Live indicator pulse */
+.algo-live-pulse {
+  position: relative;
+}
+.algo-live-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0;
+  animation: algo-wave 2s ease-out infinite;
+}
+
+/* ─── Print Styles ───────────────────────────────────────────────────────── */
+
+@media print {
+  /* Reset background for printing */
+  html, body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide non-essential elements */
+  nav, 
+  footer,
+  .bottom-nav,
+  .algo-live-pulse::after,
+  [data-no-print],
+  button:not([data-print-visible]),
+  .fixed,
+  .sticky {
+    display: none !important;
+  }
+
+  /* Remove grain overlay */
+  body::before {
+    display: none !important;
+  }
+
+  /* Ensure content is visible */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Typography adjustments */
+  h1, h2, h3 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  p, li {
+    color: #333 !important;
+  }
+
+  /* Card styling for print */
+  article, .card, [data-card] {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  /* Link styling */
+  a {
+    color: #333 !important;
+    text-decoration: underline !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  /* Hide animations */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure images print properly */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Score rings - make visible */
+  .viral-score-ring {
+    border: 2px solid #333 !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 2cm;
+  }
+
+  /* Header for each page */
+  @page :first {
+    margin-top: 3cm;
+  }
+}
+
+/* ─── Font Size Settings (Accessibility) ─────────────────────────────────── */
+
+html[data-font-size="small"] {
+  font-size: 14px;
+}
+
+html[data-font-size="medium"] {
+  font-size: 16px;
+}
+
+html[data-font-size="large"] {
+  font-size: 18px;
+}
+
+html[data-font-size="xl"] {
+  font-size: 20px;
+}
+
+/* ─── Living Animations (ALGO Breathes) ─────────────────────────────────── */
+
+/* Ticker animation for trending searches */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 60s linear infinite;
+}
+
+/* Breathing pulse for live content */
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Score change flash */
+@keyframes score-flash {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(139, 92, 246, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.animate-score-flash {
+  animation: score-flash 0.5s ease-out;
+}
+
+/* Rank change slide */
+@keyframes rank-up {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes rank-down {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-rank-up {
+  animation: rank-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-rank-down {
+  animation: rank-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Live pulse ring */
+@keyframes live-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-live-ring {
+  animation: live-ring 1.5s ease-out infinite;
+}
+
+/* Energy wave for viral content */
+@keyframes energy-wave {
+  0% { transform: scaleX(0); opacity: 1; }
+  50% { transform: scaleX(1); opacity: 0.5; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+.animate-energy-wave {
+  animation: energy-wave 2s ease-out infinite;
+}
+
+/* Content entry animation */
+@keyframes content-enter {
+  0% { 
+    opacity: 0; 
+    transform: translateY(10px) scale(0.98);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-content-enter {
+  animation: content-enter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Glow pulse for hot content */
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Number counter animation */
+@keyframes number-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.animate-number-pop {
+  animation: number-pop 0.3s ease-out;
+}
+
+/* ─── Signal Sweep Animation (once per session) ─────────────────────────── */
+
+@keyframes signal-sweep {
+  0% { 
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
+
+.animate-signal-sweep {
+  animation: signal-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+/* ─── Prefers reduced motion — bloc unique (PHASE 9) ─────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-pulse,
+  .animate-ping,
+  .animate-spin,
+  .animate-bounce,
+  .animate-breathe,
+  .animate-ticker,
+  .animate-pulse-subtle,
+  .animate-score-flash,
+  .animate-rank-up,
+  .animate-rank-down,
+  .animate-live-ring,
+  .animate-energy-wave,
+  .animate-content-enter,
+  .animate-glow-pulse,
+  .animate-number-pop,
+  .animate-signal-sweep,
+  .algo-exploding,
+  .algo-early-card,
+  .algo-dot-blink,
+  .algo-early-glow,
+  .algo-heartbeat,
+  .algo-breathe,
+  .algo-orbit,
+  .algo-wave,
+  .algo-glitch,
+  .algo-neon,
+  .algo-live-pulse::after {
+    animation: none !important;
+  }
+
+  .algo-interactive:hover {
+    transform: none !important;
+  }
+
+  .algo-card-hit:hover {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,426 @@
+{
+  "brand":   "ALGO",
+  "tagline": "The algorithm of algorithms",
+  "slogan":  "Catch the signal before the world does.",
+
+  "nav": {
+    "home":     "Home",
+    "now":      "Now",
+    "trends":   "Trends",
+    "videos":   "Videos",
+    "movies":   "Movies",
+    "music":    "Music",
+    "news":     "News",
+    "creator":  "Creator",
+    "failLab":  "Fail Lab",
+    "search":   "Search",
+    "watchlist":"Watchlist",
+    "favorites":"Favorites",
+    "profile":  "Profile",
+    "settings": "Settings",
+    "stars":    "Stars",
+    "about":    "About"
+  },
+
+  "scope": {
+    "global":  "Global",
+    "country": "{country}",
+    "selector": {
+      "label":  "Observation zone",
+      "search": "Search a country…",
+      "title":  "Choose a zone",
+      "global": "Global view"
+    },
+    "suggested": "Suggested for you",
+    "hero": {
+      "global":  "What's exploding everywhere right now",
+      "country": "What's exploding in {country} right now"
+    },
+    "hook": {
+      "global":  "🔥 Going viral right now in the world",
+      "country": "🔥 Going viral right now in {country}"
+    }
+  },
+
+  "hero": {
+    "cta": {
+      "trends":  "See Trends",
+      "creator": "Creator Mode"
+    }
+  },
+
+  "dailyHook": {
+    "shouldHaveSeen": "What you should have seen today",
+    "goingNow":       "Going viral right now",
+    "watchSignals":   "Watch these signals"
+  },
+
+  "badge": {
+    "Viral":       "Viral",
+    "Early":       "Early signal",
+    "Breaking":    "Breaking",
+    "Trend":       "Trend",
+    "AlmostViral": "Almost viral",
+    "coolOff":     "Fading",
+    "exploding":   "Exploding"
+  },
+
+  "viralScore": {
+    "label":  "Viral score",
+    "up":     "Rising",
+    "stable": "Stable",
+    "down":   "Falling"
+  },
+
+  "momentum": {
+    "growth":    "+{value}% in {time}",
+    "detected":  "detected {time} ago",
+    "copied":    "copied {count} times",
+    "platforms": "rising on {count} platforms"
+  },
+
+  "insight": {
+    "title": "Insight Engine",
+    "postNow": {
+      "high":   "Strong potential",
+      "medium": "Risky",
+      "low":    "Too late"
+    },
+    "timing": {
+      "now":       "Post now ✅",
+      "too_late":  "Too late ❌",
+      "too_early": "Too early — watch ⏳"
+    },
+    "bestPlatform":  "Best platform",
+    "bestFormat":    "Best format",
+    "watchers":      "{count} people watching this signal",
+    "crossPlatform": "Signal detected on multiple platforms",
+    "postWindow": {
+      "optimal":   "Window open — ideal moment",
+      "saturated": "Trend saturated — reduced visibility",
+      "fading":    "Signal fading — too late"
+    }
+  },
+
+  "format": {
+    "face_cam":  "Face cam",
+    "text":      "Animated text",
+    "montage":   "Montage",
+    "narration": "Narration",
+    "duet":      "Duet",
+    "reaction":  "Reaction"
+  },
+
+  "creator": {
+    "title":    "Creator Mode",
+    "subtitle": "Understand how to replicate a trend",
+    "hook":     "Probable hook",
+    "structure":"Content structure",
+    "duration": "Estimated duration",
+    "rhythm":   "Editing rhythm",
+    "emotion":  "Triggered emotion",
+    "success":  "Reason for success",
+    "reproduce":"Replicate the idea",
+    "asset": {
+      "sound":    "See original sound",
+      "template": "Find a template"
+    }
+  },
+
+  "failLab": {
+    "title":     "Fail Lab",
+    "subtitle":  "Content that had potential but didn't take off",
+    "intro":     "Analyzing failures means understanding the unwritten rules of viral.",
+    "promising": "What was promising",
+    "whyFailed": "Why it didn't take off",
+    "couldHelp": "What could have helped",
+    "lesson":    "Lesson for creators"
+  },
+
+  "watchlist": {
+    "title":    "Watchlist",
+    "subtitle": "Your tracked trends in real time",
+    "follow":   "Follow",
+    "unfollow": "Unfollow",
+    "exploding":"🚨 Exploding",
+    "progress": "Progress since tracking",
+    "empty": {
+      "title": "No tracked trends.",
+      "sub":   "Start by pinning one from the Trends page."
+    }
+  },
+
+  "search": {
+    "placeholder": "Search a trend, video, topic…",
+    "hero":        "Explore signals around the world",
+    "noResults":   "No signal for \"{query}\"",
+    "suggestion":  "Try another term",
+    "hint":        "Start typing to scan signals…",
+    "sections": {
+      "trends":   "Trends ({count})",
+      "contents": "Content ({count})"
+    }
+  },
+
+  "news": {
+    "title":      "News",
+    "importance": "Importance",
+    "speed":      "Speed",
+    "readMore":   "Read more",
+    "tags":       "Tags"
+  },
+
+  "content": {
+    "why":         "Why is it buzzing?",
+    "creatorTips": "What a creator can take from this",
+    "context":     "Context & related info",
+    "source":      "See original source",
+    "favorite":    "Save",
+    "like":        "Like",
+    "share":       "Share",
+    "detectedAt":  "Detected {time}",
+    "views":       "{count} views",
+    "signalSource":"Signal source"
+  },
+
+  "trends": {
+    "title":   "Trends",
+    "subtitle":"What's rising, exploding, and settling in",
+    "tabs": {
+      "today":      "Today",
+      "week":       "This week",
+      "month":      "This month",
+      "mostViewed": "Most viewed",
+      "mostPlayed": "Most played",
+      "mostCopied": "Most copied",
+      "emerging":   "Emerging"
+    },
+    "whyWorks":          "Why it works",
+    "recommendedFormat": "Recommended format",
+    "associatedSound":   "Associated sound"
+  },
+
+  "videos": {
+    "title":   "Videos",
+    "subtitle":"Content exploding right now",
+    "filters": {
+      "today": "Today",
+      "24h":   "24h",
+      "7d":    "7 days",
+      "30d":   "30 days"
+    }
+  },
+
+  "onboarding": {
+    "step1": { "title": "Choose your language",    "subtitle": "In which language do you want to see signals?" },
+    "step2": { "title": "Where are you?", "subtitle": "To see what's exploding near you", "geolocCta": "Use my location", "manual": "Choose manually", "global": "Global view", "detect": "Detect automatically" },
+    "step3": { "title": "Your interests",          "subtitle": "Select the categories that interest you" },
+    "step4": { "title": "Your profile", "creator": "I'm a content creator", "creatorSub": "I want to understand trends to create", "spectator": "I'm a curious spectator", "spectatorSub": "I want to understand what explodes and why" },
+    "next": "Continue", "skip": "Skip", "start": "Start", "back": "Back", "step": "Step {current} of {total}"
+  },
+
+  "auth": {
+    "login":  { "title": "Sign in",       "email": "Email address", "password": "Password", "submit": "Sign in",         "google": "Continue with Google", "noAccount": "Don't have an account?", "signup": "Sign up"   },
+    "signup": { "title": "Create account","email": "Email address", "password": "Password", "submit": "Create my account","google": "Continue with Google", "hasAccount":"Already have an account?","login":  "Sign in" }
+  },
+
+  "profile": {
+    "title": "Profile", "guest": "ALGO Explorer",
+    "guestSub": "Sign in to personalize your experience",
+    "login": "Sign in", "signup": "Create account", "logout": "Log out"
+  },
+
+  "settings": {
+    "title": "Settings", "language": "Language", "country": "Observation zone",
+    "geoloc": "Geolocation", "profile": "Profile", "interests": "Interests",
+    "save": "Save", "saved": "✓ Saved"
+  },
+
+  "state": {
+    "loading": "Reading signals…",
+    "empty": {
+      "generic":   "The radar is silent for now.",
+      "watchlist": "No tracked trends. Start by pinning one.",
+      "favorites": "Your radar is empty. Explore and save.",
+      "search":    "No signal found.",
+      "news":      "No news detected for now."
+    },
+    "error": { "network": "Signal lost. Retrying.", "retry": "Retry", "generic": "Can't load this right now. Try again in a moment." },
+    "offline":       "Connection lost — showing last signals.",
+    "geolocRefused": "Location disabled — showing global trends.",
+    "authRequired":  "Sign in to access this feature."
+  },
+
+  "misc": {
+    "seeAll": "See all", "loadMore": "Load more", "close": "Close",
+    "back": "Back", "confirm": "Confirm", "cancel": "Cancel", "or": "or"
+  },
+
+  "notifications": {
+    "title": "Stay alert",
+    "description": "Get notified when a trend from your watchlist explodes.",
+    "enable": "Enable",
+    "later": "Later"
+  },
+
+  "about": {
+    "badge": "The Viral Radar",
+    "hero": {
+      "thisIs": "This is",
+      "subtitle": "The algorithm of algorithms.",
+      "subtitle2": "See what's coming before it arrives."
+    },
+    "story": {
+      "title": "The Story",
+      "p1": "ALGO was born from a simple observation — <strong>the internet moves faster than any human can follow</strong>.",
+      "p2": "Every day, thousands of pieces of content explode across TikTok, YouTube, Twitter, Instagram and Reddit. Most people discover them too late.",
+      "p3": "ALGO exists to change that. To give everyone — creators, journalists, agencies, curious minds — <strong>the power to see what is coming before it arrives</strong>."
+    },
+    "whatIs": {
+      "title": "What is ALGO",
+      "notSocial": {
+        "title": "Not a Social Network",
+        "desc": "No followers. No likes. No endless scrolling."
+      },
+      "notNews": {
+        "title": "Not a News Aggregator",
+        "desc": "No recycled headlines. No outdated information."
+      },
+      "viralRadar": {
+        "title": "A Viral Radar",
+        "desc": "Real-time signal detection. Predictive intelligence."
+      },
+      "description": "An intelligent signal detector that scans the web in real time and surfaces <violet>what is about to explode</violet>, <pink>what is already exploding</pink>, and <orange>why</orange>."
+    },
+    "why": {
+      "title": "Why It Exists",
+      "power": {
+        "title": "Information is Power",
+        "desc": "Those who see trends first have an unfair advantage. ALGO democratizes that power."
+      },
+      "timing": {
+        "title": "Timing is Everything",
+        "desc": "The creator who posts 3 hours before a trend peaks gets 10x the reach. ALGO gives you that timing."
+      },
+      "everyone": {
+        "title": "For Everyone",
+        "desc": "Whether you're a solo creator or a global agency, ALGO gives you the same advantage."
+      }
+    },
+    "brings": {
+      "title": "What It Brings",
+      "creators": {
+        "audience": "For Content Creators",
+        "benefit": "Know what to create before everyone else does. Ride waves at their peak."
+      },
+      "cm": {
+        "audience": "For Community Managers",
+        "benefit": "Never miss a trend that matters to your audience. Stay relevant, always."
+      },
+      "journalists": {
+        "audience": "For Journalists",
+        "benefit": "Detect breaking stories before they break. Be first, not fast."
+      },
+      "agencies": {
+        "audience": "For Agencies",
+        "benefit": "Bring your clients data-driven creative strategy backed by real signals."
+      },
+      "curious": {
+        "audience": "For The Curious",
+        "benefit": "Understand why the internet works the way it does. See the patterns."
+      },
+      "all": {
+        "audience": "For Everyone",
+        "benefit": "Stop chasing trends. Start predicting them."
+      }
+    },
+    "manifesto": {
+      "title": "Our Manifesto",
+      "signal": {
+        "title": "Signal Over Noise",
+        "desc": "In a world drowning in content, we surface only what matters. Every data point is a signal, not noise."
+      },
+      "speed": {
+        "title": "Speed is Truth",
+        "desc": "On the internet, being second is being last. We prioritize real-time intelligence above all."
+      },
+      "intelligence": {
+        "title": "Intelligence, Not Just Data",
+        "desc": "Raw numbers mean nothing. We transform data into actionable insights that drive decisions."
+      },
+      "access": {
+        "title": "Democratized Access",
+        "desc": "Trend intelligence shouldn't be reserved for those with million-dollar budgets. It's for everyone."
+      },
+      "human": {
+        "title": "Human-Centric Design",
+        "desc": "Technology serves humans, not the other way around. Every feature exists to empower you."
+      },
+      "evolving": {
+        "title": "Always Evolving",
+        "desc": "The internet never stops. Neither do we. ALGO improves every single day."
+      }
+    },
+    "journey": {
+      "title": "The Journey",
+      "events": {
+        "idea": { "title": "The Idea", "desc": "ALGO is born from observing how trends spread faster than anyone can follow." },
+        "prototype": { "title": "First Prototype", "desc": "Building the viral scoring algorithm that would become ALGO's brain." },
+        "engine": { "title": "Real-Time Engine", "desc": "Developing the signal detection system across multiple platforms." },
+        "beta": { "title": "Beta Launch", "desc": "Opening ALGO to the first wave of creators and trend hunters." },
+        "launch": { "title": "Public Launch", "desc": "ALGO goes live. The viral radar is now in everyone's hands." },
+        "ai": { "title": "AI Predictions", "desc": "Launching predictive algorithms that forecast trends before they peak." },
+        "global": { "title": "Global Expansion", "desc": "ALGO now tracks trends in 50+ countries and 20+ languages." },
+        "future": { "title": "The Future", "desc": "Building the next generation of trend intelligence." }
+      }
+    },
+    "team": {
+      "title": "The Team",
+      "subtitle": "The humans behind the algorithm",
+      "roles": {
+        "ceo": "Founder & CEO",
+        "cto": "CTO",
+        "product": "Head of Product",
+        "design": "Lead Designer"
+      },
+      "comingSoon": "Coming soon"
+    },
+    "vision": {
+      "title": "The Vision",
+      "p1": "A world where <violet>anyone can read the pulse of the internet</violet>.",
+      "p2": "Where the signal is always louder than the noise.",
+      "p3": "Where ALGO is the first thing you open in the morning and the last thing you check at night."
+    },
+    "cta": {
+      "title": "Ready to see the future?",
+      "subtitle": "Start exploring what's trending right now.",
+      "button": "Start Exploring",
+      "hint": "Press <kbd>Cmd + K</kbd> anywhere to search"
+    }
+  },
+
+  "movies": {
+    "title":          "Movies & Series",
+    "subtitle":       "What's trending now",
+    "all":            "All",
+    "movies":         "Movies",
+    "series":         "Series",
+    "documentary":    "Documentaries",
+    "sortViralScore": "Viral Score",
+    "sortRating":     "Rating",
+    "sortRecent":     "Recent",
+    "sortMentions":   "Mentions",
+    "platforms":      "Platforms",
+    "watch":          "Watch",
+    "trailer":        "Trailer",
+    "cast":           "Cast",
+    "whereToWatch":   "Where to watch",
+    "trending":       "Trending now",
+    "synopsis":       "Synopsis",
+    "director":       "Director",
+    "creator":        "Creator",
+    "seasons":        "seasons",
+    "runtime":        "Runtime",
+    "addToList":      "Add to my list"
+  }
+}
