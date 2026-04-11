@@ -3,6 +3,7 @@
  * No external imports from real-data-service to avoid Turbopack module resolution issues
  */
 import { NextResponse, type NextRequest } from 'next/server'
+import { parseOptionalListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { buildDemoLiveVideos } from '@/lib/data/offline-media-demos'
 
@@ -165,6 +166,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || 'FR'
   const all = searchParams.get('all') === 'true'
+  const listLimit = parseOptionalListLimit(searchParams.get('limit'))
 
   try {
     let videos: VideoData[]
@@ -182,6 +184,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (videos.length === 0) {
       videos = buildDemoLiveVideos(country.toUpperCase())
       fromDemo = true
+    }
+
+    if (listLimit !== undefined && videos.length > listLimit) {
+      videos = videos.slice(0, listLimit)
     }
 
     // Check cache for fetchedAt timestamp
@@ -212,6 +218,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         region: country.toUpperCase(),
         // Not "live" - we're honest about periodic updates
         dataFreshness: cacheAge < 60000 ? 'recent' : cacheAge < CACHE_TTL ? 'cached' : 'stale',
+        appliedLimit: listLimit ?? null,
       }
     })
   } catch (error) {

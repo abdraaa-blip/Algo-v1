@@ -15,30 +15,40 @@ export type LiveTrendsPayload = CachedData<RealTrend> & {
     region: string
     dataFreshness: string
     sourceName: string
+    appliedLimit: number | null
   }
 }
 
 /**
  * Cœur partagé pour `/api/live-trends` et `/api/v1/trends` (écosystème).
  * `country` : code ISO déjà validé ou null pour agrégat.
+ * `maxItems` : troncature optionnelle (ex. `?limit=` pour le cron ingest).
  */
-export async function buildLiveTrendsPayload(country: string | null): Promise<LiveTrendsPayload> {
+export async function buildLiveTrendsPayload(
+  country: string | null,
+  maxItems?: number
+): Promise<LiveTrendsPayload> {
   const result = country ? await fetchGoogleTrends(country) : await fetchAllTrends()
 
   const status =
     result.source === 'live' ? 'active' : result.source === 'cached' ? 'delayed' : 'static'
 
+  const dataOut =
+    maxItems !== undefined ? result.data.slice(0, maxItems) : result.data
+
   return {
     success: true,
     ...result,
+    data: dataOut,
     status,
-    count: result.data.length,
+    count: dataOut.length,
     meta: {
       refreshIntervalMs: 15 * 60 * 1000,
       refreshIntervalLabel: '15 min',
       region: country || 'ALL',
       dataFreshness: result.source === 'live' ? 'recent' : 'cached',
       sourceName: 'Google Trends (via News RSS)',
+      appliedLimit: maxItems ?? null,
     },
   }
 }

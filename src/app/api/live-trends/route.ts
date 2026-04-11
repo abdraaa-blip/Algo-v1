@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { buildLiveTrendsPayload } from '@/lib/api/live-trends-query'
+import { parseOptionalListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 import { sanitizeInput, validators } from '@/lib/security'
 
@@ -36,7 +37,8 @@ export async function GET(request: NextRequest) {
   }
   
   try {
-    const payload = await buildLiveTrendsPayload(country)
+    const listLimit = parseOptionalListLimit(request.nextUrl.searchParams.get('limit'))
+    const payload = await buildLiveTrendsPayload(country, listLimit)
     return NextResponse.json(payload, { headers: createRateLimitHeaders(rateLimit) })
     
   } catch (error) {

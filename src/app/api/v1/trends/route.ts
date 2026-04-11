@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { buildLiveTrendsPayload } from '@/lib/api/live-trends-query'
+import { parseOptionalListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 import type { RealTrend } from '@/lib/api/real-data-service'
 import { ALGO_ECOSYSTEM_API_VERSION } from '@/lib/ecosystem/constants'
@@ -71,7 +72,8 @@ export async function GET(request: NextRequest) {
   const format = (searchParams.get('format') || 'json').toLowerCase()
 
   try {
-    const payload = await buildLiveTrendsPayload(country)
+    const listLimit = parseOptionalListLimit(searchParams.get('limit'))
+    const payload = await buildLiveTrendsPayload(country, listLimit)
 
     if (process.env.ALGO_SNAPSHOT_PERSIST === '1') {
       void persistTrendSignalSnapshot(country, payload).then((r) => {

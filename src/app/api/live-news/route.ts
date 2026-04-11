@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { fetchRealNews, fetchAllNews } from '@/lib/api/real-data-service'
+import { parseOptionalListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 import { sanitizeInput } from '@/lib/security'
 
@@ -50,7 +51,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const rawCountry = searchParams.get('country')
   const country = rawCountry ? sanitizeInput(rawCountry).toLowerCase() : null
-  
+  const listLimit = parseOptionalListLimit(searchParams.get('limit'))
+
   try {
     const result = country 
       ? await fetchRealNews(country)
@@ -84,15 +86,18 @@ export async function GET(request: NextRequest) {
       imageIsPlaceholder: !hasArticleImage,
     }
     })
-    
+
+    const dataOut =
+      listLimit !== undefined ? mappedData.slice(0, listLimit) : mappedData
+
     return NextResponse.json({
       success: true,
-      data: mappedData,
+      data: dataOut,
       source: result.source,
       fetchedAt: result.fetchedAt,
       // Honest status - not "live", just "active"
       status,
-      count: mappedData.length,
+      count: dataOut.length,
       // Transparency metadata
       meta: {
         refreshIntervalMs: UPSTREAM_CACHE_MS,
@@ -103,6 +108,7 @@ export async function GET(request: NextRequest) {
         pipeline:
           'Flux : Google News RSS (sans clé) si dispo, sinon NewsAPI si clé, sinon démo interne.',
         rssMaxItems: 15,
+        appliedLimit: listLimit ?? null,
       },
     }, { headers: createRateLimitHeaders(rateLimit) })
   } catch (error) {
