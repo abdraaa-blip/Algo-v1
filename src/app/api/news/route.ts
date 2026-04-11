@@ -3,6 +3,7 @@
  * (RSS + NewsAPI + fallbacks, voir `real-data-service.ts`).
  */
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 function hashToRange(input: string, min: number, max: number): number {
@@ -48,7 +49,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || searchParams.get('scopeCode') || 'fr'
   const category = searchParams.get('category')
-  const limit = parseInt(searchParams.get('limit') || '10')
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 10, 100)
   const newsApiKey = process.env.NEWSAPI_KEY || process.env.NEWS_API_KEY
 
   // Try real API if key is available (aligné avec `real-data-service` / `/api/status`)

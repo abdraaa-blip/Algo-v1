@@ -23,3 +23,17 @@ export function parseDefaultedListLimit(
   if (!Number.isFinite(n)) return defaultVal
   return Math.min(maxVal, Math.max(1, n))
 }
+
+/**
+ * Offset / page « 0-based » : défaut souvent 0, plafond pour éviter abus mémoire.
+ */
+export function parseDefaultedOffset(
+  raw: string | null,
+  defaultVal: number,
+  maxVal: number,
+): number {
+  if (raw === null || raw === '') return defaultVal
+  const n = Number.parseInt(raw, 10)
+  if (!Number.isFinite(n)) return defaultVal
+  return Math.min(maxVal, Math.max(0, n))
+}

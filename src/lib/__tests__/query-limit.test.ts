@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   parseDefaultedListLimit,
+  parseDefaultedOffset,
   parseOptionalListLimit,
 } from '@/lib/api/query-limit'
 
@@ -32,5 +33,18 @@ describe('parseDefaultedListLimit', () => {
     expect(parseDefaultedListLimit('0', 20, 50)).toBe(1)
     expect(parseDefaultedListLimit('200', 20, 50)).toBe(50)
     expect(parseDefaultedListLimit('12', 20, 50)).toBe(12)
+  })
+})
+
+describe('parseDefaultedOffset', () => {
+  it('défaut si absent ou invalide', () => {
+    expect(parseDefaultedOffset(null, 0, 10_000)).toBe(0)
+    expect(parseDefaultedOffset('x', 0, 10_000)).toBe(0)
+  })
+
+  it('borne 0..maxVal', () => {
+    expect(parseDefaultedOffset('-5', 0, 100)).toBe(0)
+    expect(parseDefaultedOffset('999999', 0, 100)).toBe(100)
+    expect(parseDefaultedOffset('42', 0, 100)).toBe(42)
   })
 })

@@ -1,4 +1,8 @@
 import { NextResponse } from 'next/server'
+import {
+  parseDefaultedListLimit,
+  parseDefaultedOffset,
+} from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import type { Content, Category, Platform, ContentFormat, AppScope, BadgeType, GrowthTrend } from '@/types'
 
@@ -174,8 +178,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
   const category = searchParams.get('category') as Category | null
-  const limit = parseInt(searchParams.get('limit') || '20')
-  const offset = parseInt(searchParams.get('offset') || '0')
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 100)
+  const offset = parseDefaultedOffset(searchParams.get('offset'), 0, 10_000)
   
   const scope: AppScope = { type: 'global' }
 

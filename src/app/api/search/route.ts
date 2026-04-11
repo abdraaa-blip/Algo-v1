@@ -9,6 +9,7 @@ import type {
   PostProbability,
 } from '@/types'
 import { fillLocaleStrings } from '@/types'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 import { sanitizeInput } from '@/lib/security'
 
@@ -133,7 +134,7 @@ export async function GET(request: NextRequest) {
   const query = sanitizeInput(rawQuery).toLowerCase()
   const type = searchParams.get('type')
   const country = sanitizeInput(searchParams.get('country') || 'FR').toUpperCase()
-  const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 50)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 10, 50)
 
   if (!query || query.length < 2) {
     return NextResponse.json({ content: [], trends: [], news: [] }, { headers: createRateLimitHeaders(rateLimit) })

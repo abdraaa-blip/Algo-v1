@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { createHash } from 'node:crypto'
 import { getSupabasePublicApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys'
@@ -276,8 +277,7 @@ export async function GET(request: NextRequest) {
   pruneMemoryStoreByTime()
 
   const { searchParams } = new URL(request.url)
-  const limitRaw = Number(searchParams.get('limit') || '200')
-  const limit = Number.isFinite(limitRaw) ? Math.min(500, Math.max(1, Math.floor(limitRaw))) : 200
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 200, 500)
   const region = (searchParams.get('region') || '').toUpperCase()
   const level = searchParams.get('level')
   const format = searchParams.get('format')

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 interface RelatedItem {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const contentId = searchParams.get('id')
   const keywords = searchParams.get('keywords')?.split(',').filter(Boolean) || []
-  const limit = Math.min(parseInt(searchParams.get('limit') || '6'), 20)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 6, 20)
 
   if (!contentId) {
     return NextResponse.json(

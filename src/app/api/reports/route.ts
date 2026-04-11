@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 interface ReportBody {
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const status = searchParams.get('status')
-  const limit = parseInt(searchParams.get('limit') || '50')
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 50, 200)
 
   let filteredReports = [...reports]
 

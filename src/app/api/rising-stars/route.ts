@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { fetchTrendingPeople, type RealCelebrity } from '@/lib/api/tmdb-service'
 
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const category = searchParams.get('category')
   const sortBy = searchParams.get('sort') || 'viral_score'
-  const limit = parseInt(searchParams.get('limit') || '20', 10)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 50)
 
   try {
     // Fetch LIVE trending people from TMDB

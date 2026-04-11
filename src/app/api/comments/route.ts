@@ -1,6 +1,7 @@
 'use server'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 // Types
@@ -141,8 +142,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const contentId = searchParams.get('content_id')
   const sortBy = searchParams.get('sort') || 'newest'
-  const page = parseInt(searchParams.get('page') || '1')
-  const limit = parseInt(searchParams.get('limit') || '20')
+  const page = parseDefaultedListLimit(searchParams.get('page'), 1, 5000)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 100)
 
   if (!contentId) {
     return NextResponse.json({ error: 'content_id is required' }, { status: 400 })

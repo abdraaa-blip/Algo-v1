@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 export const revalidate = 300 // Revalidate every 5 minutes
@@ -85,7 +86,7 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url)
   const country = searchParams.get('country') || 'US'
-  const limit = parseInt(searchParams.get('limit') || '20')
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 100)
   
   try {
     // Fetch trends from our API

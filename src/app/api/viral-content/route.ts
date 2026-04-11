@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { 
   fetchAllViralContent,
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
   const country = searchParams.get('country') || 'US'
   const type = searchParams.get('type') as 'all' | 'video' | 'article' | 'post' | null
   const platform = searchParams.get('platform') as 'youtube' | 'reddit' | 'news' | null
-  const limit = parseInt(searchParams.get('limit') || '50')
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 50, 100)
   
   try {
     let content: ViralContent[]
