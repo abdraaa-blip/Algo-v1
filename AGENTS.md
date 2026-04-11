@@ -9,6 +9,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 - Tokens dans `src/app/globals.css` : **`--algo-nav-stack`** (offset sous le header fixe, dont bandeau « Zone » mobile), **`--algo-mobile-bottom-safe`** (place pour la barre basse + safe-area), classe **`algo-min-h-viewport-content`** pour loaders / blocs centrés verticalement dans `<main>`.
 - Sous-navigation `sticky` : **`top-[var(--algo-nav-stack)]`**, pas `top-14` (hauteur réelle du header > `3.5rem` sur mobile).
 - Hiérarchie couleur / texte : **`@theme`** dans `globals.css` (source de vérité) · `design-tokens.ts` pour usage TS · composants critiques : `Button`, `SectionHeader`, barre basse `BottomNav`.
+- Gouttière page : classe **`.algo-page-gutter`** (`max-width` 7xl + `clamp` horizontal) — préférer à `max-w-7xl mx-auto px-*` dupliqué sur les nouveaux écrans ; le **SiteFooter** l’utilise déjà.
 
 ## QA intelligent (avant validation / build / fin de session)
 

@@ -116,7 +116,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 inset-x-0 z-[200] max-w-full overflow-x-clip pt-[env(safe-area-inset-top,0px)]">
       <div className="algo-nav-chrome">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 h-14 flex items-center gap-2 sm:gap-4">
+        <div className="algo-page-gutter h-14 flex items-center gap-2 sm:gap-4">
           <Link href="/" className="flex items-center group shrink-0">
             <AlgoHeartbeat />
           </Link>
@@ -312,7 +312,7 @@ export function Navbar() {
         </div>
       </div>
 
-      <div className="sm:hidden px-3 py-1.5 flex items-center justify-between border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg-primary)_92%,transparent)] backdrop-blur-xl">
+      <div className="sm:hidden algo-page-gutter py-1.5 flex items-center justify-between border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg-primary)_92%,transparent)] backdrop-blur-xl">
         <span className="text-[10px] text-white/30 font-medium">Zone</span>
         <ScopeSelector scope={scope} onScopeChange={setScope} />
       </div>

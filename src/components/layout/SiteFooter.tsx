@@ -11,10 +11,10 @@ import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
 export function SiteFooter() {
   return (
     <footer
-      className="relative z-10 algo-footer-chrome py-5 px-4 sm:px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:pb-5"
+      className="relative z-10 algo-footer-chrome py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:pb-5"
       role="contentinfo"
     >
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2.5 text-[11px] sm:text-xs text-[var(--color-text-tertiary)]">
+      <div className="algo-page-gutter flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2.5 text-[11px] sm:text-xs text-[var(--color-text-tertiary)]">
         <Link
           href="/transparency"
           className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"

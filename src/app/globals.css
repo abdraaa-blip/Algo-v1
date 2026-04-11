@@ -115,6 +115,17 @@
   }
 }
 
+/* Contenu principal : même gouttière que max-w-7xl + px (remplace les duos px + max-w) */
+.algo-page-gutter {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 4vw, 1.5rem);
+  padding-right: clamp(1rem, 4vw, 1.5rem);
+  box-sizing: border-box;
+}
+
 /* ─── Base ───────────────────────────────────────────────────────────────── */
 
 *, *::before, *::after {
