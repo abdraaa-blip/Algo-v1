@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   activeFlowEdges,
   CONTROL_ROOM_FLOW_EDGES,
+  CONTROL_ROOM_MODULE_LAYOUT,
+  CONTROL_ROOM_MODULE_ROUTES,
   defaultActiveModulesForMode,
+  type ControlRoomModuleId,
 } from "@/lib/control-room/module-graph";
 
 describe("activeFlowEdges", () => {
@@ -33,5 +36,19 @@ describe("defaultActiveModulesForMode", () => {
       "probe",
       "health",
     ]);
+  });
+});
+
+describe("CONTROL_ROOM_MODULE_ROUTES", () => {
+  it("définit un lien et un descriptif pour chaque module du schéma", () => {
+    const ids = Object.keys(
+      CONTROL_ROOM_MODULE_LAYOUT,
+    ) as ControlRoomModuleId[];
+    for (const id of ids) {
+      const row = CONTROL_ROOM_MODULE_ROUTES[id];
+      expect(row).toBeDefined();
+      expect(row.href.startsWith("/")).toBe(true);
+      expect(row.blurb.length).toBeGreaterThan(8);
+    }
   });
 });

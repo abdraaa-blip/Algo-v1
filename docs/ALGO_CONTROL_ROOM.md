@@ -14,7 +14,7 @@ Ne pas fusionner les deux : pas de graphe lourd ni de jargon « cognitif » sur 
 ## Ce que la page **fait** (V1 actuelle)
 
 - **Barre d’état** : mode, intensité, flux — dérivés d’une **probe légère** `GET /api/v1/health` (intervalle long, pas d’IA lourde).
-- **Cerveau visuel** : SVG + CSS (`AlgoControlRoomBrain`), `prefers-reduced-motion` respecté.
+- **Cerveau visuel** : panneau `AlgoControlRoomBrainCore` (contours wireframe illustratifs + `AlgoControlRoomBrain` + exploration liée aux modules via `CONTROL_ROOM_MODULE_ROUTES`), `prefers-reduced-motion` respecté.
 - **Schéma modules** : graphe **statique** (`AlgoControlRoomModuleGraph`) — décor, pas topologie runtime.
 - **Navigation rapide** : liens vers les zones utiles du site (pas une mini-carte exhaustive obligatoire).
 

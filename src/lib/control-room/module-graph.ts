@@ -61,3 +61,30 @@ export function defaultActiveModulesForMode(params: {
       return ["probe", "health", "pipeline", "radar", "trends"];
   }
 }
+
+/** Liens produit + court descriptif (exploration Control Room, pas runtime serveur). */
+export const CONTROL_ROOM_MODULE_ROUTES: Record<
+  ControlRoomModuleId,
+  { href: string; blurb: string }
+> = {
+  probe: {
+    href: "/observability",
+    blurb: "Journaux et signaux côté produit quand l’accès est autorisé.",
+  },
+  health: {
+    href: "/status",
+    blurb: "Statut global et lecture humaine des dépendances.",
+  },
+  pipeline: {
+    href: "/ai",
+    blurb: "Surface Q&R et calibrage exposé côté interface.",
+  },
+  radar: {
+    href: "/intelligence",
+    blurb: "Vue radar intelligence et agrégats tendances.",
+  },
+  trends: {
+    href: "/trends",
+    blurb: "Signaux tendances et scopes régionaux.",
+  },
+};

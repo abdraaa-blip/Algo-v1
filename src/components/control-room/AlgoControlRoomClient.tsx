@@ -20,7 +20,7 @@ import {
   type HealthProbeJson,
 } from "@/lib/control-room/map-probe-to-visual";
 import { CONTROL_ROOM_QUICK_NAV } from "@/lib/control-room/quick-nav";
-import { AlgoControlRoomBrain } from "@/components/control-room/AlgoControlRoomBrain";
+import { AlgoControlRoomBrainCore } from "@/components/control-room/AlgoControlRoomBrainCore";
 import { AlgoControlRoomModuleGraph } from "@/components/control-room/AlgoControlRoomModuleGraph";
 
 const PREDICTING_DEMO_MS = 8200;
@@ -219,9 +219,10 @@ export function AlgoControlRoomClient() {
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-tertiary)] lg:hidden">
                 Signal visuel
               </p>
-              <AlgoControlRoomBrain
+              <AlgoControlRoomBrainCore
                 state={brainState}
                 reduceMotion={reduceMotion}
+                lastProbeAt={lastProbeAt}
               />
             </div>
             <div className="flex flex-col gap-2 min-w-0">
