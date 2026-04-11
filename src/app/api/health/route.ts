@@ -66,6 +66,12 @@ export async function GET(request: NextRequest) {
     },
     hints: {
       supabaseRestStatus: null as number | null,
+      /** Si la clé publique REST échoue mais la clé secrète répond (même URL). */
+      supabaseRestSecretStatus: null as number | null,
+      /** null = non configuré ou sonde incomplète ; false = REST refusé avec la clé publique ; true = OK côté public. */
+      supabasePublicRestOk: null as boolean | null,
+      /** Court message opérateur quand seule la clé secrète valide la sonde. */
+      supabaseRestNote: null as string | null,
       youtubeApiStatus: null as number | null,
     },
     externalApis: {
@@ -77,18 +83,66 @@ export async function GET(request: NextRequest) {
     circuitBreakers: getAllCircuitStats(),
   };
 
-  // Supabase REST (anon / publishable obligatoire pour ce test)
-  if (supabaseConfigured) {
-    try {
+  // Supabase REST : GET /rest/v1/ (OpenAPI). Repli apikey seul (publishable) puis clé secrète si la publique est refusée.
+  if (supabaseConfigured && supabaseUrl) {
+    const drain = async (response: Response) => {
+      try {
+        await response.body?.cancel();
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const restGet = async (key: string, withBearer: boolean) => {
+      const headers: Record<string, string> = { apikey: key };
+      if (withBearer) headers.Authorization = `Bearer ${key}`;
       const response = await fetch(`${supabaseUrl}/rest/v1/`, {
-        method: "HEAD",
-        headers: {
-          apikey: supabasePublic || "",
-        },
-        signal: AbortSignal.timeout(5000),
+        method: "GET",
+        headers,
+        signal: AbortSignal.timeout(8000),
       });
-      checks.hints.supabaseRestStatus = response.status;
-      checks.database = response.ok;
+      const status = response.status;
+      const ok = response.ok;
+      await drain(response);
+      return { ok, status };
+    };
+
+    try {
+      const publicKey = supabasePublic || "";
+      let { ok, status } = await restGet(publicKey, true);
+      checks.hints.supabaseRestStatus = status;
+
+      if (!ok && publicKey.startsWith("sb_publishable_")) {
+        const second = await restGet(publicKey, false);
+        if (second.ok) {
+          ok = true;
+          status = second.status;
+          checks.hints.supabaseRestStatus = status;
+        }
+      }
+
+      const publicRestOk = ok;
+      let usedSecretFallback = false;
+
+      if (!ok) {
+        const secret = getSupabaseSecretApiKey();
+        if (secret) {
+          const sec = await restGet(secret, true);
+          checks.hints.supabaseRestSecretStatus = sec.status;
+          if (sec.ok) {
+            ok = true;
+            usedSecretFallback = true;
+          }
+        }
+      }
+
+      checks.database = ok;
+      checks.hints.supabasePublicRestOk = publicRestOk;
+
+      if (supabaseConfigured && !publicRestOk && ok && usedSecretFallback) {
+        checks.hints.supabaseRestNote =
+          "REST refusé avec la clé publique — le navigateur peut échouer. Vérifie anon ou publishable sur le même projet que l’URL (Supabase → Settings → API).";
+      }
     } catch {
       checks.database = false;
     }
@@ -141,8 +195,14 @@ export async function GET(request: NextRequest) {
   const isHealthy = criticalChecks.every(Boolean);
   const apiHealthy = Object.values(checks.externalApis).some(Boolean);
 
+  /** Clé publique incohérente alors que la base répond encore (souvent via clé secrète côté serveur). */
+  const supabasePublicKeyMismatch =
+    Boolean(supabaseConfigured) &&
+    checks.hints.supabasePublicRestOk === false &&
+    checks.database;
+
   let status: "healthy" | "degraded" | "unhealthy";
-  if (isHealthy && apiHealthy) {
+  if (isHealthy && apiHealthy && !supabasePublicKeyMismatch) {
     status = "healthy";
   } else if (isHealthy) {
     status = "degraded";

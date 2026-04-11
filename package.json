@@ -37,6 +37,7 @@
     "verify:api-guards": "node scripts/verify-api-route-guards.mjs",
     "verify:release": "npm run ecosystem:check && npm run i18n:check && npm run verify:api-guards && npm audit && npm run typecheck && npm run lint:strict && npm run test:run && npm run build",
     "verify:full": "npm run verify:release && npm run perf:budget && npm run report:daily",
+    "deploy:prod": "vercel deploy --prod --yes",
     "clean": "node scripts/clear-cache.js"
   },
   "dependencies": {
