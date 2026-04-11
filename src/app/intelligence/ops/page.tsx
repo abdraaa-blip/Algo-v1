@@ -91,7 +91,7 @@ export default function IntelligenceOpsPage() {
               href="/intelligence"
               className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
             >
-              Back to Radar
+              Retour au radar
             </Link>
             <button
               type="button"

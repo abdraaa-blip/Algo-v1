@@ -248,7 +248,7 @@ export default function IntelligencePage() {
       })
 
       if (!gJson.success || !pJson.success || !prJson.success) {
-        throw new Error('Intelligence APIs returned an error.')
+        throw new Error('Les APIs intelligence ont renvoyé une erreur.')
       }
       const globalSnapshot = gJson.data ?? null
       const predictiveSnapshot = pJson.data ?? null
@@ -290,7 +290,7 @@ export default function IntelligencePage() {
         )
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to load intelligence radar.')
+      setError(e instanceof Error ? e.message : 'Impossible de charger le radar intelligence.')
     } finally {
       inFlightRef.current = false
       setLoading(false)
