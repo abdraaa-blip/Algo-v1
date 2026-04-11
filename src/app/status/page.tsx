@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { CheckCircle, XCircle, Loader2, RefreshCw, Wifi, Video, Newspaper, BrainCircuit, AlertCircle } from 'lucide-react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import { cn } from '@/lib/utils'
 
 interface ApiStatus {
@@ -65,7 +66,11 @@ export default function StatusPage() {
       setStatus(statusData)
       setModelWeights(modelData)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Impossible de charger le statut')
+      setError(
+        mapUserFacingApiError(
+          err instanceof Error ? err.message : 'Impossible de charger le statut'
+        )
+      )
     } finally {
       setLoading(false)
     }

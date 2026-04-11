@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface SignupLabels {
   title:      string
@@ -72,7 +73,7 @@ export function SignupClientShell({ labels }: { labels: SignupLabels }) {
       })
 
       if (authError) {
-        setError(authError.message)
+        setError(mapUserFacingApiError(authError.message))
         return
       }
 

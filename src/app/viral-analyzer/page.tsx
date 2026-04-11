@@ -6,6 +6,7 @@ import { LiveCurve } from '@/components/algo/LiveCurve'
 import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
 import { AlgoLoader } from '@/components/algo/AlgoLoader'
 import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import { AlgoSignalShareCard } from '@/components/algo/AlgoSignalShareCard'
 import { ShareStrip } from '@/components/growth/ShareStrip'
 
@@ -162,7 +163,11 @@ export default function ViralAnalyzerPage() {
       const data = (await res.json()) as ViralApiResponse & { error?: string }
 
       if (!res.ok || data.error) {
-        setAnalysisError(data.error || `Erreur serveur (${res.status})`)
+        setAnalysisError(
+          data.error
+            ? mapUserFacingApiError(data.error)
+            : `Erreur serveur (${res.status})`
+        )
         return
       }
 

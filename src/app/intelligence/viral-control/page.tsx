@@ -9,6 +9,7 @@ import type { ViralControlYoutubeBlock } from '@/lib/intelligence/viral-control-
 import { useScopeContext } from '@/contexts/ScopeContext'
 import { getScopeCountryCode } from '@/lib/geo/country-profile'
 import { VIRAL_CONTROL_REGION_CODES, isViralControlRegion } from '@/lib/intelligence/viral-control-regions'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 type ApiPayload = ViralControlCockpitPayload & {
   radarSources?: string[]
@@ -166,7 +167,11 @@ export default function ViralControlCenterPage() {
       }
       setData(json)
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Erreur réseau')
+      setErr(
+        mapUserFacingApiError(
+          e instanceof Error ? e.message : 'Failed to fetch'
+        )
+      )
       setData(null)
     } finally {
       setLoading(false)

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import Link from 'next/link'
 import { 
   MessageCircle, Heart, Flag, MoreHorizontal, Send, 
@@ -104,7 +105,11 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
       setNewComment('')
       setReplyingTo(null)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Impossible de publier le commentaire.')
+      setError(
+        mapUserFacingApiError(
+          err instanceof Error ? err.message : 'Impossible de publier le commentaire.'
+        )
+      )
     } finally {
       setPosting(false)
     }

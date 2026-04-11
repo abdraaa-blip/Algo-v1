@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface OptimisticUpdate<T> {
   id: string
@@ -65,7 +66,8 @@ export function useOptimistic<T>(
         pendingUpdates.current.delete(updateId)
         onSuccess?.(result)
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Update failed')
+        const raw = err instanceof Error ? err.message : 'Update failed'
+        const error = new Error(mapUserFacingApiError(raw))
         
         // Rollback after delay
         setTimeout(() => {

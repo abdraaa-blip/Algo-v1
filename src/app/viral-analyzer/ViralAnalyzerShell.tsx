@@ -13,6 +13,7 @@ import { ViralScoreRing } from '@/components/ui/ViralScoreRing'
 import { LivingPulse } from '@/components/ui/LivingPulse'
 import { DataQualityChip } from '@/components/ui/DataQualityChip'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 // Platform icons (lucide-react doesn't include brand icons)
 const YoutubeIcon = Play
@@ -167,7 +168,7 @@ export function ViralAnalyzerShell({ locale, labels }: ViralAnalyzerShellProps) 
         confidence: mapped.viralScore >= 75 ? 'high' : mapped.viralScore >= 55 ? 'medium' : 'low',
       })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Analyse indisponible')
+      setError(mapUserFacingApiError(e instanceof Error ? e.message : 'Analyse indisponible'))
     } finally {
       setIsAnalyzing(false)
     }

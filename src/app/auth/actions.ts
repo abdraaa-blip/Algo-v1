@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 export type AuthResult = {
   error?: string
@@ -80,7 +81,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
   })
 
   if (error) {
-    return { error: error.message }
+    return { error: mapUserFacingApiError(error.message) }
   }
 
   return { success: true }

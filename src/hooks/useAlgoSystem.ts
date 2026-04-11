@@ -14,6 +14,7 @@ import { AlgoScope, type Scope } from '@/services/AlgoScope'
 import { AlgoOrchestrator } from '@/services/AlgoOrchestrator'
 import { AlgoCoherenceGuard } from '@/services/AlgoCoherenceGuard'
 import { AlgoPerformanceOptimizer } from '@/services/AlgoPerformanceOptimizer'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 /**
  * Subscribe to ALGO events with automatic cleanup
@@ -129,7 +130,7 @@ export function useAlgoData<T>(
   useEffect(() => {
     const unsubscribe = AlgoEventBus.subscribe('system:error', (payload) => {
       if (payload.source === source) {
-        setError(payload.error)
+        setError(mapUserFacingApiError(payload.error))
       }
     })
     

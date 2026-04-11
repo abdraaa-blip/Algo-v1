@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Download, Filter, RefreshCw, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface DecisionItem {
   id: string
@@ -80,7 +81,7 @@ export default function IntelligenceLogsPage() {
     if (!opsToken) {
       setLoading(false)
       setEntries([])
-      setError('Operator token required to access logs.')
+      setError('Jeton opérateur requis pour accéder aux journaux.')
       return
     }
     setLoading(true)
@@ -108,7 +109,11 @@ export default function IntelligenceLogsPage() {
           : Number(res.headers.get('x-intelligence-retention-hours') || 0) || null
       )
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Impossible de charger les journaux.')
+      setError(
+        mapUserFacingApiError(
+          e instanceof Error ? e.message : 'Impossible de charger les journaux.'
+        )
+      )
     } finally {
       setLoading(false)
     }
@@ -205,7 +210,7 @@ export default function IntelligenceLogsPage() {
 
   const exportServerSignedCsv = async () => {
     if (!opsToken) {
-      setError('Jeton opérateur requis pour l’export serveur.')
+      setError('Jeton opérateur requis pour l\'export serveur.')
       return
     }
     setError(null)
@@ -227,7 +232,11 @@ export default function IntelligenceLogsPage() {
       URL.revokeObjectURL(url)
       if (csvHash) setIntegrityHash(csvHash)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Impossible d’exporter le CSV signé.')
+      setError(
+        mapUserFacingApiError(
+          e instanceof Error ? e.message : 'Impossible d\'exporter le CSV signé.'
+        )
+      )
     }
   }
 
@@ -247,7 +256,11 @@ export default function IntelligenceLogsPage() {
       if (!json.success) throw new Error(json.error || 'Impossible de vider les journaux.')
       await fetchLogs()
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Impossible de vider le journal côté serveur.')
+      setError(
+        mapUserFacingApiError(
+          e instanceof Error ? e.message : 'Impossible de vider le journal côté serveur.'
+        )
+      )
     } finally {
       setClearing(false)
     }

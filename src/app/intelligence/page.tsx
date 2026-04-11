@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { AlgoCoreIntelligencePanel } from '@/components/intelligence/AlgoCoreIntelligencePanel'
 import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from '@/lib/seo/site'
 import { ALGO_DATA_RELIABILITY_PANEL, ALGO_PRODUCT_RADAR, ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import { mergeRadarHistoryPoints } from '@/lib/intelligence/radar-history-utils'
 import { VIRAL_CONTROL_REGION_CODES } from '@/lib/intelligence/viral-control-regions'
 
@@ -290,7 +291,11 @@ export default function IntelligencePage() {
         )
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Impossible de charger le radar intelligence.')
+      setError(
+        mapUserFacingApiError(
+          e instanceof Error ? e.message : 'Impossible de charger le radar intelligence.'
+        )
+      )
     } finally {
       inFlightRef.current = false
       setLoading(false)

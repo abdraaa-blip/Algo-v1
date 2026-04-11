@@ -12,6 +12,7 @@ import { DataQualityChip } from '@/components/ui/DataQualityChip'
 import { EXTENDED_MUSIC_COUNTRIES } from '@/lib/geo/global-presets'
 import { useScope } from '@/hooks/useScope'
 import { formatRelativeScopeTime, formatScopeDateTime } from '@/lib/geo/time-format'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface Track {
   id: string
@@ -86,7 +87,11 @@ export function MusicClientShell() {
       }
     } catch (err) {
       console.error('Failed to fetch music:', err)
-      setError('Impossible de charger les classements musicaux')
+      setError(
+        mapUserFacingApiError(
+          err instanceof Error ? err.message : 'Impossible de charger les classements musicaux'
+        )
+      )
     } finally {
       setIsLoading(false)
     }

@@ -10,6 +10,7 @@ import {
   type ViralQuickScanPlatform,
 } from '@/lib/home/viral-quick-scan-request'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 function detectPlatformFromUrl(urlStr: string): ViralQuickScanPlatform {
   const u = urlStr.toLowerCase()
@@ -160,7 +161,13 @@ export function HomeFirstMoments({
         }
       } catch (e) {
         if (e instanceof Error && e.name === 'AbortError') return
-        setError('Impossible d’analyser tout de suite. Vérifie le lien ou ouvre l’analyseur complet.')
+        setError(
+          mapUserFacingApiError(
+            e instanceof Error
+              ? e.message
+              : 'Impossible d\'analyser tout de suite. Vérifie le lien ou ouvre l\'analyseur complet.'
+          )
+        )
       } finally {
         setBusy(false)
       }

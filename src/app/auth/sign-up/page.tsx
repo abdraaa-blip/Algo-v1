@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import { UserPlus, Eye, EyeOff, Check } from 'lucide-react'
 
 export default function SignUpPage() {
@@ -52,7 +53,11 @@ export default function SignUpPage() {
       if (error) throw error
       router.push('/auth/sign-up-success')
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Erreur lors de l'inscription")
+      setError(
+        mapUserFacingApiError(
+          error instanceof Error ? error.message : "Erreur lors de l'inscription"
+        )
+      )
     } finally {
       setIsLoading(false)
     }

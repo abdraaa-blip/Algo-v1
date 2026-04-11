@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import type { AlgoCoreIntelligenceReport } from '@/lib/algo-core-intelligence'
 import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from '@/lib/seo/site'
 import { ALGO_UI_ERROR, ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface CoreApiOk {
   success: true
@@ -39,7 +40,9 @@ export function AlgoCoreIntelligencePanel({ region }: { region: string }) {
     } catch (e) {
       setReport(null)
       setMeta(null)
-      setError(e instanceof Error ? e.message : ALGO_UI_ERROR.message)
+      setError(
+        mapUserFacingApiError(e instanceof Error ? e.message : ALGO_UI_ERROR.message)
+      )
     } finally {
       setLoading(false)
     }

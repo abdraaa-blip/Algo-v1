@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import { LogIn, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -32,7 +33,9 @@ export default function LoginPage() {
       router.push('/')
       router.refresh()
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'Erreur de connexion')
+      setError(
+        mapUserFacingApiError(error instanceof Error ? error.message : 'Erreur de connexion')
+      )
     } finally {
       setIsLoading(false)
     }
