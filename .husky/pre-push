@@ -1,0 +1,19 @@
+#!/bin/sh
+# ALGO · pre-push — garde rapide avant envoi (CI exécute verify:release complet)
+
+echo ""
+echo "ALGO pre-push · typecheck + lint:strict"
+echo ""
+
+if ! npm run typecheck; then
+  echo "PUSH BLOQUÉ : typecheck."
+  exit 1
+fi
+
+if ! npm run lint:strict; then
+  echo "PUSH BLOQUÉ : lint:strict."
+  exit 1
+fi
+
+echo "Pre-push OK (lancer npm run verify:release avant une release)."
+exit 0
