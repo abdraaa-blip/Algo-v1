@@ -16,8 +16,8 @@
   --color-card-hover:    rgba(255,255,255,0.07);
   
   /* Bordures · hiérarchie discrète */
-  --color-border:        rgba(255,255,255,0.08);
-  --color-border-strong: rgba(255,255,255,0.14);
+  --color-border:        rgba(255,255,255,0.1);
+  --color-border-strong: rgba(255,255,255,0.16);
   --color-border-focus:  rgba(123, 97, 255, 0.45);
   
   /* Accents · données / vie / alertes (saturation maîtrisée) */
@@ -28,11 +28,11 @@
   --color-red-alert:     #e85d75;
   --color-amber:         #e8c86a;
   
-  /* Texte · lecture WCAG-friendly sur fond sombre */
-  --color-text-primary:  #f0f0f8;
-  --color-text-secondary: rgba(240,240,248,0.68);
-  --color-text-tertiary:  rgba(240,240,248,0.42);
-  --color-text-muted:     rgba(240,240,248,0.22);
+  /* Texte · lecture confortable (contraste légèrement renforcé) */
+  --color-text-primary:  #f4f4fc;
+  --color-text-secondary: rgba(244,244,252,0.76);
+  --color-text-tertiary:  rgba(244,244,252,0.5);
+  --color-text-muted:     rgba(244,244,252,0.28);
 
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -142,7 +142,9 @@ body {
   padding: 0;
   background: var(--color-bg-primary);
   font-family: var(--font-family-sans);
-  line-height: 1.5;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  font-feature-settings: "kern" 1, "liga" 1;
   min-height: 100dvh;
   max-width: 100%;
   overflow-x: hidden;
@@ -250,17 +252,19 @@ body {
 /* Champs formulaire unifiés */
 .algo-input-field {
   width: 100%;
+  min-height: 3rem;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-lg);
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--color-text-primary);
   background: var(--color-card);
   border: 1px solid var(--color-border);
   outline: none;
   transition:
     border-color var(--algo-duration-tap) var(--ease-out),
-    box-shadow var(--algo-duration-tap) var(--ease-out);
+    box-shadow var(--algo-duration-tap) var(--ease-out),
+    background-color var(--algo-duration-tap) var(--ease-out);
 }
 
 .algo-input-field:focus-visible {

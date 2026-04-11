@@ -30,7 +30,7 @@ export function BottomNav() {
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       aria-label="Navigation mobile"
     >
-      <div className="flex items-center justify-around h-14 px-2">
+      <div className="flex items-stretch justify-around min-h-14 px-1.5 gap-0.5">
         {navConfig.map(({ path, labelKey, Icon }) => {
           const isActive =
             path === "/" ? pathname === "/" : pathname.startsWith(path);
@@ -42,17 +42,18 @@ export function BottomNav() {
               href={path}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "algo-interactive relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl",
-                "transition-[color,transform] duration-200 ease-out",
+                "algo-interactive relative flex flex-1 flex-col items-center justify-center gap-0.5 rounded-xl py-1.5",
+                "min-h-12 min-w-0 max-w-[5.5rem] transition-[color,background-color,opacity] duration-200 ease-out",
+                "active:opacity-90",
                 isActive
-                  ? "text-[var(--color-violet)]"
-                  : "text-[var(--color-text-muted)] hover:text-[var(--color-text-tertiary)]",
+                  ? "text-[var(--color-violet)] bg-[color-mix(in_srgb,var(--color-violet)_14%,transparent)]"
+                  : "text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[color-mix(in_srgb,var(--color-text-primary)_6%,transparent)]",
               )}
             >
-              <Icon size={20} strokeWidth={isActive ? 2.2 : 1.6} />
+              <Icon size={22} strokeWidth={isActive ? 2.2 : 1.65} aria-hidden />
               <span
                 className={cn(
-                  "text-[9px] font-semibold tracking-wide",
+                  "text-[10px] font-semibold tracking-wide leading-tight text-center line-clamp-2",
                   isActive
                     ? "text-[var(--color-violet)]"
                     : "text-[var(--color-text-muted)]",

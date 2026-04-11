@@ -8,28 +8,31 @@ const variantCls: Record<Variant, string> = {
   primary: [
     "bg-violet-500 text-white",
     "hover:bg-violet-400",
+    "active:brightness-[0.94]",
     "shadow-[0_0_20px_rgba(123,97,255,0.28)]",
-    "disabled:bg-violet-500/30 disabled:text-white/30 disabled:shadow-none",
-    "focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07070f]",
+    "disabled:bg-violet-500/30 disabled:text-white/30 disabled:shadow-none disabled:active:brightness-100",
+    "focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-primary)]",
   ].join(" "),
   ghost: [
-    "bg-white/5 text-white/65",
-    "hover:bg-white/10 hover:text-white",
-    "disabled:bg-white/3 disabled:text-white/20",
-    "focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07070f]",
+    "bg-white/5 text-[var(--color-text-secondary)]",
+    "hover:bg-white/10 hover:text-[var(--color-text-primary)]",
+    "active:bg-white/[0.12]",
+    "disabled:bg-white/3 disabled:text-[var(--color-text-muted)] disabled:active:bg-white/3",
+    "focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-primary)]",
   ].join(" "),
   outline: [
-    "bg-transparent border border-white/12 text-white/65",
-    "hover:border-violet-500/50 hover:text-white hover:bg-violet-500/5",
-    "disabled:border-white/5 disabled:text-white/20",
-    "focus-visible:ring-2 focus-visible:ring-violet-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07070f]",
+    "bg-transparent border border-[var(--color-border-strong)] text-[var(--color-text-secondary)]",
+    "hover:border-violet-500/50 hover:text-[var(--color-text-primary)] hover:bg-violet-500/5",
+    "active:bg-violet-500/10",
+    "disabled:border-[var(--color-border)] disabled:text-[var(--color-text-muted)] disabled:active:bg-transparent",
+    "focus-visible:ring-2 focus-visible:ring-violet-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-primary)]",
   ].join(" "),
 };
 
 const sizeCls: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-xs  gap-1.5 rounded-[8px]",
-  md: "px-4 py-2   text-sm  gap-2   rounded-[10px]",
-  lg: "px-6 py-3   text-sm  gap-2.5 rounded-[12px]",
+  sm: "min-h-10 px-3.5 py-2 text-xs gap-1.5 rounded-lg",
+  md: "min-h-11 px-5 py-2.5 text-sm gap-2 rounded-lg",
+  lg: "min-h-12 px-6 py-3 text-sm gap-2.5 rounded-xl",
 };
 
 const iconSize: Record<Size, number> = { sm: 12, md: 14, lg: 16 };
@@ -62,7 +65,7 @@ export function Button({
       disabled={isDisabled}
       className={cn(
         "inline-flex items-center justify-center font-semibold",
-        "transition-all duration-[150ms]",
+        "transition-[transform,background-color,border-color,color,box-shadow,opacity] duration-200 ease-out",
         "cursor-pointer select-none outline-none",
         variantCls[variant],
         sizeCls[size],

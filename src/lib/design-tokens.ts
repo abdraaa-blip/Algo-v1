@@ -84,12 +84,12 @@ export const colors = {
     focus: "rgba(139, 92, 246, 0.5)",
   },
 
-  // Text hierarchy
+  // Text hierarchy (aligné @theme dans globals.css)
   text: {
-    primary: "rgba(255, 255, 255, 0.95)",
-    secondary: "rgba(255, 255, 255, 0.65)",
-    tertiary: "rgba(255, 255, 255, 0.45)",
-    disabled: "rgba(255, 255, 255, 0.25)",
+    primary: "rgb(244, 244, 252)",
+    secondary: "rgba(244, 244, 252, 0.76)",
+    tertiary: "rgba(244, 244, 252, 0.5)",
+    disabled: "rgba(244, 244, 252, 0.28)",
     inverse: "rgb(7, 7, 15)",
   },
 

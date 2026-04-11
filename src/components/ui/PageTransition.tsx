@@ -48,7 +48,7 @@ export function PageTransition({ children, className }: PageTransitionProps) {
         className,
       )}
       style={{
-        transitionDuration: "var(--algo-duration-route, 280ms)",
+        transitionDuration: "220ms",
         transitionTimingFunction:
           "var(--ease-out-soft, cubic-bezier(0.16, 1, 0.3, 1))",
       }}
