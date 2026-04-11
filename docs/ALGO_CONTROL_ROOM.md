@@ -36,6 +36,7 @@ Détail des anti-patterns : **`docs/ALGO_OFFLINE_EVOLUTION.md`**.
 ## Accessibilité
 
 - Conserver des **landmarks** (`main`, `nav`, titres de section).
+- Panneau modules : `<nav aria-labelledby="cr-module-explorer-label">` + **focus visible** sur les cartes lien (`AlgoControlRoomBrainCore`).
 - Ne pas lier l’information critique à la **seule** animation (couleur + texte ou valeurs numériques lisibles).
 
 ## Voir aussi

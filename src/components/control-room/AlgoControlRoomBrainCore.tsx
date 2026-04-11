@@ -135,33 +135,35 @@ export function AlgoControlRoomBrainCore({
             Dernière probe : {probeTime}
           </p>
         ) : null}
-        <ul
-          className="grid gap-2"
+        <nav
           aria-labelledby="cr-module-explorer-label"
+          className={styles.moduleNav}
         >
-          {MODULE_ORDER.map((id) => {
-            const { label } = CONTROL_ROOM_MODULE_LAYOUT[id];
-            const { href, blurb } = CONTROL_ROOM_MODULE_ROUTES[id];
-            const on = active.has(id);
-            return (
-              <li key={id}>
-                <Link
-                  href={href}
-                  className={styles.moduleLink}
-                  data-active={on ? "true" : "false"}
-                >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className={styles.moduleTitle}>{label}</span>
-                    <span className={styles.moduleMeta}>
-                      {on ? "sous tension" : "veille"}
-                    </span>
-                  </div>
-                  <p className={styles.moduleBlurb}>{blurb}</p>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+          <ul className="grid gap-2">
+            {MODULE_ORDER.map((id) => {
+              const { label } = CONTROL_ROOM_MODULE_LAYOUT[id];
+              const { href, blurb } = CONTROL_ROOM_MODULE_ROUTES[id];
+              const on = active.has(id);
+              return (
+                <li key={id}>
+                  <Link
+                    href={href}
+                    className={styles.moduleLink}
+                    data-active={on ? "true" : "false"}
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className={styles.moduleTitle}>{label}</span>
+                      <span className={styles.moduleMeta}>
+                        {on ? "sous tension" : "veille"}
+                      </span>
+                    </div>
+                    <p className={styles.moduleBlurb}>{blurb}</p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
       </div>
     </div>
   );

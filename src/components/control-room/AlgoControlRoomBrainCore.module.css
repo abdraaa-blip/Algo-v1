@@ -58,6 +58,10 @@
   margin-inline: auto;
 }
 
+.moduleNav {
+  width: 100%;
+}
+
 .moduleLink {
   display: block;
   border-radius: 0.65rem;
@@ -77,6 +81,15 @@
 
 .moduleLink[data-active='true'] {
   border-color: color-mix(in srgb, var(--color-blue-neon, #5ecfff) 45%, var(--color-border));
+}
+
+.moduleLink:focus {
+  outline: none;
+}
+
+.moduleLink:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-blue-neon, #5ecfff) 65%, transparent);
+  outline-offset: 2px;
 }
 
 .moduleTitle {
