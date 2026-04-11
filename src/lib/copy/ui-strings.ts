@@ -109,3 +109,15 @@ export const ALGO_PRODUCT_RADAR = {
   empty:
     "Aucun angle produit mis en avant pour ce corpus. Reviens après le prochain rafraîchissement.",
 } as const;
+
+/** /observability quand le dashboard est coupé (prod par défaut) — évite un 404 depuis la control room. */
+export const ALGO_UI_OBSERVABILITY_DISABLED = {
+  title: "Observabilité · accès restreint",
+  body:
+    "Le tableau détaillé des logs n'est pas ouvert sur cet environnement : c'est voulu en production tant que l'opérateur n'active pas le mode dashboard.",
+  operatorNote:
+    "Opérateur : variable ALGO_OBSERVABILITY_DASHBOARD=1 sur l'environnement (usage interne uniquement).",
+  ctaStatus: "Statut produit",
+  ctaControlRoom: "Control room",
+  ctaHome: "Accueil",
+} as const;
