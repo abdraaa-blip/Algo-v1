@@ -102,8 +102,8 @@ export function IdeaGenerator({ onSelectIdea, className }: IdeaGeneratorProps) {
             <Wand2 size={18} className="text-violet-400" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white">Generateur d&apos;Idees IA</h3>
-            <p className="text-[10px] text-white/40">Base sur les dernieres tendances</p>
+            <h3 className="text-sm font-bold text-white">Générateur d&apos;idées IA</h3>
+            <p className="text-[10px] text-white/40">Basé sur les dernières tendances</p>
           </div>
         </div>
         <LiveIndicator className="scale-90" />

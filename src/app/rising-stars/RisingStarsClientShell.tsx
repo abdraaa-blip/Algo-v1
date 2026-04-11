@@ -171,7 +171,7 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
       setLastUpdate(new Date())
     } catch (err) {
       console.error('[ALGO Rising Stars] Fetch failed:', err)
-      setError('Impossible de charger les stars. Reessayez.')
+      setError('Impossible de charger les stars. Réessaie.')
       setStars([])
     } finally {
       setLoading(false)
@@ -245,7 +245,7 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
               {celebSource === 'live' ? (
                 <>
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                  <span className="text-amber-400">Donnees recentes</span>
+                  <span className="text-amber-400">Données récentes</span>
                 </>
               ) : (
                 <span className="text-zinc-400">Cache (30 min)</span>

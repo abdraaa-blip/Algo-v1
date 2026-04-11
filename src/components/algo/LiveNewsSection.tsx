@@ -273,7 +273,7 @@ export function LiveNewsSection() {
             className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] hover:bg-[var(--color-card-hover)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] text-xs font-medium transition-colors"
           >
             <Zap size={14} />
-            Voir toutes les actualites
+            Voir toutes les actualités
           </Link>
         </div>
       </div>

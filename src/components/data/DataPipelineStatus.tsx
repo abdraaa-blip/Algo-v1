@@ -336,11 +336,11 @@ export function FallbackMessage({
         <AlertCircle size={20} className="text-amber-400 shrink-0 mt-0.5" />
         <div className="flex-1">
           <p className="text-sm text-amber-300 font-medium">
-            Donnees temporairement indisponibles
+            Données temporairement indisponibles
           </p>
           <p className="text-xs text-amber-300/70 mt-1">
-            Les donnees de {config?.name || sourceId} ne sont pas disponibles. 
-            Les dernieres donnees valides sont affichees.
+            Les données de {config?.name || sourceId} ne sont pas disponibles. 
+            Les dernières données valides sont affichées.
           </p>
           
           {onRetry && (

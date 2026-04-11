@@ -1,6 +1,6 @@
 // =============================================================================
 // ALGO V1 · MediaService
-// Service unifie pour les videos et la musique
+// Service unifié pour les vidéos et la musique
 // Connecte a YouTube Data API et Last.fm
 // =============================================================================
 
@@ -424,7 +424,7 @@ export function generateVideoContentIdeas(video: Video): string[] {
   switch (video.category) {
     case 'Gaming':
       ideas.push(`Let's play inspire de "${video.title}"`)
-      ideas.push(`Tutorial base sur "${video.title}"`)
+      ideas.push(`Tutoriel basé sur "${video.title}"`)
       break
     case 'Musique':
       ideas.push(`Cover/remix de "${video.title}"`)

@@ -192,7 +192,7 @@ export default function SearchPage() {
         {/* Initial State */}
         {!searched && !loading && (
           <p className="text-center py-12 text-sm text-[var(--color-text-muted)]">
-            Tape au moins 2 caracteres pour lancer la recherche
+            Tape au moins 2 caractères pour lancer la recherche
           </p>
         )}
 

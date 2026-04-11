@@ -371,7 +371,7 @@ export function TrendActionCard({ trend, onCreateClick, onDetailsClick }: TrendA
           }}
         >
           <Zap size={16} />
-          Creer avec cette tendance
+          Créer avec cette tendance
         </button>
         
         {/* Bouton secondaire */}

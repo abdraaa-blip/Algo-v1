@@ -36,9 +36,9 @@ function createResponseMeta(country: string, sourceStatuses: SourceStatus[]) {
     region: country,
     // Honest status labels
     statusLabels: {
-      active: 'Donnees recentes (mises a jour dans les 15 dernieres minutes)',
-      delayed: 'Donnees differees (mises a jour dans la derniere heure)',
-      static: 'Donnees en cache (plus d\'une heure)',
+      active: 'Données récentes (mises à jour dans les 15 dernières minutes)',
+      delayed: 'Données différées (mises à jour dans la dernière heure)',
+      static: 'Données en cache (plus d\'une heure)',
     },
   }
 }

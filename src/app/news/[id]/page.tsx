@@ -218,7 +218,7 @@ export default async function NewsPage({ params }: Props) {
         className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] text-sm font-semibold hover:text-[var(--color-text-primary)] transition-colors mb-6"
       >
         <ArrowLeft size={16} />
-        Retour aux actualites
+        Retour aux actualités
       </Link>
 
       {/* Live indicator */}

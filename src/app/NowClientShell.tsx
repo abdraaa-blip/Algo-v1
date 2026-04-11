@@ -526,7 +526,7 @@ export function NowClientShell({
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
               <span>
-                Donnees mises a jour periodiquement via APIs externes
+                Données mises à jour périodiquement via APIs externes
               </span>
             </div>
             <div className="flex flex-wrap gap-3">

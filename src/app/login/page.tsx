@@ -17,7 +17,7 @@ export default function LoginPage() {
     submit: 'Se connecter',
     google: 'Continuer avec Google',
     noAccount: 'Pas de compte ?',
-    signup: 'Creer un compte',
+    signup: 'Créer un compte',
     or: 'ou',
   }
 

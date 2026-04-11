@@ -214,15 +214,15 @@ export function analyzeEmotion(text: string): EmotionAnalysis {
 // Action templates by content type and emotion
 const ACTION_TEMPLATES: Record<ContentType, ActionSuggestion[]> = {
   trend: [
-    { id: 'trend-1', action: 'Creer une video courte sur ce sujet', format: 'Short/Reel', urgency: 'immediate', difficulty: 'easy' },
+    { id: 'trend-1', action: 'Créer une vidéo courte sur ce sujet', format: 'Short/Reel', urgency: 'immediate', difficulty: 'easy' },
     { id: 'trend-2', action: 'Faire un thread explicatif', format: 'Thread', urgency: 'soon', difficulty: 'medium' },
     { id: 'trend-3', action: 'Donner ton opinion en story', format: 'Story', urgency: 'immediate', difficulty: 'easy' },
-    { id: 'trend-4', action: 'Creer un carousel informatif', format: 'Carousel', urgency: 'flexible', difficulty: 'medium' },
+    { id: 'trend-4', action: 'Créer un carrousel informatif', format: 'Carousel', urgency: 'flexible', difficulty: 'medium' },
   ],
   news: [
     { id: 'news-1', action: 'Reagir rapidement avec ton analyse', format: 'Video/Post', urgency: 'immediate', difficulty: 'easy' },
     { id: 'news-2', action: 'Expliquer le contexte simplement', format: 'Thread', urgency: 'soon', difficulty: 'medium' },
-    { id: 'news-3', action: 'Creer une infographie resumee', format: 'Image', urgency: 'flexible', difficulty: 'hard' },
+    { id: 'news-3', action: 'Créer une infographie résumée', format: 'Image', urgency: 'flexible', difficulty: 'hard' },
   ],
   video: [
     { id: 'video-1', action: 'Faire un duet/stitch reaction', format: 'Short/Reel', urgency: 'immediate', difficulty: 'easy' },
@@ -231,12 +231,12 @@ const ACTION_TEMPLATES: Record<ContentType, ActionSuggestion[]> = {
   ],
   music: [
     { id: 'music-1', action: 'Utiliser ce son dans ta prochaine video', format: 'Short/Reel', urgency: 'immediate', difficulty: 'easy' },
-    { id: 'music-2', action: 'Creer un challenge avec ce son', format: 'Challenge', urgency: 'soon', difficulty: 'medium' },
+    { id: 'music-2', action: 'Créer un challenge avec ce son', format: 'Challenge', urgency: 'soon', difficulty: 'medium' },
     { id: 'music-3', action: 'Faire un cover ou remix', format: 'Video', urgency: 'flexible', difficulty: 'hard' },
   ],
   movie: [
     { id: 'movie-1', action: 'Partager ta critique rapide', format: 'Story/Post', urgency: 'soon', difficulty: 'easy' },
-    { id: 'movie-2', action: 'Creer un top 5 thematique', format: 'Carousel/Video', urgency: 'flexible', difficulty: 'medium' },
+    { id: 'movie-2', action: 'Créer un top 5 thématique', format: 'Carousel/Video', urgency: 'flexible', difficulty: 'medium' },
     { id: 'movie-3', action: 'Analyser une scene marquante', format: 'Video', urgency: 'flexible', difficulty: 'hard' },
   ],
 }
@@ -329,7 +329,7 @@ export function getFreshness(fetchedAt: string | Date | null): FreshnessStatus {
  * Format freshness as human-readable string.
  */
 export function formatFreshness(fetchedAt: string | Date | null): string {
-  if (!fetchedAt) return 'Donnees non disponibles'
+  if (!fetchedAt) return 'Données non disponibles'
   
   const date = typeof fetchedAt === 'string' ? new Date(fetchedAt) : fetchedAt
   const ageMs = Date.now() - date.getTime()

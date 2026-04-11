@@ -85,7 +85,7 @@ export function OfflineBanner() {
           <span className="text-sm font-medium text-white">
             {!isOnline 
               ? 'Vous etes hors ligne. Le contenu cache est affiche.'
-              : 'Connexion lente detectee. Certaines fonctionnalites peuvent etre limitees.'}
+              : 'Connexion lente détectée. Certaines fonctionnalités peuvent être limitées.'}
           </span>
         </div>
         

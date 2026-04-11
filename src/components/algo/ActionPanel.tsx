@@ -174,7 +174,7 @@ export function ActionPanel({
               <ul className="space-y-1.5 text-[11px] text-white/60">
                 <li className="flex items-start gap-2">
                   <ChevronRight size={12} className="text-violet-400 mt-0.5 flex-shrink-0" />
-                  <span>Creer une video courte ({videoDuration})</span>
+                  <span>Créer une vidéo courte ({videoDuration})</span>
                 </li>
                 {hookSuggestion && (
                   <li className="flex items-start gap-2">

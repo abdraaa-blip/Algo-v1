@@ -62,7 +62,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
   }
 
   if (password.length < 6) {
-    return { error: 'Le mot de passe doit contenir au moins 6 caracteres' }
+    return { error: 'Le mot de passe doit contenir au moins 6 caractères' }
   }
 
   const { error } = await supabase.auth.signUp({

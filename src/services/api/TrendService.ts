@@ -1,6 +1,6 @@
 // =============================================================================
 // ALGO V1 · TrendService
-// Service unifie pour les tendances multi-sources
+// Service unifié pour les tendances multi-sources
 // Agrege: Google Trends, News, YouTube, Social Media
 // =============================================================================
 

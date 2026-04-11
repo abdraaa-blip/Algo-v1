@@ -152,11 +152,11 @@ export function determineDataStatus(
 export function getStatusLabel(status: DataStatus): string {
   switch (status) {
     case 'active':
-      return 'Donnees recentes'
+      return 'Données récentes'
     case 'delayed':
       return 'Actualisation en cours'
     case 'static':
-      return 'Donnees en cache'
+      return 'Données en cache'
     case 'error':
       return 'Temporairement indisponible'
     case 'loading':
@@ -341,7 +341,7 @@ export function getRefreshIntervalLabel(ms: number): string {
 // ─── Fallback Data ────────────────────────────────────────────────────────────
 
 const FALLBACK_MESSAGES = {
-  news: 'Les actualites sont temporairement indisponibles. Reessayez dans quelques minutes.',
+  news: 'Les actualités sont temporairement indisponibles. Réessaie dans quelques minutes.',
   youtube: 'Les videos YouTube sont temporairement indisponibles.',
   trends: 'Les tendances sont temporairement indisponibles.',
   music: 'Les classements musicaux sont temporairement indisponibles.',
@@ -366,7 +366,7 @@ export function createFallbackPacket<T>(
     refreshIntervalMs: config?.refreshIntervalMs || 900000,
     isStale: true,
     isFallback: true,
-    error: error || FALLBACK_MESSAGES[sourceId as keyof typeof FALLBACK_MESSAGES] || 'Donnees indisponibles',
+    error: error || FALLBACK_MESSAGES[sourceId as keyof typeof FALLBACK_MESSAGES] || 'Données indisponibles',
     meta: {
       totalItems: Array.isArray(lastValidData) ? lastValidData.length : 0,
       filteredItems: 0,

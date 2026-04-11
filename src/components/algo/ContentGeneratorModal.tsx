@@ -36,7 +36,7 @@ function generateContent(trend: string, category: string, emotion: string): Gene
     `Reaction authentique en temps reel`,
     `Explication simple pour les debutants`,
     `Comparaison avec des situations similaires`,
-    `Story-time base sur ton experience`,
+    `Story-time basé sur ton expérience`,
   ]
   
   const formats = ['Face cam reaction', 'Voice-over + montage', 'POV immersif', 'Duet/Stitch', 'Green screen']

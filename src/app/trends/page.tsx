@@ -306,7 +306,7 @@ export default function TrendsPage() {
                 Finance: [`Mouvement de marche`, `Actualite economique chaude`, `Signal financier fort`],
                 People: [`Buzz ou scandale`, `Actualite people`, `Drama en cours`],
                 Politique: [`Actualite politique majeure`, `Debat en cours`, `Annonce gouvernementale`],
-                default: [`Sujet en forte croissance`, `Tendance detectee par ALGO`, `Signal viral emergent`]
+                default: [`Sujet en forte croissance`, `Tendance détectée par ALGO`, `Signal viral émergent`]
               }
               const explanations = explanationTemplates[category as keyof typeof explanationTemplates] || explanationTemplates.default
               const explanation = description || explanations[i % explanations.length]

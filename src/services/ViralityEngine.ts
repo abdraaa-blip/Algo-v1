@@ -278,15 +278,15 @@ export function getTimingAdvice(
   }
 
   if (freshness.level === 'fresh' && saturation.opportunityScore > 0.7) {
-    return { advice: 'post_now', label: 'Fenetre optimale', urgency: 'high', optimalWindow }
+    return { advice: 'post_now', label: 'Fenêtre optimale', urgency: 'high', optimalWindow }
   }
 
   if (freshness.level === 'recent' && momentum.type === 'accelerating') {
-    return { advice: 'post_now', label: 'Acceleration detectee', urgency: 'high', optimalWindow }
+    return { advice: 'post_now', label: 'Accélération détectée', urgency: 'high', optimalWindow }
   }
 
   if (saturation.opportunityScore > 0.5) {
-    return { advice: 'prepare', label: 'Preparer le contenu', urgency: 'medium', optimalWindow }
+    return { advice: 'prepare', label: 'Préparer le contenu', urgency: 'medium', optimalWindow }
   }
 
   return { advice: 'wait', label: 'Observer', urgency: 'low', optimalWindow: null }
@@ -305,23 +305,23 @@ export function generateRecommendations(
 
   // Score-based recommendations
   if (score.tier === 'S') {
-    recommendations.push('Contenu a fort potentiel viral - priorite absolue')
+    recommendations.push('Contenu à fort potentiel viral — priorité absolue')
   } else if (score.tier === 'A') {
-    recommendations.push('Bon potentiel - reagir rapidement')
+    recommendations.push('Bon potentiel — réagir rapidement')
   }
 
   // Momentum recommendations
   if (momentum.type === 'accelerating') {
-    recommendations.push('Croissance exponentielle detectee - surfer sur la vague')
+    recommendations.push('Croissance exponentielle détectée — surfer sur la vague')
   } else if (momentum.type === 'climbing') {
     recommendations.push('Tendance montante - bon timing pour se positionner')
   } else if (momentum.type === 'decelerating') {
-    recommendations.push('Ralentissement observe - agir vite ou passer')
+    recommendations.push('Ralentissement observé — agir vite ou passer')
   }
 
   // Freshness recommendations
   if (freshness.peakWindow) {
-    recommendations.push(`Fenetre optimale: ${freshness.remainingMinutes || 60} minutes restantes`)
+    recommendations.push(`Fenêtre optimale : ${freshness.remainingMinutes || 60} minutes restantes`)
   } else if (freshness.level === 'aging') {
     recommendations.push('Sujet vieillissant - apporter un angle nouveau')
   }

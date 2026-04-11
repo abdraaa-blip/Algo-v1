@@ -127,7 +127,7 @@ function generateCreatorTip(
   
   // Platform-specific tips
   const platformTips: Record<string, string> = {
-    youtube: 'Creer une video de 8-12 minutes avec un hook dans les 3 premieres secondes',
+    youtube: 'Créer une vidéo de 8–12 minutes avec un hook dans les 3 premières secondes',
     reddit: 'Poster avec un titre provocateur ou une question ouverte pour maximiser les commentaires',
     hackernews: 'Presenter l\'angle technique ou startup de maniere concise et factuelle',
     github: 'Ajouter un README clair avec demo GIF et badges pour maximiser les stars',
@@ -139,7 +139,7 @@ function generateCreatorTip(
     video: 'Format vertical 9:16 pour TikTok/Reels, hook visuel dans la premiere seconde',
     article: 'Thread Twitter avec les points cles + lien vers l\'article complet',
     post: 'Repost avec valeur ajoutee: ton analyse, une infographie, ou un angle unique',
-    repo: 'Creer un tutoriel ou une video demo montrant le use case principal',
+    repo: 'Créer un tutoriel ou une vidéo démo montrant le use case principal',
   }
   
   const platformTip = platformTips[source] || 'Adapter le format a ta plateforme principale'

@@ -494,7 +494,7 @@ function generateFallbackNews(): RealNewsArticle[] {
     },
     {
       title: 'Gaming: Les jeux video qui cartonnent en ce moment',
-      description: 'Tests, previews et actualites du monde videoludique.',
+      description: 'Tests, previews et actualités du monde vidéoludique.',
       source: 'Game Zone',
       country: 'US',
       image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800'

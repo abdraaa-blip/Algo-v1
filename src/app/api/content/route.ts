@@ -87,8 +87,8 @@ function generateViralContent(scope: AppScope): Content[] {
       titles: [
         'Breaking: annonce majeure qui change tout',
         'Evenement historique en direct',
-        'Les dernieres nouvelles explosives',
-        'Ce qui vient de se passer est enorme',
+        'Les dernières nouvelles explosives',
+        'Ce qui vient de se passer est énorme',
       ],
       platforms: ['Twitter', 'YouTube', 'TikTok'],
       formats: ['text', 'narration', 'face_cam'],

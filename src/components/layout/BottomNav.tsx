@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 const navConfig = [
   { path: '/', label: 'Accueil', Icon: Zap },
   { path: '/trends', label: 'Tendances', Icon: TrendingUp },
-  { path: '/creator-mode', label: 'Creer', Icon: Wand2 },
+  { path: '/creator-mode', label: 'Créer', Icon: Wand2 },
   { path: '/watchlist', label: 'Favoris', Icon: Bookmark },
   { path: '/ai', label: 'ALGO AI', Icon: BrainCircuit },
 ] as const

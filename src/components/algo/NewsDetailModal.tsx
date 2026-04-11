@@ -214,7 +214,7 @@ export function NewsDetailModal({ article, onClose, onGenerateIdea }: NewsDetail
                   <ul className="space-y-1 text-[10px] text-white/50">
                     <li className="flex items-center gap-1">
                       <ChevronRight size={10} className="text-violet-400" />
-                      Creer une video reaction (30-60s)
+                      Créer une vidéo réaction (30–60 s)
                     </li>
                     <li className="flex items-center gap-1">
                       <ChevronRight size={10} className="text-violet-400" />

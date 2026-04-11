@@ -242,7 +242,7 @@ export function ContentCard({ content, onClick }: ContentCardProps) {
             color: '#a78bfa'
           }}
         >
-          Creer avec cette tendance
+          Créer avec cette tendance
         </button>
       </div>
     </article>

@@ -121,10 +121,10 @@ export default function TransparencyPage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">Transparence des Donnees</h1>
+          <h1 className="text-3xl font-bold mb-4">Transparence des données</h1>
           <p className="text-white/60 max-w-2xl mx-auto">
-            ALGO s&apos;engage a etre transparent sur la maniere dont les donnees sont collectees, 
-            traitees et affichees. Cette page explique notre methodologie.
+            ALGO s&apos;engage à être transparent sur la manière dont les données sont collectées, 
+            traitées et affichées. Cette page explique notre méthodologie.
           </p>
         </div>
 
@@ -135,10 +135,10 @@ export default function TransparencyPage() {
             <div>
               <h2 className="text-lg font-bold text-amber-400 mb-2">Note importante</h2>
               <p className="text-white/70 text-sm leading-relaxed">
-                Les donnees affichees dans ALGO ne sont <strong>pas en temps reel</strong>. 
-                Elles sont mises a jour periodiquement selon les intervalles indiques ci-dessous. 
-                Les indicateurs &quot;ACTIF&quot; signifient que les donnees ont ete rafraichies recemment, 
-                pas qu&apos;elles sont diffusees en direct.
+                Les données affichées dans ALGO ne sont <strong>pas en temps réel</strong>. 
+                Elles sont mises à jour périodiquement selon les intervalles indiqués ci-dessous. 
+                Les indicateurs « ACTIF » signifient que les données ont été rafraîchies récemment, 
+                pas qu&apos;elles sont diffusées en direct.
               </p>
             </div>
           </div>
@@ -299,24 +299,24 @@ export default function TransparencyPage() {
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Clock className="w-6 h-6 text-amber-400" />
-            <h2 className="text-xl font-bold">Indicateurs de Fraicheur</h2>
+            <h2 className="text-xl font-bold">Indicateurs de fraîcheur</h2>
           </div>
           
           <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-5 space-y-4">
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-amber-400" />
               <span className="text-amber-400 font-medium">ACTIF</span>
-              <span className="text-white/50 text-sm">Donnees mises a jour dans les 15 dernieres minutes</span>
+              <span className="text-white/50 text-sm">Données mises à jour dans les 15 dernières minutes</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-zinc-400" />
               <span className="text-zinc-400 font-medium">CACHE</span>
-              <span className="text-white/50 text-sm">Donnees mises a jour dans la derniere heure</span>
+              <span className="text-white/50 text-sm">Données mises à jour dans la dernière heure</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-zinc-600" />
               <span className="text-zinc-500 font-medium">ANCIEN</span>
-              <span className="text-white/50 text-sm">Donnees de plus d&apos;une heure</span>
+              <span className="text-white/50 text-sm">Données de plus d&apos;une heure</span>
             </div>
           </div>
         </section>

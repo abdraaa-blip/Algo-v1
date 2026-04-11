@@ -20,26 +20,26 @@ export interface DataFreshness {
 export const DATA_STATUS_CONFIG = {
   live: {
     // Data updated in the last 5 minutes with active refresh
-    label: 'Donnees recentes',
+    label: 'Données récentes',
     labelShort: 'ACTIF',
     color: 'amber',
-    description: 'Donnees mises a jour periodiquement (pas temps reel)',
+    description: 'Données mises à jour périodiquement (pas en temps réel)',
     maxAgeMs: 5 * 60 * 1000, // 5 minutes
   },
   delayed: {
     // Data updated periodically (5min - 1hour)
-    label: 'Mise a jour recente',
+    label: 'Mise à jour récente',
     labelShort: 'MAJ',
     color: 'amber',
-    description: 'Donnees mises a jour periodiquement',
+    description: 'Données mises à jour périodiquement',
     maxAgeMs: 60 * 60 * 1000, // 1 hour
   },
   static: {
     // Data not automatically updated
-    label: 'Donnees statiques',
+    label: 'Données statiques',
     labelShort: 'STATIQUE',
     color: 'zinc',
-    description: 'Donnees non mises a jour automatiquement',
+    description: 'Données non mises à jour automatiquement',
     maxAgeMs: Infinity,
   },
   error: {
@@ -53,7 +53,7 @@ export const DATA_STATUS_CONFIG = {
     label: 'Chargement',
     labelShort: '...',
     color: 'violet',
-    description: 'Donnees en cours de chargement',
+    description: 'Données en cours de chargement',
     maxAgeMs: 0,
   },
 } as const
@@ -262,11 +262,11 @@ export const DATA_SOURCES: Record<string, DataSourceConfig> = {
   // Static
   'mock': {
     id: 'mock',
-    name: 'Donnees demo',
+    name: 'Données démo',
     type: 'static',
     refreshInterval: 0,
     canBeLive: false,
-    description: 'Donnees de demonstration statiques',
+    description: 'Données de démonstration statiques',
   },
   'fallback': {
     id: 'fallback',
@@ -274,7 +274,7 @@ export const DATA_SOURCES: Record<string, DataSourceConfig> = {
     type: 'static',
     refreshInterval: 0,
     canBeLive: false,
-    description: 'Donnees de secours en cas d\'erreur API',
+    description: 'Données de secours en cas d\'erreur API',
   },
 }
 

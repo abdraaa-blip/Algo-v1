@@ -66,7 +66,7 @@ export function MusicClientShell() {
       if (selectedCountry) params.set('country', selectedCountry)
       
       const res = await fetch(`/api/live-music?${params}`)
-      if (!res.ok) throw new Error('Failed to fetch music data')
+      if (!res.ok) throw new Error('Échec du chargement des données musicales')
       
       const data = await res.json()
       
@@ -82,7 +82,7 @@ export function MusicClientShell() {
             : new Date()
         setLastUpdate(Number.isNaN(at.getTime()) ? new Date() : at)
       } else {
-        throw new Error(data.error || 'Unknown error')
+        throw new Error(data.error || 'Erreur inconnue')
       }
     } catch (err) {
       console.error('Failed to fetch music:', err)
@@ -267,13 +267,13 @@ export function MusicClientShell() {
       <div className="text-center space-y-1 pt-4 border-t border-[var(--color-border)]">
         {lastUpdate && (
           <p className="text-xs text-[var(--color-text-tertiary)]" title={formatScopeDateTime(lastUpdate, scope)}>
-            Mis a jour {formatRelativeScopeTime(lastUpdate, scope)}
+            Mis à jour {formatRelativeScopeTime(lastUpdate, scope)}
           </p>
         )}
         <p className="text-[10px] text-[var(--color-text-muted)]">
           {source === 'live' || source === 'cache' 
-            ? 'Classement base sur les ecoutes Last.fm en temps reel'
-            : 'Classement base sur les dernieres donnees disponibles'}
+            ? 'Classement basé sur les écoutes Last.fm en temps réel'
+            : 'Classement basé sur les dernières données disponibles'}
         </p>
       </div>
     </div>

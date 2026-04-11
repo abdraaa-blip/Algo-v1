@@ -158,7 +158,7 @@ function LiveIndicator({ source, fetchedAt }: { source: string, fetchedAt: strin
       {isRecent ? (
         <>
           <span className="w-2 h-2 rounded-full bg-amber-400" />
-          <span className="text-amber-400 font-medium">Donnees recentes</span>
+          <span className="text-amber-400 font-medium">Données récentes</span>
         </>
       ) : isCached ? (
         <>

@@ -15,7 +15,7 @@ export default function ProfilePage() {
     guest: 'Invite',
     guestSub: 'Connecte-toi pour sauvegarder tes preferences',
     login: 'Se connecter',
-    signup: 'Creer un compte',
+    signup: 'Créer un compte',
     logout: 'Se deconnecter',
     favorites: 'Favoris',
     watchlist: 'Watchlist',

@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
       data: [], 
       status: 'error',
       source: 'error',
-      fallbackMessage: 'Les actualites sont temporairement indisponibles.',
+      fallbackMessage: 'Les actualités sont temporairement indisponibles.',
     }, { status: 500, headers: createRateLimitHeaders(rateLimit) })
   }
 }

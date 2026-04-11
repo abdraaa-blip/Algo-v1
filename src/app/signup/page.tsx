@@ -14,7 +14,7 @@ export default function SignupPage() {
     title: 'Inscription',
     email: 'Email',
     password: 'Mot de passe',
-    submit: 'Creer un compte',
+    submit: 'Créer un compte',
     google: 'Continuer avec Google',
     hasAccount: 'Deja un compte ?',
     login: 'Se connecter',

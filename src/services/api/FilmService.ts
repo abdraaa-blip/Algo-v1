@@ -1,6 +1,6 @@
 // =============================================================================
 // ALGO V1 · FilmService
-// Service unifie pour les films et series - connecte a TMDB
+// Service unifié pour les films et séries — connecté à TMDB
 // Architecture professionnelle: cache, validation, fallbacks
 // =============================================================================
 

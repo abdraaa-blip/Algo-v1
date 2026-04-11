@@ -208,9 +208,9 @@ interface FreshnessIndicatorProps {
 
 export function FreshnessIndicator({ status, timestamp, className }: FreshnessIndicatorProps) {
   const config = {
-    live: { color: 'text-amber-400', bg: 'bg-amber-500/20', label: 'Donnees recentes' },
+    live: { color: 'text-amber-400', bg: 'bg-amber-500/20', label: 'Données récentes' },
     recent: { color: 'text-zinc-400', bg: 'bg-zinc-500/20', label: 'Mis a jour' },
-    stale: { color: 'text-zinc-500', bg: 'bg-zinc-600/20', label: 'Donnees anciennes' },
+    stale: { color: 'text-zinc-500', bg: 'bg-zinc-600/20', label: 'Données anciennes' },
   }
   
   const current = config[status]

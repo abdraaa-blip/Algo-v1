@@ -237,7 +237,7 @@ function detectAnomalies(params: {
     anomalies.push({
       type: 'drop',
       severity: 'medium',
-      message: "Baisse d'engagement detectee sur les dernieres 24h.",
+      message: "Baisse d'engagement détectée sur les dernières 24 h.",
     })
   }
   return anomalies
@@ -313,7 +313,7 @@ export async function buildGlobalIntelligence(params?: {
       type: 'content',
       title: 'Accelerer les contenus sur signaux montants',
       confidence: categories.some((c) => c.momentum === 'up') ? 0.74 : 0.58,
-      rationale: 'Categories avec momentum positif detectees dans les flux agreges.',
+      rationale: 'Catégories avec momentum positif détectées dans les flux agrégés.',
     },
     {
       type: 'timing',
