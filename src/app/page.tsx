@@ -644,7 +644,7 @@ export default function HomePage() {
         <h3 className="text-sm font-medium text-[var(--color-text-muted)] mb-3 sm:mb-4">
           Explorer
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
           {[
             { href: "/movies", label: "Films", icon: "🎬", color: "#FF4D6D" },
             { href: "/music", label: "Musique", icon: "🎵", color: "#00FFB2" },
@@ -663,15 +663,9 @@ export default function HomePage() {
             },
             {
               href: "/intelligence",
-              label: "Radar IA",
+              label: "Intelligence",
               icon: "🧠",
               color: "#9F7AEA",
-            },
-            {
-              href: "/intelligence#algo-core",
-              label: "Core IA",
-              icon: "⚡",
-              color: "#c4b5fd",
             },
           ].map((link) => (
             <Link
