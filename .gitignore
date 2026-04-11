@@ -8,6 +8,7 @@ node_modules
 .next/
 *.tsbuildinfo
 coverage/
+.env
 .env*.local
 .env.local.txt
 .DS_Store
