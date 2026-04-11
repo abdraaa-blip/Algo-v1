@@ -16,54 +16,54 @@ interface OnboardingFlowProps {
 const STEPS = [
   {
     id: 'welcome',
-    title: 'Welcome to ALGO',
-    subtitle: 'The viral radar that sees trends before they explode',
+    title: 'ALGO, ton radar tendances',
+    subtitle: 'Capte le signal avant qu’il explose',
     icon: Zap,
     gradient: 'from-violet-500 to-fuchsia-500',
   },
   {
     id: 'interests',
-    title: 'What interests you?',
-    subtitle: 'Select topics to personalize your feed',
+    title: 'Qu’est-ce qui t’intéresse ?',
+    subtitle: 'Choisis des thèmes pour personnaliser ton flux',
     icon: Sparkles,
     gradient: 'from-cyan-500 to-blue-500',
   },
   {
     id: 'notifications',
-    title: 'Stay Ahead',
-    subtitle: 'Get notified when trends explode',
+    title: 'Reste en avance',
+    subtitle: 'Sois alerté quand une tendance accélère',
     icon: Bell,
     gradient: 'from-amber-500 to-orange-500',
   },
   {
     id: 'region',
-    title: 'Your Region',
-    subtitle: 'See trends relevant to your location',
+    title: 'Ta zone',
+    subtitle: 'Affine les tendances selon ton périmètre',
     icon: Globe,
     gradient: 'from-emerald-500 to-teal-500',
   },
 ]
 
 const INTERESTS = [
-  { id: 'music', label: 'Music & Artists', icon: Sparkles },
-  { id: 'comedy', label: 'Comedy & Memes', icon: Users },
-  { id: 'tech', label: 'Tech & Innovation', icon: Zap },
-  { id: 'sports', label: 'Sports', icon: TrendingUp },
+  { id: 'music', label: 'Musique & artistes', icon: Sparkles },
+  { id: 'comedy', label: 'Humour & mèmes', icon: Users },
+  { id: 'tech', label: 'Tech & innovation', icon: Zap },
+  { id: 'sports', label: 'Sport', icon: TrendingUp },
   { id: 'gaming', label: 'Gaming', icon: Video },
-  { id: 'news', label: 'News & Politics', icon: Newspaper },
-  { id: 'fashion', label: 'Fashion & Beauty', icon: Sparkles },
-  { id: 'food', label: 'Food & Lifestyle', icon: Users },
+  { id: 'news', label: 'Actu & politique', icon: Newspaper },
+  { id: 'fashion', label: 'Mode & beauté', icon: Sparkles },
+  { id: 'food', label: 'Food & lifestyle', icon: Users },
 ]
 
 const REGIONS = [
-  { id: 'US', label: 'United States', flag: '🇺🇸' },
+  { id: 'US', label: 'États-Unis', flag: '🇺🇸' },
   { id: 'FR', label: 'France', flag: '🇫🇷' },
-  { id: 'GB', label: 'United Kingdom', flag: '🇬🇧' },
-  { id: 'DE', label: 'Germany', flag: '🇩🇪' },
-  { id: 'ES', label: 'Spain', flag: '🇪🇸' },
-  { id: 'BR', label: 'Brazil', flag: '🇧🇷' },
-  { id: 'JP', label: 'Japan', flag: '🇯🇵' },
-  { id: 'GLOBAL', label: 'Global', flag: '🌍' },
+  { id: 'GB', label: 'Royaume-Uni', flag: '🇬🇧' },
+  { id: 'DE', label: 'Allemagne', flag: '🇩🇪' },
+  { id: 'ES', label: 'Espagne', flag: '🇪🇸' },
+  { id: 'BR', label: 'Brésil', flag: '🇧🇷' },
+  { id: 'JP', label: 'Japon', flag: '🇯🇵' },
+  { id: 'GLOBAL', label: 'Monde', flag: '🌍' },
 ]
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
@@ -162,9 +162,9 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             <div className="space-y-4 text-center">
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {[
-                  { icon: TrendingUp, label: 'Real-time trends' },
-                  { icon: Sparkles, label: 'AI predictions' },
-                  { icon: Bell, label: 'Instant alerts' },
+                  { icon: TrendingUp, label: 'Tendances temps réel' },
+                  { icon: Sparkles, label: 'Prévisions IA' },
+                  { icon: Bell, label: 'Alertes rapides' },
                 ].map((feature, i) => (
                   <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <feature.icon size={24} className="mx-auto mb-2 text-violet-400" />
@@ -214,12 +214,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 {notificationsEnabled ? (
                   <>
                     <Check size={20} />
-                    <span className="font-medium">Notifications Enabled</span>
+                    <span className="font-medium">Notifications activées</span>
                   </>
                 ) : (
                   <>
                     <Bell size={20} />
-                    <span className="font-medium">Enable Notifications</span>
+                    <span className="font-medium">Activer les notifications</span>
                   </>
                 )}
               </button>
@@ -228,7 +228,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 onClick={handleNext}
                 className="w-full text-center text-sm text-white/30 hover:text-white/50"
               >
-                Skip for now
+                Pas pour l’instant
               </button>
             </div>
           )}
@@ -285,7 +285,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               <Loader2 size={20} className="animate-spin" />
             ) : (
               <>
-                {isLast ? 'Get Started' : 'Continue'}
+                {isLast ? 'Commencer' : 'Continuer'}
                 <ChevronRight size={18} />
               </>
             )}

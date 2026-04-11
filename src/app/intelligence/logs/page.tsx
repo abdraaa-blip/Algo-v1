@@ -92,11 +92,11 @@ export default function IntelligenceLogsPage() {
       })
       if (res.status === 401) {
         setRequiresToken(true)
-        throw new Error('Unauthorized: provide valid operator token.')
+        throw new Error('Non autorisé : fournis un jeton opérateur valide.')
       }
       setRequiresToken(false)
       const json = (await res.json()) as DecisionLogApiResponse
-      if (!json.success) throw new Error('Failed to fetch decision logs')
+      if (!json.success) throw new Error('Impossible de récupérer les journaux de décision.')
       const availableEntries = Array.isArray(json.entries) ? json.entries : json.latest ? [json.latest] : []
       setEntries(availableEntries)
       setTotalCount(json.count || 0)
@@ -108,7 +108,7 @@ export default function IntelligenceLogsPage() {
           : Number(res.headers.get('x-intelligence-retention-hours') || 0) || null
       )
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to fetch logs')
+      setError(e instanceof Error ? e.message : 'Impossible de charger les journaux.')
     } finally {
       setLoading(false)
     }
@@ -205,7 +205,7 @@ export default function IntelligenceLogsPage() {
 
   const exportServerSignedCsv = async () => {
     if (!opsToken) {
-      setError('Operator token required for server export.')
+      setError('Jeton opérateur requis pour l’export serveur.')
       return
     }
     setError(null)
@@ -213,7 +213,7 @@ export default function IntelligenceLogsPage() {
       const res = await fetch('/api/intelligence/decision-log?format=csv', {
         headers: { 'x-intelligence-ops-token': opsToken },
       })
-      if (!res.ok) throw new Error('Failed to export signed CSV')
+      if (!res.ok) throw new Error('Échec de l’export CSV signé.')
       const csvHash = res.headers.get('x-intelligence-integrity-sha256')
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
@@ -227,13 +227,13 @@ export default function IntelligenceLogsPage() {
       URL.revokeObjectURL(url)
       if (csvHash) setIntegrityHash(csvHash)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to export signed CSV')
+      setError(e instanceof Error ? e.message : 'Impossible d’exporter le CSV signé.')
     }
   }
 
   const clearServerLog = async () => {
     if (!opsToken) {
-      setError('Operator token required to clear logs.')
+      setError('Jeton opérateur requis pour vider les journaux.')
       return
     }
     setClearing(true)
@@ -244,10 +244,10 @@ export default function IntelligenceLogsPage() {
         headers: { 'x-intelligence-ops-token': opsToken },
       })
       const json = (await res.json()) as { success: boolean; error?: string }
-      if (!json.success) throw new Error(json.error || 'Failed to clear logs')
+      if (!json.success) throw new Error(json.error || 'Impossible de vider les journaux.')
       await fetchLogs()
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to clear server log')
+      setError(e instanceof Error ? e.message : 'Impossible de vider le journal côté serveur.')
     } finally {
       setClearing(false)
     }

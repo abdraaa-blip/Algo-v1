@@ -51,7 +51,7 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
       const data = await res.json()
       setComments(data.comments || [])
     } catch {
-      setError('Failed to load comments')
+      setError('Impossible de charger les commentaires.')
     } finally {
       setLoading(false)
     }
@@ -82,7 +82,7 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to post comment')
+        throw new Error(data.error || 'Impossible de publier le commentaire.')
       }
 
       // Add new comment to list
@@ -104,7 +104,7 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
       setNewComment('')
       setReplyingTo(null)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to post comment')
+      setError(err instanceof Error ? err.message : 'Impossible de publier le commentaire.')
     } finally {
       setPosting(false)
     }
@@ -158,9 +158,9 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
           className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg px-2 py-1 text-xs text-[var(--color-text-secondary)] focus:outline-none focus:ring-2 focus:ring-violet-400/50"
         >
-          <option value="newest">Plus recents</option>
-          <option value="top">Plus likes</option>
-          <option value="controversial">Controverses</option>
+          <option value="newest">Plus récents</option>
+          <option value="top">Plus aimés</option>
+          <option value="controversial">Plus discutés</option>
         </select>
       </div>
 
@@ -174,7 +174,7 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
                   ? user.user_metadata.avatar_url
                   : undefined
               }
-              name={user?.email || 'User'}
+              name={user?.email || 'Toi'}
               size={32}
               className="shrink-0"
             />

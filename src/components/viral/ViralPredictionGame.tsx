@@ -89,8 +89,8 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
               <TrendingUp className="size-5 text-white" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white">Viral or Flop?</h3>
-              <p className="text-xs text-[var(--color-text-secondary)]">Predict what will trend</p>
+              <h3 className="text-sm font-semibold text-white">Viral ou flop ?</h3>
+              <p className="text-xs text-[var(--color-text-secondary)]">Anticipe ce qui va monter</p>
             </div>
           </div>
           
@@ -99,12 +99,12 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
             {stats.streak >= 3 && (
               <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 text-orange-400">
                 <Sparkles className="size-3" />
-                <span className="text-xs font-medium">{stats.streak} streak</span>
+                <span className="text-xs font-medium">Série : {stats.streak}</span>
               </div>
             )}
             <div className="text-right">
               <p className="text-sm font-semibold text-white">{accuracy}%</p>
-              <p className="text-[10px] text-[var(--color-text-tertiary)]">accuracy</p>
+              <p className="text-[10px] text-[var(--color-text-tertiary)]">précision</p>
             </div>
           </div>
         </div>
@@ -125,14 +125,14 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
                   {showResult.correct ? (
                     <>
                       <CheckCircle2 className="size-12 text-emerald-400 mx-auto mb-2" />
-                      <p className="text-lg font-bold text-emerald-400">Correct!</p>
+                      <p className="text-lg font-bold text-emerald-400">Exact</p>
                       <p className="text-sm text-emerald-300">+{showResult.xp} XP</p>
                     </>
                   ) : (
                     <>
                       <XCircle className="size-12 text-red-400 mx-auto mb-2" />
-                      <p className="text-lg font-bold text-red-400">Wrong!</p>
-                      <p className="text-sm text-red-300">Try again</p>
+                      <p className="text-lg font-bold text-red-400">Raté</p>
+                      <p className="text-sm text-red-300">Réessaie</p>
                     </>
                   )}
                 </div>
@@ -147,7 +147,7 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
                     {/* eslint-disable-next-line @next/next/no-img-element -- URL dynamiques externes, pas de domaine fixe */}
                     <img
                       src={currentItem.thumbnail}
-                      alt={`Preview for ${currentItem.title}`}
+                      alt={`Aperçu : ${currentItem.title}`}
                       className="size-full object-cover"
                     />
                   </div>
@@ -162,7 +162,7 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
                   <div className="flex items-center gap-2 mt-2">
                     <div className="flex items-center gap-1 text-xs text-[var(--color-text-secondary)]">
                       <TrendingUp className="size-3" />
-                      <span>Score: {currentItem.currentScore}</span>
+                      <span>Score : {currentItem.currentScore}</span>
                     </div>
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
                 )}
               >
                 <TrendingUp className="size-8 text-emerald-400" />
-                <span className="text-sm font-semibold text-emerald-400">Viral</span>
+                <span className="text-sm font-semibold text-emerald-400">Ça décolle</span>
                 <span className="text-[10px] text-emerald-400/60">+50 XP</span>
               </button>
 
@@ -201,7 +201,7 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
                 )}
               >
                 <TrendingDown className="size-8 text-red-400" />
-                <span className="text-sm font-semibold text-red-400">Flop</span>
+                <span className="text-sm font-semibold text-red-400">Ça coince</span>
                 <span className="text-[10px] text-red-400/60">+75 XP</span>
               </button>
             </div>
@@ -209,8 +209,8 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
         ) : (
           <div className="py-8 text-center">
             <Trophy className="size-12 text-amber-400 mx-auto mb-3" />
-            <p className="text-sm font-medium text-white">All caught up!</p>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-1">Check back later for more predictions</p>
+            <p className="text-sm font-medium text-white">Tu as tout vu</p>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-1">Reviens plus tard pour d’autres prédictions</p>
           </div>
         )}
       </div>
@@ -220,7 +220,7 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
         <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-card)]">
           <div className="text-center">
             <p className="text-lg font-bold text-white">{stats.correct}</p>
-            <p className="text-[10px] text-[var(--color-text-tertiary)]">Correct</p>
+            <p className="text-[10px] text-[var(--color-text-tertiary)]">Justes</p>
           </div>
           <div className="text-center">
             <p className="text-lg font-bold text-white">{stats.total}</p>
@@ -228,11 +228,11 @@ export function ViralPredictionGame({ items, className }: ViralPredictionGamePro
           </div>
           <div className="text-center">
             <p className="text-lg font-bold text-amber-400">{stats.streak}</p>
-            <p className="text-[10px] text-[var(--color-text-tertiary)]">Streak</p>
+            <p className="text-[10px] text-[var(--color-text-tertiary)]">Série</p>
           </div>
           <div className="text-center">
             <p className="text-lg font-bold text-violet-400">{stats.correct * 50}</p>
-            <p className="text-[10px] text-[var(--color-text-tertiary)]">XP Earned</p>
+            <p className="text-[10px] text-[var(--color-text-tertiary)]">XP gagnés</p>
           </div>
         </div>
       </div>
