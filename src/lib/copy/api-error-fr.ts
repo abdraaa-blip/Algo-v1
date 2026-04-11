@@ -35,6 +35,12 @@ const EXACT: Record<string, string> = {
   'Failed to submit report': 'Impossible d\'envoyer le signalement. Réessaie.',
   'Entry not found in active memory window': 'Entrée introuvable dans la fenêtre mémoire active.',
   'Item not found': 'Élément introuvable.',
+  'Invalid login credentials': 'Identifiants invalides.',
+  'Invalid email or password': 'Email ou mot de passe invalide.',
+  'Email not confirmed': 'Email non confirmé. Vérifie ta boîte de réception.',
+  'User already registered': 'Un compte existe déjà avec cet email.',
+  'Update failed': 'Mise à jour impossible. Réessaie.',
+  'Fetch failed': 'Impossible de charger les données. Réessaie.',
 }
 
 export function mapUserFacingApiError(message: string | null | undefined): string {
@@ -55,5 +61,16 @@ export function mapUserFacingApiError(message: string | null | undefined): strin
   if (lower === 'failed to fetch' || lower.includes('networkerror when attempting to fetch')) {
     return 'Impossible de joindre le serveur. Vérifie la connexion.'
   }
+
+  const httpMatch = /^http\s+(\d{3})$/i.exec(raw)
+  if (httpMatch) {
+    const code = Number(httpMatch[1])
+    if (code === 401) return 'Connecte-toi pour continuer.'
+    if (code === 403) return 'Accès refusé pour cette ressource.'
+    if (code === 404) return 'Ressource introuvable.'
+    if (code >= 500) return 'Service momentanément indisponible.'
+    return 'Impossible de charger les données. Réessaie.'
+  }
+
   return raw
 }

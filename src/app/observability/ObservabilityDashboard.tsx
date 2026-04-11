@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 type ObsSeverity = 'info' | 'warning' | 'error' | 'critical'
 
@@ -31,14 +32,16 @@ export function ObservabilityDashboard() {
     try {
       const res = await fetch('/api/observability/logs', { cache: 'no-store' })
       if (!res.ok) {
-        setError(`HTTP ${res.status}`)
+        setError(mapUserFacingApiError(`HTTP ${res.status}`))
         return
       }
       const json = (await res.json()) as Snapshot
       setSnapshot(json)
       setError(null)
-    } catch {
-      setError('Réseau')
+    } catch (err) {
+      setError(
+        mapUserFacingApiError(err instanceof Error ? err.message : 'Failed to fetch')
+      )
     }
   }, [])
 

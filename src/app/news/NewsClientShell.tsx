@@ -15,6 +15,7 @@ import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { DataQualityChip } from '@/components/ui/DataQualityChip'
 import { formatRelativeScopeTime } from '@/lib/geo/time-format'
 import { scopeToCountryCode } from '@/types'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 // Types
 interface NewsItem {
@@ -107,7 +108,11 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
       )
     } catch (err) {
       console.error('[ALGO News] Fetch error:', err)
-      setError(labels.error)
+      setError(
+        mapUserFacingApiError(
+          err instanceof Error ? err.message : labels.error
+        )
+      )
     } finally {
       setLoading(false)
     }

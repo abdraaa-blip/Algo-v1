@@ -7,6 +7,7 @@ describe('mapUserFacingApiError', () => {
     expect(mapUserFacingApiError('Failed to fetch trends')).toContain('tendances')
     expect(mapUserFacingApiError('Rate limit exceeded')).toMatch(/requêtes/)
     expect(mapUserFacingApiError('Not authenticated')).toContain('Connecte-toi')
+    expect(mapUserFacingApiError('Invalid login credentials')).toContain('Identifiants')
   })
 
   it('handles Failed to fetch prefix', () => {
@@ -20,5 +21,17 @@ describe('mapUserFacingApiError', () => {
 
   it('passes through unknown messages', () => {
     expect(mapUserFacingApiError('Email déjà utilisé')).toBe('Email déjà utilisé')
+  })
+
+  it('maps HTTP status codes to French', () => {
+    expect(mapUserFacingApiError('HTTP 401')).toContain('Connecte-toi')
+    expect(mapUserFacingApiError('HTTP 403')).toContain('refusé')
+    expect(mapUserFacingApiError('HTTP 404')).toContain('introuvable')
+    expect(mapUserFacingApiError('HTTP 502')).toContain('indisponible')
+    expect(mapUserFacingApiError('HTTP 418')).toContain('données')
+  })
+
+  it('maps Fetch failed', () => {
+    expect(mapUserFacingApiError('Fetch failed')).toContain('données')
   })
 })

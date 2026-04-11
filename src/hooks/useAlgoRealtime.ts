@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface RefreshConfig {
   news: number        // 5 minutes
@@ -80,7 +81,9 @@ export function useAlgoRealtime<T>({
           ...prev,
           isRefreshing: false,
           isStale: true,
-          error: error instanceof Error ? error.message : 'Fetch failed'
+          error: mapUserFacingApiError(
+            error instanceof Error ? error.message : 'Fetch failed'
+          )
         }))
       }
     }
