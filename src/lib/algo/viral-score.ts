@@ -210,7 +210,7 @@ function generatePrediction(
                      'peaking'
   
   // Peak timing prediction
-  const peakIn = trajectory === 'fading' ? 'deja passe' :
+  const peakIn = trajectory === 'fading' ? 'déjà passé' :
                  score >= 90 && momentum < 2 ? '1-2h' :
                  score >= 75 && momentum > 0 ? '3-6h' :
                  score >= 60 ? '6-12h' :

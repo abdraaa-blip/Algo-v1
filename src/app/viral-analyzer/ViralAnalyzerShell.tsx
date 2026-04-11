@@ -88,9 +88,9 @@ export function ViralAnalyzerShell({ locale, labels }: ViralAnalyzerShellProps) 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const getExplanation = (label: string, value: number) => {
-    if (value >= 80) return `${label}: fort signal detecte, levier prioritaire.`
-    if (value >= 60) return `${label}: bon niveau, optimisation recommandee.`
-    return `${label}: signal faible, retravailler cet axe en priorite.`
+    if (value >= 80) return `${label} : fort signal détecté, levier prioritaire.`
+    if (value >= 60) return `${label} : bon niveau, optimisation recommandée.`
+    return `${label} : signal faible, retravaille cet axe en priorité.`
   }
 
   const handleAnalyze = useCallback(async () => {

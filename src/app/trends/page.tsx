@@ -64,7 +64,7 @@ const FALLBACK_TRENDS: Trend[] = [
     views: 12500000, 
     watchers: 8420, 
     explanation: 'Sora et les nouveaux outils explosent',
-    whyItWorks: 'Sujet nouveau + forte curiosite + impact direct sur les createurs',
+    whyItWorks: 'Sujet nouveau + forte curiosité + impact direct sur les créateurs',
     contentIdeas: ['Reaction aux nouvelles annonces', 'Test des outils IA video', 'Avant/Apres avec IA'],
     bestTimeToPost: '18h-20h',
     targetAudience: 'Tech enthusiasts, 18-35 ans',
@@ -74,10 +74,10 @@ const FALLBACK_TRENDS: Trend[] = [
     format: 'face cam',
     confidence: 'haute',
     timeWindow: '8h',
-    actionTask: 'Fais une video 15-30s',
-    actionHook: 'Tu n\'es pas pret pour ca',
+    actionTask: 'Fais une vidéo 15–30 s',
+    actionHook: 'Tu n\'es pas prêt pour ça',
     actionDeadline: 'Poste avant 18h',
-    hookExamples: ['Ce que l\'IA va changer des demain', 'On ne vous dit pas tout sur...', 'J\'ai teste et voila ce qui se passe'],
+    hookExamples: ['Ce que l\'IA va changer dès demain', 'On ne te dit pas tout sur…', 'J\'ai testé et voilà ce qui se passe'],
     origin: 'Twitter',
     arrivesOn: 'TikTok dans 3h'
   },
@@ -94,14 +94,14 @@ const FALLBACK_TRENDS: Trend[] = [
     explanation: 'France vs Allemagne ce soir',
     whyItWorks: 'Match historique + rivalite + enjeu enorme',
     contentIdeas: ['Pronostics des matchs', 'Analyse tactique', 'Reactions aux resultats'],
-    bestTimeToPost: 'Pendant et apres le match',
+    bestTimeToPost: 'Pendant et après le match',
     targetAudience: 'Fans de football, tous ages',
     estimatedReach: '200K-1M vues',
     emotion: 'joie',
     format: 'montage',
     confidence: 'haute',
     timeWindow: '6h',
-    actionTask: 'Fais un pronostic video 20s',
+    actionTask: 'Fais un pronostic vidéo 20 s',
     actionHook: 'Mon prono pour ce soir',
     actionDeadline: 'Poste 2h avant le match',
     hookExamples: ['Voila pourquoi la France va gagner', 'Ce joueur va tout changer', 'Personne ne s\'attend a ca']
@@ -116,9 +116,9 @@ const FALLBACK_TRENDS: Trend[] = [
     growthTrend: 'up', 
     views: 6700000, 
     watchers: 3100, 
-    explanation: 'Leak du script + cameos confirmes',
+    explanation: 'Leak du script + cameos confirmés',
     whyItWorks: 'Fanbase massive + surprise + theories',
-    contentIdeas: ['Reaction au leak', 'Analyse des cameos', 'Theories sur la suite'],
+    contentIdeas: ['Réaction au leak', 'Analyse des cameos', 'Théories sur la suite'],
     bestTimeToPost: 'Dans les 24h',
     targetAudience: 'Fans Marvel/DC, 15-35 ans',
     estimatedReach: '300K-1.5M vues',
@@ -126,7 +126,7 @@ const FALLBACK_TRENDS: Trend[] = [
     format: 'face cam',
     confidence: 'haute',
     timeWindow: '12h',
-    actionTask: 'Video reaction 30-60s',
+    actionTask: 'Vidéo réaction 30–60 s',
     actionHook: 'Ce qu\'on vient d\'apprendre sur Deadpool 4',
     actionDeadline: 'Poste dans les 6h',
     hookExamples: ['Marvel vient de confirmer...', 'Le cameo que personne n\'attendait', 'Ca change TOUT']
@@ -141,20 +141,20 @@ const FALLBACK_TRENDS: Trend[] = [
     growthTrend: 'up', 
     views: 4500000, 
     watchers: 2800, 
-    explanation: 'Clash entre 2 gros createurs',
-    whyItWorks: 'Conflit + emotions fortes + prise de position',
+    explanation: 'Clash entre 2 gros créateurs',
+    whyItWorks: 'Conflit + émotions fortes + prise de position',
     contentIdeas: ['Resume neutre', 'Mon avis', 'Les preuves'],
-    bestTimeToPost: 'Immediat',
+    bestTimeToPost: 'Immédiat',
     targetAudience: 'Community YouTube/TikTok, 15-30 ans',
     estimatedReach: '100K-500K vues',
     emotion: 'indignation',
     format: 'voice over',
     confidence: 'moyenne',
     timeWindow: '4h',
-    actionTask: 'Video recap 45s',
-    actionHook: 'Voila ce qui se passe vraiment',
+    actionTask: 'Vidéo récap 45 s',
+    actionHook: 'Voilà ce qui se passe vraiment',
     actionDeadline: 'Poste maintenant',
-    hookExamples: ['J\'ai les preuves', 'Personne n\'en parle mais...', 'La verite sur cette histoire']
+    hookExamples: ['J\'ai les preuves', 'Personne n\'en parle mais…', 'La vérité sur cette histoire']
   },
   { 
     id: '5', 
@@ -167,7 +167,7 @@ const FALLBACK_TRENDS: Trend[] = [
     views: 3200000, 
     watchers: 1900, 
     explanation: 'Bitcoin proche du record historique',
-    whyItWorks: 'FOMO + argent + emotions fortes',
+    whyItWorks: 'FOMO + argent + émotions fortes',
     contentIdeas: ['Analyse technique', 'Faut-il acheter?', 'Mon portefeuille'],
     bestTimeToPost: 'Pendant la volatilite',
     targetAudience: 'Investisseurs, 20-45 ans',
@@ -300,7 +300,7 @@ export default function TrendsPage() {
               // Generate contextual explanation
               const explanationTemplates = {
                 Sport: [`Match important en cours`, `Resultats et reactions`, `Actualite sportive brulante`],
-                Cinema: [`Nouvelle sortie ou annonce`, `Buzz sur les reseaux`, `Trailer ou leak viral`],
+                Cinema: [`Nouvelle sortie ou annonce`, `Buzz sur les réseaux`, `Trailer ou leak viral`],
                 Tech: [`Innovation qui fait parler`, `Annonce majeure du secteur`, `Sujet tech en explosion`],
                 Musique: [`Nouveau titre viral`, `Artiste en tendance`, `Son qui cartonne`],
                 Finance: [`Mouvement de marche`, `Actualite economique chaude`, `Signal financier fort`],
@@ -314,7 +314,7 @@ export default function TrendsPage() {
               // Generate why it works
               const whyTemplates = {
                 Sport: `Les fans réagissent vite : l’engagement est souvent fort sur ces sujets (signaux agrégés, pas une garantie par publication).`,
-                Cinema: `Les communautes de fans sont actives et partagent massivement.`,
+                Cinema: `Les communautés de fans sont actives et partagent massivement.`,
                 Tech: `Sujet d'actualite qui interesse un large public curieux.`,
                 Musique: `Le contenu musical est hautement viral et facile a reproduire.`,
                 Finance: `FOMO et émotions fortes autour de l’argent peuvent pousser l’engagement · reste un signal indicatif.`,
@@ -327,7 +327,7 @@ export default function TrendsPage() {
               // Generate content ideas
               const ideasTemplates = {
                 Sport: [`Pronostics`, `Reactions live`, `Analyse tactique`, `Resume du match`],
-                Cinema: [`Reaction au trailer`, `Theories et analyses`, `Avant/Apres`, `Mon avis`],
+                Cinema: [`Réaction au trailer`, `Théories et analyses`, `Avant / après`, `Mon avis`],
                 Tech: [`Explication simple`, `Test en direct`, `Ce que ca change`, `Mon avis tech`],
                 Musique: [`Cover ou remix`, `Reaction a l'ecoute`, `Clip reaction`, `Ma version`],
                 Finance: [`Analyse rapide`, `Faut-il investir?`, `Ce que je fais`, `Erreurs a eviter`],
@@ -366,7 +366,7 @@ export default function TrendsPage() {
               
               // Generate action
               const videoLength = platform === 'TikTok' ? '15-30s' : '30-60s'
-              const actionTask = `Fais une video ${videoLength} sur ${title}`
+              const actionTask = `Fais une vidéo ${videoLength} sur ${title}`
               const actionHook = `Ce que personne ne te dit sur ${title}`
               const now = new Date()
               const deadline = score >= 85 ? 'Poste dans les 2h' : score >= 75 ? 'Poste avant ' + (now.getHours() < 18 ? '18h' : '22h') : 'Poste dans les 24h'
@@ -374,8 +374,8 @@ export default function TrendsPage() {
               // Generate hook examples
               const hookExamples = [
                 `Pourquoi tout le monde parle de ${title}`,
-                `La verite sur ${title}`,
-                `${title} - ce que j'en pense`
+                `La vérité sur ${title}`,
+                `${title} — ce que j'en pense`
               ]
               
               return {
@@ -662,7 +662,7 @@ function trendToActionData(trend: Trend) {
   const examples = trend.hookExamples?.length ? trend.hookExamples : 
     trend.contentIdeas?.slice(0, 3) || [
       `Pourquoi tout le monde parle de "${trend.name}"`,
-      `${trend.name} : ce que les medias ne disent pas`,
+      `${trend.name} : ce que les médias ne disent pas`,
       `Mon analyse de "${trend.name}"`
     ]
   

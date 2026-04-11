@@ -431,7 +431,7 @@ export function generateVideoContentIdeas(video: Video): string[] {
       ideas.push(`Analyse musicale de "${video.title}"`)
       break
     case 'Tech':
-      ideas.push(`Mon test apres avoir vu "${video.title}"`)
+      ideas.push(`Mon test après avoir vu "${video.title}"`)
       ideas.push(`Comparatif suite a "${video.title}"`)
       break
     default:

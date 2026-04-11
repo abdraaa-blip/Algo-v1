@@ -15,20 +15,20 @@ function generateViralContent(scope: AppScope): Content[] {
   const viralPatterns = {
     'Drôle': {
       titles: [
-        'Cette reaction est hilarante',
-        'Le fail le plus drole de la semaine',
+        'Cette réaction est hilarante',
+        'Le fail le plus drôle de la semaine',
         'Compilation des meilleurs moments comiques',
-        'Sa reaction quand il decouvre la surprise',
+        'Sa réaction quand il découvre la surprise',
       ],
       platforms: ['TikTok', 'YouTube', 'Instagram'],
       formats: ['face_cam', 'reaction', 'montage'],
     },
     'Insolite': {
       titles: [
-        'Decouverte incroyable dans son jardin',
-        'Ce phenomene naturel est incroyable',
-        'Personne ne sait expliquer cette video',
-        'Le mystere qui fascine internet',
+        'Découverte incroyable dans son jardin',
+        'Ce phénomène naturel est incroyable',
+        'Personne ne sait expliquer cette vidéo',
+        'Le mystère qui fascine internet',
       ],
       platforms: ['TikTok', 'YouTube', 'Twitter'],
       formats: ['montage', 'narration', 'face_cam'],

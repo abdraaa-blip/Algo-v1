@@ -678,7 +678,7 @@ export default async function ContentPage({ params }: Props) {
       {isCrossPlat && (
         <p className="text-[11px] text-sky-400/70 flex items-center gap-1.5">
           <span>🔗</span>
-          Cross-plateforme detecte
+          Présence cross-plateforme détectée
         </p>
       )}
 
@@ -687,7 +687,7 @@ export default async function ContentPage({ params }: Props) {
       <section>
         <h2 className="text-xs font-bold text-white/45 uppercase tracking-widest mb-3 flex items-center gap-2">
           <span>🔍</span>
-          Pourquoi ca buzz
+          Pourquoi ça buzz
         </h2>
         <p className="text-sm text-white/58 leading-relaxed">{content.explanation}</p>
       </section>

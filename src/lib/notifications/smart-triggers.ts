@@ -145,7 +145,7 @@ export function createViralNotification(content: {
   return {
     id: `viral_${Date.now()}`,
     type: 'viral',
-    title: 'Contenu viral detecte',
+    title: 'Signal fort détecté',
     body: `${content.title} - Score ${content.score}/100`,
     data: { category: content.category, score: content.score },
     priority: content.score >= 90 ? 'high' : 'normal',
@@ -158,9 +158,9 @@ export function createViralNotification(content: {
  */
 export function createStreakReminder(currentStreak: number): NotificationTrigger {
   const messages = [
-    { title: 'Ta serie est en danger!', body: `${currentStreak} jours de suite - ne casse pas ta serie!` },
-    { title: 'Reviens maintenir ta serie', body: `${currentStreak} jours consecutifs, continue!` },
-    { title: 'Serie en cours', body: `Jour ${currentStreak} - garde le rythme!` }
+    { title: 'Ta série est en danger !', body: `${currentStreak} jours de suite — ne casse pas ta série !` },
+    { title: 'Reviens maintenir ta série', body: `${currentStreak} jours consécutifs, continue !` },
+    { title: 'Série en cours', body: `Jour ${currentStreak} — garde le rythme !` }
   ]
   const msg = messages[Math.floor(Math.random() * messages.length)]
   

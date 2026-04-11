@@ -402,15 +402,15 @@ export function analyzeVirality(
 
 export const VIRALITY_LABELS_FR: Record<ViralityLevel, { label: string; description: string }> = {
   exploding: { label: 'Explosion', description: 'Ce contenu explose en ce moment' },
-  viral: { label: 'Viral', description: 'Forte viralite en cours' },
+  viral: { label: 'Viral', description: 'Forte viralité en cours' },
   rising: { label: 'Montant', description: 'Signal en forte croissance' },
-  emerging: { label: 'Emergent', description: 'Signal precoce detecte' },
-  stable: { label: 'Stable', description: 'Interet stable' },
-  fading: { label: 'Declin', description: 'Interet en baisse' }
+  emerging: { label: 'Émergent', description: 'Signal précoce détecté' },
+  stable: { label: 'Stable', description: 'Intérêt stable' },
+  fading: { label: 'Déclin', description: 'Intérêt en baisse' }
 }
 
 export const MOMENTUM_LABELS_FR: Record<MomentumType, string> = {
-  accelerating: 'Acceleration',
+  accelerating: 'Accélération',
   climbing: 'Croissance',
   stable: 'Stable',
   decelerating: 'Ralentissement',
@@ -418,19 +418,19 @@ export const MOMENTUM_LABELS_FR: Record<MomentumType, string> = {
 }
 
 export const FRESHNESS_LABELS_FR: Record<FreshnessLevel, string> = {
-  breaking: 'Tres frais',
+  breaking: 'Très frais',
   fresh: 'Frais',
-  recent: 'Recent',
+  recent: 'Récent',
   aging: 'Vieillissant',
   stale: 'Ancien'
 }
 
 export const SATURATION_LABELS_FR: Record<SaturationLevel, string> = {
-  untapped: 'Inexplore',
-  low: 'Peu sature',
+  untapped: 'Inexploré',
+  low: 'Peu saturé',
   moderate: 'Saturation moyenne',
-  high: 'Tres concurrentiel',
-  saturated: 'Sature'
+  high: 'Très concurrentiel',
+  saturated: 'Saturé'
 }
 
 const viralityEngineExports = {

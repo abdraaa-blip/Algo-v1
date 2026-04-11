@@ -57,7 +57,7 @@ function generateContent(trend: string, category: string, emotion: string): Gene
     exampleTitles: [
       `${trend} - Ma reaction honnete`,
       `J'ai teste ${trend} et voici ce qui s'est passe`,
-      `La verite sur ${trend} (personne n'en parle)`,
+      `La vérité sur ${trend} (personne n'en parle)`,
     ],
   }
 }

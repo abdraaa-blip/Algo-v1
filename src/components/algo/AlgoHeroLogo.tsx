@@ -17,7 +17,7 @@ const TAGLINES = [
   {
     text: 'Détecte les tendances',
     highlights: [
-      { text: 'avant tout le monde', color: 'text-cyan-400' },
+      { text: 'tôt sur la courbe', color: 'text-cyan-400' },
     ],
     connector: ' ',
     ending: '.'

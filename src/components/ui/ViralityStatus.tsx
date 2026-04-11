@@ -63,7 +63,7 @@ const VIRALITY_CONFIG: Record<ViralityLevel, {
     color: 'text-violet-400',
     bgColor: 'bg-violet-500/20',
     borderColor: 'border-violet-500/40',
-    description: 'Forte viralite en cours'
+    description: 'Forte viralité en cours'
   },
   rising: {
     label: 'Rising',
@@ -76,12 +76,12 @@ const VIRALITY_CONFIG: Record<ViralityLevel, {
   },
   emerging: {
     label: 'Emerging',
-    labelFr: 'Emergent',
+    labelFr: 'Émergent',
     icon: Sparkles,
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/20',
     borderColor: 'border-cyan-500/40',
-    description: 'Signal precoce detecte'
+    description: 'Signal précoce détecté'
   },
   stable: {
     label: 'Stable',
@@ -90,16 +90,16 @@ const VIRALITY_CONFIG: Record<ViralityLevel, {
     color: 'text-white/50',
     bgColor: 'bg-white/10',
     borderColor: 'border-white/20',
-    description: 'Interet stable'
+    description: 'Intérêt stable'
   },
   fading: {
     label: 'Fading',
-    labelFr: 'Declin',
+    labelFr: 'Déclin',
     icon: AlertTriangle,
     color: 'text-red-400',
     bgColor: 'bg-red-500/10',
     borderColor: 'border-red-500/30',
-    description: 'Interet en baisse'
+    description: 'Intérêt en baisse'
   }
 }
 

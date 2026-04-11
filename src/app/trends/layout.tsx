@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Tendances en direct',
   description:
-    'Radar des tendances Google et signaux sociaux, mis à jour en continu. Anticipe ce qui monte avant tout le monde.',
+    'Radar des tendances Google et signaux sociaux, mis à jour en continu. Repère ce qui monte tôt, sans promesse de certitude.',
   path: '/trends',
   keywords: ['tendances', 'google trends', 'viral', 'radar', 'ALGO'],
 })

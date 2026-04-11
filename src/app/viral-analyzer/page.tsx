@@ -256,7 +256,7 @@ export default function ViralAnalyzerPage() {
               <textarea
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                placeholder="Decris ton idee de contenu..."
+                placeholder="Décris ton idée de contenu…"
                 rows={4}
                 className="algo-input-field resize-none focus:ring-0"
               />

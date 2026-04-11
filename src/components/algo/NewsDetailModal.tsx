@@ -236,7 +236,7 @@ export function NewsDetailModal({ article, onClose, onGenerateIdea }: NewsDetail
                 border: '1px solid rgba(255,193,7,0.15)'
               }}
             >
-              {randomCreatorPercent}% des createurs ont deja traite ce sujet
+              {randomCreatorPercent} % des créateurs ont déjà traité ce sujet
             </p>
           )}
           
@@ -249,7 +249,7 @@ export function NewsDetailModal({ article, onClose, onGenerateIdea }: NewsDetail
               className="flex-1"
               onClick={onGenerateIdea}
             >
-              Generer une idee
+              Générer une idée
             </Button>
             <a
               href={article.url}

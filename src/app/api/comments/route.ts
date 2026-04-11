@@ -87,7 +87,7 @@ const MOCK_COMMENTS: Record<string, Comment[]> = {
       user_name: 'Skeptic99',
       user_avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Skeptic99',
       user_verified: false,
-      body: 'Je suis pas convaincu... On a deja vu ce pattern la semaine derniere et ca n\'a pas pris.',
+      body: 'Je suis pas convaincu… On a déjà vu ce pattern la semaine dernière et ça n\'a pas pris.',
       created_at: new Date(Date.now() - 10800000).toISOString(),
       updated_at: new Date(Date.now() - 10800000).toISOString(),
       likes_count: 23,

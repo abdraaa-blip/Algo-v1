@@ -203,7 +203,7 @@ export function ActionPanel({
               border: '1px solid rgba(255,193,7,0.15)'
             }}
           >
-            Seulement {creatorAdoptionPercent}% des createurs ont deja exploite ce signal
+            Seulement {creatorAdoptionPercent} % des créateurs ont déjà exploité ce signal
           </p>
         )}
         
@@ -216,7 +216,7 @@ export function ActionPanel({
             icon={Sparkles}
             onClick={onGenerateIdea}
           >
-            Generer une idee
+            Générer une idée
           </Button>
           <Button
             variant="outline"

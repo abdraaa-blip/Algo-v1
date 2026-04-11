@@ -288,13 +288,13 @@ function IdeaCard({ idea, index, copied, onCopy, onSelect }: IdeaCardProps) {
 
 function generateHook(keyword: string): string {
   const hooks = [
-    `POV: Tu decouvres ${keyword} pour la premiere fois`,
+    `POV : tu découvres ${keyword} pour la première fois`,
     `Ce que personne ne te dit sur ${keyword}`,
-    `${keyword} mais explique en 30 secondes`,
+    `${keyword} mais expliqué en 30 secondes`,
     `Pourquoi tout le monde parle de ${keyword}`,
-    `J'ai teste ${keyword} et voila ce qui s'est passe`,
-    `La verite sur ${keyword} (thread)`,
-    `${keyword}: ce que tu dois savoir avant tout le monde`,
+    `J'ai testé ${keyword} et voilà ce qui s'est passé`,
+    `La vérité sur ${keyword} (thread)`,
+    `${keyword} : ce que tu dois savoir tôt`,
     `Comment ${keyword} va changer les choses`,
   ]
   return hooks[Math.floor(Math.random() * hooks.length)]
@@ -302,10 +302,10 @@ function generateHook(keyword: string): string {
 
 function generateConcept(keyword: string): string {
   const concepts = [
-    `Deconstruis le buzz autour de ${keyword} avec des faits et ton point de vue unique. Ajoute une touche d'humour pour maximiser l'engagement.`,
-    `Cree un tutoriel rapide sur ${keyword} en montrant les erreurs communes a eviter.`,
-    `Fais une reaction authentique a ${keyword} en partageant ta premiere impression.`,
-    `Compare ${keyword} avec les alternatives pour aider ton audience a faire le bon choix.`,
+    `Déconstruis le buzz autour de ${keyword} avec des faits et ton point de vue unique. Ajoute une touche d'humour pour maximiser l'engagement.`,
+    `Crée un tutoriel rapide sur ${keyword} en montrant les erreurs communes à éviter.`,
+    `Fais une réaction authentique à ${keyword} en partageant ta première impression.`,
+    `Compare ${keyword} avec les alternatives pour aider ton audience à faire le bon choix.`,
     `Donne 3 conseils pratiques sur ${keyword} que personne ne partage.`,
   ]
   return concepts[Math.floor(Math.random() * concepts.length)]

@@ -28,12 +28,12 @@ const FAILED_CONTENT: FailedContent[] = [
     category: 'Challenge',
     score: 42,
     views: 1200,
-    whyFailed: 'Le challenge etait trop complique a reproduire. Les gens n\'ont pas compris les regles en 15 secondes.',
-    lesson: 'Un challenge viral doit etre simple, reproductible instantanement, et montrer clairement ce qu\'il faut faire.'
+    whyFailed: 'Le challenge était trop compliqué à reproduire. Les gens n\'ont pas compris les règles en 15 secondes.',
+    lesson: 'Un challenge viral doit être simple, reproductible instantanément, et montrer clairement ce qu\'il faut faire.'
   },
   {
     id: '2',
-    title: 'Video reaction publiee 48h trop tard',
+    title: 'Vidéo réaction publiée 48 h trop tard',
     platform: 'YouTube',
     category: 'Reaction',
     score: 38,
@@ -43,13 +43,13 @@ const FAILED_CONTENT: FailedContent[] = [
   },
   {
     id: '3',
-    title: 'Post sur un scandale deja refroidi',
+    title: 'Post sur un scandale déjà refroidi',
     platform: 'Twitter',
     category: 'Actualite',
     score: 35,
     views: 890,
-    whyFailed: 'Le scandale etait deja dans la phase "conclusions" quand le post est sorti. Plus personne n\'etait interesse.',
-    lesson: 'Les scandales ont une fenetre de 24-48h maximum. Apres, il faut soit une nouvelle info exclusive, soit passer a autre chose.'
+    whyFailed: 'Le scandale était déjà dans la phase « conclusions » quand le post est sorti. Plus personne n\'était intéressée.',
+    lesson: 'Les scandales ont une fenêtre de 24–48 h maximum. Après, il faut soit une nouvelle info exclusive, soit passer à autre chose.'
   },
   {
     id: '4',
@@ -68,8 +68,8 @@ const FAILED_CONTENT: FailedContent[] = [
     category: 'Education',
     score: 44,
     views: 2100,
-    whyFailed: 'Pas de chapitres, pas de resume au debut, 20 minutes pour expliquer ce qui aurait pu tenir en 5.',
-    lesson: 'Structure ton contenu. Dis ce que tu vas montrer, montre-le, resume ce que tu as montre. Respecte le temps de l\'audience.'
+    whyFailed: 'Pas de chapitres, pas de résumé au début, 20 minutes pour expliquer ce qui aurait pu tenir en 5.',
+    lesson: 'Structure ton contenu. Dis ce que tu vas montrer, montre-le, résume ce que tu as montré. Respecte le temps de l\'audience.'
   },
 ]
 

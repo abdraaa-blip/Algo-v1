@@ -87,27 +87,27 @@ function generateExplanation(
   
   // Early signal explanation
   if (isEarlySignal) {
-    return `Signal precoce detecte: ce contenu montre une velocite anormalement haute (${viewVelocity}/100) pour son age (${Math.round(ageHours)}h). L'engagement rate de ${engagementRate}% suggere un potentiel viral dans les prochaines heures.`
+    return `Signal précoce détecté : ce contenu montre une vélocité anormalement haute (${viewVelocity}/100) pour son âge (${Math.round(ageHours)} h). Le taux d'engagement de ${engagementRate} % suggère un potentiel viral dans les prochaines heures.`
   }
   
   // Tier-based explanations
   if (tier === 'explosive') {
-    return `Phenomene viral en cours: ce contenu a atteint ${formatNumber(views)} vues avec un momentum de +${momentum}. La vitesse de propagation depasse 95% des contenus de cette categorie.`
+    return `Phénomène viral en cours : ce contenu a atteint ${formatNumber(views)} vues avec un momentum de +${momentum}. La vitesse de propagation dépasse 95 % des contenus de cette catégorie.`
   }
   
   if (tier === 'fire') {
-    return `Contenu en forte croissance avec ${formatNumber(views)} vues. Le ratio d'engagement de ${engagementRate}% et la velocite de ${viewVelocity}/100 indiquent une viralite confirmee.`
+    return `Contenu en forte croissance avec ${formatNumber(views)} vues. Le ratio d'engagement de ${engagementRate} % et la vélocité de ${viewVelocity}/100 indiquent une viralité confirmée.`
   }
   
   if (tier === 'hot') {
     const reason = viewVelocity > 50 
-      ? `une velocite elevee (${viewVelocity}/100)`
+      ? `une vélocité élevée (${viewVelocity}/100)`
       : `un engagement fort (${engagementRate}%)`
     return `Ce contenu trend grace a ${reason}. Il pourrait exploser dans les prochaines ${momentum > 0 ? '6-12h' : '12-24h'} si la tendance se maintient.`
   }
   
   if (tier === 'warm') {
-    return `Signal emergent: ce contenu montre des signes de traction avec ${formatNumber(views)} vues. A surveiller pour une potentielle acceleration.`
+    return `Signal émergent : ce contenu montre des signes de traction avec ${formatNumber(views)} vues. À surveiller pour une potentielle accélération.`
   }
   
   return `Contenu actif sur ${source} avec des métriques standards. Pas de signal viral détecté actuellement.`
@@ -191,19 +191,19 @@ function generateCulturalContext(
 
 function getThemeContext(theme: string): string {
   const contexts: Record<string, string> = {
-    gaming: 'La communaute gaming reagit fortement aux nouveautes et controverses. Ce contenu touche une audience jeune et tres engagee sur les reseaux.',
-    tech: 'Le secteur tech amplifie rapidement les innovations disruptives. Ce contenu resonne avec les early adopters et influenceurs tech.',
-    politics: 'Les sujets politiques generent des reactions intenses et polarisees. Le timing electoral ou une actualite chaude explique la viralite.',
-    entertainment: 'Le divertissement domine les conversations sociales. Ce contenu profite du buzz autour d\'une sortie ou d\'une actualite people.',
-    sports: 'Les evenements sportifs creent des pics d\'engagement massifs. Ce contenu surfe sur une competition ou une polemique en cours.',
-    music: 'La musique virale cree des trends TikTok et des challenges. Ce contenu pourrait devenir un son viral dans les prochains jours.',
-    science: 'Les decouvertes scientifiques fascinent quand elles sont accessibles. Ce contenu vulgarise un sujet complexe de maniere engaging.',
+    gaming: 'La communauté gaming réagit fortement aux nouveautés et controverses. Ce contenu touche une audience jeune et très engagée sur les réseaux.',
+    tech: 'Le secteur tech amplifie rapidement les innovations disruptives. Ce contenu résonne avec les early adopters et influenceurs tech.',
+    politics: 'Les sujets politiques génèrent des réactions intenses et polarisées. Le timing électoral ou une actualité chaude explique la viralité.',
+    entertainment: 'Le divertissement domine les conversations sociales. Ce contenu profite du buzz autour d\'une sortie ou d\'une actualité people.',
+    sports: 'Les événements sportifs créent des pics d\'engagement massifs. Ce contenu surfe sur une compétition ou une polémique en cours.',
+    music: 'La musique virale crée des trends TikTok et des challenges. Ce contenu pourrait devenir un son viral dans les prochains jours.',
+    science: 'Les découvertes scientifiques fascinent quand elles sont accessibles. Ce contenu vulgarise un sujet complexe de manière engageante.',
   }
-  return contexts[theme] || 'Ce contenu touche un sujet d\'actualite qui resonne avec l\'audience cible.'
+  return contexts[theme] || 'Ce contenu touche un sujet d\'actualité qui résonne avec l\'audience cible.'
 }
 
 function getCategoryContext(category: string): string {
-  return `Ce contenu s'inscrit dans la categorie "${category}" qui montre actuellement une activite elevee sur les reseaux sociaux.`
+  return `Ce contenu s'inscrit dans la catégorie « ${category} » qui montre actuellement une activité élevée sur les réseaux sociaux.`
 }
 
 // ============================================================================
@@ -302,10 +302,10 @@ export function generateDailyBriefing(
   const hour = now.getHours()
   
   const greeting = hour < 12 
-    ? 'Bonjour! Voici ce qui explose ce matin.'
+    ? 'Bonjour ! Voici ce qui explose ce matin.'
     : hour < 18 
-    ? 'Bonne apres-midi! Voici les tendances du moment.'
-    : 'Bonsoir! Recap des signaux de la journee.'
+    ? 'Bon après-midi ! Voici les tendances du moment.'
+    : 'Bonsoir ! Récap des signaux de la journée.'
   
   // Top 5 signals by viral score
   const topItems = items
@@ -316,7 +316,7 @@ export function generateDailyBriefing(
     title: item.title,
     source: item.source,
     viralScore: item.viralScore || 0,
-    explanation: item.aiExplanation || 'Signal viral detecte',
+    explanation: item.aiExplanation || 'Signal viral détecté',
     url: item.url,
   }))
   

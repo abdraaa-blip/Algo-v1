@@ -42,25 +42,25 @@ const STAGGER = ['algo-s1', 'algo-s2', 'algo-s3', 'algo-s4', 'algo-s5', 'algo-s6
 
 // Reasons why content might fail - used for educational content
 const FAIL_REASONS = [
-  "Timing decale - publie trop tard apres le pic de la tendance",
-  "Format inadapte a la plateforme ciblee",
-  "Hook faible - les 3 premieres secondes ne captent pas l'attention",
-  "Contenu trop generique - manque d'angle unique",
+  "Timing décalé — publié trop tard après le pic de la tendance",
+  "Format inadapté à la plateforme ciblée",
+  "Hook faible — les 3 premières secondes ne captent pas l'attention",
+  "Contenu trop générique — manque d'angle unique",
   "Absence de call-to-action clair",
-  "Audio/visuel de qualite insuffisante",
-  "Tendance deja saturee au moment de la publication",
-  "Mauvais hashtags ou description incomplete",
+  "Audio / visuel de qualité insuffisante",
+  "Tendance déjà saturée au moment de la publication",
+  "Mauvais hashtags ou description incomplète",
 ]
 
 const LESSONS = [
-  "Publiez dans les 2-4 heures suivant la detection d'une tendance",
-  "Adaptez votre format a chaque plateforme (vertical pour TikTok, carre pour Instagram)",
-  "Captez l'attention dans les 3 premieres secondes avec un hook percutant",
-  "Trouvez un angle unique qui vous differencie des autres createurs",
-  "Terminez toujours par une question ou un CTA engageant",
-  "Investissez dans un bon eclairage et un audio clair",
-  "Surveillez la saturation des tendances avant de creer du contenu",
-  "Utilisez des hashtags pertinents et une description complete avec mots-cles",
+  "Publie dans les 2–4 h suivant la détection d'une tendance",
+  "Adapte ton format à chaque plateforme (vertical pour TikTok, carré pour Instagram)",
+  "Capte l'attention dans les 3 premières secondes avec un hook percutant",
+  "Trouve un angle unique qui te différencie des autres créateurs",
+  "Termine toujours par une question ou un CTA engageant",
+  "Investis dans un bon éclairage et un audio clair",
+  "Surveille la saturation des tendances avant de créer du contenu",
+  "Utilise des hashtags pertinents et une description complète avec mots-clés",
 ]
 
 export function FailLabClientShell({ labels }: FailLabClientShellProps) {

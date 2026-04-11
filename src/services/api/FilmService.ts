@@ -344,7 +344,7 @@ function generateContentIdeas(film: Film): string[] {
   }
   
   if (film.genres.some(g => g.toLowerCase().includes('comedie') || g.toLowerCase().includes('comedy'))) {
-    ideas.push(`Les repliques cultes de "${film.title}" a connaitre`)
+    ideas.push(`Les répliques cultes de "${film.title}" à connaître`)
   }
   
   if (film.genres.some(g => g.toLowerCase().includes('horreur') || g.toLowerCase().includes('horror'))) {
@@ -354,10 +354,10 @@ function generateContentIdeas(film: Film): string[] {
   
   // Rating-based ideas
   if (film.rating >= 8) {
-    ideas.push(`Pourquoi "${film.title}" merite un ${film.rating}/10`)
-    ideas.push(`"${film.title}" est-il le meilleur ${film.type === 'movie' ? 'film' : 'serie'} de l'annee ?`)
+    ideas.push(`Pourquoi "${film.title}" mérite un ${film.rating}/10`)
+    ideas.push(`"${film.title}" est-il le meilleur ${film.type === 'movie' ? 'film' : 'série'} de l'année ?`)
   } else if (film.rating < 6) {
-    ideas.push(`"${film.title}" - Critique honnete sans spoilers`)
+    ideas.push(`"${film.title}" — critique honnête sans spoilers`)
     ideas.push(`Ce qui ne va pas avec "${film.title}"`)
   }
   

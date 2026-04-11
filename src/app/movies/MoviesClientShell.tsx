@@ -652,7 +652,7 @@ function MovieDetailModal({ movie, onClose }: { movie: Movie; onClose: () => voi
             <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb size={18} className="text-violet-400" />
-                <h3 className="text-sm font-bold text-violet-300">Idees de contenu pour ce film</h3>
+                <h3 className="text-sm font-bold text-violet-300">Idées de contenu pour ce film</h3>
                 <Sparkles size={14} className="text-fuchsia-400" />
               </div>
               <div className="space-y-2">
@@ -671,7 +671,7 @@ function MovieDetailModal({ movie, onClose }: { movie: Movie; onClose: () => voi
                   </div>
                 ))}
               </div>
-              <p className="mt-2 text-[10px] text-[var(--color-text-tertiary)] text-center">Clique sur une idee pour la copier</p>
+              <p className="mt-2 text-[10px] text-[var(--color-text-tertiary)] text-center">Clique sur une idée pour la copier</p>
             </div>
           )}
 
@@ -690,7 +690,7 @@ function MovieDetailModal({ movie, onClose }: { movie: Movie; onClose: () => voi
             <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/5 to-fuchsia-500/5 border border-violet-500/10">
               <div className="flex items-center gap-2 mb-2">
                 <Lightbulb size={18} className="text-violet-400/50" />
-                <h3 className="text-sm font-bold text-violet-300/50">Idees de contenu</h3>
+                <h3 className="text-sm font-bold text-violet-300/50">Idées de contenu</h3>
               </div>
               <p className="text-sm text-[var(--color-text-tertiary)]">Les suggestions de contenu seront disponibles prochainement pour ce film.</p>
             </div>
