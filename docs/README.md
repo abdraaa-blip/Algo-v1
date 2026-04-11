@@ -65,7 +65,8 @@
 |--------|--------|
 | Playbook unique (Vercel, smoke, anti-pavés, arbitrage, **blueprints externes**) | **`docs/ALGO_OPERATIONS_PLAYBOOK.md`** |
 | Protocole Git · SAFE / RISKY / CRITICAL avant commit | **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** |
-| Pipeline CI/CD (GitHub, Husky, Vercel, phases) | **`docs/ALGO_CICD_PIPELINE.md`** |
+| Pipeline CI/CD (GitHub, Husky, Vercel, phases, rollback) | **`docs/ALGO_CICD_PIPELINE.md`** |
+| Gardien Cursor · IA safety pipeline (pré-push) | **`.cursor/rules/algo-cicd-guardian.mdc`** |
 | Control room (`/control-room`) | **`docs/ALGO_CONTROL_ROOM.md`** |
 | Positionnement / GTM (brouillon, sous doctrine) | **`docs/ALGO_GTM_NOTES.md`** |
 
