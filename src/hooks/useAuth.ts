@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface MinimalUser {
   id: string
@@ -123,11 +124,11 @@ export function useAuth(): UseAuthReturn {
   }, [])
 
   const updateProfile = useCallback(async (updates: Partial<Profile>) => {
-    if (!user) return { error: 'Not authenticated' }
+    if (!user) return { error: mapUserFacingApiError('Not authenticated') }
     
     try {
       const supabase = await getSupabaseClient()
-      if (!supabase) return { error: 'Supabase not available' }
+      if (!supabase) return { error: mapUserFacingApiError('Supabase not available') }
       
       const { data, error } = await supabase
         .from('profiles')
@@ -136,12 +137,12 @@ export function useAuth(): UseAuthReturn {
         .select()
         .single()
       
-      if (error) return { error: error.message }
+      if (error) return { error: mapUserFacingApiError(error.message) }
       
       setProfile(data as Profile)
       return {}
     } catch (e) {
-      return { error: e instanceof Error ? e.message : 'Unknown error' }
+      return { error: mapUserFacingApiError(e instanceof Error ? e.message : 'Unknown error') }
     }
   }, [user])
 

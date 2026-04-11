@@ -14,6 +14,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import {
   DataPipeline,
   type DataStatus,
@@ -210,7 +211,7 @@ export function useDataPipeline<T = NormalizedDataItem[]>(
         const error = err as Error
         console.error(`[DataPipeline] Error fetching ${sourceId}:`, error.message)
         
-        setError(error)
+        setError(new Error(mapUserFacingApiError(error.message)))
         onError?.(error)
 
         // Use last valid data as fallback

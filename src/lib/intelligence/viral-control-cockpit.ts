@@ -48,7 +48,7 @@ function momentumFromVelocity(v: number | null): ViralControlMomentum {
 }
 
 /**
- * Dérivées simples sur l’historique radar (scores agrégés, pas des vues réelles par post).
+ * Dérivées simples sur l\'historique radar (scores agrégés, pas des vues réelles par post).
  */
 export function deriveVelocityAcceleration(points: RadarHistoryPointDTO[]): {
   velocityPerHour: number | null

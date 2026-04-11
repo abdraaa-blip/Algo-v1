@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 import type { ViralSignal, ViralScore, TrendPrediction } from '@/lib/algorithm/viral-engine'
 
 export interface RealTimeTrend {
@@ -94,7 +95,7 @@ export function useRealTimeTrends(options: UseRealTimeTrendsOptions = {}) {
         return // Ignorer les erreurs d'annulation
       }
       console.error('[useRealTimeTrends] Error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to fetch')
+      setError(mapUserFacingApiError(err instanceof Error ? err.message : 'Failed to fetch'))
     } finally {
       setLoading(false)
     }

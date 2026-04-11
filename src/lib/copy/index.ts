@@ -3,3 +3,4 @@
  */
 export * from './algo-voice'
 export * from './ui-strings'
+export * from './api-error-fr'
