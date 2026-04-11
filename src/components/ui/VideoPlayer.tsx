@@ -294,7 +294,7 @@ export function VideoThumbnail({
     >
       <ImageWithFallback
         src={imageError ? null : (thumbnail || fallbackThumbnail)}
-        alt={title || 'Video thumbnail'}
+        alt={title || 'Miniature vidéo'}
         fill
         fallbackType="platform"
         platform={platform}

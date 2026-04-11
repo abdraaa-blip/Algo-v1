@@ -67,11 +67,11 @@ const PLATFORM_PEAK_HOURS = {
 
 // Format recommendations by platform
 const PLATFORM_FORMATS = {
-  youtube: ['Shorts (< 60s)', 'Long-form (8-15 min)', 'Tutorial', 'Reaction', 'Commentary'],
-  tiktok: ['Trending sound', 'Duet', 'Stitch', 'POV', 'Storytime'],
-  instagram: ['Reels', 'Carousel', 'Story series', 'Live'],
-  twitter: ['Thread', 'Video clip (< 2:20)', 'Quote tweet trend'],
-  reddit: ['Discussion post', 'Image/Video', 'AMA style'],
+  youtube: ['Shorts (< 60 s)', 'Long format (8–15 min)', 'Tutoriel', 'Réaction', 'Commentaire'],
+  tiktok: ['Son tendance', 'Duet', 'Stitch', 'POV', 'Storytime'],
+  instagram: ['Reels', 'Carrousel', 'Série stories', 'Live'],
+  twitter: ['Thread', 'Clip vidéo (< 2:20)', 'Citation / quote trend'],
+  reddit: ['Post discussion', 'Image / vidéo', 'Style AMA'],
 }
 
 export async function POST(request: NextRequest) {

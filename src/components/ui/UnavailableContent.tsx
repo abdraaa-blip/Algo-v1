@@ -15,7 +15,7 @@ interface UnavailableContentProps {
 
 export function UnavailableContent({
   title = 'Contenu indisponible',
-  message = 'Ce contenu est temporairement indisponible. Veuillez reessayer plus tard.',
+  message = 'Ce contenu est temporairement indisponible. Réessaie plus tard.',
   showRefresh = true,
   showBackButton = true,
   showHomeButton = true,
@@ -32,7 +32,7 @@ export function UnavailableContent({
           <button
             onClick={() => window.location.reload()}
             className="ml-auto p-1.5 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors"
-            aria-label="Rafraichir"
+            aria-label="Rafraîchir"
           >
             <RefreshCw size={14} />
           </button>
@@ -120,7 +120,7 @@ export function VideoUnavailable({ onRetry }: { onRetry?: () => void }) {
   return (
     <div className="aspect-video rounded-xl bg-black/50 flex flex-col items-center justify-center">
       <AlertCircle size={32} className="text-white/30 mb-3" />
-      <p className="text-sm text-white/50 mb-3">Video non disponible</p>
+      <p className="text-sm text-white/50 mb-3">Vidéo non disponible</p>
       {onRetry && (
         <button
           onClick={onRetry}

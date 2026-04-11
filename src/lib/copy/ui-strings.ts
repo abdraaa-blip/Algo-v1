@@ -34,7 +34,7 @@ export const ALGO_UI_LOADING = {
   creatorTrending: 'Lecture des contenus en traction…',
   viralPage: 'Lecture des signaux viraux…',
   failLabPage: 'Lecture des échecs analysables…',
-  coreIntelligence: 'Lecture du noyau d’analyse…',
+  coreIntelligence: 'Lecture du noyau d\'analyse…',
   contentIdeas: 'Lecture des idées de contenu…',
   nowNews: 'Lecture des actualités…',
 } as const
@@ -44,7 +44,7 @@ export const ALGO_UI_RETRY = { label: 'Réessayer' } as const
 
 export const ALGO_UI_ERROR = {
   title: 'Signal perdu',
-  message: 'Impossible de charger pour l’instant. Réessaie dans un moment.',
+  message: 'Impossible de charger pour l\'instant. Réessaie dans un moment.',
   pageTitle: 'Signal perdu sur cette page',
 } as const
 
@@ -74,21 +74,21 @@ export const ALGO_DATA_RELIABILITY_PANEL = {
 export const ALGO_BILLING = {
   sectionTitle: 'ALGO Pro',
   valuePitch:
-    'L’idée : te faire gagner du temps, des décisions plus claires et un peu d’avance sur le signal — pas empiler des boutons inutiles.',
+    'L\'idée : te faire gagner du temps, des décisions plus claires et un peu d\'avance sur le signal — pas empiler des boutons inutiles.',
   freeLabel: 'Offre actuelle : accès gratuit',
   proPitch:
     'Pro regroupera analyse plus poussée, historiques utiles et IA moins bridée quand le paiement sera relié à ton compte (Stripe + statut serveur).',
   checkoutCta: 'Voir le paiement Stripe',
   checkoutUnavailable: 'Paiement : en attente de configuration côté serveur (clés Stripe + prix).',
   checkoutRequiresLogin: 'Connecte-toi (compte ALGO) pour ouvrir le paiement Stripe.',
-  checkoutError: 'Impossible d’ouvrir le paiement pour l’instant. Réessaie plus tard.',
+  checkoutError: 'Impossible d\'ouvrir le paiement pour l\'instant. Réessaie plus tard.',
   planLabelFree: 'Plan actuel : gratuit',
   planLabelPro: 'Plan actuel : Pro (Stripe)',
   proCheckoutDone: 'Ton abonnement est actif côté profil. Renouvellement et factures : portail Stripe (lien e-mail ou dashboard Stripe).',
-  portalCta: 'Gérer l’abonnement (Stripe)',
-  portalError: 'Impossible d’ouvrir le portail pour l’instant. Réessaie plus tard.',
-  successNote: 'Paiement initié ou réussi côté Stripe : le passage en Pro dans l’app suivra la connexion webhook (à brancher).',
-  cancelNote: 'Paiement annulé. Tu restes sur l’offre gratuite.',
+  portalCta: 'Gérer l\'abonnement (Stripe)',
+  portalError: 'Impossible d\'ouvrir le portail pour l\'instant. Réessaie plus tard.',
+  successNote: 'Paiement initié ou réussi côté Stripe : le passage en Pro dans l\'app suivra la connexion webhook (à brancher).',
+  cancelNote: 'Paiement annulé. Tu restes sur l\'offre gratuite.',
 } as const
 
 export const ALGO_PRODUCT_RADAR = {

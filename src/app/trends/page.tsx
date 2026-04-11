@@ -176,7 +176,7 @@ const FALLBACK_TRENDS: Trend[] = [
     format: 'screen record',
     confidence: 'moyenne',
     timeWindow: '12h',
-    actionTask: 'Video analyse 30s',
+    actionTask: 'Vidéo analyse 30 s',
     actionHook: 'Bitcoin va exploser ou crasher?',
     actionDeadline: 'Poste avant la cloture US',
     hookExamples: ['Ce signal ne trompe jamais', 'Voila ce que je fais', 'Ne fais pas cette erreur']

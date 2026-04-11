@@ -62,8 +62,8 @@ function transformYouTubeData(data: YouTubeResponse, regionCode: string) {
       detectedAt: item.snippet?.publishedAt || new Date().toISOString(),
       thumbnail: item.snippet?.thumbnails?.high?.url || '',
       sourceUrl: `https://youtube.com/watch?v=${item.id}`,
-      explanation: `Video tendance sur YouTube ${regionCode} avec ${views.toLocaleString('fr-FR')} vues.`,
-      creatorTips: 'Analyse ce format et adapte-le a ton audience.',
+      explanation: `Vidéo tendance sur YouTube ${regionCode} avec ${views.toLocaleString('fr-FR')} vues.`,
+      creatorTips: 'Analyse ce format et adapte-le à ton audience.',
       insight: {
         postNowProbability: growthRate > 200 ? 'high' : 'medium',
         timing: 'now',
