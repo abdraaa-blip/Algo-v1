@@ -1,9 +1,9 @@
 /**
  * Core Web Vitals Monitoring - Google Chrome Team Standards
- * 
+ *
  * Metrics tracked:
  * - LCP (Largest Contentful Paint) < 2.5s
- * - FID (First Input Delay) < 100ms  
+ * - FID (First Input Delay) < 100ms
  * - CLS (Cumulative Layout Shift) < 0.1
  * - INP (Interaction to Next Paint) < 200ms
  * - TTFB (Time to First Byte)
@@ -11,12 +11,12 @@
  */
 
 export interface WebVitalMetric {
-  name: 'LCP' | 'FID' | 'CLS' | 'INP' | 'TTFB' | 'FCP'
-  value: number
-  rating: 'good' | 'needs-improvement' | 'poor'
-  delta: number
-  id: string
-  navigationType: string
+  name: "LCP" | "FID" | "CLS" | "INP" | "TTFB" | "FCP";
+  value: number;
+  rating: "good" | "needs-improvement" | "poor";
+  delta: number;
+  id: string;
+  navigationType: string;
 }
 
 // Thresholds per Google standards
@@ -27,32 +27,35 @@ const THRESHOLDS = {
   INP: { good: 200, poor: 500 },
   TTFB: { good: 800, poor: 1800 },
   FCP: { good: 1800, poor: 3000 },
+};
+
+function getRating(
+  name: keyof typeof THRESHOLDS,
+  value: number,
+): "good" | "needs-improvement" | "poor" {
+  const threshold = THRESHOLDS[name];
+  if (value <= threshold.good) return "good";
+  if (value <= threshold.poor) return "needs-improvement";
+  return "poor";
 }
 
-function getRating(name: keyof typeof THRESHOLDS, value: number): 'good' | 'needs-improvement' | 'poor' {
-  const threshold = THRESHOLDS[name]
-  if (value <= threshold.good) return 'good'
-  if (value <= threshold.poor) return 'needs-improvement'
-  return 'poor'
-}
+type MetricCallback = (metric: WebVitalMetric) => void;
 
-type MetricCallback = (metric: WebVitalMetric) => void
-
-const callbacks: MetricCallback[] = []
+const callbacks: MetricCallback[] = [];
 
 /**
  * Subscribe to web vitals metrics
  */
 export function onWebVital(callback: MetricCallback): () => void {
-  callbacks.push(callback)
+  callbacks.push(callback);
   return () => {
-    const index = callbacks.indexOf(callback)
-    if (index > -1) callbacks.splice(index, 1)
-  }
+    const index = callbacks.indexOf(callback);
+    if (index > -1) callbacks.splice(index, 1);
+  };
 }
 
 function reportMetric(metric: WebVitalMetric): void {
-  callbacks.forEach(cb => cb(metric))
+  callbacks.forEach((cb) => cb(metric));
   // Console logging disabled to reduce noise
   // Metrics are still collected and sent to callbacks for analytics
 }
@@ -61,95 +64,95 @@ function reportMetric(metric: WebVitalMetric): void {
  * Initialize web vitals monitoring using native Performance API
  */
 export function initWebVitals(): void {
-  if (typeof window === 'undefined') return
-  
+  if (typeof window === "undefined") return;
+
   // Use native Performance API for monitoring
-  initFallbackMetrics()
+  initFallbackMetrics();
 }
 
 /**
  * Fallback metrics using Performance API
  */
 function initFallbackMetrics(): void {
-  if (typeof window === 'undefined' || !window.PerformanceObserver) return
-  
+  if (typeof window === "undefined" || !window.PerformanceObserver) return;
+
   // LCP
   try {
     const lcpObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries()
-      const lastEntry = entries[entries.length - 1] as PerformancePaintTiming
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1] as PerformancePaintTiming;
       if (lastEntry) {
         reportMetric({
-          name: 'LCP',
+          name: "LCP",
           value: lastEntry.startTime,
-          rating: getRating('LCP', lastEntry.startTime),
+          rating: getRating("LCP", lastEntry.startTime),
           delta: lastEntry.startTime,
           id: `lcp-${Date.now()}`,
-          navigationType: 'navigate',
-        })
+          navigationType: "navigate",
+        });
       }
-    })
-    lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true })
+    });
+    lcpObserver.observe({ type: "largest-contentful-paint", buffered: true });
   } catch {
     // LCP not supported
   }
-  
+
   // FCP
   try {
     const fcpObserver = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        if (entry.name === 'first-contentful-paint') {
+        if (entry.name === "first-contentful-paint") {
           reportMetric({
-            name: 'FCP',
+            name: "FCP",
             value: entry.startTime,
-            rating: getRating('FCP', entry.startTime),
+            rating: getRating("FCP", entry.startTime),
             delta: entry.startTime,
             id: `fcp-${Date.now()}`,
-            navigationType: 'navigate',
-          })
+            navigationType: "navigate",
+          });
         }
       }
-    })
-    fcpObserver.observe({ type: 'paint', buffered: true })
+    });
+    fcpObserver.observe({ type: "paint", buffered: true });
   } catch {
     // FCP not supported
   }
-  
+
   // CLS - throttled to avoid spam
   try {
-    let clsValue = 0
-    let clsReportTimeout: ReturnType<typeof setTimeout> | null = null
-    let lastReportedCls = 0
-    
+    let clsValue = 0;
+    let clsReportTimeout: ReturnType<typeof setTimeout> | null = null;
+    let lastReportedCls = 0;
+
     const clsObserver = new PerformanceObserver((list) => {
       for (const entry of list.getEntries() as PerformanceEntry[]) {
         // @ts-expect-error - Layout shift entries have hadRecentInput
         if (!entry.hadRecentInput) {
           // @ts-expect-error - Layout shift entries have value
-          clsValue += entry.value
+          clsValue += entry.value;
         }
       }
-      
+
       // Throttle CLS reports - only report once per second and if value changed significantly
-      if (clsReportTimeout) return
-      if (Math.abs(clsValue - lastReportedCls) < 0.01) return
-      
+      if (clsReportTimeout) return;
+      if (Math.abs(clsValue - lastReportedCls) < 0.01) return;
+
       clsReportTimeout = setTimeout(() => {
-        clsReportTimeout = null
+        clsReportTimeout = null;
         if (Math.abs(clsValue - lastReportedCls) >= 0.01) {
-          lastReportedCls = clsValue
+          lastReportedCls = clsValue;
           reportMetric({
-            name: 'CLS',
+            name: "CLS",
             value: clsValue,
-            rating: getRating('CLS', clsValue),
+            rating: getRating("CLS", clsValue),
             delta: clsValue,
             id: `cls-${Date.now()}`,
-            navigationType: 'navigate',
-          })
+            navigationType: "navigate",
+          });
         }
-      }, 1000)
-    })
-    clsObserver.observe({ type: 'layout-shift', buffered: true })
+      }, 1000);
+    });
+    clsObserver.observe({ type: "layout-shift", buffered: true });
   } catch {
     // CLS not supported
   }
@@ -159,23 +162,29 @@ function initFallbackMetrics(): void {
  * Get current performance summary
  */
 export function getPerformanceSummary(): {
-  navigation: PerformanceNavigationTiming | null
-  resources: PerformanceResourceTiming[]
-  paint: PerformancePaintTiming[]
+  navigation: PerformanceNavigationTiming | null;
+  resources: PerformanceResourceTiming[];
+  paint: PerformancePaintTiming[];
 } {
-  if (typeof window === 'undefined') {
-    return { navigation: null, resources: [], paint: [] }
+  if (typeof window === "undefined") {
+    return { navigation: null, resources: [], paint: [] };
   }
-  
-  const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
-  const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[]
-  const paint = performance.getEntriesByType('paint') as PerformancePaintTiming[]
-  
+
+  const navigation = performance.getEntriesByType("navigation")[0] as
+    | PerformanceNavigationTiming
+    | undefined;
+  const resources = performance.getEntriesByType(
+    "resource",
+  ) as PerformanceResourceTiming[];
+  const paint = performance.getEntriesByType(
+    "paint",
+  ) as PerformancePaintTiming[];
+
   return {
     navigation: navigation ?? null,
     resources,
     paint,
-  }
+  };
 }
 
 /**
@@ -183,18 +192,18 @@ export function getPerformanceSummary(): {
  */
 function sanitizeMarkName(name: string): string {
   // Remove zero-width and invisible characters that can cause timestamp issues
-  return name.replace(/[\u200B-\u200D\uFEFF\u00AD]/g, '').trim()
+  return name.replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "").trim();
 }
 
 /**
  * Mark a custom performance point
  */
 export function markPerformance(name: string): void {
-  if (typeof performance !== 'undefined' && performance.mark) {
+  if (typeof performance !== "undefined" && performance.mark) {
     try {
-      const sanitizedName = sanitizeMarkName(name)
+      const sanitizedName = sanitizeMarkName(name);
       if (sanitizedName) {
-        performance.mark(sanitizedName)
+        performance.mark(sanitizedName);
       }
     } catch {
       // Silently fail - performance marking is non-critical
@@ -209,51 +218,53 @@ export function markPerformance(name: string): void {
 export function measurePerformance(
   name: string,
   startMark: string,
-  endMark?: string
+  endMark?: string,
 ): PerformanceMeasure | null {
-  if (typeof performance === 'undefined' || !performance.measure) {
-    return null
+  if (typeof performance === "undefined" || !performance.measure) {
+    return null;
   }
-  
+
   // Validate that marks exist before measuring
   try {
-    const entries = performance.getEntriesByName(startMark, 'mark')
+    const entries = performance.getEntriesByName(startMark, "mark");
     if (entries.length === 0) {
-      return null // Start mark doesn't exist
+      return null; // Start mark doesn't exist
     }
     if (endMark) {
-      const endEntries = performance.getEntriesByName(endMark, 'mark')
+      const endEntries = performance.getEntriesByName(endMark, "mark");
       if (endEntries.length === 0) {
-        return null // End mark doesn't exist
+        return null; // End mark doesn't exist
       }
     }
-    return performance.measure(name, startMark, endMark)
+    return performance.measure(name, startMark, endMark);
   } catch {
     // Silently fail - performance measurement is non-critical
-    return null
+    return null;
   }
 }
 
 /**
  * Report long tasks (tasks > 50ms that block main thread)
  */
-export function observeLongTasks(callback: (duration: number) => void): () => void {
-  if (typeof window === 'undefined' || !window.PerformanceObserver) {
-    return () => {}
+export function observeLongTasks(
+  callback: (duration: number) => void,
+): () => void {
+  if (typeof window === "undefined" || !window.PerformanceObserver) {
+    return () => {};
   }
-  
+
   try {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        callback(entry.duration)
+        callback(entry.duration);
       }
-    })
-    
-    observer.observe({ type: 'longtask', buffered: true })
-    
-    return () => observer.disconnect()
+    });
+
+    observer.observe({ type: "longtask", buffered: true });
+
+    return () => observer.disconnect();
   } catch {
-    return () => {}
+    return () => {};
   }
 }
 
@@ -261,30 +272,30 @@ export function observeLongTasks(callback: (duration: number) => void): () => vo
  * Defer non-critical work until browser is idle
  */
 function getDomWindow(): Window | undefined {
-  if (typeof globalThis === 'undefined') return undefined
-  const g = globalThis as unknown as { window?: Window }
-  return g.window
+  if (typeof globalThis === "undefined") return undefined;
+  const g = globalThis as unknown as { window?: Window };
+  return g.window;
 }
 
 export function requestIdleCallback(
   callback: () => void,
-  options?: { timeout?: number }
+  options?: { timeout?: number },
 ): number {
-  const win = getDomWindow()
-  if (typeof win?.requestIdleCallback === 'function') {
-    return win.requestIdleCallback(callback, options)
+  const win = getDomWindow();
+  if (typeof win?.requestIdleCallback === "function") {
+    return win.requestIdleCallback(callback, options);
   }
-  return setTimeout(callback, 1) as unknown as number
+  return setTimeout(callback, 1) as unknown as number;
 }
 
 /**
  * Cancel idle callback
  */
 export function cancelIdleCallback(id: number): void {
-  const win = getDomWindow()
-  if (typeof win?.cancelIdleCallback === 'function') {
-    win.cancelIdleCallback(id)
+  const win = getDomWindow();
+  if (typeof win?.cancelIdleCallback === "function") {
+    win.cancelIdleCallback(id);
   } else {
-    clearTimeout(id)
+    clearTimeout(id);
   }
 }

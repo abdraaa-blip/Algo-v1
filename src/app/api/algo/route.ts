@@ -1,6 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { processAlgoAiRequest } from '@/core/system'
-import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
+import { NextRequest, NextResponse } from "next/server";
+import { processAlgoAiRequest } from "@/core/system";
+import {
+  checkRateLimit,
+  createRateLimitHeaders,
+  getClientIdentifier,
+} from "@/lib/api/rate-limiter";
 
 /**
  * POST /api/algo
@@ -11,48 +15,54 @@ import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/l
  * (`docs/ALGO_OFFLINE_EVOLUTION.md` · score viral → libs canoniques, pas de compute ad hoc ici).
  */
 export async function POST(req: NextRequest) {
-  const identifier = getClientIdentifier(req)
-  const rateLimit = checkRateLimit(identifier, { limit: 20, windowMs: 60_000 })
+  const identifier = getClientIdentifier(req);
+  const rateLimit = checkRateLimit(identifier, { limit: 20, windowMs: 60_000 });
   if (!rateLimit.success) {
     return NextResponse.json(
-      { success: false, error: 'Rate limit exceeded' },
-      { status: 429, headers: createRateLimitHeaders(rateLimit) }
-    )
+      { success: false, error: "Rate limit exceeded" },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
 
   let body: {
-    input?: string
-    context?: { currentTrends?: string[]; userCountry?: string }
-    country?: string | null
-  }
+    input?: string;
+    context?: { currentTrends?: string[]; userCountry?: string };
+    country?: string | null;
+  };
   try {
-    body = (await req.json()) as typeof body
+    body = (await req.json()) as typeof body;
   } catch {
-    return NextResponse.json({ success: false, error: 'Invalid JSON' }, { status: 400 })
+    return NextResponse.json(
+      { success: false, error: "Invalid JSON" },
+      { status: 400 },
+    );
   }
 
-  const input = typeof body.input === 'string' ? body.input.trim() : ''
+  const input = typeof body.input === "string" ? body.input.trim() : "";
   if (!input) {
-    return NextResponse.json({ success: false, error: 'Missing input' }, { status: 400 })
+    return NextResponse.json(
+      { success: false, error: "Missing input" },
+      { status: 400 },
+    );
   }
 
   const out = await processAlgoAiRequest({
     question: input,
     clientContext: body.context,
-    countryHint: typeof body.country === 'string' ? body.country : null,
-    expertiseLevel: 'intermediate',
-  })
+    countryHint: typeof body.country === "string" ? body.country : null,
+    expertiseLevel: "intermediate",
+  });
 
   return NextResponse.json(
     {
       success: true,
-      kind: 'algo.dashboard_insight',
+      kind: "algo.dashboard_insight",
       text: out.answer,
       standard: out.standard,
       quality: out.quality,
       systemRoute: out.route,
       systemConfidence: out.systemConfidence,
     },
-    { headers: createRateLimitHeaders(rateLimit) }
-  )
+    { headers: createRateLimitHeaders(rateLimit) },
+  );
 }

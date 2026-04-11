@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { Link2, MessageCircle, Share2 } from 'lucide-react'
+import { Link2, MessageCircle, Share2 } from "lucide-react";
 
 type Props = {
-  url: string
-  title: string
+  url: string;
+  title: string;
   /** Texte court suggéré pour les réseaux (hook) */
-  snippet?: string
-  className?: string
-}
+  snippet?: string;
+  className?: string;
+};
 
 function enc(s: string) {
-  return encodeURIComponent(s)
+  return encodeURIComponent(s);
 }
 
 /**
@@ -19,26 +19,26 @@ function enc(s: string) {
  * TikTok / Instagram n’exposent pas d’URL web de partage universel ; le snippet sert de copier-coller.
  */
 export function ShareStrip({ url, title, snippet, className }: Props) {
-  const text = snippet || `${title} · ${url}`
+  const text = snippet || `${title} · ${url}`;
   const onNativeShare = async () => {
-    if (typeof navigator !== 'undefined' && navigator.share) {
+    if (typeof navigator !== "undefined" && navigator.share) {
       try {
-        await navigator.share({ title, text, url })
-        return
+        await navigator.share({ title, text, url });
+        return;
       } catch {
         /* dismissed */
       }
     }
-    void copy(url)
-  }
+    void copy(url);
+  };
 
   const copy = async (value: string) => {
     try {
-      await navigator.clipboard.writeText(value)
+      await navigator.clipboard.writeText(value);
     } catch {
       /* ignore */
     }
-  }
+  };
 
   return (
     <div className={className}>
@@ -88,8 +88,9 @@ export function ShareStrip({ url, title, snippet, className }: Props) {
         </p>
       ) : null}
       <p className="mt-1 text-[10px] text-[var(--color-text-muted)]">
-        Pour TikTok / Reels : colle le lien ou le texte dans l’app après capture d’écran.
+        Pour TikTok / Reels : colle le lien ou le texte dans l’app après capture
+        d’écran.
       </p>
     </div>
-  )
+  );
 }

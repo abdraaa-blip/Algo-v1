@@ -1,28 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
-import { getAutonomyCounters } from '@/lib/autonomy/telemetry'
-import { getAutonomyPolicy, updateAutonomyPolicy } from '@/lib/autonomy/policy'
+import { NextRequest, NextResponse } from "next/server";
+import {
+  checkRateLimit,
+  createRateLimitHeaders,
+  getClientIdentifier,
+} from "@/lib/api/rate-limiter";
+import { getAutonomyCounters } from "@/lib/autonomy/telemetry";
+import { getAutonomyPolicy, updateAutonomyPolicy } from "@/lib/autonomy/policy";
 import {
   addLearningHistoryEntry,
   getLearningHistory,
   persistLearningHistoryEntry,
-} from '@/lib/autonomy/learning-history'
+} from "@/lib/autonomy/learning-history";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
-  const identifier = getClientIdentifier(request)
-  const rateLimit = checkRateLimit(`intelligence-learn:${identifier}`, { limit: 30, windowMs: 60_000 })
+  const identifier = getClientIdentifier(request);
+  const rateLimit = checkRateLimit(`intelligence-learn:${identifier}`, {
+    limit: 30,
+    windowMs: 60_000,
+  });
   if (!rateLimit.success) {
     return NextResponse.json(
-      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
-      { status: 429, headers: createRateLimitHeaders(rateLimit) }
-    )
+      {
+        success: false,
+        error: "Rate limit exceeded",
+        retryAfter: rateLimit.retryAfter,
+      },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
 
-  const counters = getAutonomyCounters()
-  const policy = getAutonomyPolicy()
-  const totalFeedback = counters.feedbackHelpful + counters.feedbackWrong + counters.feedbackNeutral
+  const counters = getAutonomyCounters();
+  const policy = getAutonomyPolicy();
+  const totalFeedback =
+    counters.feedbackHelpful +
+    counters.feedbackWrong +
+    counters.feedbackNeutral;
 
   if (totalFeedback < 5) {
     const entry = addLearningHistoryEntry({
@@ -32,49 +46,49 @@ export async function POST(request: NextRequest) {
       helpfulRatio: counters.feedbackHelpful / Math.max(1, totalFeedback),
       wrongRatio: counters.feedbackWrong / Math.max(1, totalFeedback),
       totalFeedback,
-      note: 'Not enough feedback for stable online adjustment',
-    })
-    void persistLearningHistoryEntry(entry)
+      note: "Not enough feedback for stable online adjustment",
+    });
+    void persistLearningHistoryEntry(entry);
     return NextResponse.json({
       success: true,
       learningApplied: false,
-      reason: 'Not enough feedback for stable online adjustment',
+      reason: "Not enough feedback for stable online adjustment",
       policy,
       counters,
       history: getLearningHistory(1),
-    })
+    });
   }
 
-  const helpfulRatio = counters.feedbackHelpful / Math.max(1, totalFeedback)
-  const wrongRatio = counters.feedbackWrong / Math.max(1, totalFeedback)
-  let target = policy.minConfidenceForAuto
+  const helpfulRatio = counters.feedbackHelpful / Math.max(1, totalFeedback);
+  const wrongRatio = counters.feedbackWrong / Math.max(1, totalFeedback);
+  let target = policy.minConfidenceForAuto;
 
   if (helpfulRatio >= 0.65 && wrongRatio <= 0.2) {
-    target = Math.max(0.55, policy.minConfidenceForAuto - 0.02)
+    target = Math.max(0.55, policy.minConfidenceForAuto - 0.02);
   } else if (wrongRatio >= 0.35) {
-    target = Math.min(0.9, policy.minConfidenceForAuto + 0.03)
+    target = Math.min(0.9, policy.minConfidenceForAuto + 0.03);
   }
 
-  const autoGuardEnabled = process.env.ALGO_AUTONOMY_AUTO_GUARD !== '0'
-  let safetyAction: 'none' | 'advisory_lock' | 'hard_kill' = 'none'
+  const autoGuardEnabled = process.env.ALGO_AUTONOMY_AUTO_GUARD !== "0";
+  let safetyAction: "none" | "advisory_lock" | "hard_kill" = "none";
   const patch: {
-    minConfidenceForAuto: number
-    mode?: 'advisory' | 'guarded_auto' | 'manual_only'
-    killSwitch?: boolean
-  } = { minConfidenceForAuto: target }
+    minConfidenceForAuto: number;
+    mode?: "advisory" | "guarded_auto" | "manual_only";
+    killSwitch?: boolean;
+  } = { minConfidenceForAuto: target };
 
   // Drift guardrail: partial lock first, full stop only on critical sustained wrong feedback.
   if (autoGuardEnabled && totalFeedback >= 10 && wrongRatio >= 0.45) {
-    patch.mode = 'advisory'
-    patch.minConfidenceForAuto = Math.max(0.85, patch.minConfidenceForAuto)
-    safetyAction = 'advisory_lock'
+    patch.mode = "advisory";
+    patch.minConfidenceForAuto = Math.max(0.85, patch.minConfidenceForAuto);
+    safetyAction = "advisory_lock";
   }
   if (autoGuardEnabled && totalFeedback >= 15 && wrongRatio >= 0.55) {
-    patch.killSwitch = true
-    safetyAction = 'hard_kill'
+    patch.killSwitch = true;
+    safetyAction = "hard_kill";
   }
 
-  const next = updateAutonomyPolicy(patch)
+  const next = updateAutonomyPolicy(patch);
   const entry = addLearningHistoryEntry({
     applied: target !== policy.minConfidenceForAuto,
     previousMinConfidence: policy.minConfidenceForAuto,
@@ -84,10 +98,10 @@ export async function POST(request: NextRequest) {
     totalFeedback,
     note:
       target !== policy.minConfidenceForAuto
-        ? 'Policy threshold recalibrated from feedback loop'
-        : 'No policy change after recalibration',
-  })
-  void persistLearningHistoryEntry(entry)
+        ? "Policy threshold recalibrated from feedback loop"
+        : "No policy change after recalibration",
+  });
+  void persistLearningHistoryEntry(entry);
   return NextResponse.json({
     success: true,
     learningApplied: target !== policy.minConfidenceForAuto,
@@ -101,5 +115,5 @@ export async function POST(request: NextRequest) {
       autoGuardEnabled,
     },
     history: getLearningHistory(20),
-  })
+  });
 }

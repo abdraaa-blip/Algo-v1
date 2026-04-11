@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { BackButton } from './BackButton'
-import { cn } from '@/lib/utils'
+import { BackButton } from "./BackButton";
+import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
-  title: string
-  subtitle?: string
-  icon?: React.ReactNode
-  showBack?: boolean
-  backHref?: string
-  action?: React.ReactNode
-  className?: string
-  children?: React.ReactNode
+  title: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+  showBack?: boolean;
+  backHref?: string;
+  action?: React.ReactNode;
+  className?: string;
+  children?: React.ReactNode;
 }
 
 export function PageHeader({
@@ -19,13 +19,13 @@ export function PageHeader({
   subtitle,
   icon,
   showBack = true,
-  backHref = '/',
+  backHref = "/",
   action,
   className,
-  children
+  children,
 }: PageHeaderProps) {
   return (
-    <header className={cn('space-y-4 mb-6', className)}>
+    <header className={cn("space-y-4 mb-6", className)}>
       {/* Back button row */}
       {showBack && (
         <div className="flex items-center justify-between">
@@ -33,7 +33,7 @@ export function PageHeader({
           {action}
         </div>
       )}
-      
+
       {/* Title row */}
       <div className="flex items-center gap-3">
         {icon && (
@@ -50,8 +50,8 @@ export function PageHeader({
           )}
         </div>
       </div>
-      
+
       {children}
     </header>
-  )
+  );
 }

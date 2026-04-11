@@ -1,43 +1,43 @@
-'use client'
+"use client";
 
-import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
-import { UserPlus, Eye, EyeOff, Check } from 'lucide-react'
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
+import { UserPlus, Eye, EyeOff, Check } from "lucide-react";
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas')
-      setIsLoading(false)
-      return
+      setError("Les mots de passe ne correspondent pas");
+      setIsLoading(false);
+      return;
     }
 
     if (password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères')
-      setIsLoading(false)
-      return
+      setError("Le mot de passe doit contenir au moins 6 caractères");
+      setIsLoading(false);
+      return;
     }
 
-    const supabase = createClient()
+    const supabase = createClient();
 
     try {
       const { error } = await supabase.auth.signUp({
@@ -46,25 +46,33 @@ export default function SignUpPage() {
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
-            display_name: displayName || email.split('@')[0],
+            display_name: displayName || email.split("@")[0],
           },
         },
-      })
-      if (error) throw error
-      router.push('/auth/sign-up-success')
+      });
+      if (error) throw error;
+      router.push("/auth/sign-up-success");
     } catch (error: unknown) {
       setError(
         mapUserFacingApiError(
-          error instanceof Error ? error.message : "Erreur lors de l'inscription"
-        )
-      )
+          error instanceof Error
+            ? error.message
+            : "Erreur lors de l'inscription",
+        ),
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const passwordStrength = password.length >= 8 ? 'Fort' : password.length >= 6 ? 'Moyen' : 'Faible'
-  const passwordColor = password.length >= 8 ? 'text-green-400' : password.length >= 6 ? 'text-yellow-400' : 'text-red-400'
+  const passwordStrength =
+    password.length >= 8 ? "Fort" : password.length >= 6 ? "Moyen" : "Faible";
+  const passwordColor =
+    password.length >= 8
+      ? "text-green-400"
+      : password.length >= 6
+        ? "text-yellow-400"
+        : "text-red-400";
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 text-[var(--color-text-primary)]">
@@ -76,14 +84,18 @@ export default function SignUpPage() {
               <span className="text-white">AL</span>
               <span className="text-[var(--color-violet)]">GO</span>
             </h1>
-            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Veille tendances</p>
+            <p className="text-[var(--color-text-secondary)] text-sm mt-1">
+              Veille tendances
+            </p>
           </Link>
         </div>
 
         {/* Signup Card */}
         <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-8 shadow-[var(--shadow-algo-sm)]">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Créer un compte</h2>
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+              Créer un compte
+            </h2>
             <p className="text-[var(--color-text-secondary)] mt-1">
               Rejoins ALGO pour suivre les tendances
             </p>
@@ -91,7 +103,12 @@ export default function SignUpPage() {
 
           <form onSubmit={handleSignUp} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="displayName" className="text-[var(--color-text-secondary)]">Nom d&apos;affichage</Label>
+              <Label
+                htmlFor="displayName"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Nom d&apos;affichage
+              </Label>
               <Input
                 id="displayName"
                 type="text"
@@ -103,7 +120,12 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Adresse e-mail</Label>
+              <Label
+                htmlFor="email"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Adresse e-mail
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -116,11 +138,16 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-[var(--color-text-secondary)]">Mot de passe</Label>
+              <Label
+                htmlFor="password"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Mot de passe
+              </Label>
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   required
                   value={password}
@@ -143,11 +170,16 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-[var(--color-text-secondary)]">Confirmer le mot de passe</Label>
+              <Label
+                htmlFor="confirmPassword"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Confirmer le mot de passe
+              </Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   required
                   value={confirmPassword}
@@ -155,7 +187,10 @@ export default function SignUpPage() {
                   className="bg-[var(--color-card)] border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-violet)] focus:ring-[var(--color-violet-muted)] pr-10"
                 />
                 {confirmPassword && password === confirmPassword && (
-                  <Check className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400" size={18} />
+                  <Check
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400"
+                    size={18}
+                  />
                 )}
               </div>
             </div>
@@ -175,14 +210,17 @@ export default function SignUpPage() {
               loading={isLoading}
               icon={UserPlus}
             >
-              {isLoading ? 'Création du compte…' : 'Créer mon compte'}
+              {isLoading ? "Création du compte…" : "Créer mon compte"}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-[var(--color-text-secondary)] text-sm">
-              Déjà un compte ?{' '}
-              <Link href="/auth/login" className="text-[var(--color-violet)] hover:underline">
+              Déjà un compte ?{" "}
+              <Link
+                href="/auth/login"
+                className="text-[var(--color-violet)] hover:underline"
+              >
                 Se connecter
               </Link>
             </p>
@@ -191,11 +229,14 @@ export default function SignUpPage() {
 
         {/* Back to home */}
         <div className="mt-6 text-center">
-          <Link href="/" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm">
+          <Link
+            href="/"
+            className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm"
+          >
             ← Retour a l&apos;accueil
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }

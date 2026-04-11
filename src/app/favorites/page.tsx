@@ -1,47 +1,61 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import { Bookmark } from 'lucide-react'
+import { useRouter } from "next/navigation";
+import { Bookmark } from "lucide-react";
 
-import { Card }           from '@/components/ui/Card'
-import { SectionHeader }  from '@/components/ui/SectionHeader'
-import { EmptyState }     from '@/components/ui/EmptyState'
-import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
+import { Card } from "@/components/ui/Card";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 
-import { useFavorites } from '@/hooks/useFavorites'
+import { useFavorites } from "@/hooks/useFavorites";
 
-const STAGGER = ['algo-s1','algo-s2','algo-s3','algo-s4','algo-s5','algo-s6'] as const
+const STAGGER = [
+  "algo-s1",
+  "algo-s2",
+  "algo-s3",
+  "algo-s4",
+  "algo-s5",
+  "algo-s6",
+] as const;
 
 const badgeLabels = {
-  Viral: 'Viral',
-  Early: 'Early',
-  Breaking: 'Breaking',
-  Trend: 'Trend',
-  AlmostViral: 'Presque viral',
-  coolOff: 'Refroidissement',
-  exploding: 'En explosion',
-}
+  Viral: "Viral",
+  Early: "Early",
+  Breaking: "Breaking",
+  Trend: "Trend",
+  AlmostViral: "Presque viral",
+  coolOff: "Refroidissement",
+  exploding: "En explosion",
+};
 
 const insightLabels = {
-  title: 'Insights',
-  postNow: { high: 'Forte chance', medium: 'Moyenne', low: 'Faible' },
-  timing: { now: 'Maintenant', too_late: 'Trop tard', too_early: 'Trop tot' },
-  bestPlatform: 'Meilleure plateforme',
-  bestFormat: 'Meilleur format',
-  watchers: '{count} observateurs',
-  postWindow: { optimal: 'Optimal', saturated: 'Sature', fading: 'En baisse' },
-  formatLabels: { face_cam: 'Face cam', text: 'Texte', montage: 'Montage', narration: 'Narration', duet: 'Duo', reaction: 'Reaction' },
-}
+  title: "Insights",
+  postNow: { high: "Forte chance", medium: "Moyenne", low: "Faible" },
+  timing: { now: "Maintenant", too_late: "Trop tard", too_early: "Trop tot" },
+  bestPlatform: "Meilleure plateforme",
+  bestFormat: "Meilleur format",
+  watchers: "{count} observateurs",
+  postWindow: { optimal: "Optimal", saturated: "Sature", fading: "En baisse" },
+  formatLabels: {
+    face_cam: "Face cam",
+    text: "Texte",
+    montage: "Montage",
+    narration: "Narration",
+    duet: "Duo",
+    reaction: "Reaction",
+  },
+};
 
 const cardLabels = {
   badge: badgeLabels,
-  viralScoreAriaLabel: 'Score viral',
+  viralScoreAriaLabel: "Score viral",
   insight: insightLabels,
-}
+};
 
 export default function FavoritesPage() {
-  const router = useRouter()
-  const { contents, isLoaded } = useFavorites()
+  const router = useRouter();
+  const { contents, isLoaded } = useFavorites();
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -64,8 +78,8 @@ export default function FavoritesPage() {
           title="Aucun favori"
           subtitle="Explore des contenus et sauvegarde ceux qui t'interessent."
           cta={{
-            label: 'Explorer',
-            onClick: () => router.push('/'),
+            label: "Explorer",
+            onClick: () => router.push("/"),
           }}
         />
       )}
@@ -90,5 +104,5 @@ export default function FavoritesPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

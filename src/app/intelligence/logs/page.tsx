@@ -1,172 +1,207 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
-import { Download, Filter, RefreshCw, Trash2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Download, Filter, RefreshCw, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
 
 interface DecisionItem {
-  id: string
-  level: 'action_now' | 'watch' | 'ignore'
-  title: string
-  reason: string
-  riskLevel?: 'low' | 'medium' | 'high'
-  requiresApproval?: boolean
-  approvalStatus?: 'pending' | 'approved' | 'rejected' | 'not_required'
-  executionStatus?: 'not_executed' | 'simulated' | 'executed' | 'blocked'
-  policyReason?: string
+  id: string;
+  level: "action_now" | "watch" | "ignore";
+  title: string;
+  reason: string;
+  riskLevel?: "low" | "medium" | "high";
+  requiresApproval?: boolean;
+  approvalStatus?: "pending" | "approved" | "rejected" | "not_required";
+  executionStatus?: "not_executed" | "simulated" | "executed" | "blocked";
+  policyReason?: string;
 }
 
 interface DecisionLogEntry {
-  at: string
-  region: string
-  viralityScore: number | null
-  confidence: number | null
-  items: DecisionItem[]
-  prevHash?: string
-  entryHash?: string
-  mode?: 'advisory' | 'guarded_auto' | 'manual_only'
-  source?: string
-  feedback?: 'helpful' | 'wrong' | 'neutral' | null
-  executedAt?: string | null
+  at: string;
+  region: string;
+  viralityScore: number | null;
+  confidence: number | null;
+  items: DecisionItem[];
+  prevHash?: string;
+  entryHash?: string;
+  mode?: "advisory" | "guarded_auto" | "manual_only";
+  source?: string;
+  feedback?: "helpful" | "wrong" | "neutral" | null;
+  executedAt?: string | null;
 }
 
 interface DecisionLogApiResponse {
-  success: boolean
-  entries?: DecisionLogEntry[]
-  latest?: DecisionLogEntry | null
-  count?: number
-  integrity?: { algorithm: string; hash: string; chainHead?: string | null; genesis?: string }
-  retentionHours?: number
+  success: boolean;
+  entries?: DecisionLogEntry[];
+  latest?: DecisionLogEntry | null;
+  count?: number;
+  integrity?: {
+    algorithm: string;
+    hash: string;
+    chainHead?: string | null;
+    genesis?: string;
+  };
+  retentionHours?: number;
 }
 
 interface LearningHistoryItem {
-  id: string
-  at: string
-  applied: boolean
-  previousMinConfidence: number
-  nextMinConfidence: number
-  helpfulRatio: number
-  wrongRatio: number
-  totalFeedback: number
-  note: string
+  id: string;
+  at: string;
+  applied: boolean;
+  previousMinConfidence: number;
+  nextMinConfidence: number;
+  helpfulRatio: number;
+  wrongRatio: number;
+  totalFeedback: number;
+  note: string;
 }
 
 export default function IntelligenceLogsPage() {
-  const [requiresToken, setRequiresToken] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [entries, setEntries] = useState<DecisionLogEntry[]>([])
-  const [totalCount, setTotalCount] = useState(0)
-  const [region, setRegion] = useState('all')
-  const [level, setLevel] = useState<'all' | 'action_now' | 'watch' | 'ignore'>('all')
-  const [query, setQuery] = useState('')
-  const [autoRefresh, setAutoRefresh] = useState(true)
-  const [clearing, setClearing] = useState(false)
-  const [opsToken, setOpsToken] = useState('')
-  const [integrityHash, setIntegrityHash] = useState<string | null>(null)
-  const [chainHead, setChainHead] = useState<string | null>(null)
-  const [retentionHours, setRetentionHours] = useState<number | null>(null)
-  const [updatingItem, setUpdatingItem] = useState<string | null>(null)
-  const [learningHistory, setLearningHistory] = useState<LearningHistoryItem[]>([])
+  const [requiresToken, setRequiresToken] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [entries, setEntries] = useState<DecisionLogEntry[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [region, setRegion] = useState("all");
+  const [level, setLevel] = useState<"all" | "action_now" | "watch" | "ignore">(
+    "all",
+  );
+  const [query, setQuery] = useState("");
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [clearing, setClearing] = useState(false);
+  const [opsToken, setOpsToken] = useState("");
+  const [integrityHash, setIntegrityHash] = useState<string | null>(null);
+  const [chainHead, setChainHead] = useState<string | null>(null);
+  const [retentionHours, setRetentionHours] = useState<number | null>(null);
+  const [updatingItem, setUpdatingItem] = useState<string | null>(null);
+  const [learningHistory, setLearningHistory] = useState<LearningHistoryItem[]>(
+    [],
+  );
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const stored = window.sessionStorage.getItem('intelligence-ops-token')
-    if (stored) setOpsToken(stored)
-  }, [])
+    if (typeof window === "undefined") return;
+    const stored = window.sessionStorage.getItem("intelligence-ops-token");
+    if (stored) setOpsToken(stored);
+  }, []);
 
   const fetchLogs = useCallback(async () => {
     if (!opsToken) {
-      setLoading(false)
-      setEntries([])
-      setError('Jeton opérateur requis pour accéder aux journaux.')
-      return
+      setLoading(false);
+      setEntries([]);
+      setError("Jeton opérateur requis pour accéder aux journaux.");
+      return;
     }
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const res = await fetch('/api/intelligence/decision-log', {
-        cache: 'no-store',
-        headers: opsToken ? { 'x-intelligence-ops-token': opsToken } : undefined,
-      })
+      const res = await fetch("/api/intelligence/decision-log", {
+        cache: "no-store",
+        headers: opsToken
+          ? { "x-intelligence-ops-token": opsToken }
+          : undefined,
+      });
       if (res.status === 401) {
-        setRequiresToken(true)
-        throw new Error('Non autorisé : fournis un jeton opérateur valide.')
+        setRequiresToken(true);
+        throw new Error("Non autorisé : fournis un jeton opérateur valide.");
       }
-      setRequiresToken(false)
-      const json = (await res.json()) as DecisionLogApiResponse
-      if (!json.success) throw new Error('Impossible de récupérer les journaux de décision.')
-      const availableEntries = Array.isArray(json.entries) ? json.entries : json.latest ? [json.latest] : []
-      setEntries(availableEntries)
-      setTotalCount(json.count || 0)
-      setIntegrityHash(json.integrity?.hash || res.headers.get('x-intelligence-integrity-sha256'))
-      setChainHead(json.integrity?.chainHead || null)
+      setRequiresToken(false);
+      const json = (await res.json()) as DecisionLogApiResponse;
+      if (!json.success)
+        throw new Error("Impossible de récupérer les journaux de décision.");
+      const availableEntries = Array.isArray(json.entries)
+        ? json.entries
+        : json.latest
+          ? [json.latest]
+          : [];
+      setEntries(availableEntries);
+      setTotalCount(json.count || 0);
+      setIntegrityHash(
+        json.integrity?.hash ||
+          res.headers.get("x-intelligence-integrity-sha256"),
+      );
+      setChainHead(json.integrity?.chainHead || null);
       setRetentionHours(
-        typeof json.retentionHours === 'number'
+        typeof json.retentionHours === "number"
           ? json.retentionHours
-          : Number(res.headers.get('x-intelligence-retention-hours') || 0) || null
-      )
+          : Number(res.headers.get("x-intelligence-retention-hours") || 0) ||
+              null,
+      );
     } catch (e) {
       setError(
         mapUserFacingApiError(
-          e instanceof Error ? e.message : 'Impossible de charger les journaux.'
-        )
-      )
+          e instanceof Error
+            ? e.message
+            : "Impossible de charger les journaux.",
+        ),
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [opsToken])
+  }, [opsToken]);
 
   const fetchLearningHistory = useCallback(async () => {
     try {
-      const res = await fetch('/api/intelligence/learning-history?limit=20', { cache: 'no-store' })
-      const json = (await res.json()) as { success: boolean; data?: LearningHistoryItem[] }
+      const res = await fetch("/api/intelligence/learning-history?limit=20", {
+        cache: "no-store",
+      });
+      const json = (await res.json()) as {
+        success: boolean;
+        data?: LearningHistoryItem[];
+      };
       if (json.success && Array.isArray(json.data)) {
-        setLearningHistory(json.data)
+        setLearningHistory(json.data);
       }
     } catch {
       // silent
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    void fetchLogs()
-  }, [fetchLogs])
+    void fetchLogs();
+  }, [fetchLogs]);
 
   useEffect(() => {
-    void fetchLearningHistory()
-  }, [fetchLearningHistory])
+    void fetchLearningHistory();
+  }, [fetchLearningHistory]);
 
   useEffect(() => {
-    if (!autoRefresh) return
+    if (!autoRefresh) return;
     const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
-      void fetchLogs()
-      void fetchLearningHistory()
-    }, 30_000)
-    return () => clearInterval(interval)
-  }, [autoRefresh, fetchLearningHistory, fetchLogs])
+      if (
+        typeof document !== "undefined" &&
+        document.visibilityState !== "visible"
+      )
+        return;
+      void fetchLogs();
+      void fetchLearningHistory();
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [autoRefresh, fetchLearningHistory, fetchLogs]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const q = query.trim().toLowerCase();
     return entries.filter((entry) => {
-      if (region !== 'all' && entry.region !== region) return false
-      const matchingItems = entry.items.filter((item) => (level === 'all' ? true : item.level === level))
-      if (matchingItems.length === 0) return false
-      if (!q) return true
+      if (region !== "all" && entry.region !== region) return false;
+      const matchingItems = entry.items.filter((item) =>
+        level === "all" ? true : item.level === level,
+      );
+      if (matchingItems.length === 0) return false;
+      if (!q) return true;
       return matchingItems.some(
-        (item) => item.title.toLowerCase().includes(q) || item.reason.toLowerCase().includes(q)
-      )
-    })
-  }, [entries, level, query, region])
+        (item) =>
+          item.title.toLowerCase().includes(q) ||
+          item.reason.toLowerCase().includes(q),
+      );
+    });
+  }, [entries, level, query, region]);
 
   const flattenedRows = useMemo(
     () =>
       filtered.flatMap((entry) =>
         entry.items
-          .filter((item) => (level === 'all' ? true : item.level === level))
+          .filter((item) => (level === "all" ? true : item.level === level))
           .map((item) => ({
             at: entry.at,
             region: entry.region,
@@ -175,148 +210,173 @@ export default function IntelligenceLogsPage() {
             level: item.level,
             title: item.title,
             reason: item.reason,
-          }))
+          })),
       ),
-    [filtered, level]
-  )
+    [filtered, level],
+  );
 
   const levelCounts = useMemo(() => {
-    const counts = { action_now: 0, watch: 0, ignore: 0 }
+    const counts = { action_now: 0, watch: 0, ignore: 0 };
     for (const row of flattenedRows) {
-      counts[row.level] += 1
+      counts[row.level] += 1;
     }
-    return counts
-  }, [flattenedRows])
+    return counts;
+  }, [flattenedRows]);
 
   const exportCsv = () => {
-    if (flattenedRows.length === 0) return
-    const header = 'at,region,viralityScore,confidence,level,title,reason'
+    if (flattenedRows.length === 0) return;
+    const header = "at,region,viralityScore,confidence,level,title,reason";
     const rows = flattenedRows.map((row) =>
-      [row.at, row.region, row.viralityScore ?? '', row.confidence ?? '', row.level, row.title, row.reason]
+      [
+        row.at,
+        row.region,
+        row.viralityScore ?? "",
+        row.confidence ?? "",
+        row.level,
+        row.title,
+        row.reason,
+      ]
         .map((v) => `"${String(v).replace(/"/g, '""')}"`)
-        .join(',')
-    )
-    const csv = [header, ...rows].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `intelligence-logs-filtered-${Date.now()}.csv`
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-    URL.revokeObjectURL(url)
-  }
+        .join(","),
+    );
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `intelligence-logs-filtered-${Date.now()}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
 
   const exportServerSignedCsv = async () => {
     if (!opsToken) {
-      setError('Jeton opérateur requis pour l\'export serveur.')
-      return
+      setError("Jeton opérateur requis pour l'export serveur.");
+      return;
     }
-    setError(null)
+    setError(null);
     try {
-      const res = await fetch('/api/intelligence/decision-log?format=csv', {
-        headers: { 'x-intelligence-ops-token': opsToken },
-      })
-      if (!res.ok) throw new Error('Échec de l’export CSV signé.')
-      const csvHash = res.headers.get('x-intelligence-integrity-sha256')
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      const hashSuffix = csvHash ? csvHash.slice(0, 10) : 'nohash'
-      link.href = url
-      link.download = `intelligence-logs-signed-${hashSuffix}.csv`
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-      URL.revokeObjectURL(url)
-      if (csvHash) setIntegrityHash(csvHash)
+      const res = await fetch("/api/intelligence/decision-log?format=csv", {
+        headers: { "x-intelligence-ops-token": opsToken },
+      });
+      if (!res.ok) throw new Error("Échec de l’export CSV signé.");
+      const csvHash = res.headers.get("x-intelligence-integrity-sha256");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const hashSuffix = csvHash ? csvHash.slice(0, 10) : "nohash";
+      link.href = url;
+      link.download = `intelligence-logs-signed-${hashSuffix}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      if (csvHash) setIntegrityHash(csvHash);
     } catch (e) {
       setError(
         mapUserFacingApiError(
-          e instanceof Error ? e.message : 'Impossible d\'exporter le CSV signé.'
-        )
-      )
+          e instanceof Error
+            ? e.message
+            : "Impossible d'exporter le CSV signé.",
+        ),
+      );
     }
-  }
+  };
 
   const clearServerLog = async () => {
     if (!opsToken) {
-      setError('Jeton opérateur requis pour vider les journaux.')
-      return
+      setError("Jeton opérateur requis pour vider les journaux.");
+      return;
     }
-    setClearing(true)
-    setError(null)
+    setClearing(true);
+    setError(null);
     try {
-      const res = await fetch('/api/intelligence/decision-log', {
-        method: 'DELETE',
-        headers: { 'x-intelligence-ops-token': opsToken },
-      })
-      const json = (await res.json()) as { success: boolean; error?: string }
-      if (!json.success) throw new Error(json.error || 'Impossible de vider les journaux.')
-      await fetchLogs()
+      const res = await fetch("/api/intelligence/decision-log", {
+        method: "DELETE",
+        headers: { "x-intelligence-ops-token": opsToken },
+      });
+      const json = (await res.json()) as { success: boolean; error?: string };
+      if (!json.success)
+        throw new Error(json.error || "Impossible de vider les journaux.");
+      await fetchLogs();
     } catch (e) {
       setError(
         mapUserFacingApiError(
-          e instanceof Error ? e.message : 'Impossible de vider le journal côté serveur.'
-        )
-      )
+          e instanceof Error
+            ? e.message
+            : "Impossible de vider le journal côté serveur.",
+        ),
+      );
     } finally {
-      setClearing(false)
+      setClearing(false);
     }
-  }
+  };
 
-  const updateItemStatus = async (entryAt: string, itemId: string, approvalStatus: 'approved' | 'rejected') => {
-    if (!opsToken) return
-    setUpdatingItem(`${entryAt}:${itemId}`)
+  const updateItemStatus = async (
+    entryAt: string,
+    itemId: string,
+    approvalStatus: "approved" | "rejected",
+  ) => {
+    if (!opsToken) return;
+    setUpdatingItem(`${entryAt}:${itemId}`);
     try {
-      const res = await fetch('/api/intelligence/decision-log', {
-        method: 'PATCH',
+      const res = await fetch("/api/intelligence/decision-log", {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'x-intelligence-ops-token': opsToken,
+          "Content-Type": "application/json",
+          "x-intelligence-ops-token": opsToken,
         },
         body: JSON.stringify({ at: entryAt, itemId, approvalStatus }),
-      })
-      if (res.ok) await fetchLogs()
+      });
+      if (res.ok) await fetchLogs();
     } finally {
-      setUpdatingItem(null)
+      setUpdatingItem(null);
     }
-  }
+  };
 
-  const sendFeedback = async (entry: DecisionLogEntry, item: DecisionItem, feedback: 'helpful' | 'wrong' | 'neutral') => {
+  const sendFeedback = async (
+    entry: DecisionLogEntry,
+    item: DecisionItem,
+    feedback: "helpful" | "wrong" | "neutral",
+  ) => {
     try {
-      await fetch('/api/intelligence/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await fetch("/api/intelligence/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           decisionId: item.id,
           feedback,
           region: entry.region,
           note: item.title,
         }),
-      })
-      await fetch('/api/intelligence/decision-log', {
-        method: 'PATCH',
+      });
+      await fetch("/api/intelligence/decision-log", {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'x-intelligence-ops-token': opsToken,
+          "Content-Type": "application/json",
+          "x-intelligence-ops-token": opsToken,
         },
         body: JSON.stringify({ at: entry.at, itemId: item.id, feedback }),
-      })
-      await fetchLogs()
+      });
+      await fetchLogs();
     } catch {
       // silent
     }
-  }
+  };
 
   return (
     <div className="min-h-screen text-[var(--color-text-primary)] p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Intelligence Decision Logs</h1>
-            <p className="text-[var(--color-text-secondary)] text-sm">Operational view of decision feed history</p>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+              Intelligence Decision Logs
+            </h1>
+            <p className="text-[var(--color-text-secondary)] text-sm">
+              Operational view of decision feed history
+            </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <Link
@@ -362,7 +422,7 @@ export default function IntelligenceLogsPage() {
               className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 disabled:opacity-50"
             >
               <Trash2 size={14} />
-              {clearing ? 'Clearing...' : 'Clear'}
+              {clearing ? "Clearing..." : "Clear"}
             </button>
             <button
               type="button"
@@ -370,7 +430,7 @@ export default function IntelligenceLogsPage() {
               disabled={loading}
               className="p-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] disabled:opacity-50 transition-colors"
             >
-              <RefreshCw size={16} className={cn(loading && 'animate-spin')} />
+              <RefreshCw size={16} className={cn(loading && "animate-spin")} />
             </button>
           </div>
         </div>
@@ -386,11 +446,14 @@ export default function IntelligenceLogsPage() {
           <button
             type="button"
             onClick={() => {
-              if (typeof window === 'undefined') return
+              if (typeof window === "undefined") return;
               if (opsToken) {
-                window.sessionStorage.setItem('intelligence-ops-token', opsToken)
+                window.sessionStorage.setItem(
+                  "intelligence-ops-token",
+                  opsToken,
+                );
               } else {
-                window.sessionStorage.removeItem('intelligence-ops-token')
+                window.sessionStorage.removeItem("intelligence-ops-token");
               }
             }}
             className="text-xs px-3 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
@@ -399,7 +462,8 @@ export default function IntelligenceLogsPage() {
           </button>
           {requiresToken && (
             <span className="text-[11px] text-amber-300">
-              Tip: first access can be done with `?opsToken=...` to set secured cookie.
+              Tip: first access can be done with `?opsToken=...` to set secured
+              cookie.
             </span>
           )}
         </div>
@@ -423,7 +487,11 @@ export default function IntelligenceLogsPage() {
           </select>
           <select
             value={level}
-            onChange={(e) => setLevel(e.target.value as 'all' | 'action_now' | 'watch' | 'ignore')}
+            onChange={(e) =>
+              setLevel(
+                e.target.value as "all" | "action_now" | "watch" | "ignore",
+              )
+            }
             className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-md px-2 py-1.5 text-xs text-[var(--color-text-primary)]"
           >
             <option value="all">All levels</option>
@@ -447,31 +515,51 @@ export default function IntelligenceLogsPage() {
           </label>
         </div>
 
-        {error && <div className="text-sm text-red-300 rounded-lg border border-red-500/20 bg-red-500/10 p-3">{error}</div>}
+        {error && (
+          <div className="text-sm text-red-300 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+            {error}
+          </div>
+        )}
 
         <div className="text-xs text-[var(--color-text-secondary)] flex flex-wrap items-center gap-2">
-          <span>Showing {filtered.length} entries / {entries.length} loaded / {totalCount} total</span>
+          <span>
+            Showing {filtered.length} entries / {entries.length} loaded /{" "}
+            {totalCount} total
+          </span>
           <span>· action now: {levelCounts.action_now}</span>
           <span>· watch: {levelCounts.watch}</span>
           <span>· ignore: {levelCounts.ignore}</span>
-          {retentionHours !== null && <span>· retention: {retentionHours}h</span>}
-          {integrityHash && <span>· integrity: {integrityHash.slice(0, 12)}...</span>}
+          {retentionHours !== null && (
+            <span>· retention: {retentionHours}h</span>
+          )}
+          {integrityHash && (
+            <span>· integrity: {integrityHash.slice(0, 12)}...</span>
+          )}
           {chainHead && <span>· chain head: {chainHead.slice(0, 12)}...</span>}
         </div>
 
         <div className="space-y-3">
           {learningHistory.length > 0 && (
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-3">
-              <h2 className="text-sm font-semibold mb-2">Learning Calibration History</h2>
+              <h2 className="text-sm font-semibold mb-2">
+                Learning Calibration History
+              </h2>
               <div className="space-y-2">
                 {learningHistory.slice(0, 6).map((item) => (
-                  <div key={item.id} className="text-xs text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded-lg p-2 bg-[var(--color-bg-elevated)]">
+                  <div
+                    key={item.id}
+                    className="text-xs text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded-lg p-2 bg-[var(--color-bg-elevated)]"
+                  >
                     <p>
-                      {new Date(item.at).toLocaleString()} · {item.applied ? 'applied' : 'no-change'} · threshold{' '}
-                      {item.previousMinConfidence.toFixed(2)} → {item.nextMinConfidence.toFixed(2)}
+                      {new Date(item.at).toLocaleString()} ·{" "}
+                      {item.applied ? "applied" : "no-change"} · threshold{" "}
+                      {item.previousMinConfidence.toFixed(2)} →{" "}
+                      {item.nextMinConfidence.toFixed(2)}
                     </p>
                     <p className="text-[var(--color-text-tertiary)] mt-1">
-                      helpful {(item.helpfulRatio * 100).toFixed(0)}% · wrong {(item.wrongRatio * 100).toFixed(0)}% · feedback {item.totalFeedback}
+                      helpful {(item.helpfulRatio * 100).toFixed(0)}% · wrong{" "}
+                      {(item.wrongRatio * 100).toFixed(0)}% · feedback{" "}
+                      {item.totalFeedback}
                     </p>
                   </div>
                 ))}
@@ -479,15 +567,23 @@ export default function IntelligenceLogsPage() {
             </div>
           )}
           {filtered.map((entry) => (
-            <div key={entry.at} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-3">
+            <div
+              key={entry.at}
+              className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-3"
+            >
               <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--color-text-secondary)] mb-2">
                 <span>{new Date(entry.at).toLocaleString()}</span>
                 <span>·</span>
                 <span>{entry.region}</span>
                 <span>·</span>
-                <span>virality: {entry.viralityScore ?? '--'}</span>
+                <span>virality: {entry.viralityScore ?? "--"}</span>
                 <span>·</span>
-                <span>confidence: {entry.confidence === null ? '--' : `${Math.round(entry.confidence * 100)}%`}</span>
+                <span>
+                  confidence:{" "}
+                  {entry.confidence === null
+                    ? "--"
+                    : `${Math.round(entry.confidence * 100)}%`}
+                </span>
                 {entry.entryHash && (
                   <>
                     <span>·</span>
@@ -497,43 +593,74 @@ export default function IntelligenceLogsPage() {
               </div>
               <div className="space-y-2">
                 {entry.items
-                  .filter((item) => (level === 'all' ? true : item.level === level))
+                  .filter((item) =>
+                    level === "all" ? true : item.level === level,
+                  )
                   .map((item) => (
-                    <div key={item.id} className="p-2 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)]">
+                    <div
+                      key={item.id}
+                      className="p-2 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)]"
+                    >
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-sm font-medium">{item.title}</p>
                         <span
                           className={cn(
-                            'text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-bold',
-                            item.level === 'action_now' && 'bg-rose-500/20 text-rose-300',
-                            item.level === 'watch' && 'bg-amber-500/20 text-amber-300',
-                            item.level === 'ignore' && 'bg-[var(--color-card-hover)] text-[var(--color-text-secondary)]'
+                            "text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-bold",
+                            item.level === "action_now" &&
+                              "bg-rose-500/20 text-rose-300",
+                            item.level === "watch" &&
+                              "bg-amber-500/20 text-amber-300",
+                            item.level === "ignore" &&
+                              "bg-[var(--color-card-hover)] text-[var(--color-text-secondary)]",
                           )}
                         >
-                          {item.level === 'action_now' ? 'Action now' : item.level === 'watch' ? 'Watch' : 'Ignore'}
+                          {item.level === "action_now"
+                            ? "Action now"
+                            : item.level === "watch"
+                              ? "Watch"
+                              : "Ignore"}
                         </span>
                       </div>
-                      <p className="text-xs text-[var(--color-text-secondary)] mt-1">{item.reason}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        {item.reason}
+                      </p>
                       {(item.riskLevel || item.policyReason) && (
                         <p className="text-[11px] text-[var(--color-text-tertiary)] mt-1">
-                          risk: {item.riskLevel || 'n/a'} · policy: {item.policyReason || 'n/a'}
+                          risk: {item.riskLevel || "n/a"} · policy:{" "}
+                          {item.policyReason || "n/a"}
                         </p>
                       )}
                       <div className="mt-2 flex flex-wrap items-center gap-2">
-                        {item.approvalStatus === 'pending' && (
+                        {item.approvalStatus === "pending" && (
                           <>
                             <button
                               type="button"
-                              onClick={() => void updateItemStatus(entry.at, item.id, 'approved')}
-                              disabled={updatingItem === `${entry.at}:${item.id}`}
+                              onClick={() =>
+                                void updateItemStatus(
+                                  entry.at,
+                                  item.id,
+                                  "approved",
+                                )
+                              }
+                              disabled={
+                                updatingItem === `${entry.at}:${item.id}`
+                              }
                               className="text-[11px] px-2 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 disabled:opacity-50"
                             >
                               Approve
                             </button>
                             <button
                               type="button"
-                              onClick={() => void updateItemStatus(entry.at, item.id, 'rejected')}
-                              disabled={updatingItem === `${entry.at}:${item.id}`}
+                              onClick={() =>
+                                void updateItemStatus(
+                                  entry.at,
+                                  item.id,
+                                  "rejected",
+                                )
+                              }
+                              disabled={
+                                updatingItem === `${entry.at}:${item.id}`
+                              }
                               className="text-[11px] px-2 py-1 rounded bg-rose-500/20 hover:bg-rose-500/30 disabled:opacity-50"
                             >
                               Reject
@@ -542,14 +669,18 @@ export default function IntelligenceLogsPage() {
                         )}
                         <button
                           type="button"
-                          onClick={() => void sendFeedback(entry, item, 'helpful')}
+                          onClick={() =>
+                            void sendFeedback(entry, item, "helpful")
+                          }
                           className="text-[11px] px-2 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30"
                         >
                           Helpful
                         </button>
                         <button
                           type="button"
-                          onClick={() => void sendFeedback(entry, item, 'wrong')}
+                          onClick={() =>
+                            void sendFeedback(entry, item, "wrong")
+                          }
                           className="text-[11px] px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30"
                         >
                           Wrong
@@ -568,5 +699,5 @@ export default function IntelligenceLogsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

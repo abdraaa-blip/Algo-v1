@@ -1,22 +1,30 @@
 // CACHE_BUST: 2026-04-05T08:48 - Force Turbopack rebuild v2
-import Link from 'next/link'
-import { Radar } from 'lucide-react'
+import Link from "next/link";
+import { Radar } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
       <div className="text-center space-y-6 max-w-sm">
-
         {/* Icon */}
         <div className="size-16 rounded-3xl bg-violet-500/12 border border-violet-500/20 flex items-center justify-center mx-auto">
-          <Radar size={28} strokeWidth={1.4} className="text-violet-400" aria-hidden />
+          <Radar
+            size={28}
+            strokeWidth={1.4}
+            className="text-violet-400"
+            aria-hidden
+          />
         </div>
 
         {/* Text */}
         <div className="space-y-2">
           <p
             className="font-black text-white/8"
-            style={{ fontSize: 'clamp(64px, 15vw, 96px)', letterSpacing: '-0.04em', lineHeight: 1 }}
+            style={{
+              fontSize: "clamp(64px, 15vw, 96px)",
+              letterSpacing: "-0.04em",
+              lineHeight: 1,
+            }}
             aria-hidden
           >
             404
@@ -38,5 +46,5 @@ export default function NotFound() {
         </Link>
       </div>
     </div>
-  )
+  );
 }

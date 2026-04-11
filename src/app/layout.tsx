@@ -1,40 +1,53 @@
-import type { Metadata, Viewport } from 'next'
-import Script from 'next/script'
-import { ClientProviders } from '@/components/providers/ClientProviders'
-import { ClientLayout } from '@/components/layout/ClientLayout'
-import { buildRootMetadata } from '@/lib/seo/build-metadata'
-import { organizationJsonLd, websiteJsonLd } from '@/lib/seo/json-ld'
-import './globals.css'
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { ClientProviders } from "@/components/providers/ClientProviders";
+import { ClientLayout } from "@/components/layout/ClientLayout";
+import { buildRootMetadata } from "@/lib/seo/build-metadata";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
+import "./globals.css";
 
-export const metadata: Metadata = buildRootMetadata()
+export const metadata: Metadata = buildRootMetadata();
 
 export const viewport: Viewport = {
-  themeColor: '#07070f',
-  width: 'device-width',
+  themeColor: "#07070f",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5, // Allow zoom for accessibility
   userScalable: true, // Required for WCAG 2.1 compliance
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const organizationLd = organizationJsonLd()
-  const websiteLd = websiteJsonLd()
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const organizationLd = organizationJsonLd();
+  const websiteLd = websiteJsonLd();
 
   return (
-    <html lang="fr" dir="ltr" data-scroll-behavior="smooth" data-algo-view="focus">
+    <html
+      lang="fr"
+      dir="ltr"
+      data-scroll-behavior="smooth"
+      data-algo-view="focus"
+    >
       <head>
         {/* Preconnect to critical third-party origins - Chrome team PRPL pattern */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="preconnect" href="https://image.tmdb.org" />
         <link rel="preconnect" href="https://www.googleapis.com" />
         <link rel="preconnect" href="https://api.themoviedb.org" />
-        
+
         {/* DNS prefetch for secondary resources */}
         <link rel="dns-prefetch" href="https://news.google.com" />
         <link rel="dns-prefetch" href="https://api.github.com" />
-        
+
         {/* Suppress benign Performance.measure errors from Next.js internals */}
         <Script
           id="performance-measure-fix"
@@ -65,5 +78,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </ClientProviders>
       </body>
     </html>
-  )
+  );
 }

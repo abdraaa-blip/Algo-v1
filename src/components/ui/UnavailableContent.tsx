@@ -1,29 +1,29 @@
-'use client'
+"use client";
 
-import { AlertCircle, RefreshCw, Home, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { AlertCircle, RefreshCw, Home, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface UnavailableContentProps {
-  title?: string
-  message?: string
-  showRefresh?: boolean
-  showBackButton?: boolean
-  showHomeButton?: boolean
-  variant?: 'default' | 'compact' | 'inline'
+  title?: string;
+  message?: string;
+  showRefresh?: boolean;
+  showBackButton?: boolean;
+  showHomeButton?: boolean;
+  variant?: "default" | "compact" | "inline";
 }
 
 export function UnavailableContent({
-  title = 'Contenu indisponible',
-  message = 'Ce contenu est temporairement indisponible. Réessaie plus tard.',
+  title = "Contenu indisponible",
+  message = "Ce contenu est temporairement indisponible. Réessaie plus tard.",
   showRefresh = true,
   showBackButton = true,
   showHomeButton = true,
-  variant = 'default'
+  variant = "default",
 }: UnavailableContentProps) {
-  const router = useRouter()
+  const router = useRouter();
 
-  if (variant === 'inline') {
+  if (variant === "inline") {
     return (
       <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10">
         <AlertCircle size={16} className="text-white/40 flex-shrink-0" />
@@ -38,10 +38,10 @@ export function UnavailableContent({
           </button>
         )}
       </div>
-    )
+    );
   }
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <div className="text-center py-8 px-4">
         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
@@ -69,7 +69,7 @@ export function UnavailableContent({
           )}
         </div>
       </div>
-    )
+    );
   }
 
   // Default full-page variant
@@ -78,10 +78,10 @@ export function UnavailableContent({
       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-white/5 flex items-center justify-center mb-6">
         <AlertCircle size={36} className="text-white/30" />
       </div>
-      
+
       <h1 className="text-xl font-bold text-white mb-2">{title}</h1>
       <p className="text-white/50 text-center max-w-sm mb-8">{message}</p>
-      
+
       <div className="flex flex-wrap items-center justify-center gap-3">
         {showRefresh && (
           <button
@@ -112,7 +112,7 @@ export function UnavailableContent({
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Export a simple fallback for video/trailer errors
@@ -131,5 +131,5 @@ export function VideoUnavailable({ onRetry }: { onRetry?: () => void }) {
         </button>
       )}
     </div>
-  )
+  );
 }

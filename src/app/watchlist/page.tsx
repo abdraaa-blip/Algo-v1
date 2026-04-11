@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Bookmark, ArrowLeft, Trash2 } from 'lucide-react'
-import { LiveCurve } from '@/components/algo/LiveCurve'
-import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
-import { MomentumPill } from '@/components/algo/MomentumPill'
-import { Badge } from '@/components/algo/Badge'
-import { EmptyState } from '@/components/ui/EmptyState'
-import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
-import { useWatchlist } from '@/hooks/useWatchlist'
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Bookmark, ArrowLeft, Trash2 } from "lucide-react";
+import { LiveCurve } from "@/components/algo/LiveCurve";
+import { ViralScoreRing } from "@/components/algo/ViralScoreRing";
+import { MomentumPill } from "@/components/algo/MomentumPill";
+import { Badge } from "@/components/algo/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import { useWatchlist } from "@/hooks/useWatchlist";
 
 export default function WatchlistPage() {
-  const router = useRouter()
-  const { trends, unfollow, isLoaded } = useWatchlist()
+  const router = useRouter();
+  const { trends, unfollow, isLoaded } = useWatchlist();
 
   return (
     <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
@@ -39,7 +39,7 @@ export default function WatchlistPage() {
       <section className="max-w-4xl mx-auto px-4 py-6">
         {!isLoaded && (
           <div className="space-y-3">
-            {[1, 2, 3].map(i => (
+            {[1, 2, 3].map((i) => (
               <SkeletonLoader key={i} shape="card" />
             ))}
           </div>
@@ -51,8 +51,8 @@ export default function WatchlistPage() {
             title="Aucune tendance suivie"
             subtitle="Commence par explorer les tendances et ajouter celles qui t'interessent."
             cta={{
-              label: 'Explorer les tendances',
-              onClick: () => router.push('/trends'),
+              label: "Explorer les tendances",
+              onClick: () => router.push("/trends"),
             }}
           />
         )}
@@ -64,62 +64,86 @@ export default function WatchlistPage() {
                 key={trend.id}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all algo-s${Math.min(i + 1, 6)}`}
                 style={{
-                  background: trend.isExploding ? 'rgba(255,77,109,0.08)' : 'rgba(255,255,255,0.03)',
-                  border: trend.isExploding ? '1px solid rgba(255,77,109,0.2)' : '1px solid rgba(255,255,255,0.06)'
+                  background: trend.isExploding
+                    ? "rgba(255,77,109,0.08)"
+                    : "rgba(255,255,255,0.03)",
+                  border: trend.isExploding
+                    ? "1px solid rgba(255,77,109,0.2)"
+                    : "1px solid rgba(255,255,255,0.06)",
                 }}
               >
                 <ViralScoreRing score={trend.score} size={48} />
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <Link 
+                    <Link
                       href={`/content/${trend.id}`}
                       className="text-sm font-semibold hover:underline truncate"
-                      style={{ color: 'rgba(240,240,248,0.85)' }}
+                      style={{ color: "rgba(240,240,248,0.85)" }}
                     >
                       {trend.name}
                     </Link>
-                    {trend.score >= 88 ? <Badge type="Viral" label="Fort" /> : null}
-                    {trend.isExploding ? <Badge type="Breaking" label="Explosion" /> : null}
+                    {trend.score >= 88 ? (
+                      <Badge type="Viral" label="Fort" />
+                    ) : null}
+                    {trend.isExploding ? (
+                      <Badge type="Breaking" label="Explosion" />
+                    ) : null}
                   </div>
-                  <div className="flex items-center gap-3 text-[10px]" style={{ color: 'rgba(240,240,248,0.4)' }}>
-                    <span>{trend.platform || 'Multi'}</span>
-                    <span style={{ color: 'rgba(240,240,248,0.2)' }}>|</span>
-                    <span>{trend.category || 'General'}</span>
+                  <div
+                    className="flex items-center gap-3 text-[10px]"
+                    style={{ color: "rgba(240,240,248,0.4)" }}
+                  >
+                    <span>{trend.platform || "Multi"}</span>
+                    <span style={{ color: "rgba(240,240,248,0.2)" }}>|</span>
+                    <span>{trend.category || "General"}</span>
                   </div>
                 </div>
-                
+
                 {trend.growthRate && (
-                  <MomentumPill value={trend.growthRate} trend={trend.growthTrend || 'stable'} />
+                  <MomentumPill
+                    value={trend.growthRate}
+                    trend={trend.growthTrend || "stable"}
+                  />
                 )}
-                
+
                 <button
                   onClick={() => unfollow(trend.id)}
                   aria-label={`Retirer ${trend.name} de la watchlist`}
                   className="p-2 rounded-lg text-xs font-bold transition-all hover:bg-[rgba(255,77,109,0.2)]"
                   style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'rgba(240,240,248,0.5)'
+                    background: "rgba(255,255,255,0.05)",
+                    color: "rgba(240,240,248,0.5)",
                   }}
                 >
                   <Trash2 size={16} />
                 </button>
               </article>
             ))}
-            
+
             <Link
               href="/trends"
               className="inline-flex items-center gap-1.5 text-xs font-semibold mt-4 transition-colors hover:opacity-80"
-              style={{ color: 'rgba(240,240,248,0.3)' }}
+              style={{ color: "rgba(240,240,248,0.3)" }}
             >
               Decouvrir plus de tendances
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>
         )}
       </section>
     </main>
-  )
+  );
 }

@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { FileQuestion, RefreshCw, Home, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { FileQuestion, RefreshCw, Home, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function ContentError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   useEffect(() => {
-    console.error('[ALGO Content Error]', error)
-  }, [error])
+    console.error("[ALGO Content Error]", error);
+  }, [error]);
 
   return (
     <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
@@ -28,7 +28,9 @@ export default function ContentError({
 
         <div className="space-y-2">
           <h1 className="text-white font-bold text-lg">Contenu indisponible</h1>
-          <p className="text-white/40 text-sm leading-relaxed">{ALGO_UI_ERROR.message}</p>
+          <p className="text-white/40 text-sm leading-relaxed">
+            {ALGO_UI_ERROR.message}
+          </p>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -39,7 +41,7 @@ export default function ContentError({
             <RefreshCw size={16} />
             Réessayer
           </button>
-          
+
           <button
             onClick={() => router.back()}
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white/60 text-sm font-medium hover:bg-white/10 hover:text-white/80 transition-all duration-150"
@@ -47,7 +49,7 @@ export default function ContentError({
             <ArrowLeft size={16} />
             Retour
           </button>
-          
+
           <Link
             href="/"
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white/60 text-sm font-medium hover:bg-white/10 hover:text-white/80 transition-all duration-150"
@@ -64,5 +66,5 @@ export default function ContentError({
         )}
       </div>
     </div>
-  )
+  );
 }

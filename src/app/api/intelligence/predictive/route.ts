@@ -1,92 +1,101 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
-import { generateAutonomyProposals } from '@/lib/autonomy/reasoner'
-import { evaluatePolicy, getAutonomyPolicy } from '@/lib/autonomy/policy'
+import { NextRequest, NextResponse } from "next/server";
+import {
+  checkRateLimit,
+  createRateLimitHeaders,
+  getClientIdentifier,
+} from "@/lib/api/rate-limiter";
+import { generateAutonomyProposals } from "@/lib/autonomy/reasoner";
+import { evaluatePolicy, getAutonomyPolicy } from "@/lib/autonomy/policy";
 import {
   buildPredictiveIntelligenceBundle,
   type GlobalIntelligenceSnapshot,
-} from '@/lib/intelligence/predictive-intelligence-bundle'
-import { recordRadarSnapshotIfDue } from '@/lib/intelligence/radar-snapshot-store'
+} from "@/lib/intelligence/predictive-intelligence-bundle";
+import { recordRadarSnapshotIfDue } from "@/lib/intelligence/radar-snapshot-store";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 interface PredictivePayload {
-  success: true
+  success: true;
   data: {
-    generatedAt: string
-    region: string
-    locale: string
-    predictedViralityScore: number
-    confidence: number
+    generatedAt: string;
+    region: string;
+    locale: string;
+    predictedViralityScore: number;
+    confidence: number;
     drivers: {
-      topCategory: string
-      engagementRate: number
-      frictionRate: number
-      anomalies: GlobalIntelligenceSnapshot['anomalies']
-    }
+      topCategory: string;
+      engagementRate: number;
+      frictionRate: number;
+      anomalies: GlobalIntelligenceSnapshot["anomalies"];
+    };
     recommendations: Array<{
-      type: string
-      title: string
-      confidence: number
-    }>
+      type: string;
+      title: string;
+      confidence: number;
+    }>;
     autonomy: {
-      mode: ReturnType<typeof getAutonomyPolicy>['mode']
-      killSwitch: boolean
+      mode: ReturnType<typeof getAutonomyPolicy>["mode"];
+      killSwitch: boolean;
       proposals: Array<{
-        id: string
-        type: string
-        title: string
-        rationale: string
-        confidence: number
-        expectedImpact: number
-        riskLevel: string
-        requiresApproval: boolean
+        id: string;
+        type: string;
+        title: string;
+        rationale: string;
+        confidence: number;
+        expectedImpact: number;
+        riskLevel: string;
+        requiresApproval: boolean;
         policyDecision: {
-          allowed: boolean
-          requiresApproval: boolean
-          reason: string
-          idempotencyKey: string
-        }
-      }>
-    }
-  }
-  cached: boolean
-  stale?: boolean
-  cacheTtlMs: number
+          allowed: boolean;
+          requiresApproval: boolean;
+          reason: string;
+          idempotencyKey: string;
+        };
+      }>;
+    };
+  };
+  cached: boolean;
+  stale?: boolean;
+  cacheTtlMs: number;
 }
 
 interface PredictiveCacheEntry {
-  key: string
-  payload: PredictivePayload
-  expiresAtMs: number
+  key: string;
+  payload: PredictivePayload;
+  expiresAtMs: number;
 }
 
-const PREDICTIVE_CACHE_TTL_MS = 30_000
-const predictiveCache = new Map<string, PredictiveCacheEntry>()
+const PREDICTIVE_CACHE_TTL_MS = 30_000;
+const predictiveCache = new Map<string, PredictiveCacheEntry>();
 
 export async function GET(request: NextRequest) {
-  const identifier = getClientIdentifier(request)
-  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60_000 })
+  const identifier = getClientIdentifier(request);
+  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60_000 });
   if (!rateLimit.success) {
     return NextResponse.json(
-      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
-      { status: 429, headers: createRateLimitHeaders(rateLimit) }
-    )
+      {
+        success: false,
+        error: "Rate limit exceeded",
+        retryAfter: rateLimit.retryAfter,
+      },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
 
-  const { searchParams } = new URL(request.url)
-  const region = searchParams.get('region') || 'FR'
-  const locale = searchParams.get('locale') || 'fr'
-  const cacheKey = `${region.toUpperCase()}:${locale.toLowerCase()}`
-  const nowMs = Date.now()
-  const cached = predictiveCache.get(cacheKey)
+  const { searchParams } = new URL(request.url);
+  const region = searchParams.get("region") || "FR";
+  const locale = searchParams.get("locale") || "fr";
+  const cacheKey = `${region.toUpperCase()}:${locale.toLowerCase()}`;
+  const nowMs = Date.now();
+  const cached = predictiveCache.get(cacheKey);
   if (cached && cached.expiresAtMs > nowMs) {
-    return NextResponse.json({ ...cached.payload, cached: true })
+    return NextResponse.json({ ...cached.payload, cached: true });
   }
 
   try {
-    const bundle = await buildPredictiveIntelligenceBundle({ region, locale })
-    const { snapshot, topCategory, predictedViralityScore, confidence } = bundle
+    const bundle = await buildPredictiveIntelligenceBundle({ region, locale });
+    const { snapshot, topCategory, predictedViralityScore, confidence } =
+      bundle;
 
     const payload: PredictivePayload = {
       success: true,
@@ -97,7 +106,7 @@ export async function GET(request: NextRequest) {
         predictedViralityScore,
         confidence,
         drivers: {
-          topCategory: topCategory?.name || 'general',
+          topCategory: topCategory?.name || "general",
           engagementRate: snapshot.sources.firstPartySignals.engagementRate,
           frictionRate: snapshot.sources.firstPartySignals.frictionRate,
           anomalies: snapshot.anomalies,
@@ -116,8 +125,9 @@ export async function GET(request: NextRequest) {
               predictedViralityScore,
               confidence,
               drivers: {
-                topCategory: topCategory?.name || 'general',
-                engagementRate: snapshot.sources.firstPartySignals.engagementRate,
+                topCategory: topCategory?.name || "general",
+                engagementRate:
+                  snapshot.sources.firstPartySignals.engagementRate,
                 frictionRate: snapshot.sources.firstPartySignals.frictionRate,
                 anomalies: snapshot.anomalies,
               },
@@ -130,12 +140,12 @@ export async function GET(request: NextRequest) {
       },
       cached: false,
       cacheTtlMs: PREDICTIVE_CACHE_TTL_MS,
-    }
+    };
     predictiveCache.set(cacheKey, {
       key: cacheKey,
       payload,
       expiresAtMs: nowMs + PREDICTIVE_CACHE_TTL_MS,
-    })
+    });
     recordRadarSnapshotIfDue(request, {
       region: bundle.region,
       locale: bundle.locale,
@@ -143,23 +153,26 @@ export async function GET(request: NextRequest) {
       confidence,
       anomalyCount: bundle.anomalyCount,
       generatedAt: bundle.generatedAt,
-    })
-    return NextResponse.json(payload)
+    });
+    return NextResponse.json(payload);
   } catch (error) {
-    const stale = predictiveCache.get(cacheKey)
+    const stale = predictiveCache.get(cacheKey);
     if (stale) {
       return NextResponse.json({
         ...stale.payload,
         cached: true,
         stale: true,
-      })
+      });
     }
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to build predictive analysis',
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to build predictive analysis",
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

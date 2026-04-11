@@ -1,115 +1,127 @@
-'use client'
+"use client";
 
-import { useEffect, useState, useCallback } from 'react'
-import Link from 'next/link'
-import { Play, Eye, ExternalLink, ChevronRight, TriangleAlert } from 'lucide-react'
-import { SectionHeader } from '@/components/ui/SectionHeader'
-import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
-import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
-import { DataStatusIndicator } from '@/components/ui/DataStatusIndicator'
-import { useScope } from '@/hooks/useScope'
-import { cn } from '@/lib/utils'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
+import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
+import {
+  Play,
+  Eye,
+  ExternalLink,
+  ChevronRight,
+  TriangleAlert,
+} from "lucide-react";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
+import { DataStatusIndicator } from "@/components/ui/DataStatusIndicator";
+import { useScope } from "@/hooks/useScope";
+import { cn } from "@/lib/utils";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
 
 // Self-contained type to avoid importing from real-data-service
 interface RealVideo {
-  id: string
-  title: string
-  channelTitle: string
-  thumbnail: string
-  viewCount: number
-  duration: string
-  country: string
+  id: string;
+  title: string;
+  channelTitle: string;
+  thumbnail: string;
+  viewCount: number;
+  duration: string;
+  country: string;
 }
 
 interface LiveVideosSectionProps {
-  title?: string
-  subtitle?: string
-  limit?: number
-  country?: string
-  showViewAll?: boolean
+  title?: string;
+  subtitle?: string;
+  limit?: number;
+  country?: string;
+  showViewAll?: boolean;
 }
 
-export function LiveVideosSection({ 
-  title = 'Videos Tendance', 
-  subtitle = 'Mises a jour toutes les 15 min',
+export function LiveVideosSection({
+  title = "Videos Tendance",
+  subtitle = "Mises a jour toutes les 15 min",
   limit = 6,
   country,
-  showViewAll = true
+  showViewAll = true,
 }: LiveVideosSectionProps) {
-  const { scope } = useScope()
-  const [videos, setVideos] = useState<RealVideo[]>([])
-  const [loading, setLoading] = useState(true)
-  const [fetchedAt, setFetchedAt] = useState<string | null>(null)
-  const [refreshing, setRefreshing] = useState(false)
-  const [fetchError, setFetchError] = useState<string | null>(null)
+  const { scope } = useScope();
+  const [videos, setVideos] = useState<RealVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchedAt, setFetchedAt] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const fetchVideos = useCallback(async () => {
     try {
-      setFetchError(null)
+      setFetchError(null);
       const url = country
         ? `/api/live-videos?country=${country}`
-        : '/api/live-videos'
-      
-      const res = await fetch(url, { signal: AbortSignal.timeout(15000) })
+        : "/api/live-videos";
+
+      const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`)
+        throw new Error(`HTTP ${res.status}`);
       }
-      const data = await res.json()
-      
+      const data = await res.json();
+
       if (data.success && Array.isArray(data.data)) {
-        setVideos(data.data.slice(0, limit))
-        setFetchedAt(data.fetchedAt)
+        setVideos(data.data.slice(0, limit));
+        setFetchedAt(data.fetchedAt);
       } else {
-        setVideos([])
-        setFetchedAt(null)
+        setVideos([]);
+        setFetchedAt(null);
         setFetchError(
           mapUserFacingApiError(
-            typeof data.error === 'string' && data.error.trim() !== ''
+            typeof data.error === "string" && data.error.trim() !== ""
               ? data.error
-              : 'Failed to fetch'
-          )
-        )
+              : "Failed to fetch",
+          ),
+        );
       }
     } catch (error) {
-      console.error('[ALGO Videos] Fetch failed:', error)
-      setVideos([])
-      setFetchedAt(null)
+      console.error("[ALGO Videos] Fetch failed:", error);
+      setVideos([]);
+      setFetchedAt(null);
       setFetchError(
-        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
-      )
+        mapUserFacingApiError(
+          error instanceof Error ? error.message : "Failed to fetch",
+        ),
+      );
     } finally {
-      setLoading(false)
-      setRefreshing(false)
+      setLoading(false);
+      setRefreshing(false);
     }
-  }, [country, limit])
+  }, [country, limit]);
 
   useEffect(() => {
-    fetchVideos()
-  }, [fetchVideos])
+    fetchVideos();
+  }, [fetchVideos]);
 
   // Auto-refresh every 15 minutes
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
-      fetchVideos()
-    }, 15 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [fetchVideos])
+    const interval = setInterval(
+      () => {
+        if (
+          typeof document !== "undefined" &&
+          document.visibilityState !== "visible"
+        )
+          return;
+        fetchVideos();
+      },
+      15 * 60 * 1000,
+    );
+    return () => clearInterval(interval);
+  }, [fetchVideos]);
 
   const handleRefresh = () => {
-    setRefreshing(true)
-    fetchVideos()
-  }
+    setRefreshing(true);
+    fetchVideos();
+  };
 
   return (
     <section aria-label={title}>
       <div className="flex items-center justify-between mb-4">
-        <SectionHeader
-          title={title}
-          subtitle={subtitle}
-        />
-        
+        <SectionHeader title={title} subtitle={subtitle} />
+
         <DataStatusIndicator
           fetchedAt={fetchedAt}
           scope={scope}
@@ -131,7 +143,10 @@ export function LiveVideosSection({
             className="mb-4 flex flex-col gap-2 rounded-xl border border-rose-500/20 bg-rose-500/5 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
           >
             <p className="flex items-start gap-2 text-xs text-rose-100/90">
-              <TriangleAlert className="mt-0.5 size-3.5 shrink-0 text-rose-300" aria-hidden />
+              <TriangleAlert
+                className="mt-0.5 size-3.5 shrink-0 text-rose-300"
+                aria-hidden
+              />
               <span>{fetchError}</span>
             </p>
             <button
@@ -158,20 +173,23 @@ export function LiveVideosSection({
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {videos.map((video, index) => (
-                <VideoCard key={`${video.id}-${video.country}-${index}`} video={video} />
+                <VideoCard
+                  key={`${video.id}-${video.country}-${index}`}
+                  video={video}
+                />
               ))}
             </div>
-            
+
             {showViewAll && (
               <div className="flex justify-center mt-4">
-                <Link 
+                <Link
                   href="/trending"
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2 rounded-xl',
-                    'bg-[var(--color-card)] hover:bg-[var(--color-card-hover)]',
-                    'border border-[var(--color-border)] hover:border-[var(--color-border-strong)]',
-                    'text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
-                    'transition-all duration-200'
+                    "flex items-center gap-2 px-4 py-2 rounded-xl",
+                    "bg-[var(--color-card)] hover:bg-[var(--color-card-hover)]",
+                    "border border-[var(--color-border)] hover:border-[var(--color-border-strong)]",
+                    "text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]",
+                    "transition-all duration-200",
                   )}
                 >
                   <Play size={14} />
@@ -192,20 +210,18 @@ export function LiveVideosSection({
         )}
       </div>
     </section>
-  )
+  );
 }
-
-
 
 // ─── VideoCard ────────────────────────────────────────────────────────────────
 
 function VideoCard({ video }: { video: RealVideo }) {
-  const youtubeUrl = `https://www.youtube.com/watch?v=${video.id}`
-  
+  const youtubeUrl = `https://www.youtube.com/watch?v=${video.id}`;
+
   return (
     <article className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] overflow-hidden hover:bg-[var(--color-card-hover)] hover:border-[var(--color-border-strong)] transition-all duration-[250ms]">
       {/* Thumbnail */}
-      <a 
+      <a
         href={youtubeUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -225,7 +241,11 @@ function VideoCard({ video }: { video: RealVideo }) {
         </span>
         {/* Play overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors">
-          <Play size={40} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="white" />
+          <Play
+            size={40}
+            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+            fill="white"
+          />
         </div>
         {/* Trending badge - honest, not "LIVE" */}
         <span className="absolute top-2 left-2 px-2 py-0.5 bg-rose-600/90 text-white text-[9px] font-bold rounded flex items-center gap-1">
@@ -268,28 +288,28 @@ function VideoCard({ video }: { video: RealVideo }) {
         </div>
       </div>
     </article>
-  )
+  );
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatViewCount(count: number): string {
-  if (count >= 1_000_000_000) return `${(count / 1_000_000_000).toFixed(1)}B`
-  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
-  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
-  return count.toString()
+  if (count >= 1_000_000_000) return `${(count / 1_000_000_000).toFixed(1)}B`;
+  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
+  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`;
+  return count.toString();
 }
 
 function parseDuration(duration: string): string {
-  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
-  if (!match) return '0:00'
-  
-  const hours = parseInt(match[1] || '0', 10)
-  const minutes = parseInt(match[2] || '0', 10)
-  const seconds = parseInt(match[3] || '0', 10)
-  
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return "0:00";
+
+  const hours = parseInt(match[1] || "0", 10);
+  const minutes = parseInt(match[2] || "0", 10);
+  const seconds = parseInt(match[3] || "0", 10);
+
   if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }

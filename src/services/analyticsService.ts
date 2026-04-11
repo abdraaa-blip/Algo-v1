@@ -5,27 +5,27 @@
 // En V2 : brancher Posthog, Plausible ou Mixpanel ici.
 // =============================================================================
 
-import type { TrackEvent } from '@/types'
+import type { TrackEvent } from "@/types";
 
-type TrackProps = Record<string, string | number | boolean | null>
+type TrackProps = Record<string, string | number | boolean | null>;
 
 /**
  * Enregistre un événement produit.
  * Typé strictement via TrackEvent pour éviter les chaînes arbitraires.
  */
 export function track(event: TrackEvent, props?: TrackProps): void {
-  if (typeof window === 'undefined') return
+  if (typeof window === "undefined") return;
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     // V2 : brancher ici
     // posthog.capture(event, props)
     // plausible(event, { props })
-    console.info('[ALGO Track]', event, props ?? {})
+    console.info("[ALGO Track]", event, props ?? {});
   }
 
   // En développement : log discret pour débogage
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('[ALGO Track]', event, props ?? {})
+  if (process.env.NODE_ENV === "development") {
+    console.debug("[ALGO Track]", event, props ?? {});
   }
 }
 

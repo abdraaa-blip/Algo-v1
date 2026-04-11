@@ -1,12 +1,12 @@
-import { generateText, Output } from 'ai'
-import { z } from 'zod'
-import { buildAlgoAskFallbackResponse } from '@/lib/ai/algo-ask-fallback'
-import type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
+import { generateText, Output } from "ai";
+import { z } from "zod";
+import { buildAlgoAskFallbackResponse } from "@/lib/ai/algo-ask-fallback";
+import type { AlgoExpertiseLevel } from "@/lib/ai/algo-persona";
 import {
   algoAskResponseSchema,
   toPublicStructured,
-} from '@/lib/ai/algo-ask-contract'
-import type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
+} from "@/lib/ai/algo-ask-contract";
+import type { AlgoAskStructured } from "@/lib/ai/algo-ask-contract";
 import {
   TASK_ANALYZE_VIRAL_CONTENT,
   TASK_ASK_OPEN,
@@ -19,11 +19,11 @@ import {
   getContentAnalysisFallback,
   FALLBACK_BRIEFING_STRINGS,
   FALLBACK_PREDICTION,
-} from '@/lib/ai/algo-persona'
-import type { AlgoAskRoute } from '@/core/router'
+} from "@/lib/ai/algo-persona";
+import type { AlgoAskRoute } from "@/core/router";
 
-export type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
-export type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
+export type { AlgoExpertiseLevel } from "@/lib/ai/algo-persona";
+export type { AlgoAskStructured } from "@/lib/ai/algo-ask-contract";
 
 /**
  * ALGO AI Brain - Intelligence Layer (personnalité et garde-fous: `algo-persona.ts`)
@@ -32,71 +32,113 @@ export type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface ContentAnalysis {
-  whyViral: string
-  creatorTip: string
-  riskAssessment: 'starting' | 'peaking' | 'fading'
-  culturalContext: string
-  viralPotential: number // 0-100
-  predictedPeak: string // "24h" | "48h" | "72h" | "already peaked"
-  audienceSegments: string[]
-  recommendedFormats: string[]
+  whyViral: string;
+  creatorTip: string;
+  riskAssessment: "starting" | "peaking" | "fading";
+  culturalContext: string;
+  viralPotential: number; // 0-100
+  predictedPeak: string; // "24h" | "48h" | "72h" | "already peaked"
+  audienceSegments: string[];
+  recommendedFormats: string[];
 }
 
 export interface TrendCluster {
-  id: string
-  name: string
-  description: string
-  relatedContent: string[]
-  evolutionStage: 'emerging' | 'growing' | 'mainstream' | 'declining'
-  predictedLifespan: string
+  id: string;
+  name: string;
+  description: string;
+  relatedContent: string[];
+  evolutionStage: "emerging" | "growing" | "mainstream" | "declining";
+  predictedLifespan: string;
 }
 
 export interface DailyBriefing {
-  date: string
+  date: string;
   topSignals: Array<{
-    title: string
-    category: string
-    viralScore: number
-    whyImportant: string
-  }>
-  emergingTrends: string[]
-  predictedBreakouts: string[]
-  creatorOpportunities: string[]
-  personalizedInsights: string[]
+    title: string;
+    category: string;
+    viralScore: number;
+    whyImportant: string;
+  }>;
+  emergingTrends: string[];
+  predictedBreakouts: string[];
+  creatorOpportunities: string[];
+  personalizedInsights: string[];
 }
 
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
 const contentAnalysisSchema = z.object({
-  whyViral: z.string().describe('Une phrase claire: pourquoi ce contenu peut performer (français)'),
-  creatorTip: z.string().describe('Conseil actionnable et concret pour un créateur (français)'),
-  riskAssessment: z.enum(['starting', 'peaking', 'fading']).describe('Phase du cycle: démarrage / pic / déclin'),
-  culturalContext: z.string().describe('Pourquoi ça résonne maintenant avec le public (français)'),
-  viralPotential: z.number().min(0).max(100).describe('Potentiel estimé 0-100 (indicateur, pas une garantie)'),
-  predictedPeak: z.string().describe('Fenêtre probable: 24h, 48h, 72h, ou déjà pic'),
-  audienceSegments: z.array(z.string()).describe('Segments d’audience pertinents (français)'),
-  recommendedFormats: z.array(z.string()).describe('Formats à privilégier (français)'),
-})
+  whyViral: z
+    .string()
+    .describe(
+      "Une phrase claire: pourquoi ce contenu peut performer (français)",
+    ),
+  creatorTip: z
+    .string()
+    .describe("Conseil actionnable et concret pour un créateur (français)"),
+  riskAssessment: z
+    .enum(["starting", "peaking", "fading"])
+    .describe("Phase du cycle: démarrage / pic / déclin"),
+  culturalContext: z
+    .string()
+    .describe("Pourquoi ça résonne maintenant avec le public (français)"),
+  viralPotential: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("Potentiel estimé 0-100 (indicateur, pas une garantie)"),
+  predictedPeak: z
+    .string()
+    .describe("Fenêtre probable: 24h, 48h, 72h, ou déjà pic"),
+  audienceSegments: z
+    .array(z.string())
+    .describe("Segments d’audience pertinents (français)"),
+  recommendedFormats: z
+    .array(z.string())
+    .describe("Formats à privilégier (français)"),
+});
 
 const viralPredictionSchema = z.object({
-  score: z.number().min(0).max(100).describe('Potentiel viral estimé 0-100'),
-  confidence: z.number().min(0).max(1).describe('Confiance 0-1, cohérente avec la quantité d’info'),
-  reasoning: z.string().max(900).describe('Raisonnement court, direct, en français'),
-  improvements: z.array(z.string()).max(6).describe('Pistes d’amélioration concrètes en français'),
-})
+  score: z.number().min(0).max(100).describe("Potentiel viral estimé 0-100"),
+  confidence: z
+    .number()
+    .min(0)
+    .max(1)
+    .describe("Confiance 0-1, cohérente avec la quantité d’info"),
+  reasoning: z
+    .string()
+    .max(900)
+    .describe("Raisonnement court, direct, en français"),
+  improvements: z
+    .array(z.string())
+    .max(6)
+    .describe("Pistes d’amélioration concrètes en français"),
+});
 
 const dailyBriefingSchema = z.object({
-  topSignals: z.array(z.object({
-    title: z.string(),
-    category: z.string(),
-    viralScore: z.number(),
-    whyImportant: z.string(),
-  })).describe('Jusqu’à 5 signaux du jour · textes en français'),
-  emergingTrends: z.array(z.string()).describe('Tendances émergentes (français)'),
-  predictedBreakouts: z.array(z.string()).describe('Breakouts plausibles 24-48h (français), formulés avec prudence'),
-  creatorOpportunities: z.array(z.string()).describe('Opportunités créateur concrètes (français)'),
-  personalizedInsights: z.array(z.string()).describe('Insights liés aux intérêts utilisateur (français)'),
-})
+  topSignals: z
+    .array(
+      z.object({
+        title: z.string(),
+        category: z.string(),
+        viralScore: z.number(),
+        whyImportant: z.string(),
+      }),
+    )
+    .describe("Jusqu’à 5 signaux du jour · textes en français"),
+  emergingTrends: z
+    .array(z.string())
+    .describe("Tendances émergentes (français)"),
+  predictedBreakouts: z
+    .array(z.string())
+    .describe("Breakouts plausibles 24-48h (français), formulés avec prudence"),
+  creatorOpportunities: z
+    .array(z.string())
+    .describe("Opportunités créateur concrètes (français)"),
+  personalizedInsights: z
+    .array(z.string())
+    .describe("Insights liés aux intérêts utilisateur (français)"),
+});
 
 // ─── AI Functions ─────────────────────────────────────────────────────────────
 
@@ -105,82 +147,88 @@ const dailyBriefingSchema = z.object({
  */
 export async function analyzeContent(
   content: {
-    title: string
-    description?: string
-    platform: string
-    category: string
+    title: string;
+    description?: string;
+    platform: string;
+    category: string;
     metrics: {
-      views?: number
-      likes?: number
-      comments?: number
-      shares?: number
-      velocity?: number
-    }
+      views?: number;
+      likes?: number;
+      comments?: number;
+      shares?: number;
+      velocity?: number;
+    };
   },
-  brainOpts?: { expertiseLevel?: AlgoExpertiseLevel }
+  brainOpts?: { expertiseLevel?: AlgoExpertiseLevel },
 ): Promise<ContentAnalysis> {
   const prompt = `Analyse ce contenu et renseigne le schéma JSON (tous les champs textuels en français).
 
 Titre: ${content.title}
-Description: ${content.description || 'N/A'}
+Description: ${content.description || "N/A"}
 Plateforme: ${content.platform}
 Catégorie: ${content.category}
 Métriques:
-- Vues: ${content.metrics.views?.toLocaleString() || 'N/A'}
-- Likes: ${content.metrics.likes?.toLocaleString() || 'N/A'}
-- Commentaires: ${content.metrics.comments?.toLocaleString() || 'N/A'}
-- Partages: ${content.metrics.shares?.toLocaleString() || 'N/A'}
-- Vélocité: ${content.metrics.velocity || 'N/A'}`
+- Vues: ${content.metrics.views?.toLocaleString() || "N/A"}
+- Likes: ${content.metrics.likes?.toLocaleString() || "N/A"}
+- Commentaires: ${content.metrics.comments?.toLocaleString() || "N/A"}
+- Partages: ${content.metrics.shares?.toLocaleString() || "N/A"}
+- Vélocité: ${content.metrics.velocity || "N/A"}`;
 
   try {
     const { output } = await generateText({
-      model: 'openai/gpt-4o-mini',
+      model: "openai/gpt-4o-mini",
       system: buildAlgoSystemPrompt(TASK_ANALYZE_VIRAL_CONTENT, {
         expertiseLevel: brainOpts?.expertiseLevel,
-        voicePageContext: 'analysis',
+        voicePageContext: "analysis",
       }),
       prompt,
       output: Output.object({ schema: contentAnalysisSchema }),
       maxOutputTokens: 1000,
       temperature: 0.65,
-    })
+    });
 
-    return output as ContentAnalysis
+    return output as ContentAnalysis;
   } catch (error) {
-    console.error('[ALGO AI] Content analysis failed:', error)
-    return getContentAnalysisFallback() as ContentAnalysis
+    console.error("[ALGO AI] Content analysis failed:", error);
+    return getContentAnalysisFallback() as ContentAnalysis;
   }
 }
 
 /**
  * Cluster related trends together
  */
-export async function clusterTrends(trends: Array<{
-  title: string
-  category: string
-  viralScore: number
-}>): Promise<TrendCluster[]> {
-  const trendList = trends.map(t => `- ${t.title} (${t.category}, score: ${t.viralScore})`).join('\n')
+export async function clusterTrends(
+  trends: Array<{
+    title: string;
+    category: string;
+    viralScore: number;
+  }>,
+): Promise<TrendCluster[]> {
+  const trendList = trends
+    .map((t) => `- ${t.title} (${t.category}, score: ${t.viralScore})`)
+    .join("\n");
 
   const prompt = `Sujets tendance à regrouper:
 
 ${trendList}
 
-Produis 3 à 5 clusters. Pour chaque cluster, donne un titre clair puis un paragraphe court sur ce qui les unit et la durée de vie probable. Numérote les clusters (1., 2., …).`
+Produis 3 à 5 clusters. Pour chaque cluster, donne un titre clair puis un paragraphe court sur ce qui les unit et la durée de vie probable. Numérote les clusters (1., 2., …).`;
 
   try {
     const { text } = await generateText({
-      model: 'openai/gpt-4o-mini',
-      system: buildAlgoSystemPrompt(TASK_CLUSTER_TRENDS, { voicePageContext: 'trends' }),
+      model: "openai/gpt-4o-mini",
+      system: buildAlgoSystemPrompt(TASK_CLUSTER_TRENDS, {
+        voicePageContext: "trends",
+      }),
       prompt,
       maxOutputTokens: 1500,
       temperature: 0.65,
-    })
+    });
 
     // Parse the response into clusters
-    const clusters: TrendCluster[] = []
-    const lines = text.split('\n').filter(l => l.trim())
-    let currentCluster: Partial<TrendCluster> | null = null
+    const clusters: TrendCluster[] = [];
+    const lines = text.split("\n").filter((l) => l.trim());
+    let currentCluster: Partial<TrendCluster> | null = null;
 
     for (const line of lines) {
       if (line.match(/^\d+\.|^-\s*\*\*|^###/)) {
@@ -188,15 +236,18 @@ Produis 3 à 5 clusters. Pour chaque cluster, donne un titre clair puis un parag
           clusters.push({
             id: `cluster_${Date.now()}_${clusters.length}`,
             name: currentCluster.name,
-            description: currentCluster.description || '',
+            description: currentCluster.description || "",
             relatedContent: [],
-            evolutionStage: currentCluster.evolutionStage || 'growing',
-            predictedLifespan: currentCluster.predictedLifespan || '1-2 weeks',
-          })
+            evolutionStage: currentCluster.evolutionStage || "growing",
+            predictedLifespan: currentCluster.predictedLifespan || "1-2 weeks",
+          });
         }
-        currentCluster = { name: line.replace(/^\d+\.|^-\s*\*\*|^###|\*\*/g, '').trim() }
+        currentCluster = {
+          name: line.replace(/^\d+\.|^-\s*\*\*|^###|\*\*/g, "").trim(),
+        };
       } else if (currentCluster) {
-        currentCluster.description = (currentCluster.description || '') + ' ' + line.trim()
+        currentCluster.description =
+          (currentCluster.description || "") + " " + line.trim();
       }
     }
 
@@ -205,17 +256,17 @@ Produis 3 à 5 clusters. Pour chaque cluster, donne un titre clair puis un parag
       clusters.push({
         id: `cluster_${Date.now()}_${clusters.length}`,
         name: currentCluster.name,
-        description: currentCluster.description || '',
+        description: currentCluster.description || "",
         relatedContent: [],
-        evolutionStage: 'growing',
-        predictedLifespan: '1-2 weeks',
-      })
+        evolutionStage: "growing",
+        predictedLifespan: "1-2 weeks",
+      });
     }
 
-    return clusters.slice(0, 5)
+    return clusters.slice(0, 5);
   } catch (error) {
-    console.error('[ALGO AI] Trend clustering failed:', error)
-    return []
+    console.error("[ALGO AI] Trend clustering failed:", error);
+    return [];
   }
 }
 
@@ -223,54 +274,57 @@ Produis 3 à 5 clusters. Pour chaque cluster, donne un titre clair puis un parag
  * Generate personalized daily briefing
  */
 export async function generateDailyBriefing(params: {
-  userInterests: string[]
-  userCountry: string
+  userInterests: string[];
+  userCountry: string;
   topContent: Array<{
-    title: string
-    category: string
-    viralScore: number
-    platform: string
-  }>
-  expertiseLevel?: AlgoExpertiseLevel
+    title: string;
+    category: string;
+    viralScore: number;
+    platform: string;
+  }>;
+  expertiseLevel?: AlgoExpertiseLevel;
 }): Promise<DailyBriefing> {
   const contentList = params.topContent
     .slice(0, 20)
-    .map(c => `- ${c.title} (${c.platform}, ${c.category}, score: ${c.viralScore})`)
-    .join('\n')
+    .map(
+      (c) =>
+        `- ${c.title} (${c.platform}, ${c.category}, score: ${c.viralScore})`,
+    )
+    .join("\n");
 
   const prompt = `Briefing pour un utilisateur ALGO.
 
-Centres d’intérêt: ${params.userInterests.join(', ') || 'général'}
+Centres d’intérêt: ${params.userInterests.join(", ") || "général"}
 Pays: ${params.userCountry}
 
 Contenu du jour (extrait):
 ${contentList}
 
-Construis un briefing utile: signaux clés, émergences, breakouts prudents, opportunités créateur, insights personnalisés · sans verbosité.`
+Construis un briefing utile: signaux clés, émergences, breakouts prudents, opportunités créateur, insights personnalisés · sans verbosité.`;
 
   try {
     const { output } = await generateText({
-      model: 'openai/gpt-4o-mini',
+      model: "openai/gpt-4o-mini",
       system: buildAlgoSystemPrompt(TASK_DAILY_BRIEFING, {
         expertiseLevel: params.expertiseLevel,
-        voicePageContext: 'trends',
+        voicePageContext: "trends",
       }),
       prompt,
       output: Output.object({ schema: dailyBriefingSchema }),
       maxOutputTokens: 1500,
       temperature: 0.75,
-    })
+    });
 
     return {
-      date: new Date().toISOString().split('T')[0],
-      ...(output as Omit<DailyBriefing, 'date'>),
-    }
+      date: new Date().toISOString().split("T")[0],
+      ...(output as Omit<DailyBriefing, "date">),
+    };
   } catch (error) {
-    console.error('[ALGO AI] Daily briefing generation failed:', error)
-    const fb = FALLBACK_BRIEFING_STRINGS
+    console.error("[ALGO AI] Daily briefing generation failed:", error);
+    const fb = FALLBACK_BRIEFING_STRINGS;
     return {
-      date: new Date().toISOString().split('T')[0],
-      topSignals: params.topContent.slice(0, 5).map(c => ({
+      date: new Date().toISOString().split("T")[0],
+      topSignals: params.topContent.slice(0, 5).map((c) => ({
         title: c.title,
         category: c.category,
         viralScore: c.viralScore,
@@ -284,7 +338,7 @@ Construis un briefing utile: signaux clés, émergences, breakouts prudents, opp
           ? `Avec ton intérêt « ${params.userInterests[0]} », ${fb.insight}`
           : fb.insight,
       ],
-    }
+    };
   }
 }
 
@@ -294,69 +348,73 @@ Construis un briefing utile: signaux clés, émergences, breakouts prudents, opp
 export async function askAlgo(
   question: string,
   context?: {
-    currentTrends?: string[]
-    userCountry?: string
-    algoAskRoute?: AlgoAskRoute
-    routeHintLines?: string[]
+    currentTrends?: string[];
+    userCountry?: string;
+    algoAskRoute?: AlgoAskRoute;
+    routeHintLines?: string[];
   },
   options?: {
-    expertiseLevel?: AlgoExpertiseLevel
-    conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>
-  }
+    expertiseLevel?: AlgoExpertiseLevel;
+    conversationHistory?: Array<{
+      role: "user" | "assistant";
+      content: string;
+    }>;
+  },
 ): Promise<{ answer: string; structured?: AlgoAskStructured }> {
   const routeHints =
-    context?.algoAskRoute || (context?.routeHintLines && context.routeHintLines.length)
+    context?.algoAskRoute ||
+    (context?.routeHintLines && context.routeHintLines.length)
       ? `
-- Intention route (système): ${context?.algoAskRoute || 'GENERAL'}
-${(context?.routeHintLines ?? []).map((h) => `- Indication: ${h}`).join('\n')}
+- Intention route (système): ${context?.algoAskRoute || "GENERAL"}
+${(context?.routeHintLines ?? []).map((h) => `- Indication: ${h}`).join("\n")}
 `
-      : ''
+      : "";
 
   const contextInfo = context
     ? `
 Contexte ALGO (ne pas inventer de données hors de ce bloc):
-- Tendances (titres): ${context.currentTrends?.join(' · ') || 'non fourni'}
-- Pays / région: ${context.userCountry || 'global'}${routeHints}
+- Tendances (titres): ${context.currentTrends?.join(" · ") || "non fourni"}
+- Pays / région: ${context.userCountry || "global"}${routeHints}
 `
-    : ''
+    : "";
 
-  const historyBlock = algoConversationFragment(options?.conversationHistory)
+  const historyBlock = algoConversationFragment(options?.conversationHistory);
 
-  const prompt = `${historyBlock ? `${historyBlock}\n\n` : ''}${contextInfo}
+  const prompt = `${historyBlock ? `${historyBlock}\n\n` : ""}${contextInfo}
 Question: ${question}
 
-Réponds avec la présence ALGO AI: conclusion et préférence claire si plusieurs voies, puis bref pourquoi, puis une action concrète (et options comparées si la question appelle un choix).`
+Réponds avec la présence ALGO AI: conclusion et préférence claire si plusieurs voies, puis bref pourquoi, puis une action concrète (et options comparées si la question appelle un choix).`;
 
   const system = buildAlgoSystemPrompt(TASK_ASK_OPEN, {
     expertiseLevel: options?.expertiseLevel,
-    voicePageContext: 'ai',
-  })
+    voicePageContext: "ai",
+  });
 
   try {
     const { output } = await generateText({
-      model: 'openai/gpt-4o-mini',
+      model: "openai/gpt-4o-mini",
       system,
       prompt,
       output: Output.object({ schema: algoAskResponseSchema }),
       maxOutputTokens: 1200,
       temperature: 0.68,
-    })
+    });
 
-    const parsed = output as z.infer<typeof algoAskResponseSchema>
+    const parsed = output as z.infer<typeof algoAskResponseSchema>;
     return {
       answer: parsed.answer,
       structured: toPublicStructured(parsed),
-    }
+    };
   } catch (error) {
-    console.error('[ALGO AI] Question answering (structured) failed:', error)
+    console.error("[ALGO AI] Question answering (structured) failed:", error);
     try {
       const { text } = await generateText({
-        model: 'openai/gpt-4o-mini',
+        model: "openai/gpt-4o-mini",
         system,
         prompt,
         maxOutputTokens: 900,
         temperature: 0.68,
-      })
+      });
       return {
         answer:
           text?.trim() ||
@@ -364,15 +422,15 @@ Réponds avec la présence ALGO AI: conclusion et préférence claire si plusieu
             userCountry: context?.userCountry,
             firstTrendTitle: context?.currentTrends?.[0],
           }),
-      }
+      };
     } catch (e2) {
-      console.error('[ALGO AI] Question answering (plain) failed:', e2)
+      console.error("[ALGO AI] Question answering (plain) failed:", e2);
       return {
         answer: buildAlgoAskFallbackResponse(question, {
           userCountry: context?.userCountry,
           firstTrendTitle: context?.currentTrends?.[0],
         }),
-      }
+      };
     }
   }
 }
@@ -382,18 +440,18 @@ Réponds avec la présence ALGO AI: conclusion et préférence claire si plusieu
  */
 export async function predictViralPotential(
   content: {
-    title: string
-    description: string
-    format: string
-    platform: string
-    targetAudience?: string
+    title: string;
+    description: string;
+    format: string;
+    platform: string;
+    targetAudience?: string;
   },
-  brainOpts?: { expertiseLevel?: AlgoExpertiseLevel }
+  brainOpts?: { expertiseLevel?: AlgoExpertiseLevel },
 ): Promise<{
-  score: number
-  confidence: number
-  reasoning: string
-  improvements: string[]
+  score: number;
+  confidence: number;
+  reasoning: string;
+  improvements: string[];
 }> {
   const prompt = `Évalue le potentiel viral de cette idée (schéma structuré).
 
@@ -401,35 +459,37 @@ Titre: ${content.title}
 Description: ${content.description}
 Format: ${content.format}
 Plateforme: ${content.platform}
-Audience: ${content.targetAudience || 'général'}`
+Audience: ${content.targetAudience || "général"}`;
 
   try {
     const { output } = await generateText({
-      model: 'openai/gpt-4o-mini',
+      model: "openai/gpt-4o-mini",
       system: buildAlgoSystemPrompt(TASK_PREDICT_VIRAL, {
         expertiseLevel: brainOpts?.expertiseLevel,
-        voicePageContext: 'analysis',
+        voicePageContext: "analysis",
       }),
       prompt,
       output: Output.object({ schema: viralPredictionSchema }),
       maxOutputTokens: 700,
       temperature: 0.65,
-    })
+    });
 
     return {
       score: Math.min(100, Math.max(0, output.score)),
       confidence: Math.min(1, Math.max(0, output.confidence)),
       reasoning: output.reasoning,
-      improvements: output.improvements.length ? output.improvements : [...FALLBACK_PREDICTION.improvements],
-    }
+      improvements: output.improvements.length
+        ? output.improvements
+        : [...FALLBACK_PREDICTION.improvements],
+    };
   } catch (error) {
-    console.error('[ALGO AI] Viral prediction failed:', error)
+    console.error("[ALGO AI] Viral prediction failed:", error);
     return {
       score: FALLBACK_PREDICTION.score,
       confidence: FALLBACK_PREDICTION.confidence,
       reasoning: FALLBACK_PREDICTION.reasoning,
       improvements: [...FALLBACK_PREDICTION.improvements],
-    }
+    };
   }
 }
 
@@ -437,66 +497,68 @@ Audience: ${content.targetAudience || 'général'}`
  * Analyze sentiment of comments/reactions
  */
 export async function analyzeSentiment(texts: string[]): Promise<{
-  overall: 'positive' | 'negative' | 'neutral' | 'mixed'
-  score: number // -1 to 1
+  overall: "positive" | "negative" | "neutral" | "mixed";
+  score: number; // -1 to 1
   breakdown: {
-    positive: number
-    negative: number
-    neutral: number
-  }
+    positive: number;
+    negative: number;
+    neutral: number;
+  };
 }> {
   if (texts.length === 0) {
     return {
-      overall: 'neutral',
+      overall: "neutral",
       score: 0,
       breakdown: { positive: 0, negative: 0, neutral: 100 },
-    }
+    };
   }
 
-  const sampleTexts = texts.slice(0, 50).join('\n---\n')
+  const sampleTexts = texts.slice(0, 50).join("\n---\n");
 
   const prompt = `Textes (commentaires / réactions) à interpréter:
 
 ${sampleTexts}
 
-Donne une lecture globale et un détail % positif / négatif / neutre (approximatif mais cohérent avec le corpus).`
+Donne une lecture globale et un détail % positif / négatif / neutre (approximatif mais cohérent avec le corpus).`;
 
   try {
     const { text } = await generateText({
-      model: 'openai/gpt-4o-mini',
-      system: buildAlgoSystemPrompt(TASK_SENTIMENT, { voicePageContext: 'analysis' }),
+      model: "openai/gpt-4o-mini",
+      system: buildAlgoSystemPrompt(TASK_SENTIMENT, {
+        voicePageContext: "analysis",
+      }),
       prompt,
       maxOutputTokens: 320,
       temperature: 0.28,
-    })
+    });
 
     // Parse sentiment from response
-    const positiveMatch = text.match(/positive[:\s]+(\d+)/i)
-    const negativeMatch = text.match(/negative[:\s]+(\d+)/i)
-    
-    const positive = positiveMatch ? parseInt(positiveMatch[1]) : 50
-    const negative = negativeMatch ? parseInt(negativeMatch[1]) : 20
-    const neutral = 100 - positive - negative
+    const positiveMatch = text.match(/positive[:\s]+(\d+)/i);
+    const negativeMatch = text.match(/negative[:\s]+(\d+)/i);
 
-    const score = (positive - negative) / 100
+    const positive = positiveMatch ? parseInt(positiveMatch[1]) : 50;
+    const negative = negativeMatch ? parseInt(negativeMatch[1]) : 20;
+    const neutral = 100 - positive - negative;
 
-    let overall: 'positive' | 'negative' | 'neutral' | 'mixed'
-    if (Math.abs(score) < 0.1) overall = 'neutral'
-    else if (score > 0.3) overall = 'positive'
-    else if (score < -0.3) overall = 'negative'
-    else overall = 'mixed'
+    const score = (positive - negative) / 100;
+
+    let overall: "positive" | "negative" | "neutral" | "mixed";
+    if (Math.abs(score) < 0.1) overall = "neutral";
+    else if (score > 0.3) overall = "positive";
+    else if (score < -0.3) overall = "negative";
+    else overall = "mixed";
 
     return {
       overall,
       score,
       breakdown: { positive, negative, neutral: Math.max(0, neutral) },
-    }
+    };
   } catch (error) {
-    console.error('[ALGO AI] Sentiment analysis failed:', error)
+    console.error("[ALGO AI] Sentiment analysis failed:", error);
     return {
-      overall: 'neutral',
+      overall: "neutral",
       score: 0,
       breakdown: { positive: 33, negative: 33, neutral: 34 },
-    }
+    };
   }
 }

@@ -1,34 +1,38 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { fetchRealNews, fetchAllNews } from '@/lib/api/real-data-service'
-import { parseOptionalListLimit } from '@/lib/api/query-limit'
-import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
-import { sanitizeInput } from '@/lib/security'
+import { NextResponse, type NextRequest } from "next/server";
+import { fetchRealNews, fetchAllNews } from "@/lib/api/real-data-service";
+import { parseOptionalListLimit } from "@/lib/api/query-limit";
+import {
+  checkRateLimit,
+  getClientIdentifier,
+  createRateLimitHeaders,
+} from "@/lib/api/rate-limiter";
+import { sanitizeInput } from "@/lib/security";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /** Aligné sur `CACHE_DURATION_MS` dans `src/lib/api/real-data-service.ts` (cache mémoire news). */
-const UPSTREAM_CACHE_MS = 15 * 60 * 1000
+const UPSTREAM_CACHE_MS = 15 * 60 * 1000;
 
 function fallbackNewsImage(index: number, title: string): string {
-  let h = 0
-  const s = title || `article-${index}`
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0
-  const seed = `algo${index}n${Math.abs(h)}`
-  return `https://picsum.photos/seed/${seed}/800/450`
+  let h = 0;
+  const s = title || `article-${index}`;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  const seed = `algo${index}n${Math.abs(h)}`;
+  return `https://picsum.photos/seed/${seed}/800/450`;
 }
 
 /** Score d’affichage dérivé de la fraîcheur (pas une métrique NewsAPI réelle). */
 function importanceFromPublishedAt(publishedAt: string): number {
-  const t = Date.parse(publishedAt)
-  if (Number.isNaN(t)) return 75
-  const hours = (Date.now() - t) / 3_600_000
-  if (hours <= 1) return 96
-  if (hours <= 3) return 92
-  if (hours <= 12) return 86
-  if (hours <= 24) return 80
-  if (hours <= 48) return 74
-  return 68
+  const t = Date.parse(publishedAt);
+  if (Number.isNaN(t)) return 75;
+  const hours = (Date.now() - t) / 3_600_000;
+  if (hours <= 1) return 96;
+  if (hours <= 3) return 92;
+  if (hours <= 12) return 86;
+  if (hours <= 24) return 80;
+  if (hours <= 48) return 74;
+  return 68;
 }
 
 /**
@@ -38,88 +42,105 @@ function importanceFromPublishedAt(publishedAt: string): number {
  */
 export async function GET(request: NextRequest) {
   // Rate limiting
-  const identifier = getClientIdentifier(request)
-  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60000 })
-  
+  const identifier = getClientIdentifier(request);
+  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60000 });
+
   if (!rateLimit.success) {
     return NextResponse.json(
-      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
-      { status: 429, headers: createRateLimitHeaders(rateLimit) }
-    )
+      {
+        success: false,
+        error: "Rate limit exceeded",
+        retryAfter: rateLimit.retryAfter,
+      },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
 
-  const { searchParams } = new URL(request.url)
-  const rawCountry = searchParams.get('country')
-  const country = rawCountry ? sanitizeInput(rawCountry).toLowerCase() : null
-  const listLimit = parseOptionalListLimit(searchParams.get('limit'))
+  const { searchParams } = new URL(request.url);
+  const rawCountry = searchParams.get("country");
+  const country = rawCountry ? sanitizeInput(rawCountry).toLowerCase() : null;
+  const listLimit = parseOptionalListLimit(searchParams.get("limit"));
 
   try {
-    const result = country 
+    const result = country
       ? await fetchRealNews(country)
-      : await fetchAllNews()
-    
+      : await fetchAllNews();
+
     // Determine honest status based on source
-    const status = result.source === 'live' ? 'active' 
-      : result.source === 'cached' ? 'delayed' 
-      : 'static'
-    
+    const status =
+      result.source === "live"
+        ? "active"
+        : result.source === "cached"
+          ? "delayed"
+          : "static";
+
     // Map data to client-expected format
     const mappedData = result.data.map((article, index) => {
       const hasArticleImage = Boolean(
-        article.urlToImage && article.urlToImage.startsWith('http')
-      )
+        article.urlToImage && article.urlToImage.startsWith("http"),
+      );
       const imageUrl = hasArticleImage
         ? article.urlToImage!
-        : fallbackNewsImage(index, article.title)
+        : fallbackNewsImage(index, article.title);
       return {
-      id: article.id || `news_${index}_${Date.now()}`,
-      title: article.title,
-      source: article.source,
-      sourceName: article.source, // Client expects sourceName
-      url: article.url,
-      image: imageUrl,
-      urlToImage: imageUrl,
-      publishedAt: article.publishedAt,
-      fetchedAt: result.fetchedAt,
-      category: 'general',
-      importanceScore: importanceFromPublishedAt(article.publishedAt),
-      imageIsPlaceholder: !hasArticleImage,
-    }
-    })
+        id: article.id || `news_${index}_${Date.now()}`,
+        title: article.title,
+        source: article.source,
+        sourceName: article.source, // Client expects sourceName
+        url: article.url,
+        image: imageUrl,
+        urlToImage: imageUrl,
+        publishedAt: article.publishedAt,
+        fetchedAt: result.fetchedAt,
+        category: "general",
+        importanceScore: importanceFromPublishedAt(article.publishedAt),
+        imageIsPlaceholder: !hasArticleImage,
+      };
+    });
 
     const dataOut =
-      listLimit !== undefined ? mappedData.slice(0, listLimit) : mappedData
+      listLimit !== undefined ? mappedData.slice(0, listLimit) : mappedData;
 
-    return NextResponse.json({
-      success: true,
-      data: dataOut,
-      source: result.source,
-      fetchedAt: result.fetchedAt,
-      // Honest status - not "live", just "active"
-      status,
-      count: dataOut.length,
-      // Transparency metadata
-      meta: {
-        refreshIntervalMs: UPSTREAM_CACHE_MS,
-        refreshIntervalLabel: '15 min',
-        region: country?.toUpperCase() || 'ALL',
-        dataFreshness:
-          result.source === 'live' ? 'recent' : result.source === 'cached' ? 'cached' : 'static',
-        pipeline:
-          'Flux : Google News RSS (sans clé) si dispo, sinon NewsAPI si clé, sinon démo interne.',
-        rssMaxItems: 15,
-        appliedLimit: listLimit ?? null,
+    return NextResponse.json(
+      {
+        success: true,
+        data: dataOut,
+        source: result.source,
+        fetchedAt: result.fetchedAt,
+        // Honest status - not "live", just "active"
+        status,
+        count: dataOut.length,
+        // Transparency metadata
+        meta: {
+          refreshIntervalMs: UPSTREAM_CACHE_MS,
+          refreshIntervalLabel: "15 min",
+          region: country?.toUpperCase() || "ALL",
+          dataFreshness:
+            result.source === "live"
+              ? "recent"
+              : result.source === "cached"
+                ? "cached"
+                : "static",
+          pipeline:
+            "Flux : Google News RSS (sans clé) si dispo, sinon NewsAPI si clé, sinon démo interne.",
+          rssMaxItems: 15,
+          appliedLimit: listLimit ?? null,
+        },
       },
-    }, { headers: createRateLimitHeaders(rateLimit) })
+      { headers: createRateLimitHeaders(rateLimit) },
+    );
   } catch (error) {
-    console.error('[ALGO API] Live news fetch failed:', error)
-    return NextResponse.json({
-      success: false, 
-      error: 'Failed to fetch news', 
-      data: [], 
-      status: 'error',
-      source: 'error',
-      fallbackMessage: 'Les actualités sont temporairement indisponibles.',
-    }, { status: 500, headers: createRateLimitHeaders(rateLimit) })
+    console.error("[ALGO API] Live news fetch failed:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to fetch news",
+        data: [],
+        status: "error",
+        source: "error",
+        fallbackMessage: "Les actualités sont temporairement indisponibles.",
+      },
+      { status: 500, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
 }

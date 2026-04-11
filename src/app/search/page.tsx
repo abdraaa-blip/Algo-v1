@@ -1,145 +1,158 @@
-'use client'
+"use client";
 
-import { useState, useCallback, useRef } from 'react'
-import Link from 'next/link'
-import { ArrowLeft, Search, X, Loader2, TriangleAlert } from 'lucide-react'
-import { LiveCurve } from '@/components/algo/LiveCurve'
-import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
-import { MomentumPill } from '@/components/algo/MomentumPill'
-import { AlgoLoader } from '@/components/algo/AlgoLoader'
-import { AlgoEmpty } from '@/components/algo/AlgoEmpty'
-import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
-import { AudienceScopeToggle } from '@/components/growth/AudienceScopeToggle'
-import { cn } from '@/lib/utils'
-import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
+import { useState, useCallback, useRef } from "react";
+import Link from "next/link";
+import { ArrowLeft, Search, X, Loader2, TriangleAlert } from "lucide-react";
+import { LiveCurve } from "@/components/algo/LiveCurve";
+import { ViralScoreRing } from "@/components/algo/ViralScoreRing";
+import { MomentumPill } from "@/components/algo/MomentumPill";
+import { AlgoLoader } from "@/components/algo/AlgoLoader";
+import { AlgoEmpty } from "@/components/algo/AlgoEmpty";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
+import { AudienceScopeToggle } from "@/components/growth/AudienceScopeToggle";
+import { cn } from "@/lib/utils";
+import { ALGO_UI_LOADING } from "@/lib/copy/ui-strings";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
 
 interface SearchResult {
-  id: string
-  type: 'trend' | 'content' | 'news'
-  title: string
-  score?: number
-  growthRate?: number
-  growthTrend?: 'up' | 'down' | 'stable'
-  platform?: string
-  category?: string
-  thumbnail?: string
-  source?: string
+  id: string;
+  type: "trend" | "content" | "news";
+  title: string;
+  score?: number;
+  growthRate?: number;
+  growthTrend?: "up" | "down" | "stable";
+  platform?: string;
+  category?: string;
+  thumbnail?: string;
+  source?: string;
 }
 
 export default function SearchPage() {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<SearchResult[]>([])
-  const [searched, setSearched] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [searchError, setSearchError] = useState<string | null>(null)
-  const debounceRef = useRef<NodeJS.Timeout | null>(null)
-  const abortRef = useRef<AbortController | null>(null)
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searched, setSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const performSearch = useCallback(async (q: string) => {
     if (q.length < 2) {
-      setResults([])
-      setSearched(false)
-      setSearchError(null)
-      return
+      setResults([]);
+      setSearched(false);
+      setSearchError(null);
+      return;
     }
 
     // Abort previous request
     if (abortRef.current) {
-      abortRef.current.abort()
+      abortRef.current.abort();
     }
-    abortRef.current = new AbortController()
-    
-    setLoading(true)
-    setSearchError(null)
-    
+    abortRef.current = new AbortController();
+
+    setLoading(true);
+    setSearchError(null);
+
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&type=all&limit=20`, {
-        signal: abortRef.current.signal
-      })
-      
-      if (!res.ok) throw new Error('Search failed')
-      
-      const data = await res.json()
-      
+      const res = await fetch(
+        `/api/search?q=${encodeURIComponent(q)}&type=all&limit=20`,
+        {
+          signal: abortRef.current.signal,
+        },
+      );
+
+      if (!res.ok) throw new Error("Search failed");
+
+      const data = await res.json();
+
       // Transform API response to unified result format
-      const combined: SearchResult[] = []
-      
+      const combined: SearchResult[] = [];
+
       // Add trends
-      for (const trend of (data.trends || [])) {
+      for (const trend of data.trends || []) {
         combined.push({
           id: trend.id,
-          type: 'trend',
+          type: "trend",
           title: trend.displayName || trend.name,
           score: Math.floor((trend.growth || 0) / 5 + 60),
           growthRate: trend.growth,
-          growthTrend: trend.momentum === 'exploding' || trend.momentum === 'rising' ? 'up' : trend.momentum === 'stable' ? 'stable' : 'down',
+          growthTrend:
+            trend.momentum === "exploding" || trend.momentum === "rising"
+              ? "up"
+              : trend.momentum === "stable"
+                ? "stable"
+                : "down",
           platform: undefined,
-          category: trend.category
-        })
+          category: trend.category,
+        });
       }
-      
+
       // Add content
-      for (const content of (data.content || [])) {
+      for (const content of data.content || []) {
         combined.push({
           id: content.id,
-          type: 'content',
+          type: "content",
           title: content.title,
           score: content.viralScore,
           growthRate: content.engagementRate,
-          growthTrend: content.momentum === 'rising' ? 'up' : content.momentum === 'peak' ? 'stable' : 'down',
+          growthTrend:
+            content.momentum === "rising"
+              ? "up"
+              : content.momentum === "peak"
+                ? "stable"
+                : "down",
           platform: content.platform,
           category: content.category,
-          thumbnail: content.thumbnail
-        })
+          thumbnail: content.thumbnail,
+        });
       }
-      
+
       // Add news
-      for (const news of (data.news || [])) {
+      for (const news of data.news || []) {
         combined.push({
           id: news.id,
-          type: 'news',
+          type: "news",
           title: news.title,
           score: news.viralScore,
           platform: news.sourceName,
           category: news.category,
           thumbnail: news.imageUrl,
-          source: news.sourceName
-        })
+          source: news.sourceName,
+        });
       }
-      
-      setResults(combined)
-      setSearched(true)
-      setSearchError(null)
+
+      setResults(combined);
+      setSearched(true);
+      setSearchError(null);
     } catch (e) {
-      if ((e as Error).name === 'AbortError') return
-      console.error('[ALGO] Search error:', e)
-      setResults([])
-      setSearched(true)
+      if ((e as Error).name === "AbortError") return;
+      console.error("[ALGO] Search error:", e);
+      setResults([]);
+      setSearched(true);
       setSearchError(
-        mapUserFacingApiError(e instanceof Error ? e.message : 'Search failed')
-      )
+        mapUserFacingApiError(e instanceof Error ? e.message : "Search failed"),
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const q = e.target.value
-    setQuery(q)
-    
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => performSearch(q.trim()), 300)
-  }
+    const q = e.target.value;
+    setQuery(q);
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => performSearch(q.trim()), 300);
+  };
 
   const handleClear = () => {
-    setQuery('')
-    setResults([])
-    setSearched(false)
-    setSearchError(null)
-    setLoading(false)
-    if (abortRef.current) abortRef.current.abort()
-  }
+    setQuery("");
+    setResults([]);
+    setSearched(false);
+    setSearchError(null);
+    setLoading(false);
+    if (abortRef.current) abortRef.current.abort();
+  };
 
   return (
     <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
@@ -167,10 +180,10 @@ export default function SearchPage() {
         {/* Search Input */}
         <div
           className={cn(
-            'flex items-center gap-3 rounded-xl px-4 py-3 mb-6 transition-all border',
+            "flex items-center gap-3 rounded-xl px-4 py-3 mb-6 transition-all border",
             query
-              ? 'bg-[color-mix(in_srgb,var(--color-violet)_12%,var(--color-card))] border-[color-mix(in_srgb,var(--color-violet)_35%,var(--color-border))]'
-              : 'bg-[var(--color-card)] border-[var(--color-border)]'
+              ? "bg-[color-mix(in_srgb,var(--color-violet)_12%,var(--color-card))] border-[color-mix(in_srgb,var(--color-violet)_35%,var(--color-border))]"
+              : "bg-[var(--color-card)] border-[var(--color-border)]",
           )}
         >
           {loading ? (
@@ -188,8 +201,8 @@ export default function SearchPage() {
             aria-label="Rechercher"
           />
           {query && (
-            <button 
-              onClick={handleClear} 
+            <button
+              onClick={handleClear}
               className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors"
               aria-label="Effacer la recherche"
             >
@@ -214,7 +227,10 @@ export default function SearchPage() {
             className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
           >
             <p className="flex items-start gap-2 text-sm text-rose-100/90">
-              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+              <TriangleAlert
+                className="mt-0.5 size-4 shrink-0 text-rose-300"
+                aria-hidden
+              />
               <span>{searchError}</span>
             </p>
             <button
@@ -229,7 +245,10 @@ export default function SearchPage() {
 
         {/* No Results */}
         {searched && !loading && !searchError && results.length === 0 && (
-          <AlgoEmpty icon={'\u{1F50D}'} title={`Aucun resultat pour "${query}"`} />
+          <AlgoEmpty
+            icon={"\u{1F50D}"}
+            title={`Aucun resultat pour "${query}"`}
+          />
         )}
 
         {/* Results */}
@@ -238,7 +257,13 @@ export default function SearchPage() {
             {results.map((result) => (
               <Link
                 key={result.id}
-                href={result.type === 'trend' ? '/trends' : result.type === 'content' ? `/content/${result.id}` : '#'}
+                href={
+                  result.type === "trend"
+                    ? "/trends"
+                    : result.type === "content"
+                      ? `/content/${result.id}`
+                      : "#"
+                }
                 className="flex items-center gap-4 p-4 algo-card-hit algo-interactive"
               >
                 {/* Thumbnail or Score */}
@@ -255,7 +280,7 @@ export default function SearchPage() {
                 ) : result.score ? (
                   <ViralScoreRing score={result.score} size={40} />
                 ) : null}
-                
+
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold truncate text-[var(--color-text-primary)]">
                     {result.title}
@@ -263,21 +288,31 @@ export default function SearchPage() {
                   <div className="flex items-center gap-2 mt-1 text-[10px] text-[var(--color-text-tertiary)]">
                     <span
                       className={cn(
-                        'px-2 py-0.5 rounded',
-                        result.type === 'trend' && 'bg-violet-500/15 text-violet-300',
-                        result.type === 'content' && 'bg-sky-500/15 text-sky-300',
-                        result.type === 'news' && 'bg-emerald-500/15 text-emerald-300'
+                        "px-2 py-0.5 rounded",
+                        result.type === "trend" &&
+                          "bg-violet-500/15 text-violet-300",
+                        result.type === "content" &&
+                          "bg-sky-500/15 text-sky-300",
+                        result.type === "news" &&
+                          "bg-emerald-500/15 text-emerald-300",
                       )}
                     >
-                      {result.type === 'trend' ? 'Trend' : result.type === 'content' ? 'Contenu' : 'News'}
+                      {result.type === "trend"
+                        ? "Trend"
+                        : result.type === "content"
+                          ? "Contenu"
+                          : "News"}
                     </span>
                     {result.platform && <span>{result.platform}</span>}
                     {result.category && <span>{result.category}</span>}
                   </div>
                 </div>
-                
+
                 {result.growthRate !== undefined && result.growthTrend && (
-                  <MomentumPill value={Math.abs(result.growthRate)} trend={result.growthTrend} />
+                  <MomentumPill
+                    value={Math.abs(result.growthRate)}
+                    trend={result.growthTrend}
+                  />
                 )}
               </Link>
             ))}
@@ -285,5 +320,5 @@ export default function SearchPage() {
         )}
       </section>
     </main>
-  )
+  );
 }

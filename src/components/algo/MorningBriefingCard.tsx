@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Clapperboard, Newspaper, Radar, ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import Link from "next/link";
+import { Clapperboard, Newspaper, Radar, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export type BriefingSignalIcon = 'radar' | 'news' | 'video'
+export type BriefingSignalIcon = "radar" | "news" | "video";
 
 export type BriefingSignal = {
-  label: string
-  title: string
-  href: string
-  meta?: string
-  icon: BriefingSignalIcon
-}
+  label: string;
+  title: string;
+  href: string;
+  meta?: string;
+  icon: BriefingSignalIcon;
+};
 
 const icons = {
   radar: Radar,
   news: Newspaper,
   video: Clapperboard,
-} as const
+} as const;
 
 /**
  * Briefing « 3 signaux + 1 action » · boucle valeur rapide sans refetch.
@@ -28,17 +28,17 @@ export function MorningBriefingCard({
   action,
   className,
 }: {
-  signals: BriefingSignal[]
-  action: { label: string; href: string }
-  className?: string
+  signals: BriefingSignal[];
+  action: { label: string; href: string };
+  className?: string;
 }) {
-  if (signals.length === 0) return null
+  if (signals.length === 0) return null;
 
   return (
     <div
       className={cn(
-        'rounded-xl sm:rounded-2xl border border-[var(--color-border)] bg-gradient-to-br from-cyan-950/35 via-[var(--color-bg-secondary)] to-violet-950/20 p-3 sm:p-4 mb-6 sm:mb-8 shadow-[var(--shadow-algo-sm)]',
-        className
+        "rounded-xl sm:rounded-2xl border border-[var(--color-border)] bg-gradient-to-br from-cyan-950/35 via-[var(--color-bg-secondary)] to-violet-950/20 p-3 sm:p-4 mb-6 sm:mb-8 shadow-[var(--shadow-algo-sm)]",
+        className,
       )}
     >
       <div className="flex items-center justify-between gap-2 mb-3">
@@ -60,31 +60,35 @@ export function MorningBriefingCard({
 
       <ul className="space-y-2 sm:space-y-2.5 mb-4">
         {signals.map((s, i) => {
-          const Icon = icons[s.icon]
-          const external = s.href.startsWith('http')
+          const Icon = icons[s.icon];
+          const external = s.href.startsWith("http");
           const inner = (
             <>
-                <span className="mt-0.5 rounded-md bg-cyan-500/15 p-1.5 text-cyan-300">
-                  <Icon size={14} strokeWidth={2} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-white/35">{s.label}</span>
-                    {s.meta ? (
-                      <span className="text-[9px] text-cyan-400/70 font-mono tabular-nums">{s.meta}</span>
-                    ) : null}
-                  </div>
-                  <p className="text-xs sm:text-sm font-medium text-white/80 line-clamp-2 mt-0.5 group-hover:text-white transition-colors">
-                    {s.title}
-                  </p>
+              <span className="mt-0.5 rounded-md bg-cyan-500/15 p-1.5 text-cyan-300">
+                <Icon size={14} strokeWidth={2} aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-white/35">
+                    {s.label}
+                  </span>
+                  {s.meta ? (
+                    <span className="text-[9px] text-cyan-400/70 font-mono tabular-nums">
+                      {s.meta}
+                    </span>
+                  ) : null}
                 </div>
-                <ArrowRight
-                  size={14}
-                  className="text-white/20 group-hover:text-cyan-400/80 shrink-0 mt-1 transition-colors"
-                  aria-hidden
-                />
+                <p className="text-xs sm:text-sm font-medium text-white/80 line-clamp-2 mt-0.5 group-hover:text-white transition-colors">
+                  {s.title}
+                </p>
+              </div>
+              <ArrowRight
+                size={14}
+                className="text-white/20 group-hover:text-cyan-400/80 shrink-0 mt-1 transition-colors"
+                aria-hidden
+              />
             </>
-          )
+          );
           return (
             <li key={`${s.label}-${i}`}>
               {external ? (
@@ -105,7 +109,7 @@ export function MorningBriefingCard({
                 </Link>
               )}
             </li>
-          )
+          );
         })}
       </ul>
 
@@ -117,5 +121,5 @@ export function MorningBriefingCard({
         <ArrowRight size={16} strokeWidth={2.2} aria-hidden />
       </Link>
     </div>
-  )
+  );
 }

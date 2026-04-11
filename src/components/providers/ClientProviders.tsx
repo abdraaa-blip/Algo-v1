@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import { type ReactNode, Suspense } from 'react'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { OfflineBanner } from '@/components/ui/OfflineBanner'
-import { LoadingProgress } from '@/components/ui/LoadingProgress'
-import { KeyboardShortcuts } from '@/components/KeyboardShortcuts'
-import { ShortcutsModal } from '@/components/ui/ShortcutsModal'
-import { CommandPalette } from '@/components/ui/CommandPalette'
-import { GlobalErrorHandler } from '@/components/GlobalErrorHandler'
-import { AlgoSystemProvider } from '@/components/providers/AlgoSystemProvider'
-import { ConsentBanner } from '@/components/growth/ConsentBanner'
-import { AnalyticsConsentScripts } from '@/components/growth/AnalyticsConsentScripts'
-import { PersonalizationProvider } from '@/components/growth/PersonalizationProvider'
+import { type ReactNode, Suspense } from "react";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { OfflineBanner } from "@/components/ui/OfflineBanner";
+import { LoadingProgress } from "@/components/ui/LoadingProgress";
+import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { ShortcutsModal } from "@/components/ui/ShortcutsModal";
+import { CommandPalette } from "@/components/ui/CommandPalette";
+import { GlobalErrorHandler } from "@/components/GlobalErrorHandler";
+import { AlgoSystemProvider } from "@/components/providers/AlgoSystemProvider";
+import { ConsentBanner } from "@/components/growth/ConsentBanner";
+import { AnalyticsConsentScripts } from "@/components/growth/AnalyticsConsentScripts";
+import { PersonalizationProvider } from "@/components/growth/PersonalizationProvider";
 
 interface ClientProvidersProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -41,5 +41,5 @@ export function ClientProviders({ children }: ClientProvidersProps) {
         </PersonalizationProvider>
       </AlgoSystemProvider>
     </ErrorBoundary>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { ConsentManageLink } from '@/components/growth/ConsentBanner'
-import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from '@/lib/seo/site'
+import Link from "next/link";
+import { ConsentManageLink } from "@/components/growth/ConsentBanner";
+import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from "@/lib/seo/site";
 
 /**
  * Liens transverses : légal, découverte (RSS), consentement · discret pour ne pas polluer l’UI.
@@ -14,7 +14,10 @@ export function SiteFooter() {
       role="contentinfo"
     >
       <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-[var(--color-text-muted)]">
-        <Link href="/transparency" className="hover:text-[var(--color-text-secondary)] transition-colors duration-200">
+        <Link
+          href="/transparency"
+          className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        >
           Transparence
         </Link>
         <Link
@@ -23,13 +26,22 @@ export function SiteFooter() {
         >
           Calibrage IA
         </Link>
-        <Link href="/legal" className="hover:text-[var(--color-text-secondary)] transition-colors duration-200">
+        <Link
+          href="/legal"
+          className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        >
           Mentions légales
         </Link>
-        <Link href="/privacy" className="hover:text-[var(--color-text-secondary)] transition-colors duration-200">
+        <Link
+          href="/privacy"
+          className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        >
           Confidentialité
         </Link>
-        <Link href="/about" className="hover:text-[var(--color-text-secondary)] transition-colors duration-200">
+        <Link
+          href="/about"
+          className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        >
           À propos
         </Link>
         <a
@@ -43,5 +55,5 @@ export function SiteFooter() {
         <ConsentManageLink className="hover:text-[var(--color-text-secondary)] transition-colors duration-200 underline-offset-2 hover:underline" />
       </div>
     </footer>
-  )
+  );
 }

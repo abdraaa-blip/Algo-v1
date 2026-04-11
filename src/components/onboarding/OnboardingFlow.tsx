@@ -1,137 +1,148 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { 
-  Zap, TrendingUp, Bell, Globe, ChevronRight, ChevronLeft,
-  Sparkles, Video, Newspaper, Users, Check, Loader2
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useHaptic } from '@/hooks/useHaptic'
-import { requestNotificationPermission } from '@/lib/notifications/push-notifications'
+import { useState } from "react";
+import {
+  Zap,
+  TrendingUp,
+  Bell,
+  Globe,
+  ChevronRight,
+  ChevronLeft,
+  Sparkles,
+  Video,
+  Newspaper,
+  Users,
+  Check,
+  Loader2,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useHaptic } from "@/hooks/useHaptic";
+import { requestNotificationPermission } from "@/lib/notifications/push-notifications";
 
 interface OnboardingFlowProps {
-  onComplete: () => void
+  onComplete: () => void;
 }
 
 const STEPS = [
   {
-    id: 'welcome',
-    title: 'ALGO, ton radar tendances',
-    subtitle: 'Capte le signal avant qu’il explose',
+    id: "welcome",
+    title: "ALGO, ton radar tendances",
+    subtitle: "Capte le signal avant qu’il explose",
     icon: Zap,
-    gradient: 'from-violet-500 to-fuchsia-500',
+    gradient: "from-violet-500 to-fuchsia-500",
   },
   {
-    id: 'interests',
-    title: 'Qu’est-ce qui t’intéresse ?',
-    subtitle: 'Choisis des thèmes pour personnaliser ton flux',
+    id: "interests",
+    title: "Qu’est-ce qui t’intéresse ?",
+    subtitle: "Choisis des thèmes pour personnaliser ton flux",
     icon: Sparkles,
-    gradient: 'from-cyan-500 to-blue-500',
+    gradient: "from-cyan-500 to-blue-500",
   },
   {
-    id: 'notifications',
-    title: 'Reste en avance',
-    subtitle: 'Sois alerté quand une tendance accélère',
+    id: "notifications",
+    title: "Reste en avance",
+    subtitle: "Sois alerté quand une tendance accélère",
     icon: Bell,
-    gradient: 'from-amber-500 to-orange-500',
+    gradient: "from-amber-500 to-orange-500",
   },
   {
-    id: 'region',
-    title: 'Ta zone',
-    subtitle: 'Affine les tendances selon ton périmètre',
+    id: "region",
+    title: "Ta zone",
+    subtitle: "Affine les tendances selon ton périmètre",
     icon: Globe,
-    gradient: 'from-emerald-500 to-teal-500',
+    gradient: "from-emerald-500 to-teal-500",
   },
-]
+];
 
 const INTERESTS = [
-  { id: 'music', label: 'Musique & artistes', icon: Sparkles },
-  { id: 'comedy', label: 'Humour & mèmes', icon: Users },
-  { id: 'tech', label: 'Tech & innovation', icon: Zap },
-  { id: 'sports', label: 'Sport', icon: TrendingUp },
-  { id: 'gaming', label: 'Gaming', icon: Video },
-  { id: 'news', label: 'Actu & politique', icon: Newspaper },
-  { id: 'fashion', label: 'Mode & beauté', icon: Sparkles },
-  { id: 'food', label: 'Food & lifestyle', icon: Users },
-]
+  { id: "music", label: "Musique & artistes", icon: Sparkles },
+  { id: "comedy", label: "Humour & mèmes", icon: Users },
+  { id: "tech", label: "Tech & innovation", icon: Zap },
+  { id: "sports", label: "Sport", icon: TrendingUp },
+  { id: "gaming", label: "Gaming", icon: Video },
+  { id: "news", label: "Actu & politique", icon: Newspaper },
+  { id: "fashion", label: "Mode & beauté", icon: Sparkles },
+  { id: "food", label: "Food & lifestyle", icon: Users },
+];
 
 const REGIONS = [
-  { id: 'US', label: 'États-Unis', flag: '🇺🇸' },
-  { id: 'FR', label: 'France', flag: '🇫🇷' },
-  { id: 'GB', label: 'Royaume-Uni', flag: '🇬🇧' },
-  { id: 'DE', label: 'Allemagne', flag: '🇩🇪' },
-  { id: 'ES', label: 'Espagne', flag: '🇪🇸' },
-  { id: 'BR', label: 'Brésil', flag: '🇧🇷' },
-  { id: 'JP', label: 'Japon', flag: '🇯🇵' },
-  { id: 'GLOBAL', label: 'Monde', flag: '🌍' },
-]
+  { id: "US", label: "États-Unis", flag: "🇺🇸" },
+  { id: "FR", label: "France", flag: "🇫🇷" },
+  { id: "GB", label: "Royaume-Uni", flag: "🇬🇧" },
+  { id: "DE", label: "Allemagne", flag: "🇩🇪" },
+  { id: "ES", label: "Espagne", flag: "🇪🇸" },
+  { id: "BR", label: "Brésil", flag: "🇧🇷" },
+  { id: "JP", label: "Japon", flag: "🇯🇵" },
+  { id: "GLOBAL", label: "Monde", flag: "🌍" },
+];
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([])
-  const [selectedRegion, setSelectedRegion] = useState('US')
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const { trigger } = useHaptic()
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState("US");
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { trigger } = useHaptic();
 
-  const step = STEPS[currentStep]
-  const isLast = currentStep === STEPS.length - 1
-  const canProceed = 
-    currentStep === 0 || 
+  const step = STEPS[currentStep];
+  const isLast = currentStep === STEPS.length - 1;
+  const canProceed =
+    currentStep === 0 ||
     (currentStep === 1 && selectedInterests.length >= 2) ||
     currentStep === 2 ||
-    (currentStep === 3 && selectedRegion)
+    (currentStep === 3 && selectedRegion);
 
   const handleNext = async () => {
-    trigger('medium')
-    
+    trigger("medium");
+
     if (isLast) {
-      setIsLoading(true)
-      
+      setIsLoading(true);
+
       // Save preferences
       try {
-        localStorage.setItem('algo_onboarding_complete', 'true')
-        localStorage.setItem('algo_interests', JSON.stringify(selectedInterests))
-        localStorage.setItem('algo_region', selectedRegion)
-        
+        localStorage.setItem("algo_onboarding_complete", "true");
+        localStorage.setItem(
+          "algo_interests",
+          JSON.stringify(selectedInterests),
+        );
+        localStorage.setItem("algo_region", selectedRegion);
+
         // Small delay for visual feedback
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        onComplete()
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        onComplete();
       } catch (error) {
-        console.error('Failed to save preferences:', error)
-        onComplete()
+        console.error("Failed to save preferences:", error);
+        onComplete();
       }
     } else {
-      setCurrentStep(prev => prev + 1)
+      setCurrentStep((prev) => prev + 1);
     }
-  }
+  };
 
   const handleBack = () => {
-    trigger('light')
-    setCurrentStep(prev => Math.max(0, prev - 1))
-  }
+    trigger("light");
+    setCurrentStep((prev) => Math.max(0, prev - 1));
+  };
 
   const toggleInterest = (id: string) => {
-    trigger('light')
-    setSelectedInterests(prev => 
-      prev.includes(id) 
-        ? prev.filter(i => i !== id)
-        : [...prev, id]
-    )
-  }
+    trigger("light");
+    setSelectedInterests((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+    );
+  };
 
   const handleEnableNotifications = async () => {
-    trigger('medium')
-    const permission = await requestNotificationPermission()
-    setNotificationsEnabled(permission === 'granted')
-  }
+    trigger("medium");
+    const permission = await requestNotificationPermission();
+    setNotificationsEnabled(permission === "granted");
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-[var(--color-bg-primary)] flex flex-col">
       {/* Progress bar */}
       <div className="h-1 bg-white/5">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-500"
           style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
         />
@@ -140,11 +151,15 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-md mx-auto w-full">
         {/* Icon */}
-        <div className={cn(
-          'size-24 rounded-3xl flex items-center justify-center mb-8',
-          'bg-gradient-to-br', step.gradient, 'shadow-2xl',
-          'animate-in zoom-in-50 duration-500'
-        )}>
+        <div
+          className={cn(
+            "size-24 rounded-3xl flex items-center justify-center mb-8",
+            "bg-gradient-to-br",
+            step.gradient,
+            "shadow-2xl",
+            "animate-in zoom-in-50 duration-500",
+          )}
+        >
           <step.icon size={48} className="text-white" strokeWidth={1.5} />
         </div>
 
@@ -162,13 +177,21 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             <div className="space-y-4 text-center">
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {[
-                  { icon: TrendingUp, label: 'Tendances temps réel' },
-                  { icon: Sparkles, label: 'Prévisions IA' },
-                  { icon: Bell, label: 'Alertes rapides' },
+                  { icon: TrendingUp, label: "Tendances temps réel" },
+                  { icon: Sparkles, label: "Prévisions IA" },
+                  { icon: Bell, label: "Alertes rapides" },
                 ].map((feature, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                    <feature.icon size={24} className="mx-auto mb-2 text-violet-400" />
-                    <span className="text-xs text-white/50">{feature.label}</span>
+                  <div
+                    key={i}
+                    className="p-4 rounded-2xl bg-white/5 border border-white/5"
+                  >
+                    <feature.icon
+                      size={24}
+                      className="mx-auto mb-2 text-violet-400"
+                    />
+                    <span className="text-xs text-white/50">
+                      {feature.label}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -177,15 +200,15 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
           {currentStep === 1 && (
             <div className="grid grid-cols-2 gap-3">
-              {INTERESTS.map(interest => (
+              {INTERESTS.map((interest) => (
                 <button
                   key={interest.id}
                   onClick={() => toggleInterest(interest.id)}
                   className={cn(
-                    'flex items-center gap-3 p-4 rounded-xl border transition-all',
+                    "flex items-center gap-3 p-4 rounded-xl border transition-all",
                     selectedInterests.includes(interest.id)
-                      ? 'bg-violet-500/15 border-violet-500/30 text-white'
-                      : 'bg-white/3 border-white/5 text-white/60 hover:bg-white/5'
+                      ? "bg-violet-500/15 border-violet-500/30 text-white"
+                      : "bg-white/3 border-white/5 text-white/60 hover:bg-white/5",
                   )}
                 >
                   {selectedInterests.includes(interest.id) ? (
@@ -205,10 +228,10 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 onClick={handleEnableNotifications}
                 disabled={notificationsEnabled}
                 className={cn(
-                  'w-full p-4 rounded-xl border transition-all flex items-center justify-center gap-3',
+                  "w-full p-4 rounded-xl border transition-all flex items-center justify-center gap-3",
                   notificationsEnabled
-                    ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
-                    : 'bg-violet-500/15 border-violet-500/30 text-white hover:bg-violet-500/20'
+                    ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
+                    : "bg-violet-500/15 border-violet-500/30 text-white hover:bg-violet-500/20",
                 )}
               >
                 {notificationsEnabled ? (
@@ -219,11 +242,13 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 ) : (
                   <>
                     <Bell size={20} />
-                    <span className="font-medium">Activer les notifications</span>
+                    <span className="font-medium">
+                      Activer les notifications
+                    </span>
                   </>
                 )}
               </button>
-              
+
               <button
                 onClick={handleNext}
                 className="w-full text-center text-sm text-white/30 hover:text-white/50"
@@ -235,18 +260,18 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
           {currentStep === 3 && (
             <div className="grid grid-cols-2 gap-3 max-h-[300px] overflow-y-auto">
-              {REGIONS.map(region => (
+              {REGIONS.map((region) => (
                 <button
                   key={region.id}
                   onClick={() => {
-                    trigger('light')
-                    setSelectedRegion(region.id)
+                    trigger("light");
+                    setSelectedRegion(region.id);
                   }}
                   className={cn(
-                    'flex items-center gap-3 p-4 rounded-xl border transition-all',
+                    "flex items-center gap-3 p-4 rounded-xl border transition-all",
                     selectedRegion === region.id
-                      ? 'bg-violet-500/15 border-violet-500/30 text-white'
-                      : 'bg-white/3 border-white/5 text-white/60 hover:bg-white/5'
+                      ? "bg-violet-500/15 border-violet-500/30 text-white"
+                      : "bg-white/3 border-white/5 text-white/60 hover:bg-white/5",
                   )}
                 >
                   <span className="text-2xl">{region.flag}</span>
@@ -269,42 +294,42 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               <ChevronLeft size={20} />
             </button>
           )}
-          
+
           <button
             onClick={handleNext}
             disabled={!canProceed || isLoading}
             className={cn(
-              'flex-1 py-3 rounded-xl font-semibold transition-all',
-              'flex items-center justify-center gap-2',
+              "flex-1 py-3 rounded-xl font-semibold transition-all",
+              "flex items-center justify-center gap-2",
               canProceed
-                ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:opacity-90'
-                : 'bg-white/5 text-white/30 cursor-not-allowed'
+                ? "bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:opacity-90"
+                : "bg-white/5 text-white/30 cursor-not-allowed",
             )}
           >
             {isLoading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
               <>
-                {isLast ? 'Commencer' : 'Continuer'}
+                {isLast ? "Commencer" : "Continuer"}
                 <ChevronRight size={18} />
               </>
             )}
           </button>
         </div>
-        
+
         {/* Step indicators */}
         <div className="flex justify-center gap-2 mt-4">
           {STEPS.map((_, i) => (
             <div
               key={i}
               className={cn(
-                'size-2 rounded-full transition-all',
-                i === currentStep ? 'bg-violet-500 w-6' : 'bg-white/10'
+                "size-2 rounded-full transition-all",
+                i === currentStep ? "bg-violet-500 w-6" : "bg-white/10",
               )}
             />
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

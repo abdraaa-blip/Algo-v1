@@ -1,24 +1,27 @@
-import Link from 'next/link'
-import { ImageWithFallback } from './ImageWithFallback'
+import Link from "next/link";
+import { ImageWithFallback } from "./ImageWithFallback";
 
 // =============================================================================
 // CastSection · Horizontal scrolling cast members with clickable profiles
 // =============================================================================
 
 interface CastMember {
-  id: number
-  name: string
-  character: string
-  photo: string | null
+  id: number;
+  name: string;
+  character: string;
+  photo: string | null;
 }
 
 interface CastSectionProps {
-  cast: CastMember[]
-  title?: string
+  cast: CastMember[];
+  title?: string;
 }
 
-export function CastSection({ cast, title = 'Casting principal' }: CastSectionProps) {
-  if (!cast || cast.length === 0) return null
+export function CastSection({
+  cast,
+  title = "Casting principal",
+}: CastSectionProps) {
+  if (!cast || cast.length === 0) return null;
 
   return (
     <section className="mt-6">
@@ -58,5 +61,5 @@ export function CastSection({ cast, title = 'Casting principal' }: CastSectionPr
         ))}
       </div>
     </section>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from "react";
 import {
   DEFAULT_PLANET_PREFS,
   loadPlanetPrefs,
@@ -9,57 +9,60 @@ import {
   resetPlanetPrefs,
   savePlanetPrefs,
   type PlanetVisualPrefs,
-} from '@/lib/ui/planet-prefs'
+} from "@/lib/ui/planet-prefs";
 
 function dispatchPlanetToggle() {
-  if (typeof window === 'undefined') return
-  window.dispatchEvent(new Event('algo:planet-toggle'))
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event("algo:planet-toggle"));
 }
 
 export function PlanetTotemControls() {
-  const [prefs, setPrefs] = useState<PlanetVisualPrefs>(DEFAULT_PLANET_PREFS)
-  const [planetOn, setPlanetOn] = useState(true)
+  const [prefs, setPrefs] = useState<PlanetVisualPrefs>(DEFAULT_PLANET_PREFS);
+  const [planetOn, setPlanetOn] = useState(true);
 
   const syncFromStorage = useCallback(() => {
-    setPrefs(loadPlanetPrefs())
-    if (typeof window !== 'undefined') {
-      setPlanetOn(window.localStorage.getItem('algo_planet_enabled') !== '0')
+    setPrefs(loadPlanetPrefs());
+    if (typeof window !== "undefined") {
+      setPlanetOn(window.localStorage.getItem("algo_planet_enabled") !== "0");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    syncFromStorage()
-    if (typeof window === 'undefined') return
-    const onPrefs = () => syncFromStorage()
+    syncFromStorage();
+    if (typeof window === "undefined") return;
+    const onPrefs = () => syncFromStorage();
     const onStorage = (e: StorageEvent) => {
-      if (e.key === PLANET_PREFS_STORAGE_KEY || e.key === 'algo_planet_enabled') syncFromStorage()
-    }
-    window.addEventListener(PLANET_PREFS_EVENT, onPrefs)
-    window.addEventListener('storage', onStorage)
+      if (e.key === PLANET_PREFS_STORAGE_KEY || e.key === "algo_planet_enabled")
+        syncFromStorage();
+    };
+    window.addEventListener(PLANET_PREFS_EVENT, onPrefs);
+    window.addEventListener("storage", onStorage);
     return () => {
-      window.removeEventListener(PLANET_PREFS_EVENT, onPrefs)
-      window.removeEventListener('storage', onStorage)
-    }
-  }, [syncFromStorage])
+      window.removeEventListener(PLANET_PREFS_EVENT, onPrefs);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [syncFromStorage]);
 
   const updatePrefs = (next: PlanetVisualPrefs) => {
-    setPrefs(next)
-    savePlanetPrefs(next)
-  }
+    setPrefs(next);
+    savePlanetPrefs(next);
+  };
 
   const setPlanetEnabled = (on: boolean) => {
-    if (typeof window === 'undefined') return
-    if (on) window.localStorage.removeItem('algo_planet_enabled')
-    else window.localStorage.setItem('algo_planet_enabled', '0')
-    setPlanetOn(on)
-    dispatchPlanetToggle()
-  }
+    if (typeof window === "undefined") return;
+    if (on) window.localStorage.removeItem("algo_planet_enabled");
+    else window.localStorage.setItem("algo_planet_enabled", "0");
+    setPlanetOn(on);
+    dispatchPlanetToggle();
+  };
 
   return (
     <div className="rounded-xl border border-cyan-500/20 bg-gradient-to-br from-cyan-950/30 to-[var(--color-card)] p-4 space-y-4">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h2 className="text-sm font-semibold text-cyan-100">Data planet totem</h2>
+          <h2 className="text-sm font-semibold text-cyan-100">
+            Data planet totem
+          </h2>
           <p className="text-[11px] text-[var(--color-text-tertiary)] mt-0.5">
             Live visual tuning · saved in this browser
           </p>
@@ -109,8 +112,8 @@ export function PlanetTotemControls() {
         <button
           type="button"
           onClick={() => {
-            resetPlanetPrefs()
-            syncFromStorage()
+            resetPlanetPrefs();
+            syncFromStorage();
           }}
           className="text-xs px-3 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] text-[var(--color-text-primary)] transition-colors"
         >
@@ -118,19 +121,19 @@ export function PlanetTotemControls() {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 function SliderRow(props: {
-  label: string
-  min: number
-  max: number
-  step: number
-  value: number
-  onChange: (v: number) => void
-  format: (v: number) => string
+  label: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+  onChange: (v: number) => void;
+  format: (v: number) => string;
 }) {
-  const { label, min, max, step, value, onChange, format } = props
+  const { label, min, max, step, value, onChange, format } = props;
   return (
     <div>
       <div className="flex justify-between text-[11px] text-[var(--color-text-secondary)] mb-1">
@@ -147,5 +150,5 @@ function SliderRow(props: {
         className="w-full h-1.5 rounded-full appearance-none bg-[var(--color-card-hover)] accent-cyan-400"
       />
     </div>
-  )
+  );
 }

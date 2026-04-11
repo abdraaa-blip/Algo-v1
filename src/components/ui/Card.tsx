@@ -1,82 +1,83 @@
-import { Eye, Clock } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Badge } from './Badge'
-import { ViralScoreRing } from './ViralScoreRing'
-import { MomentumPill } from './MomentumPill'
-import { InsightPanel } from './InsightPanel'
-import { ImageWithFallback } from './ImageWithFallback'
-import type { Content, BadgeType } from '@/types'
-import { formatViews, formatRelativeTime } from '@/i18n/utils'
+import { Eye, Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "./Badge";
+import { ViralScoreRing } from "./ViralScoreRing";
+import { MomentumPill } from "./MomentumPill";
+import { InsightPanel } from "./InsightPanel";
+import { ImageWithFallback } from "./ImageWithFallback";
+import type { Content, BadgeType } from "@/types";
+import { formatViews, formatRelativeTime } from "@/i18n/utils";
 
 // ─── Labels passés par le parent · zéro texte hardcodé ───────────────────────
 
 interface CardLabels {
-  badge: Record<BadgeType | 'coolOff' | 'exploding', string>
-  viralScoreAriaLabel: string  // ex: "Viral Score : {value}"
-  insight: Parameters<typeof InsightPanel>[0]['labels']
+  badge: Record<BadgeType | "coolOff" | "exploding", string>;
+  viralScoreAriaLabel: string; // ex: "Viral Score : {value}"
+  insight: Parameters<typeof InsightPanel>[0]["labels"];
 }
 
 interface CardProps {
-  content:      Content
-  labels:       CardLabels
-  locale?:      string
-  showInsight?: boolean
-  animClass?:   string   // ex: 'algo-s1'
-  className?:   string
+  content: Content;
+  labels: CardLabels;
+  locale?: string;
+  showInsight?: boolean;
+  animClass?: string; // ex: 'algo-s1'
+  className?: string;
 }
 
 const platformCls: Record<string, string> = {
-  TikTok:    'text-pink-400',
-  Instagram: 'text-purple-400',
-  YouTube:   'text-red-400',
-  Twitter:   'text-sky-400',
-  Snapchat:  'text-yellow-400',
-  Reddit:    'text-orange-400',
-  Other:     'text-white/35',
-}
+  TikTok: "text-pink-400",
+  Instagram: "text-purple-400",
+  YouTube: "text-red-400",
+  Twitter: "text-sky-400",
+  Snapchat: "text-yellow-400",
+  Reddit: "text-orange-400",
+  Other: "text-white/35",
+};
 
 export function Card({
   content,
   labels,
-  locale    = 'fr',
+  locale = "fr",
   showInsight = false,
   animClass,
   className,
 }: CardProps) {
-  const isCooling  = content.growthTrend === 'down'
-  const badgeType: BadgeType | 'coolOff' | 'exploding' =
-    content.isExploding ? 'exploding'
-    : isCooling          ? 'coolOff'
-    : content.badge
+  const isCooling = content.growthTrend === "down";
+  const badgeType: BadgeType | "coolOff" | "exploding" = content.isExploding
+    ? "exploding"
+    : isCooling
+      ? "coolOff"
+      : content.badge;
 
-  const badgeLabel = labels.badge[badgeType]
+  const badgeLabel = labels.badge[badgeType];
 
   // Use sourceUrl for live API content (yt_*, etc.), fall back to internal route for mock data
-  const href = content.sourceUrl || `/content/${content.id}`
-  const isExternal = content.sourceUrl?.startsWith('http')
+  const href = content.sourceUrl || `/content/${content.id}`;
+  const isExternal = content.sourceUrl?.startsWith("http");
 
   return (
     <a
       href={href}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
       className={cn(
         // Layout - Fixed height and card-stable to prevent CLS
-        'group block rounded-[16px] border overflow-hidden h-[220px] card-stable',
+        "group block rounded-[16px] border overflow-hidden h-[220px] card-stable",
         // Glassmorphism
-        'bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.08)]',
+        "bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.08)]",
         // Backdrop
-        'backdrop-blur-[12px]',
+        "backdrop-blur-[12px]",
         // Transitions
-        'transition-[transform,border-color,box-shadow] duration-[250ms] ease-out',
+        "transition-[transform,border-color,box-shadow] duration-[250ms] ease-out",
         // Hover
-        'hover:scale-[1.012] hover:border-[rgba(123,97,255,0.22)] hover:bg-[rgba(255,255,255,0.07)]',
+        "hover:scale-[1.012] hover:border-[rgba(123,97,255,0.22)] hover:bg-[rgba(255,255,255,0.07)]",
         // Focus
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60',
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60",
         // Animations conditionnelles
-        content.isExploding && 'algo-exploding',
-        content.badge === 'Early' && !content.isExploding && 'algo-early-card',
-        isCooling && 'opacity-65',
+        content.isExploding && "algo-exploding",
+        content.badge === "Early" && !content.isExploding && "algo-early-card",
+        isCooling && "opacity-65",
         // Stagger
         animClass,
         className,
@@ -93,7 +94,7 @@ export function Card({
           className="object-cover transition-transform duration-[350ms] group-hover:scale-[1.03]"
           containerClassName="absolute inset-0"
           fallbackType="platform"
-          platform={content.platform?.toLowerCase() || 'default'}
+          platform={content.platform?.toLowerCase() || "default"}
         />
 
         {/* Badge · position start pour RTL */}
@@ -105,10 +106,10 @@ export function Card({
         <div className="absolute top-2 end-2">
           <span
             className={cn(
-              'text-[9px] font-bold uppercase tracking-widest',
-              'px-2 py-0.5 rounded-full',
-              'bg-black/45 backdrop-blur-sm',
-              platformCls[content.platform] ?? 'text-white/40',
+              "text-[9px] font-bold uppercase tracking-widest",
+              "px-2 py-0.5 rounded-full",
+              "bg-black/45 backdrop-blur-sm",
+              platformCls[content.platform] ?? "text-white/40",
             )}
           >
             {content.platform}
@@ -118,7 +119,6 @@ export function Card({
 
       {/* ── Corps ── */}
       <div className="p-3 space-y-2.5">
-
         {/* Titre */}
         <p className="text-white/85 text-sm font-semibold leading-snug line-clamp-2 transition-colors duration-150 group-hover:text-white">
           {content.title}
@@ -132,7 +132,10 @@ export function Card({
             size="sm"
             aria-label={`${labels.viralScoreAriaLabel} : ${content.viralScore}`}
           />
-          <MomentumPill value={content.growthRate} trend={content.growthTrend} />
+          <MomentumPill
+            value={content.growthRate}
+            trend={content.growthTrend}
+          />
         </div>
 
         {/* Meta */}
@@ -162,5 +165,5 @@ export function Card({
         )}
       </div>
     </a>
-  )
+  );
 }

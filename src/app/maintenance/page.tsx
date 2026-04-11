@@ -1,5 +1,5 @@
-import { Wrench, Clock, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import { Wrench, Clock, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 /**
  * Maintenance Page
@@ -26,8 +26,8 @@ export default function MaintenancePage() {
             Maintenance en cours
           </h1>
           <p className="text-white/50 leading-relaxed">
-            ALGO est actuellement en maintenance pour vous offrir une experience encore meilleure. 
-            Nous serons de retour tres bientot.
+            ALGO est actuellement en maintenance pour vous offrir une experience
+            encore meilleure. Nous serons de retour tres bientot.
           </p>
         </div>
 
@@ -41,7 +41,9 @@ export default function MaintenancePage() {
 
         {/* Status updates */}
         <div className="space-y-2 text-left p-4 rounded-xl bg-white/[0.02] border border-white/5">
-          <p className="text-xs font-semibold text-white/40 uppercase tracking-wide">Statut</p>
+          <p className="text-xs font-semibold text-white/40 uppercase tracking-wide">
+            Statut
+          </p>
           <div className="space-y-1.5">
             <StatusItem status="done" label="Sauvegarde des données" />
             <StatusItem status="progress" label="Mise à jour des serveurs" />
@@ -60,24 +62,38 @@ export default function MaintenancePage() {
         </Link>
       </div>
     </main>
-  )
+  );
 }
 
-function StatusItem({ status, label }: { status: 'done' | 'progress' | 'pending'; label: string }) {
+function StatusItem({
+  status,
+  label,
+}: {
+  status: "done" | "progress" | "pending";
+  label: string;
+}) {
   return (
     <div className="flex items-center gap-2">
-      <div className={`w-2 h-2 rounded-full ${
-        status === 'done' ? 'bg-emerald-400' :
-        status === 'progress' ? 'bg-amber-400 animate-pulse' :
-        'bg-white/20'
-      }`} />
-      <span className={`text-sm ${
-        status === 'done' ? 'text-white/60 line-through' :
-        status === 'progress' ? 'text-white/80' :
-        'text-white/40'
-      }`}>
+      <div
+        className={`w-2 h-2 rounded-full ${
+          status === "done"
+            ? "bg-emerald-400"
+            : status === "progress"
+              ? "bg-amber-400 animate-pulse"
+              : "bg-white/20"
+        }`}
+      />
+      <span
+        className={`text-sm ${
+          status === "done"
+            ? "text-white/60 line-through"
+            : status === "progress"
+              ? "text-white/80"
+              : "text-white/40"
+        }`}
+      >
         {label}
       </span>
     </div>
-  )
+  );
 }

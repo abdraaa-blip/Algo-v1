@@ -3,10 +3,10 @@
  * Absence de paramètre → pas de troncature (comportement historique des pages UI).
  */
 export function parseOptionalListLimit(raw: string | null): number | undefined {
-  if (raw === null || raw === '') return undefined
-  const n = Number.parseInt(raw, 10)
-  if (!Number.isFinite(n)) return undefined
-  return Math.min(100, Math.max(1, n))
+  if (raw === null || raw === "") return undefined;
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isFinite(n)) return undefined;
+  return Math.min(100, Math.max(1, n));
 }
 
 /**
@@ -18,10 +18,10 @@ export function parseDefaultedListLimit(
   defaultVal: number,
   maxVal: number,
 ): number {
-  if (raw === null || raw === '') return defaultVal
-  const n = Number.parseInt(raw, 10)
-  if (!Number.isFinite(n)) return defaultVal
-  return Math.min(maxVal, Math.max(1, n))
+  if (raw === null || raw === "") return defaultVal;
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isFinite(n)) return defaultVal;
+  return Math.min(maxVal, Math.max(1, n));
 }
 
 /**
@@ -32,8 +32,8 @@ export function parseDefaultedOffset(
   defaultVal: number,
   maxVal: number,
 ): number {
-  if (raw === null || raw === '') return defaultVal
-  const n = Number.parseInt(raw, 10)
-  if (!Number.isFinite(n)) return defaultVal
-  return Math.min(maxVal, Math.max(0, n))
+  if (raw === null || raw === "") return defaultVal;
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isFinite(n)) return defaultVal;
+  return Math.min(maxVal, Math.max(0, n));
 }

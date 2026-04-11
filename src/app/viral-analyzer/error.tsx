@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function ViralAnalyzerError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[ALGO Viral Analyzer Error]', error)
-  }, [error])
+    console.error("[ALGO Viral Analyzer Error]", error);
+  }, [error]);
 
   return (
     <div className="min-h-dvh flex items-center justify-center p-4 bg-[var(--color-bg-primary)]">
@@ -23,20 +23,28 @@ export default function ViralAnalyzerError({
           <AlertTriangle className="w-8 h-8 text-red-400" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-xl font-bold text-white">Erreur d&apos;analyse</h1>
+          <h1 className="text-xl font-bold text-white">
+            Erreur d&apos;analyse
+          </h1>
           <p className="text-white/50 text-sm">{ALGO_UI_ERROR.message}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button onClick={reset} className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors">
+          <button
+            onClick={reset}
+            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors"
+          >
             <RefreshCw size={16} />
             Réessayer
           </button>
-          <Link href="/" className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white transition-colors">
+          <Link
+            href="/"
+            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white transition-colors"
+          >
             <Home size={16} />
             Accueil
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }

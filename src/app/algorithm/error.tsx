@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function AlgorithmError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[ALGO] Algorithm page error:', error)
-  }, [error])
+    console.error("[ALGO] Algorithm page error:", error);
+  }, [error]);
 
   return (
     <div className="min-h-dvh flex items-center justify-center p-4 bg-[var(--color-bg-primary)]">
@@ -22,9 +22,11 @@ export default function AlgorithmError({
         <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
           <AlertTriangle className="w-8 h-8 text-red-400" />
         </div>
-        
+
         <div>
-          <h1 className="text-xl font-bold text-white mb-2">{ALGO_UI_ERROR.title}</h1>
+          <h1 className="text-xl font-bold text-white mb-2">
+            {ALGO_UI_ERROR.title}
+          </h1>
           <p className="text-white/60 text-sm">{ALGO_UI_ERROR.message}</p>
         </div>
 
@@ -36,7 +38,7 @@ export default function AlgorithmError({
             <RefreshCw size={16} />
             Réessayer
           </button>
-          
+
           <Link
             href="/"
             className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
@@ -47,5 +49,5 @@ export default function AlgorithmError({
         </div>
       </div>
     </div>
-  )
+  );
 }

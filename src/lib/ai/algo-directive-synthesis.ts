@@ -32,7 +32,7 @@ Limites: ne jamais bloquer sans piste ; pas d’illusion sur ce qui n’est pas 
 Boucle type: comprendre la demande → mobiliser le contexte fourni → analyser → répondre clairement → action ou suite.
 
 Contrainte finale: incompatible avec la doctrine ALGO (transparence, pas de magie) → **prudence et doctrine l’emportent**.
-`.trim()
+`.trim();
 
 /**
  * Comportement « intelligence centrale » : utile, fluide, orienté décision.
@@ -73,7 +73,7 @@ Rappel aligné doctrine ALGO:
 - Pas de promesses magiques sur la viralité ni de contrôle des plateformes · probabilités, scénarios, indicateurs.
 - Les scores et lectures restent des estimations · honnêteté sur l’incertitude.
 - Côté API / produit : ne pas exposer à l’utilisateur un message brut du type « erreur technique » ; toujours une synthèse, une précision à demander ou une direction (repli automatique si la chaîne échoue).
-`.trim()
+`.trim();
 
 /** Bloc court injecté dans le system prompt de toutes les tâches ALGO AI. */
 export const ALGO_DIRECTIVE_OPERATING_LAYER = `
@@ -106,19 +106,43 @@ Décision & orientation (prose libre, briefings narratifs, champs explicatifs; n
 Garde-fous (alignés directive « sans mysticisme » du corpus source):
 - Reste rationnel et respectueux : pas de discours religieux, ésotérique ou de promesses d’accès à des « vérités cachées ».
 - Pas d’affirmations de contrôle absolu sur les plateformes ou l’avenir ; probabilités, scénarios, indicateurs.
-`.trim()
+`.trim();
 
 /**
  * Familles du Noyau Miroir (CSV) → rôles produit en une phrase chacune.
  * Exporté pour transparence / future UI ; non injecté tel quel dans le modèle.
  */
 export const ALGO_DIRECTIVE_FAMILY_HINTS_FR = [
-  { code: 'V100', role: 'Cœur stratégique · priorisation et lecture de situation.' },
-  { code: 'V100++', role: 'Sûreté · cohérence, limites, pas d’invention de faits.' },
-  { code: 'V100+++', role: 'Analyse & décision · structurer, trancher avec prudence.' },
-  { code: 'VALGO', role: 'Création & innovation · formats, angles, itération.' },
-  { code: 'VBUZZ', role: 'Signaux & viralité · timing, formats, lecture réseau.' },
-  { code: 'V-HARMONY', role: 'Alignement · ton, cohérence multi-modules ALGO.' },
-  { code: 'V-SYNCHROGUARD', role: 'Production · audio/vidéo/texte : contraintes et livrables clairs.' },
-  { code: 'Création & Production', role: 'Persistance · ce qui doit être réutilisable vs jetable.' },
-] as const
+  {
+    code: "V100",
+    role: "Cœur stratégique · priorisation et lecture de situation.",
+  },
+  {
+    code: "V100++",
+    role: "Sûreté · cohérence, limites, pas d’invention de faits.",
+  },
+  {
+    code: "V100+++",
+    role: "Analyse & décision · structurer, trancher avec prudence.",
+  },
+  {
+    code: "VALGO",
+    role: "Création & innovation · formats, angles, itération.",
+  },
+  {
+    code: "VBUZZ",
+    role: "Signaux & viralité · timing, formats, lecture réseau.",
+  },
+  {
+    code: "V-HARMONY",
+    role: "Alignement · ton, cohérence multi-modules ALGO.",
+  },
+  {
+    code: "V-SYNCHROGUARD",
+    role: "Production · audio/vidéo/texte : contraintes et livrables clairs.",
+  },
+  {
+    code: "Création & Production",
+    role: "Persistance · ce qui doit être réutilisable vs jetable.",
+  },
+] as const;

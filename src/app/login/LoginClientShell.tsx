@@ -1,99 +1,102 @@
-'use client'
+"use client";
 
-import { useState, useTransition } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
+import { useState, useTransition } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
 
 interface LoginLabels {
-  title:     string
-  email:     string
-  password:  string
-  submit:    string
-  google:    string
-  noAccount: string
-  signup:    string
-  or:        string
-  error?:    string
+  title: string;
+  email: string;
+  password: string;
+  submit: string;
+  google: string;
+  noAccount: string;
+  signup: string;
+  or: string;
+  error?: string;
 }
 
 // Dynamic Supabase import to avoid build errors when package is not installed
 async function getSupabaseClient() {
   try {
-    const { createClient } = await import('@/lib/supabase/client')
-    return createClient()
+    const { createClient } = await import("@/lib/supabase/client");
+    return createClient();
   } catch {
-    return null
+    return null;
   }
 }
 
 export function LoginClientShell({ labels }: { labels: LoginLabels }) {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     if (!email || !password) {
-      setError(labels.error || 'Email et mot de passe requis')
-      return
+      setError(labels.error || "Email et mot de passe requis");
+      return;
     }
 
     startTransition(async () => {
-      const supabase = await getSupabaseClient()
-      
+      const supabase = await getSupabaseClient();
+
       if (!supabase) {
-        setError('Service indisponible')
-        return
+        setError("Service indisponible");
+        return;
       }
-      
+
       const { error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
+      });
 
       if (authError) {
-        setError(mapUserFacingApiError(authError.message))
-        return
+        setError(mapUserFacingApiError(authError.message));
+        return;
       }
 
-      router.push('/')
-      router.refresh()
-    })
+      router.push("/");
+      router.refresh();
+    });
   }
 
   async function handleGoogleLogin() {
-    const supabase = await getSupabaseClient()
-    
+    const supabase = await getSupabaseClient();
+
     if (!supabase) {
-      setError('Service indisponible')
-      return
+      setError("Service indisponible");
+      return;
     }
-    
+
     await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
-    })
+    });
   }
 
   return (
     <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-8">
-
         {/* Header */}
         <div className="text-center space-y-1">
-          <p className="text-[10px] font-bold text-white/22 tracking-[0.20em] uppercase">ALGO</p>
-          <h1 className="text-white font-black text-2xl tracking-tight">{labels.title}</h1>
+          <p className="text-[10px] font-bold text-white/22 tracking-[0.20em] uppercase">
+            ALGO
+          </p>
+          <h1 className="text-white font-black text-2xl tracking-tight">
+            {labels.title}
+          </h1>
         </div>
 
         {/* Error message */}
@@ -110,8 +113,22 @@ export function LoginClientShell({ labels }: { labels: LoginLabels }) {
           noValidate
           aria-label={labels.title}
         >
-          <AuthField id="email"    label={labels.email}    type="email"    autoComplete="email"           placeholder="toi@example.com" disabled={isPending} />
-          <AuthField id="password" label={labels.password} type="password" autoComplete="current-password" placeholder="********" disabled={isPending} />
+          <AuthField
+            id="email"
+            label={labels.email}
+            type="email"
+            autoComplete="email"
+            placeholder="toi@example.com"
+            disabled={isPending}
+          />
+          <AuthField
+            id="password"
+            label={labels.password}
+            type="password"
+            autoComplete="current-password"
+            placeholder="********"
+            disabled={isPending}
+          />
 
           <button
             type="submit"
@@ -142,7 +159,7 @@ export function LoginClientShell({ labels }: { labels: LoginLabels }) {
 
         {/* Lien inscription */}
         <p className="text-center text-xs text-white/28">
-          {labels.noAccount}{' '}
+          {labels.noAccount}{" "}
           <Link
             href="/signup"
             className="text-violet-400 hover:text-violet-300 font-semibold transition-colors focus-visible:outline-none focus-visible:underline"
@@ -152,18 +169,23 @@ export function LoginClientShell({ labels }: { labels: LoginLabels }) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 function AuthField({
-  id, label, type, autoComplete, placeholder, disabled,
+  id,
+  label,
+  type,
+  autoComplete,
+  placeholder,
+  disabled,
 }: {
-  id:           string
-  label:        string
-  type:         string
-  autoComplete: string
-  placeholder:  string
-  disabled?:    boolean
+  id: string;
+  label: string;
+  type: string;
+  autoComplete: string;
+  placeholder: string;
+  disabled?: boolean;
 }) {
   return (
     <div className="space-y-1.5">
@@ -178,14 +200,14 @@ function AuthField({
         placeholder={placeholder}
         disabled={disabled}
         className={cn(
-          'w-full px-4 py-3 rounded-xl text-sm',
-          'bg-white/5 border border-white/10',
-          'text-white/78 placeholder:text-white/20',
-          'outline-none transition-all duration-150',
-          'focus:border-[rgba(123,97,255,0.50)] focus:bg-white/7',
-          'disabled:opacity-50 disabled:cursor-not-allowed',
+          "w-full px-4 py-3 rounded-xl text-sm",
+          "bg-white/5 border border-white/10",
+          "text-white/78 placeholder:text-white/20",
+          "outline-none transition-all duration-150",
+          "focus:border-[rgba(123,97,255,0.50)] focus:bg-white/7",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
         )}
       />
     </div>
-  )
+  );
 }

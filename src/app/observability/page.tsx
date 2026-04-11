@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation'
-import { isObservabilityDashboardEnabled } from '@/core/observability/guard'
-import { ObservabilityDashboard } from './ObservabilityDashboard'
+import { notFound } from "next/navigation";
+import { isObservabilityDashboardEnabled } from "@/core/observability/guard";
+import { ObservabilityDashboard } from "./ObservabilityDashboard";
 
 export default function ObservabilityPage() {
   if (!isObservabilityDashboardEnabled()) {
-    notFound()
+    notFound();
   }
-  return <ObservabilityDashboard />
+  return <ObservabilityDashboard />;
 }

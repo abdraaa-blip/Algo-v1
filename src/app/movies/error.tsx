@@ -1,25 +1,24 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { Film, RefreshCw, Home, AlertTriangle } from 'lucide-react'
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { Film, RefreshCw, Home, AlertTriangle } from "lucide-react";
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function MoviesError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[ALGO Movies Error]', error)
-  }, [error])
+    console.error("[ALGO Movies Error]", error);
+  }, [error]);
 
   return (
     <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
       <div className="text-center space-y-6 max-w-sm">
-        
         {/* Icon */}
         <div className="relative w-16 h-16 mx-auto">
           <div className="absolute inset-0 rounded-2xl bg-rose-500/10 border border-rose-500/20" />
@@ -60,8 +59,9 @@ export default function MoviesError({
         {/* Fallback suggestion */}
         <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
           <p className="text-xs text-white/40">
-            En attendant, vous pouvez explorer les autres tendances sur la page d&apos;accueil 
-            ou consulter le mode createur pour des idees de contenu.
+            En attendant, vous pouvez explorer les autres tendances sur la page
+            d&apos;accueil ou consulter le mode createur pour des idees de
+            contenu.
           </p>
           <div className="flex items-center justify-center gap-2 mt-3">
             <Link
@@ -81,5 +81,5 @@ export default function MoviesError({
         </div>
       </div>
     </div>
-  )
+  );
 }

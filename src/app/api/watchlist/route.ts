@@ -1,69 +1,77 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
+import { NextResponse, type NextRequest } from "next/server";
+import {
+  checkRateLimit,
+  getClientIdentifier,
+  createRateLimitHeaders,
+} from "@/lib/api/rate-limiter";
 
 async function getSupabaseClient() {
   try {
-    const { createClient } = await import('@/lib/supabase/server')
-    return await createClient()
+    const { createClient } = await import("@/lib/supabase/server");
+    return await createClient();
   } catch {
-    return null
+    return null;
   }
 }
 
 export async function GET(request: NextRequest) {
-  const identifier = getClientIdentifier(request)
-  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60000 })
-  
+  const identifier = getClientIdentifier(request);
+  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60000 });
+
   if (!rateLimit.success) {
     return NextResponse.json(
-      { error: 'Rate limit exceeded' },
-      { status: 429, headers: createRateLimitHeaders(rateLimit) }
-    )
+      { error: "Rate limit exceeded" },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) },
+    );
   }
-  
-  const supabase = await getSupabaseClient()
-  
+
+  const supabase = await getSupabaseClient();
+
   if (!supabase) {
-    return NextResponse.json({ items: [], error: 'Service unavailable' })
+    return NextResponse.json({ items: [], error: "Service unavailable" });
   }
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
-    return NextResponse.json({ items: [] })
+    return NextResponse.json({ items: [] });
   }
 
   const { data, error } = await supabase
-    .from('watchlist')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('added_at', { ascending: false })
+    .from("watchlist")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("added_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ items: data || [] })
+  return NextResponse.json({ items: data || [] });
 }
 
 export async function POST(request: Request) {
-  const supabase = await getSupabaseClient()
-  
+  const supabase = await getSupabaseClient();
+
   if (!supabase) {
-    return NextResponse.json({ error: 'Service unavailable' }, { status: 503 })
-  }
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
 
-  const body = await request.json()
-  const { trend_id, trend_name, last_score, notify_on_spike } = body
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await request.json();
+  const { trend_id, trend_name, last_score, notify_on_spike } = body;
 
   const { data, error } = await supabase
-    .from('watchlist')
+    .from("watchlist")
     .insert({
       user_id: user.id,
       trend_id,
@@ -72,44 +80,46 @@ export async function POST(request: Request) {
       notify_on_spike: notify_on_spike || false,
     })
     .select()
-    .single()
+    .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ item: data })
+  return NextResponse.json({ item: data });
 }
 
 export async function DELETE(request: Request) {
-  const supabase = await getSupabaseClient()
-  
+  const supabase = await getSupabaseClient();
+
   if (!supabase) {
-    return NextResponse.json({ error: 'Service unavailable' }, { status: 503 })
-  }
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
 
-  const { searchParams } = new URL(request.url)
-  const trendId = searchParams.get('trend_id')
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const trendId = searchParams.get("trend_id");
 
   if (!trendId) {
-    return NextResponse.json({ error: 'Missing trend_id' }, { status: 400 })
+    return NextResponse.json({ error: "Missing trend_id" }, { status: 400 });
   }
 
   const { error } = await supabase
-    .from('watchlist')
+    .from("watchlist")
     .delete()
-    .eq('user_id', user.id)
-    .eq('trend_id', trendId)
+    .eq("user_id", user.id)
+    .eq("trend_id", trendId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true });
 }

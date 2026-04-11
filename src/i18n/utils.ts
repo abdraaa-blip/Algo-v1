@@ -9,9 +9,9 @@
  */
 export function formatViews(count: number, locale: string): string {
   return new Intl.NumberFormat(locale, {
-    notation: 'compact',
+    notation: "compact",
     maximumFractionDigits: 1,
-  }).format(count)
+  }).format(count);
 }
 
 /**
@@ -19,19 +19,19 @@ export function formatViews(count: number, locale: string): string {
  * Exemples : "il y a 17 min" (fr) | "17 minutes ago" (en)
  */
 export function formatRelativeTime(dateString: string, locale: string): string {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / 60_000)
-  const diffHours = Math.floor(diffMs / 3_600_000)
-  const diffDays = Math.floor(diffMs / 86_400_000)
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMinutes = Math.floor(diffMs / 60_000);
+  const diffHours = Math.floor(diffMs / 3_600_000);
+  const diffDays = Math.floor(diffMs / 86_400_000);
 
-  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
 
-  if (diffMinutes < 1)   return rtf.format(0, 'minute')
-  if (diffMinutes < 60)  return rtf.format(-diffMinutes, 'minute')
-  if (diffHours < 24)    return rtf.format(-diffHours, 'hour')
-  return rtf.format(-diffDays, 'day')
+  if (diffMinutes < 1) return rtf.format(0, "minute");
+  if (diffMinutes < 60) return rtf.format(-diffMinutes, "minute");
+  if (diffHours < 24) return rtf.format(-diffHours, "hour");
+  return rtf.format(-diffDays, "day");
 }
 
 /**
@@ -40,10 +40,10 @@ export function formatRelativeTime(dateString: string, locale: string): string {
  */
 export function formatGrowthRate(rate: number, locale: string): string {
   return new Intl.NumberFormat(locale, {
-    style: 'percent',
+    style: "percent",
     maximumFractionDigits: 0,
-    signDisplay: 'always',
-  }).format(rate / 100)
+    signDisplay: "always",
+  }).format(rate / 100);
 }
 
 /**
@@ -51,7 +51,7 @@ export function formatGrowthRate(rate: number, locale: string): string {
  * Toujours tabular-nums · la mise en forme typographique est gérée côté CSS.
  */
 export function formatScore(score: number): string {
-  return Math.round(Math.max(0, Math.min(100, score))).toString()
+  return Math.round(Math.max(0, Math.min(100, score))).toString();
 }
 
 /**
@@ -59,7 +59,7 @@ export function formatScore(score: number): string {
  * Exemple : 2847 → "2 847" (fr) | "2,847" (en)
  */
 export function formatCount(count: number, locale: string): string {
-  return new Intl.NumberFormat(locale).format(count)
+  return new Intl.NumberFormat(locale).format(count);
 }
 
 /**
@@ -68,16 +68,16 @@ export function formatCount(count: number, locale: string): string {
  */
 export function detectBrowserLocale(
   supportedLocales: readonly string[],
-  fallback: string = 'fr',
+  fallback: string = "fr",
 ): string {
-  if (typeof navigator === 'undefined') return fallback
+  if (typeof navigator === "undefined") return fallback;
 
-  const languages = navigator.languages ?? [navigator.language]
+  const languages = navigator.languages ?? [navigator.language];
 
   for (const lang of languages) {
-    const code = lang.split('-')[0]
-    if (supportedLocales.includes(code)) return code
+    const code = lang.split("-")[0];
+    if (supportedLocales.includes(code)) return code;
   }
 
-  return fallback
+  return fallback;
 }

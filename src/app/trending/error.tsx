@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function TrendingError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
     // Log error to monitoring service
-    console.error('[ALGO Trending Error]', error)
-  }, [error])
+    console.error("[ALGO Trending Error]", error);
+  }, [error]);
 
   return (
     <div className="min-h-dvh flex items-center justify-center p-4 bg-[var(--color-bg-primary)]">
@@ -23,9 +23,11 @@ export default function TrendingError({
         <div className="w-16 h-16 mx-auto rounded-full bg-red-500/10 flex items-center justify-center">
           <AlertTriangle className="w-8 h-8 text-red-400" />
         </div>
-        
+
         <div className="space-y-2">
-          <h1 className="text-xl font-bold text-white">{ALGO_UI_ERROR.title}</h1>
+          <h1 className="text-xl font-bold text-white">
+            {ALGO_UI_ERROR.title}
+          </h1>
           <p className="text-white/50 text-sm">{ALGO_UI_ERROR.message}</p>
         </div>
 
@@ -53,5 +55,5 @@ export default function TrendingError({
         )}
       </div>
     </div>
-  )
+  );
 }

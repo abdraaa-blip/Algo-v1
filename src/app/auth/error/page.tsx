@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function AuthErrorPage() {
   return (
@@ -8,7 +8,7 @@ export default function AuthErrorPage() {
         <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/15 border border-red-500/22 flex items-center justify-center">
           <span className="text-3xl">!</span>
         </div>
-        
+
         <div className="space-y-2">
           <h1 className="text-white font-black text-2xl tracking-tight">
             Erreur d&apos;authentification
@@ -24,5 +24,5 @@ export default function AuthErrorPage() {
         </Link>
       </div>
     </div>
-  )
+  );
 }

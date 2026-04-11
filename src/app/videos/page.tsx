@@ -1,47 +1,48 @@
-import type { Metadata } from 'next'
-import { VideosClientShell } from './VideosClientShell'
-import { buildPageMetadata } from '@/lib/seo/build-metadata'
-import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import type { Metadata } from "next";
+import { VideosClientShell } from "./VideosClientShell";
+import { buildPageMetadata } from "@/lib/seo/build-metadata";
+import { ALGO_UI_LOADING } from "@/lib/copy/ui-strings";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: 'Vidéos virales',
+  title: "Vidéos virales",
   description:
-    'Tendances YouTube en direct · France, US, UK, Nigeria. ALGO agrège les signaux viraux pour créateurs et curieux.',
-  path: '/videos',
-  keywords: ['youtube', 'vidéos virales', 'tendances', 'shorts', 'créateurs', 'ALGO'],
-})
+    "Tendances YouTube en direct · France, US, UK, Nigeria. ALGO agrège les signaux viraux pour créateurs et curieux.",
+  path: "/videos",
+  keywords: [
+    "youtube",
+    "vidéos virales",
+    "tendances",
+    "shorts",
+    "créateurs",
+    "ALGO",
+  ],
+});
 
 export default function VideosPage() {
   const labels = {
-    title: 'Vidéos virales',
-    subtitle: 'Tendances YouTube (MAJ toutes les 30 min)',
+    title: "Vidéos virales",
+    subtitle: "Tendances YouTube (MAJ toutes les 30 min)",
     loading: ALGO_UI_LOADING.videos,
-    emptyTitle: 'Aucune vidéo',
-    emptySub: 'Aucune vidéo disponible pour ce filtre.',
-    filterAll: 'Tout',
-    featuredSectionTitle: 'En tête du flux',
-    featuredSectionSubtitle: 'Vidéo la plus consultée dans cette sélection pour l\'instant.',
-    allSectionTitle: 'Autres tendances',
-    ariaRefresh: 'Actualiser la liste',
-    ariaFilterRegions: 'Filtrer par région',
-    statsTotalViewsLabel: 'vues cumulées',
-    statsVideosLabel: 'vidéos',
+    emptyTitle: "Aucune vidéo",
+    emptySub: "Aucune vidéo disponible pour ce filtre.",
+    filterAll: "Tout",
+    featuredSectionTitle: "En tête du flux",
+    featuredSectionSubtitle:
+      "Vidéo la plus consultée dans cette sélection pour l'instant.",
+    allSectionTitle: "Autres tendances",
+    ariaRefresh: "Actualiser la liste",
+    ariaFilterRegions: "Filtrer par région",
+    statsTotalViewsLabel: "vues cumulées",
+    statsVideosLabel: "vidéos",
     filters: {
       time: [
-        { id: 'all', label: 'Tout', value: 'all' },
-        { id: '24h', label: '24h', value: '24h' },
-        { id: '7d', label: '7j', value: '7d' },
+        { id: "all", label: "Tout", value: "all" },
+        { id: "24h", label: "24h", value: "24h" },
+        { id: "7d", label: "7j", value: "7d" },
       ],
-      category: [
-        { id: 'all', label: 'Tout', value: 'all' },
-      ],
+      category: [{ id: "all", label: "Tout", value: "all" }],
     },
-  }
+  };
 
-  return (
-    <VideosClientShell
-      locale="fr"
-      labels={labels}
-    />
-  )
+  return <VideosClientShell locale="fr" labels={labels} />;
 }

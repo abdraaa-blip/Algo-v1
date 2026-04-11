@@ -1,38 +1,41 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
-export type AlgoExperienceView = 'calm' | 'dynamic' | 'focus'
+export type AlgoExperienceView = "calm" | "dynamic" | "focus";
 
 /**
  * Synchronise l’attribut `data-algo-view` sur <html> pour adapter l’ambiance
  * (couleurs, grain, arrière-plan) sans surcharger le CPU : logique purement CSS.
  */
 function resolveView(pathname: string): AlgoExperienceView {
-  const p = pathname || '/'
+  const p = pathname || "/";
   if (
     /\/(legal|privacy|transparency|algorithm|onboarding)(\/|$)/.test(p) ||
-    p.startsWith('/docs')
+    p.startsWith("/docs")
   ) {
-    return 'calm'
+    return "calm";
   }
   if (
     /\/(trends|viral-analyzer|creator-mode|intelligence|ai)(\/|$)/.test(p) ||
-    p.includes('/live') ||
-    p.startsWith('/news')
+    p.includes("/live") ||
+    p.startsWith("/news")
   ) {
-    return 'dynamic'
+    return "dynamic";
   }
-  return 'focus'
+  return "focus";
 }
 
 export function AlgoExperienceAttributes() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-algo-view', resolveView(pathname))
-  }, [pathname])
+    document.documentElement.setAttribute(
+      "data-algo-view",
+      resolveView(pathname),
+    );
+  }, [pathname]);
 
-  return null
+  return null;
 }

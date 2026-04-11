@@ -3,21 +3,21 @@ import {
   fetchAllTrends,
   type CachedData,
   type RealTrend,
-} from '@/lib/api/real-data-service'
+} from "@/lib/api/real-data-service";
 
 export type LiveTrendsPayload = CachedData<RealTrend> & {
-  success: true
-  status: 'active' | 'delayed' | 'static'
-  count: number
+  success: true;
+  status: "active" | "delayed" | "static";
+  count: number;
   meta: {
-    refreshIntervalMs: number
-    refreshIntervalLabel: string
-    region: string
-    dataFreshness: string
-    sourceName: string
-    appliedLimit: number | null
-  }
-}
+    refreshIntervalMs: number;
+    refreshIntervalLabel: string;
+    region: string;
+    dataFreshness: string;
+    sourceName: string;
+    appliedLimit: number | null;
+  };
+};
 
 /**
  * Cœur partagé pour `/api/live-trends` et `/api/v1/trends` (écosystème).
@@ -26,15 +26,21 @@ export type LiveTrendsPayload = CachedData<RealTrend> & {
  */
 export async function buildLiveTrendsPayload(
   country: string | null,
-  maxItems?: number
+  maxItems?: number,
 ): Promise<LiveTrendsPayload> {
-  const result = country ? await fetchGoogleTrends(country) : await fetchAllTrends()
+  const result = country
+    ? await fetchGoogleTrends(country)
+    : await fetchAllTrends();
 
   const status =
-    result.source === 'live' ? 'active' : result.source === 'cached' ? 'delayed' : 'static'
+    result.source === "live"
+      ? "active"
+      : result.source === "cached"
+        ? "delayed"
+        : "static";
 
   const dataOut =
-    maxItems !== undefined ? result.data.slice(0, maxItems) : result.data
+    maxItems !== undefined ? result.data.slice(0, maxItems) : result.data;
 
   return {
     success: true,
@@ -44,11 +50,11 @@ export async function buildLiveTrendsPayload(
     count: dataOut.length,
     meta: {
       refreshIntervalMs: 15 * 60 * 1000,
-      refreshIntervalLabel: '15 min',
-      region: country || 'ALL',
-      dataFreshness: result.source === 'live' ? 'recent' : 'cached',
-      sourceName: 'Google Trends (via News RSS)',
+      refreshIntervalLabel: "15 min",
+      region: country || "ALL",
+      dataFreshness: result.source === "live" ? "recent" : "cached",
+      sourceName: "Google Trends (via News RSS)",
       appliedLimit: maxItems ?? null,
     },
-  }
+  };
 }

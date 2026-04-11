@@ -26,12 +26,16 @@ if ! npx tsc --noEmit; then
 fi
 
 echo "[2/3] ESLint…"
-if ! echo "$STAGED_FILES" | xargs npx eslint --max-warnings=0; then
+# Windows : une seule ligne « npx eslint f1 f2 … » avec des centaines de chemins
+# dépasse la limite de longueur (8191). Découper en lots avec xargs -n.
+if ! echo "$STAGED_FILES" | tr -d '\r' | grep -v '^$' | xargs -n 25 npx eslint --max-warnings=0; then
   echo "COMMIT BLOQUÉ : ESLint."
   exit 1
 fi
 
 echo "[3/3] Autopilot quick…"
+# Même logique qu’en CI : ne bloque pas sur les centaines de signalements style/i18n du dépôt.
+export AUTOPILOT_PRE_COMMIT=1
 if ! npm run autopilot:quick; then
   echo "COMMIT BLOQUÉ : autopilot:quick."
   exit 1

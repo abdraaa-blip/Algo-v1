@@ -4,23 +4,23 @@
  */
 
 export interface ContentItem {
-  title: string
-  source: string
-  tags?: string[]
-  type?: 'video' | 'article' | 'repo' | 'stream' | 'track' | 'post'
-  viralScore?: number
-  url: string
-  aiExplanation?: string
-  isEarlySignal?: boolean
-  category?: string
+  title: string;
+  source: string;
+  tags?: string[];
+  type?: "video" | "article" | "repo" | "stream" | "track" | "post";
+  viralScore?: number;
+  url: string;
+  aiExplanation?: string;
+  isEarlySignal?: boolean;
+  category?: string;
   /** Horodatage publication (ms). */
-  publishedAt?: number
+  publishedAt?: number;
   metrics?: {
-    views?: number
-    likes?: number
-    comments?: number
-    shares?: number
-    upvotes?: number
-  }
-  author?: { followers?: number }
+    views?: number;
+    likes?: number;
+    comments?: number;
+    shares?: number;
+    upvotes?: number;
+  };
+  author?: { followers?: number };
 }

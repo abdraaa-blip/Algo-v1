@@ -4,19 +4,21 @@
  */
 
 export type YoutubeObservationPoint = {
-  at: string
-  views: number
-  likes: number
-  comments: number
-}
+  at: string;
+  views: number;
+  likes: number;
+  comments: number;
+};
 
-const MAX_POINTS = 120
-const DEDUPE_MS = 5 * 60 * 1000
+const MAX_POINTS = 120;
+const DEDUPE_MS = 5 * 60 * 1000;
 
-const store = new Map<string, YoutubeObservationPoint[]>()
+const store = new Map<string, YoutubeObservationPoint[]>();
 
-export function getYoutubeObservationSeries(videoId: string): YoutubeObservationPoint[] {
-  return [...(store.get(videoId) ?? [])]
+export function getYoutubeObservationSeries(
+  videoId: string,
+): YoutubeObservationPoint[] {
+  return [...(store.get(videoId) ?? [])];
 }
 
 /**
@@ -24,17 +26,19 @@ export function getYoutubeObservationSeries(videoId: string): YoutubeObservation
  */
 export function recordYoutubeObservation(
   videoId: string,
-  row: { views: number; likes: number; comments: number }
+  row: { views: number; likes: number; comments: number },
 ): YoutubeObservationPoint[] {
-  const series = store.get(videoId) ?? []
-  const last = series[series.length - 1]
-  const now = Date.now()
+  const series = store.get(videoId) ?? [];
+  const last = series[series.length - 1];
+  const now = Date.now();
   if (last) {
-    const lastT = new Date(last.at).getTime()
+    const lastT = new Date(last.at).getTime();
     const same =
-      last.views === row.views && last.likes === row.likes && last.comments === row.comments
+      last.views === row.views &&
+      last.likes === row.likes &&
+      last.comments === row.comments;
     if (same && Number.isFinite(lastT) && now - lastT < DEDUPE_MS) {
-      return [...series]
+      return [...series];
     }
   }
   const point: YoutubeObservationPoint = {
@@ -42,9 +46,9 @@ export function recordYoutubeObservation(
     views: row.views,
     likes: row.likes,
     comments: row.comments,
-  }
-  const next = [...series, point]
-  while (next.length > MAX_POINTS) next.shift()
-  store.set(videoId, next)
-  return next
+  };
+  const next = [...series, point];
+  while (next.length > MAX_POINTS) next.shift();
+  store.set(videoId, next);
+  return next;
 }

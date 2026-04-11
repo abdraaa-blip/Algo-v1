@@ -1,21 +1,21 @@
-'use client'
+"use client";
 // Error boundary for news page - 2026-04-06T22:10
 
-import { useEffect } from 'react'
-import { Newspaper, RefreshCw, Home } from 'lucide-react'
-import Link from 'next/link'
-import { ALGO_UI_ERROR } from '@/lib/copy/ui-strings'
+import { useEffect } from "react";
+import { Newspaper, RefreshCw, Home } from "lucide-react";
+import Link from "next/link";
+import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function NewsError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[ALGO News Error]', error)
-  }, [error])
+    console.error("[ALGO News Error]", error);
+  }, [error]);
 
   return (
     <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
@@ -25,7 +25,9 @@ export default function NewsError({
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-[var(--color-text-primary)] font-bold text-lg">Actualites indisponibles</h1>
+          <h1 className="text-[var(--color-text-primary)] font-bold text-lg">
+            Actualites indisponibles
+          </h1>
           <p className="text-[var(--color-text-tertiary)] text-sm leading-relaxed">
             {ALGO_UI_ERROR.message}
           </p>
@@ -39,7 +41,7 @@ export default function NewsError({
             <RefreshCw size={16} />
             Réessayer
           </button>
-          
+
           <Link
             href="/"
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium hover:bg-[var(--color-card-hover)] hover:text-[var(--color-text-primary)] transition-all duration-150"
@@ -56,5 +58,5 @@ export default function NewsError({
         )}
       </div>
     </div>
-  )
+  );
 }

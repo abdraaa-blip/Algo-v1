@@ -1,45 +1,47 @@
-'use client'
+"use client";
 
-import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
-import { LogIn, Eye, EyeOff } from 'lucide-react'
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
+import { LogIn, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
-      if (error) throw error
-      router.push('/')
-      router.refresh()
+      });
+      if (error) throw error;
+      router.push("/");
+      router.refresh();
     } catch (error: unknown) {
       setError(
-        mapUserFacingApiError(error instanceof Error ? error.message : 'Erreur de connexion')
-      )
+        mapUserFacingApiError(
+          error instanceof Error ? error.message : "Erreur de connexion",
+        ),
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 text-[var(--color-text-primary)]">
@@ -51,14 +53,18 @@ export default function LoginPage() {
               <span className="text-white">AL</span>
               <span className="text-[var(--color-violet)]">GO</span>
             </h1>
-            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Veille tendances</p>
+            <p className="text-[var(--color-text-secondary)] text-sm mt-1">
+              Veille tendances
+            </p>
           </Link>
         </div>
 
         {/* Login Card */}
         <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-8 shadow-[var(--shadow-algo-sm)]">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Connexion</h2>
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+              Connexion
+            </h2>
             <p className="text-[var(--color-text-secondary)] mt-1">
               Connecte-toi pour accéder à ton compte
             </p>
@@ -66,7 +72,12 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Adresse e-mail</Label>
+              <Label
+                htmlFor="email"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Adresse e-mail
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -79,11 +90,16 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-[var(--color-text-secondary)]">Mot de passe</Label>
+              <Label
+                htmlFor="password"
+                className="text-[var(--color-text-secondary)]"
+              >
+                Mot de passe
+              </Label>
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   required
                   value={password}
@@ -115,14 +131,17 @@ export default function LoginPage() {
               loading={isLoading}
               icon={LogIn}
             >
-              {isLoading ? 'Connexion…' : 'Se connecter'}
+              {isLoading ? "Connexion…" : "Se connecter"}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-[var(--color-text-secondary)] text-sm">
-              Pas encore de compte ?{' '}
-              <Link href="/auth/sign-up" className="text-[var(--color-violet)] hover:underline">
+              Pas encore de compte ?{" "}
+              <Link
+                href="/auth/sign-up"
+                className="text-[var(--color-violet)] hover:underline"
+              >
                 Créer un compte
               </Link>
             </p>
@@ -131,11 +150,14 @@ export default function LoginPage() {
 
         {/* Back to home */}
         <div className="mt-6 text-center">
-          <Link href="/" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm">
+          <Link
+            href="/"
+            className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm"
+          >
             ← Retour a l&apos;accueil
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }

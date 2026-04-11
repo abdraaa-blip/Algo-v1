@@ -23,3 +23,6 @@ reports/*.log
 reports/daily-system-report.md
 !reports/.gitkeep
 .vercel
+
+.vercel
+.env*.local

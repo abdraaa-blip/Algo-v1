@@ -1,42 +1,45 @@
-'use client'
+"use client";
 
-import { useState, useEffect, Suspense } from 'react'
-import dynamic from 'next/dynamic'
-import { Navbar } from '@/components/layout/Navbar'
-import { BottomNav } from '@/components/layout/BottomNav'
-import { ScopeProvider } from '@/contexts/ScopeContext'
-import { LoadingProgressBar } from '@/components/ui/LoadingProgressBar'
-import { OfflineBanner } from '@/components/ui/OfflineBanner'
-import { PageTransition } from '@/components/ui/PageTransition'
-import { GeolocationPrompt } from '@/components/algo/GeolocationPrompt'
-import { initMonitoring } from '@/lib/monitoring'
-import { WebVitalsReporter } from '@/components/WebVitalsReporter'
-import { AchievementToastManager } from '@/components/gamification/AchievementUnlock'
-import { SiteFooter } from '@/components/layout/SiteFooter'
-import { AlgoExperienceAttributes } from '@/components/experience/AlgoExperienceAttributes'
+import { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
+import { Navbar } from "@/components/layout/Navbar";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { ScopeProvider } from "@/contexts/ScopeContext";
+import { LoadingProgressBar } from "@/components/ui/LoadingProgressBar";
+import { OfflineBanner } from "@/components/ui/OfflineBanner";
+import { PageTransition } from "@/components/ui/PageTransition";
+import { GeolocationPrompt } from "@/components/algo/GeolocationPrompt";
+import { initMonitoring } from "@/lib/monitoring";
+import { WebVitalsReporter } from "@/components/WebVitalsReporter";
+import { AchievementToastManager } from "@/components/gamification/AchievementUnlock";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { AlgoExperienceAttributes } from "@/components/experience/AlgoExperienceAttributes";
 
 const AlgoLivingBackground = dynamic(
-  () => import('@/components/ui/AlgoLivingBackground').then((m) => m.AlgoLivingBackground),
-  { ssr: false }
-)
+  () =>
+    import("@/components/ui/AlgoLivingBackground").then(
+      (m) => m.AlgoLivingBackground,
+    ),
+  { ssr: false },
+);
 const AlgoDataPlanet = dynamic(
-  () => import('@/components/ui/AlgoDataPlanet').then((m) => m.AlgoDataPlanet),
-  { ssr: false }
-)
+  () => import("@/components/ui/AlgoDataPlanet").then((m) => m.AlgoDataPlanet),
+  { ssr: false },
+);
 
 /**
  * Client-side layout wrapper that renders only after hydration
  * This prevents hydration mismatches from dynamic components
  */
 export function ClientLayout({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false)
-  
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    setMounted(true)
-    
+    setMounted(true);
+
     // Initialize monitoring (web vitals are initialized by WebVitalsReporter)
-    initMonitoring()
-  }, [])
+    initMonitoring();
+  }, []);
 
   // ScopeProvider wraps both branches so useScopeContext works during SSR/prerender;
   // chrome stays gated on mounted to limit hydration mismatch risk.
@@ -84,5 +87,5 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         </>
       )}
     </ScopeProvider>
-  )
+  );
 }

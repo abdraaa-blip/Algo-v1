@@ -50,6 +50,18 @@ function isCiSafeMode(): boolean {
   )
 }
 
+/**
+ * `autopilot:quick` : ne pas bloquer sur les centaines de signalements « style » /
+ * i18n / couleurs — même logique qu’en CI. Défini par `.husky/pre-commit` via
+ * `AUTOPILOT_PRE_COMMIT=1` pour ne pas exiger un dépôt entièrement « clean ».
+ */
+function isAutopilotQuickLenient(): boolean {
+  if (process.env.AUTOPILOT_AGGRESSIVE === '1' || process.env.AUTOPILOT_AGGRESSIVE === 'true') {
+    return false
+  }
+  return isCiSafeMode() || process.env.AUTOPILOT_PRE_COMMIT === '1'
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -527,10 +539,10 @@ class IssueFixer {
     log('Starting automatic correction...')
     this.fixed = []
 
-    const ciSafe = isCiSafeMode()
-    if (ciSafe) {
+    const fixSafe = isAutopilotQuickLenient()
+    if (fixSafe) {
       log(
-        'CI safe mode: skipping eslint --fix, Prettier, unused-import and console mutations (set AUTOPILOT_AGGRESSIVE=1 to force).',
+        'Autopilot lenient (CI ou pre-commit): skip eslint --fix global, Prettier, unused-import et mutations console (AUTOPILOT_AGGRESSIVE=1 pour forcer).',
         'warning',
       )
     } else {
@@ -542,10 +554,10 @@ class IssueFixer {
 
       switch (issue.type) {
         case 'unused-import':
-          if (!ciSafe) await this.fixUnusedImport(issue)
+          if (!fixSafe) await this.fixUnusedImport(issue)
           break
         case 'console-log':
-          if (!ciSafe) await this.fixConsoleLog(issue)
+          if (!fixSafe) await this.fixConsoleLog(issue)
           break
         case 'missing-alt':
           await this.fixMissingAlt(issue)
@@ -556,7 +568,7 @@ class IssueFixer {
       }
     }
 
-    if (!ciSafe) {
+    if (!fixSafe) {
       await this.runPrettier()
     }
 
@@ -949,14 +961,14 @@ async function main() {
     if (isQuick) {
       reporter.updateLog(report, Date.now() - startTime)
 
-      if (isCiSafeMode()) {
+      if (isAutopilotQuickLenient()) {
         const tsErrors = issues.filter((i) => i.type === 'typescript-error')
         if (tsErrors.length > 0) {
-          log(`Quick check (CI): ${tsErrors.length} TypeScript error(s) from scan`, 'error')
+          log(`Quick check (lenient): ${tsErrors.length} TypeScript error(s) from scan`, 'error')
           process.exit(1)
         }
         log(
-          `Quick check (CI): scan found ${report.stats.totalRemaining} non-blocking findings (translations, style, etc.) — voir reports/.`,
+          `Quick check (lenient): scan found ${report.stats.totalRemaining} non-blocking findings (translations, style, etc.) — voir reports/.`,
           'warning',
         )
         process.exit(0)

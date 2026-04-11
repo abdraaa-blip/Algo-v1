@@ -3,6 +3,6 @@
  */
 
 export function isObservabilityDashboardEnabled(): boolean {
-  if (process.env.NODE_ENV === 'development') return true
-  return process.env.ALGO_OBSERVABILITY_DASHBOARD === '1'
+  if (process.env.NODE_ENV === "development") return true;
+  return process.env.ALGO_OBSERVABILITY_DASHBOARD === "1";
 }

@@ -1,5 +1,5 @@
-import { Mail } from 'lucide-react'
-import Link from 'next/link'
+import { Mail } from "lucide-react";
+import Link from "next/link";
 
 export default function SignUpSuccessPage() {
   return (
@@ -8,14 +8,14 @@ export default function SignUpSuccessPage() {
         <div className="w-16 h-16 mx-auto rounded-2xl bg-[rgba(0,209,255,0.12)] border border-[rgba(0,209,255,0.22)] flex items-center justify-center">
           <Mail className="text-[#00D1FF]" size={28} strokeWidth={1.5} />
         </div>
-        
+
         <div className="space-y-2">
           <h1 className="text-white font-black text-2xl tracking-tight">
             Verifie ton email
           </h1>
           <p className="text-white/45 text-sm leading-relaxed">
-            Un lien de confirmation a ete envoye a ton adresse email. 
-            Clique dessus pour activer ton compte ALGO.
+            Un lien de confirmation a ete envoye a ton adresse email. Clique
+            dessus pour activer ton compte ALGO.
           </p>
         </div>
 
@@ -32,5 +32,5 @@ export default function SignUpSuccessPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

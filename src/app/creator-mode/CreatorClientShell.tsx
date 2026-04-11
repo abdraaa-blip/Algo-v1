@@ -1,203 +1,225 @@
-'use client'
+"use client";
 // CreatorClientShell - Alternative creator mode shell
-import { useState, useEffect, useCallback } from 'react'
-import Link          from 'next/link'
-import { ExternalLink, ChevronDown, Clapperboard, TriangleAlert } from 'lucide-react'
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import {
+  ExternalLink,
+  ChevronDown,
+  Clapperboard,
+  TriangleAlert,
+} from "lucide-react";
 
-import { LiveCurve }     from '@/components/ui/LiveCurve'
-import { Badge }         from '@/components/ui/Badge'
-import { BackButton }    from '@/components/ui/BackButton'
-import { InsightPanel }  from '@/components/ui/InsightPanel'
-import { MomentumPill }  from '@/components/ui/MomentumPill'
-import { DataQualityChip } from '@/components/ui/DataQualityChip'
-import { SectionHeader } from '@/components/ui/SectionHeader'
-import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
-import { track }         from '@/services/analyticsService'
-import { cn }            from '@/lib/utils'
-import type { Content, Platform } from '@/types'
-import { fillLocaleStrings } from '@/types'
-import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
+import { LiveCurve } from "@/components/ui/LiveCurve";
+import { Badge } from "@/components/ui/Badge";
+import { BackButton } from "@/components/ui/BackButton";
+import { InsightPanel } from "@/components/ui/InsightPanel";
+import { MomentumPill } from "@/components/ui/MomentumPill";
+import { DataQualityChip } from "@/components/ui/DataQualityChip";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import { track } from "@/services/analyticsService";
+import { cn } from "@/lib/utils";
+import type { Content, Platform } from "@/types";
+import { fillLocaleStrings } from "@/types";
+import { mapUserFacingApiError } from "@/lib/copy/api-error-fr";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface CreatorLabels {
-  title:         string
-  subtitle:      string
-  tips:          string
-  reproduce:     string
-  why:           string
-  bestFormat:    string
-  bestPlatform:  string
-  soundLabel:    string
-  templateLabel: string
-  selectHint:    string
-  insightLabels: Parameters<typeof InsightPanel>[0]['labels']
+  title: string;
+  subtitle: string;
+  tips: string;
+  reproduce: string;
+  why: string;
+  bestFormat: string;
+  bestPlatform: string;
+  soundLabel: string;
+  templateLabel: string;
+  selectHint: string;
+  insightLabels: Parameters<typeof InsightPanel>[0]["labels"];
 }
 
 interface CreatorClientShellProps {
-  locale:          string
-  labels:          CreatorLabels
+  locale: string;
+  labels: CreatorLabels;
 }
 
 // ─── Composant ────────────────────────────────────────────────────────────────
 
 function normalizeCreatorPlatform(raw: string): Platform {
-  const r = raw.toLowerCase()
-  if (r.includes('tiktok')) return 'TikTok'
-  if (r.includes('instagram')) return 'Instagram'
-  if (r.includes('youtube')) return 'YouTube'
-  if (r.includes('twitter') || r === 'x') return 'Twitter'
-  if (r.includes('reddit')) return 'Reddit'
-  if (r.includes('news')) return 'Other'
-  return 'YouTube'
+  const r = raw.toLowerCase();
+  if (r.includes("tiktok")) return "TikTok";
+  if (r.includes("instagram")) return "Instagram";
+  if (r.includes("youtube")) return "YouTube";
+  if (r.includes("twitter") || r === "x") return "Twitter";
+  if (r.includes("reddit")) return "Reddit";
+  if (r.includes("news")) return "Other";
+  return "YouTube";
 }
 
 // Transform live API data to Content format for the creator mode
-function transformToContent(item: Record<string, unknown>, index: number): Content {
+function transformToContent(
+  item: Record<string, unknown>,
+  index: number,
+): Content {
   // Generate proper content ID based on source
-  const source = String(item.source || 'unknown')
-  const sourceUrl = String(item.url || item.link || '#')
-  let contentId = `${source}_${index}`
-  
-  if (source === 'youtube') {
-    const videoId = item.videoId || item.id
+  const source = String(item.source || "unknown");
+  const sourceUrl = String(item.url || item.link || "#");
+  let contentId = `${source}_${index}`;
+
+  if (source === "youtube") {
+    const videoId = item.videoId || item.id;
     if (videoId) {
-      contentId = `youtube-${videoId}`
+      contentId = `youtube-${videoId}`;
     } else {
-      const ytMatch = sourceUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/)
-      if (ytMatch) contentId = `youtube-${ytMatch[1]}`
+      const ytMatch = sourceUrl.match(
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
+      );
+      if (ytMatch) contentId = `youtube-${ytMatch[1]}`;
     }
-  } else if (source === 'reddit') {
-    const redditId = item.id || item.name
-    if (redditId) contentId = `reddit_${String(redditId).replace('t3_', '')}`
-  } else if (source === 'github') {
+  } else if (source === "reddit") {
+    const redditId = item.id || item.name;
+    if (redditId) contentId = `reddit_${String(redditId).replace("t3_", "")}`;
+  } else if (source === "github") {
     // GitHub API returns name as full_name (owner/repo) in our datasources.ts
-    const repoName = item.name || item.full_name
-    if (repoName) contentId = `gh_${String(repoName).replace('/', '_')}`
-  } else if (source === 'hackernews') {
-    const hnId = item.id || item.objectID
-    if (hnId) contentId = `hn_${hnId}`
+    const repoName = item.name || item.full_name;
+    if (repoName) contentId = `gh_${String(repoName).replace("/", "_")}`;
+  } else if (source === "hackernews") {
+    const hnId = item.id || item.objectID;
+    if (hnId) contentId = `hn_${hnId}`;
   }
-  
-  const platform = normalizeCreatorPlatform(String(item.source || item.platform || 'youtube'))
-  const explanation = String(item.description || item.overview || '')
+
+  const platform = normalizeCreatorPlatform(
+    String(item.source || item.platform || "youtube"),
+  );
+  const explanation = String(item.description || item.overview || "");
 
   return {
     id: contentId,
-    title: String(item.title || item.name || 'Sans titre'),
-    category: 'Viral',
+    title: String(item.title || item.name || "Sans titre"),
+    category: "Viral",
     platform,
-    country: 'FR',
-    language: 'fr',
+    country: "FR",
+    language: "fr",
     viralScore: Number(item.viral_score || item.viralScore || 70),
-    badge: 'Early',
+    badge: "Early",
     growthRate: Number(item.growth_rate || 15),
-    growthTrend: 'up',
+    growthTrend: "up",
     detectedAt: new Date().toISOString(),
-    thumbnail: String(item.thumbnail || item.thumbnailUrl || item.poster || ''),
+    thumbnail: String(item.thumbnail || item.thumbnailUrl || item.poster || ""),
     sourceUrl: sourceUrl,
-    explanation: explanation || 'Signal tendance agrégé.',
-    creatorTips: 'Crée du contenu authentique et engageant.',
+    explanation: explanation || "Signal tendance agrégé.",
+    creatorTips: "Crée du contenu authentique et engageant.",
     insight: {
-      postNowProbability: 'high',
-      timing: 'now',
+      postNowProbability: "high",
+      timing: "now",
       bestPlatform: [platform],
-      bestFormat: 'face_cam',
-      timingLabel: fillLocaleStrings({ fr: 'Maintenant', en: 'Now' }),
-      postWindow: { status: 'optimal' },
+      bestFormat: "face_cam",
+      timingLabel: fillLocaleStrings({ fr: "Maintenant", en: "Now" }),
+      postWindow: { status: "optimal" },
     },
-    sourceDistribution: [{ platform, percentage: 60, momentum: 'high' }],
+    sourceDistribution: [{ platform, percentage: 60, momentum: "high" }],
     watchersCount: Number(item.views || item.listeners || 1000),
-    isExploding: Boolean(item.is_exploding || item.momentum === 'exploding'),
-  }
+    isExploding: Boolean(item.is_exploding || item.momentum === "exploding"),
+  };
 }
 
 export function CreatorClientShell({
   locale,
   labels,
 }: CreatorClientShellProps) {
-  void locale
-  const [contents, setContents] = useState<Content[]>([])
-  const [selected, setSelected] = useState<Content | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [expanded, setExpanded] = useState(false)
-  const [lastFetchedAt, setLastFetchedAt] = useState<string | null>(null)
-  const [sourceLabel, setSourceLabel] = useState('live aggregator')
-  const [fetchError, setFetchError] = useState<string | null>(null)
+  void locale;
+  const [contents, setContents] = useState<Content[]>([]);
+  const [selected, setSelected] = useState<Content | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const [lastFetchedAt, setLastFetchedAt] = useState<string | null>(null);
+  const [sourceLabel, setSourceLabel] = useState("live aggregator");
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const fetchContents = useCallback(async () => {
     try {
-      setFetchError(null)
-      const res = await fetch('/api/live?limit=15')
+      setFetchError(null);
+      const res = await fetch("/api/live?limit=15");
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`)
+        throw new Error(`HTTP ${res.status}`);
       }
-      const data = await res.json()
+      const data = await res.json();
 
       if (data.success && data.data) {
-        const allItems: Record<string, unknown>[] = []
-        const dataKeys = Object.keys(data.data)
+        const allItems: Record<string, unknown>[] = [];
+        const dataKeys = Object.keys(data.data);
 
         for (const sourceKey of dataKeys) {
-          const sourceData = data.data[sourceKey]
+          const sourceData = data.data[sourceKey];
           if (Array.isArray(sourceData)) {
-            allItems.push(...sourceData.map((item) => ({ ...item, source: sourceKey })))
+            allItems.push(
+              ...sourceData.map((item) => ({ ...item, source: sourceKey })),
+            );
           }
         }
 
-        const transformed = allItems.slice(0, 15).map(transformToContent)
-        setContents(transformed)
-        setLastFetchedAt(new Date().toISOString())
-        setSourceLabel(`live:${dataKeys.join('+')}`)
+        const transformed = allItems.slice(0, 15).map(transformToContent);
+        setContents(transformed);
+        setLastFetchedAt(new Date().toISOString());
+        setSourceLabel(`live:${dataKeys.join("+")}`);
         if (transformed.length > 0 && !selected) {
-          setSelected(transformed[0])
+          setSelected(transformed[0]);
         }
         if (transformed.length === 0) {
-          setSelected(null)
+          setSelected(null);
         }
       } else {
         setFetchError(
           mapUserFacingApiError(
-            typeof data.error === 'string' && data.error.trim() !== '' ? data.error : 'Failed to fetch'
-          )
-        )
+            typeof data.error === "string" && data.error.trim() !== ""
+              ? data.error
+              : "Failed to fetch",
+          ),
+        );
         setContents((prev) => {
-          if (prev.length > 0) return prev
-          setSelected(null)
-          setLastFetchedAt(null)
-          return []
-        })
+          if (prev.length > 0) return prev;
+          setSelected(null);
+          setLastFetchedAt(null);
+          return [];
+        });
       }
     } catch (error) {
-      console.error('[ALGO Creator] Failed to fetch:', error)
+      console.error("[ALGO Creator] Failed to fetch:", error);
       setFetchError(
-        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
-      )
+        mapUserFacingApiError(
+          error instanceof Error ? error.message : "Failed to fetch",
+        ),
+      );
       setContents((prev) => {
-        if (prev.length > 0) return prev
-        setSelected(null)
-        setLastFetchedAt(null)
-        return []
-      })
+        if (prev.length > 0) return prev;
+        setSelected(null);
+        setLastFetchedAt(null);
+        return [];
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [selected])
+  }, [selected]);
 
   // Fetch live data on mount + refresh loop
   useEffect(() => {
-    void fetchContents()
+    void fetchContents();
     const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
-      void fetchContents()
-    }, 60_000)
-    return () => clearInterval(interval)
-  }, [fetchContents])
+      if (
+        typeof document !== "undefined" &&
+        document.visibilityState !== "visible"
+      )
+        return;
+      void fetchContents();
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, [fetchContents]);
 
   function handleSelect(content: Content) {
-    setSelected(content)
-    setExpanded(false)
-    track('creator_mode_opened', { contentId: content.id })
+    setSelected(content);
+    setExpanded(false);
+    track("creator_mode_opened", { contentId: content.id });
   }
 
   if (loading) {
@@ -206,7 +228,7 @@ export function CreatorClientShell({
         <BackButton fallbackHref="/" />
         <SkeletonLoader variant="card" count={6} />
       </div>
-    )
+    );
   }
 
   if (!selected || contents.length === 0) {
@@ -220,14 +242,17 @@ export function CreatorClientShell({
             className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
           >
             <p className="flex items-start gap-2 text-sm text-rose-100/90">
-              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+              <TriangleAlert
+                className="mt-0.5 size-4 shrink-0 text-rose-300"
+                aria-hidden
+              />
               <span>{fetchError}</span>
             </p>
             <button
               type="button"
               onClick={() => {
-                setLoading(true)
-                void fetchContents()
+                setLoading(true);
+                void fetchContents();
               }}
               className="shrink-0 rounded-lg border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25"
             >
@@ -235,10 +260,12 @@ export function CreatorClientShell({
             </button>
           </div>
         ) : (
-          <p className="text-white/50">Aucun contenu disponible pour le moment.</p>
+          <p className="text-white/50">
+            Aucun contenu disponible pour le moment.
+          </p>
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -255,7 +282,10 @@ export function CreatorClientShell({
           className="mb-4 flex flex-col gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
         >
           <p className="flex items-start gap-2 text-sm text-amber-100/90">
-            <TriangleAlert className="mt-0.5 size-4 shrink-0 text-amber-300" aria-hidden />
+            <TriangleAlert
+              className="mt-0.5 size-4 shrink-0 text-amber-300"
+              aria-hidden
+            />
             <span>{fetchError}</span>
           </p>
           <button
@@ -270,13 +300,20 @@ export function CreatorClientShell({
       <div className="mb-4">
         <DataQualityChip
           source={sourceLabel}
-          freshness={lastFetchedAt ? formatRelativeTime(lastFetchedAt) : 'pending'}
-          confidence={contents.length >= 12 ? 'high' : contents.length >= 5 ? 'medium' : 'low'}
+          freshness={
+            lastFetchedAt ? formatRelativeTime(lastFetchedAt) : "pending"
+          }
+          confidence={
+            contents.length >= 12
+              ? "high"
+              : contents.length >= 5
+                ? "medium"
+                : "low"
+          }
         />
       </div>
 
       <div className="grid lg:grid-cols-[1fr_400px] gap-6">
-
         {/* ── Colonne gauche · sélecteur de contenus ── */}
         <div className="space-y-3">
           <p className="text-[10px] font-bold text-white/28 uppercase tracking-widest">
@@ -289,7 +326,7 @@ export function CreatorClientShell({
             aria-label={labels.selectHint}
           >
             {contents.map((content) => {
-              const isSelected = selected.id === content.id
+              const isSelected = selected.id === content.id;
 
               return (
                 <button
@@ -298,21 +335,26 @@ export function CreatorClientShell({
                   aria-selected={isSelected}
                   onClick={() => handleSelect(content)}
                   className={cn(
-                    'w-full flex items-start gap-3 p-3 rounded-xl border text-start',
-                    'transition-all duration-150 outline-none',
-                    'focus-visible:ring-2 focus-visible:ring-violet-400/60',
+                    "w-full flex items-start gap-3 p-3 rounded-xl border text-start",
+                    "transition-all duration-150 outline-none",
+                    "focus-visible:ring-2 focus-visible:ring-violet-400/60",
                     isSelected
-                      ? 'border-[rgba(123,97,255,0.35)] bg-[rgba(123,97,255,0.10)] text-white'
+                      ? "border-[rgba(123,97,255,0.35)] bg-[rgba(123,97,255,0.10)] text-white"
                       : [
-                          'border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)]',
-                          'hover:bg-[var(--color-card-hover)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]',
-                        ].join(' '),
+                          "border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)]",
+                          "hover:bg-[var(--color-card-hover)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]",
+                        ].join(" "),
                   )}
                 >
                   <Clapperboard
                     size={14}
                     strokeWidth={1.6}
-                    className={cn('shrink-0 mt-0.5', isSelected ? 'text-violet-400' : 'text-[var(--color-text-muted)]')}
+                    className={cn(
+                      "shrink-0 mt-0.5",
+                      isSelected
+                        ? "text-violet-400"
+                        : "text-[var(--color-text-muted)]",
+                    )}
                     aria-hidden
                   />
                   <div className="flex-1 min-w-0">
@@ -320,12 +362,17 @@ export function CreatorClientShell({
                       {content.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <MomentumPill value={content.growthRate} trend={content.growthTrend} />
-                      <span className="text-[10px] text-[var(--color-text-muted)]">{content.platform}</span>
+                      <MomentumPill
+                        value={content.growthRate}
+                        trend={content.growthTrend}
+                      />
+                      <span className="text-[10px] text-[var(--color-text-muted)]">
+                        {content.platform}
+                      </span>
                     </div>
                   </div>
                 </button>
-              )
+              );
             })}
           </div>
         </div>
@@ -345,18 +392,20 @@ export function CreatorClientShell({
           />
 
           <div className="relative p-5 space-y-5">
-
             {/* En-tête du contenu sélectionné */}
             <div>
               <Badge type={selected.badge} label={selected.badge} />
-              <h2
-                className="text-base font-bold text-[var(--color-text-primary)] mt-2 leading-snug"
-              >
+              <h2 className="text-base font-bold text-[var(--color-text-primary)] mt-2 leading-snug">
                 {selected.title}
               </h2>
               <div className="flex items-center gap-2 mt-2">
-                <MomentumPill value={selected.growthRate} trend={selected.growthTrend} />
-                <span className="text-[10px] text-[var(--color-text-muted)]">{selected.platform} · {selected.category}</span>
+                <MomentumPill
+                  value={selected.growthRate}
+                  trend={selected.growthTrend}
+                />
+                <span className="text-[10px] text-[var(--color-text-muted)]">
+                  {selected.platform} · {selected.category}
+                </span>
               </div>
             </div>
 
@@ -382,20 +431,23 @@ export function CreatorClientShell({
               onClick={() => setExpanded((e) => !e)}
               aria-expanded={expanded}
               className={cn(
-                'w-full flex items-center justify-between',
-                'px-4 py-2.5 rounded-xl border font-bold text-xs',
-                'transition-all duration-150',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60',
+                "w-full flex items-center justify-between",
+                "px-4 py-2.5 rounded-xl border font-bold text-xs",
+                "transition-all duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60",
                 expanded
-                  ? 'border-violet-500/40 bg-violet-500/15 text-violet-300'
-                  : 'border-violet-500/22 bg-violet-500/8 text-violet-400/80 hover:bg-violet-500/18 hover:text-violet-300',
+                  ? "border-violet-500/40 bg-violet-500/15 text-violet-300"
+                  : "border-violet-500/22 bg-violet-500/8 text-violet-400/80 hover:bg-violet-500/18 hover:text-violet-300",
               )}
             >
               <span>{labels.reproduce}</span>
               <ChevronDown
                 size={13}
                 strokeWidth={2}
-                className={cn('transition-transform duration-150', expanded && 'rotate-180')}
+                className={cn(
+                  "transition-transform duration-150",
+                  expanded && "rotate-180",
+                )}
                 aria-hidden
               />
             </button>
@@ -413,8 +465,18 @@ export function CreatorClientShell({
                 </div>
 
                 <div className="flex flex-col gap-1.5 pt-1">
-                  <InfoLine label={labels.bestPlatform} value={selected.insight.bestPlatform.join(', ')} />
-                  <InfoLine label={labels.bestFormat}   value={labels.insightLabels.formatLabels?.[selected.insight.bestFormat] ?? selected.insight.bestFormat} />
+                  <InfoLine
+                    label={labels.bestPlatform}
+                    value={selected.insight.bestPlatform.join(", ")}
+                  />
+                  <InfoLine
+                    label={labels.bestFormat}
+                    value={
+                      labels.insightLabels.formatLabels?.[
+                        selected.insight.bestFormat
+                      ] ?? selected.insight.bestFormat
+                    }
+                  />
                 </div>
               </div>
             )}
@@ -454,7 +516,7 @@ export function CreatorClientShell({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Sous-composants ──────────────────────────────────────────────────────────
@@ -463,9 +525,11 @@ function InfoLine({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between gap-4 text-xs">
       <span className="text-[var(--color-text-muted)] shrink-0">{label}</span>
-      <span className="text-[var(--color-text-secondary)] font-semibold text-end">{value}</span>
+      <span className="text-[var(--color-text-secondary)] font-semibold text-end">
+        {value}
+      </span>
     </div>
-  )
+  );
 }
 
 function AssetLink({ href, label }: { href: string; label: string }) {
@@ -475,27 +539,26 @@ function AssetLink({ href, label }: { href: string; label: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl',
-        'bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-semibold',
-        'hover:bg-[var(--color-card-hover)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-strong)]',
-        'transition-all duration-150',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60',
+        "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl",
+        "bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-semibold",
+        "hover:bg-[var(--color-card-hover)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-strong)]",
+        "transition-all duration-150",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60",
       )}
     >
       <ExternalLink size={10} strokeWidth={2} aria-hidden />
       {label}
     </a>
-  )
+  );
 }
 
 function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-  if (diffMins < 1) return 'now'
-  if (diffMins < 60) return `${diffMins}m`
-  const diffHours = Math.floor(diffMins / 60)
-  return `${diffHours}h`
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return "now";
+  if (diffMins < 60) return `${diffMins}m`;
+  const diffHours = Math.floor(diffMins / 60);
+  return `${diffHours}h`;
 }
-

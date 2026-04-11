@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Mail, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+import Link from "next/link";
+import { Mail, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function SignUpSuccessPage() {
   return (
@@ -28,19 +28,25 @@ export default function SignUpSuccessPage() {
             Verifiez votre email
           </h2>
           <p className="text-[var(--color-text-secondary)] mb-6">
-            Un email de confirmation a ete envoye a votre adresse. 
-            Cliquez sur le lien pour activer votre compte.
+            Un email de confirmation a ete envoye a votre adresse. Cliquez sur
+            le lien pour activer votre compte.
           </p>
 
           <div className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-lg p-4 mb-6">
             <p className="text-[var(--color-text-secondary)] text-sm">
-              Vous n&apos;avez pas recu l&apos;email ? Verifiez votre dossier spam 
-              ou attendez quelques minutes.
+              Vous n&apos;avez pas recu l&apos;email ? Verifiez votre dossier
+              spam ou attendez quelques minutes.
             </p>
           </div>
 
           <Link href="/auth/login">
-            <Button variant="primary" size="lg" className="w-full" icon={ArrowRight} iconPosition="end">
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full"
+              icon={ArrowRight}
+              iconPosition="end"
+            >
               Aller a la connexion
             </Button>
           </Link>
@@ -48,11 +54,14 @@ export default function SignUpSuccessPage() {
 
         {/* Back to home */}
         <div className="mt-6">
-          <Link href="/" className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm">
+          <Link
+            href="/"
+            className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] text-sm"
+          >
             ← Retour a l&apos;accueil
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
