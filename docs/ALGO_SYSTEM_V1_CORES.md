@@ -108,4 +108,21 @@ ALGO est perçu comme un **produit premium**, **propre**, **moderne**, **maîtri
 | Product | `docs/ALGO_UX_CHARTER.md`, `docs/ALGO_UX_COGNITIVE_AUDIT.md`, `src/lib/copy/algo-voice.ts`, `src/lib/copy/ui-strings.ts` |
 | UI | `config/algo-system-rules.ts`, `src/app/globals.css`, `src/design-system/tokens.ts`, `src/app/design-system/page.tsx` (dev) |
 
-**Fin** — toute évolution de ce cadre : PR + mise à jour de ce fichier et des pointeurs dans `AGENTS.md` / `config/algo-system-rules.ts` / `config/algo-qa-gate.ts` / `docs/README.md`.
+---
+
+## Politique de fermeture produit (gel fonctionnel)
+
+Objectif : garder ALGO **simple**, **stable**, **maintenable**, **déployable** sans dérive de complexité.
+
+### Règles (post-stabilisation)
+
+- **Interdit** : ajouter un **nouveau système global** (second « cerveau », méta-couche IA, charte ou dossier `docs/` parallèle « roi ») sans **PR explicite** et justification produit + technique.
+- **Interdit** : **empiler** des prompts ou règles Cursor **en dehors** de ce fichier et des sources déjà canoniques (`AGENTS.md`, `docs/algo-doctrine.md`, checklist, `config/algo-qa-gate.ts`, règles `.cursor/rules/` existantes).
+- **Interdit** : introduire une **couche d’abstraction** supplémentaire si les chemins existants suffisent (`src/core/brain.ts`, routes API canoniques, `tokens` + `globals.css`, voix `algo-voice` / `ui-strings`).
+- **Obligatoire** : toute **nouvelle fonctionnalité** passe par le filtre **utile / compréhensible / nécessaire** (noyau Product), un **diff minimal**, et la gate **`npm run verify:release`** avant merge sensible.
+
+### Nettoyage et suppressions
+
+- Retirer du code **inutile**, **doublon** ou **UI non utile** au public : **décision produit** + PR ciblée — pas de purge automatique sans revue (risque de casser un parcours ou une intégration).
+
+**Fin** — toute évolution de ce cadre ou de cette politique : **PR** + mise à jour de ce fichier et des pointeurs dans `AGENTS.md` / `config/algo-system-rules.ts` / `config/algo-qa-gate.ts` / `docs/README.md`.

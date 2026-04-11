@@ -12,7 +12,7 @@ En **remplacement** d’une pile de prompts parallèles, le cadre condensé est 
 2. **Product system** — UX et valeur : utile / compréhensible / nécessaire ; pas de bruit technique côté public.
 3. **UI system** — design system et identité : tokens, classes `algo-*`, motion maîtrisée.
 
-Référencé aussi dans **`config/algo-system-rules.ts`** (`ALGO_DESIGN_SOURCES.systemV1Cores`) et **`config/algo-qa-gate.ts`** (`ALGO_QA_SOURCES.systemV1Cores`). En cas de conflit avec un prompt ponctuel : **doctrine + checklist + ce document + code font foi**.
+Référencé aussi dans **`config/algo-system-rules.ts`** (`ALGO_DESIGN_SOURCES.systemV1Cores`) et **`config/algo-qa-gate.ts`** (`ALGO_QA_SOURCES.systemV1Cores`). En cas de conflit avec un prompt ponctuel : **doctrine + checklist + ce document + code font foi**. **Politique de gel** (pas de nouveaux systèmes globaux ni d’empilement de prompts) : section *Politique de fermeture produit* dans le même fichier.
 
 ## Chrome app · viewport (Navbar / BottomNav)
 
