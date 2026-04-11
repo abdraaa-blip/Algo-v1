@@ -38,14 +38,16 @@ export function LoadingProgressBar() {
   if (!loading && progress === 0) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-[2px] bg-transparent">
+    <div
+      className="pointer-events-none fixed top-0 left-0 right-0 z-[250] h-[2px] bg-transparent motion-reduce:hidden"
+      aria-hidden
+    >
       <div
-        className="h-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-violet-500 transition-all duration-300 ease-out"
+        className="h-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-violet-500 transition-[width,opacity] duration-200 ease-out motion-reduce:transition-none"
         style={{
           width: `${progress}%`,
           opacity: loading ? 1 : 0,
-          boxShadow:
-            "0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3)",
+          boxShadow: "0 0 8px rgba(123, 97, 255, 0.35)",
         }}
       />
     </div>

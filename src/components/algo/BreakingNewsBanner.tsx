@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, X, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ALGO_UI_BREAKING } from "@/lib/copy/ui-strings";
 
 interface BreakingNews {
   id: string;
@@ -73,24 +74,20 @@ export function BreakingNewsBanner({ className }: BreakingNewsBannerProps) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 z-50",
-        "bg-gradient-to-r from-red-600 via-red-500 to-red-600",
-        "animate-in slide-in-from-top duration-500",
+        "fixed left-0 right-0 z-[180] motion-reduce:animate-none",
+        "bg-gradient-to-r from-red-600/95 via-red-500/95 to-red-600/95 backdrop-blur-sm",
+        "animate-in slide-in-from-top duration-300 ease-out",
         className,
       )}
+      style={{ top: "var(--algo-nav-stack)" }}
     >
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3">
-        {/* Pulsing alert icon */}
-        <div className="flex-shrink-0 relative">
-          <AlertTriangle className="w-5 h-5 text-white animate-pulse" />
-          <div className="absolute inset-0 animate-ping">
-            <AlertTriangle className="w-5 h-5 text-white opacity-50" />
-          </div>
+      <div className="algo-page-gutter py-2 flex items-center gap-3">
+        <div className="flex-shrink-0" aria-hidden>
+          <AlertTriangle className="w-5 h-5 text-white motion-safe:animate-pulse" />
         </div>
 
-        {/* Breaking label */}
-        <span className="flex-shrink-0 px-2 py-0.5 bg-white/20 rounded text-[10px] font-black tracking-wider text-white uppercase">
-          Breaking
+        <span className="flex-shrink-0 px-2 py-0.5 bg-white/20 rounded text-[10px] font-bold tracking-wide text-white">
+          {ALGO_UI_BREAKING.label}
         </span>
 
         {/* News text */}
@@ -124,8 +121,7 @@ export function BreakingNewsBanner({ className }: BreakingNewsBannerProps) {
         </button>
       </div>
 
-      {/* Animated bottom border */}
-      <div className="h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-pulse" />
+      <div className="h-px bg-gradient-to-r from-transparent via-white/35 to-transparent motion-safe:opacity-90" />
     </div>
   );
 }

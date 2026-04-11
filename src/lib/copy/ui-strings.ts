@@ -42,6 +42,11 @@ export const ALGO_UI_LOADING = {
 /** CTA erreurs / états vides (orthographe unique : « Réessayer » avec deux « e »). */
 export const ALGO_UI_RETRY = { label: "Réessayer" } as const;
 
+/** Bandeau actu chaude (page d’accueil) — pas de libellé anglais « Breaking ». */
+export const ALGO_UI_BREAKING = {
+  label: "Actu récente",
+} as const;
+
 export const ALGO_UI_ERROR = {
   title: "Signal perdu",
   message: "Impossible de charger pour l'instant. Réessaie dans un moment.",
