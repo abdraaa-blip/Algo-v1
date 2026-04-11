@@ -21,6 +21,7 @@
  * Positionnement / GTM (brouillon produit, sous doctrine) : `docs/ALGO_GTM_NOTES.md`.
  * Index navigation `docs/` : `docs/README.md`.
  * Opérations & déploiement (point d’entrée unique) : `docs/ALGO_OPERATIONS_PLAYBOOK.md`.
+ * Cadre agent condensé (3 noyaux) : `docs/ALGO_SYSTEM_V1_CORES.md`.
  */
 
 export { tokens } from '../src/design-system/tokens'
@@ -41,6 +42,8 @@ export const ALGO_DESIGN_SOURCES = {
   uxCognitiveAudit: 'docs/ALGO_UX_COGNITIVE_AUDIT.md',
   releaseReadiness: 'docs/ALGO_RELEASE_READINESS.md',
   operationsPlaybook: 'docs/ALGO_OPERATIONS_PLAYBOOK.md',
+  /** Trois noyaux agent : core / produit / UI — remplace l'empilement de prompts parallèles. */
+  systemV1Cores: 'docs/ALGO_SYSTEM_V1_CORES.md',
 } as const
 
 /**

@@ -5,7 +5,7 @@
 ## Principe
 
 - **Vérité d’exécution** : code sous `src/`, migrations Supabase, **`npm run verify:release`** (dont **`verify:api-guards`** sur les routes `api` et **`npm audit`**), workflows `.github/workflows/`.
-- **Vérité produit / règles** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `AGENTS.md`, fichiers sous `config/`.
+- **Vérité produit / règles** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `docs/ALGO_SYSTEM_V1_CORES.md`, `AGENTS.md`, fichiers sous `config/`.
 - Les pages ici **expliquent et cadr**ent ; en cas de doute sur un comportement, le **code** et la **CI** font foi. Mettre à jour ce **index** quand un **nouveau document canonique majeur** apparaît à la racine de `docs/`.
 
 ### Ordre de lecture des vérités (anti-fragmentation)
@@ -14,10 +14,11 @@ Pas de dossier parallèle type `docs/system/` ni de fichier « unique roi » qui
 
 1. **`docs/algo-doctrine.md`** — règles non négociables.
 2. **`docs/ALGO_CHECKLIST_PROOFS.md`** — preuves / chemins code vs produit.
-3. **`AGENTS.md`** — pile Next, QA, IA, hooks, liens ops.
-4. **`config/algo-qa-gate.ts`** et **`config/algo-deploy-gate.ts`** — checklists et commandes (`verify:release`, etc.).
-5. **`docs/ALGO_CICD_PIPELINE.md`** — flux GitHub · Husky · Vercel · rollback.
-6. **Code sous `src/`** + résultat de **`npm run verify:release`** — comportement réel et CI font foi sur l’implémentation.
+3. **`docs/ALGO_SYSTEM_V1_CORES.md`** — trois noyaux agent (core / produit / UI) ; cadre condensé au lieu d’empiler des prompts.
+4. **`AGENTS.md`** — pile Next, QA, IA, hooks, liens ops.
+5. **`config/algo-qa-gate.ts`** et **`config/algo-deploy-gate.ts`** — checklists et commandes (`verify:release`, etc.).
+6. **`docs/ALGO_CICD_PIPELINE.md`** — flux GitHub · Husky · Vercel · rollback.
+7. **Code sous `src/`** + résultat de **`npm run verify:release`** — comportement réel et CI font foi sur l’implémentation.
 
 Pas de **score unique 0–100** « santé système » par LLM : voir **`docs/ALGO_RELEASE_READINESS.md`** (rubric qualitative).
 
@@ -28,6 +29,7 @@ Pas de **score unique 0–100** « santé système » par LLM : voir **`docs/ALG
 | Sujet | Chemin |
 |--------|--------|
 | Pile Next, QA, design, IA, billing, observabilité | **`AGENTS.md`** (racine du dépôt) |
+| Cadre agent 3 noyaux (stabilité · produit · UI) | **`docs/ALGO_SYSTEM_V1_CORES.md`** |
 | Règles agents / Cursor | **`CLAUDE.md`**, **`.cursor/rules/`** (ex. **`algo-qa-intelligent.mdc`**, **`algo-cicd-guardian.mdc`** — revue pré-push / IA safety pipeline) |
 
 ---
@@ -66,6 +68,7 @@ Pas de **score unique 0–100** « santé système » par LLM : voir **`docs/ALG
 | Sujet | Chemin |
 |--------|--------|
 | Pont design → sources (éviter 2ᵉ charte) | **`docs/ALGO_DESIGN_EVOLUTION.md`** |
+| Système agent v1 condensé (3 noyaux) | **`docs/ALGO_SYSTEM_V1_CORES.md`** |
 | Charte UX globale (dont alignement cognitif agents / copy) | **`docs/ALGO_UX_CHARTER.md`** |
 | Audit cognitif & multi-profils (heuristique) | **`docs/ALGO_UX_COGNITIVE_AUDIT.md`** |
 | Maturité release (rubric qualitative, politique TS build Next) | **`docs/ALGO_RELEASE_READINESS.md`** |

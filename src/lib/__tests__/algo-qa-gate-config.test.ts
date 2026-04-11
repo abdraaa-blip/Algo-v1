@@ -16,6 +16,7 @@ describe("config/algo-qa-gate", () => {
       "utf8",
     );
     expect(readme).toMatch(/Ordre de lecture des vérités/i);
+    expect(readme).toContain("ALGO_SYSTEM_V1_CORES.md");
     expect(readme).toMatch(/algo-doctrine\.md/);
     expect(readme).toMatch(/pas de dossier parallèle|docs\/system/i);
     expect(readme).toContain("ALGO_RELEASE_READINESS.md");
@@ -25,6 +26,9 @@ describe("config/algo-qa-gate", () => {
   it("référence le fichier design system", () => {
     expect(ALGO_QA_SOURCES.designAndUiRules).toBe(
       "config/algo-system-rules.ts",
+    );
+    expect(ALGO_QA_SOURCES.systemV1Cores).toBe(
+      "docs/ALGO_SYSTEM_V1_CORES.md",
     );
     expect(ALGO_QA_SOURCES.deployGate).toBe("config/algo-deploy-gate.ts");
     expect(ALGO_QA_SOURCES.coherenceRitual).toBe(

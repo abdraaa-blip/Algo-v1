@@ -22,6 +22,9 @@ describe("config/algo-system-rules", () => {
     expect(ALGO_DESIGN_SOURCES.operationsPlaybook).toBe(
       "docs/ALGO_OPERATIONS_PLAYBOOK.md",
     );
+    expect(ALGO_DESIGN_SOURCES.systemV1Cores).toBe(
+      "docs/ALGO_SYSTEM_V1_CORES.md",
+    );
   });
 
   it("décrit les règles UI sans être vide", () => {

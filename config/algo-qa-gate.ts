@@ -15,6 +15,7 @@
  * - `docs/ALGO_OPERATIONS_PLAYBOOK.md` (déploiement / smoke / anti-directives parallèles ; arbitrage priorités ; nettoyage caches `npm run clean` ; blueprints externes vs packs génériques)
  * - `docs/ALGO_GTM_NOTES.md` (positionnement / GTM brouillon — ne remplace pas doctrine ni prompts)
  * - `docs/README.md` (index navigation des docs canoniques)
+ * - `docs/ALGO_SYSTEM_V1_CORES.md` (3 noyaux agent : stabilité, produit, UI)
  * - `docs/ALGO_GIT_COMMIT_PROTOCOL.md` (SAFE / RISKY / CRITICAL avant commit ; complète Husky)
  * - `docs/ALGO_CICD_PIPELINE.md` (GitHub Actions + Vercel + phases analyse → déploiement)
  * - `AGENTS.md` (pile IA, copy, brain)
@@ -31,6 +32,8 @@ export const ALGO_QA_SOURCES = {
   designAndUiRules: 'config/algo-system-rules.ts',
   doctrine: 'docs/algo-doctrine.md',
   checklistProofs: 'docs/ALGO_CHECKLIST_PROOFS.md',
+  /** Cadre unique agents : core system, product system, UI system. */
+  systemV1Cores: 'docs/ALGO_SYSTEM_V1_CORES.md',
   coherenceRitual: 'docs/ALGO_COHERENCE_RITUAL.md',
   coherenceCursorRule: '.cursor/rules/algo-coherence-review.mdc',
   offlineEvolution: 'docs/ALGO_OFFLINE_EVOLUTION.md',

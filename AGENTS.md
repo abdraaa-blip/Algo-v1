@@ -4,6 +4,16 @@
 This version has breaking changes · APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+## Système agent — 3 noyaux (v1)
+
+En **remplacement** d’une pile de prompts parallèles, le cadre condensé est **`docs/ALGO_SYSTEM_V1_CORES.md`** :
+
+1. **Core system** — stabilité, zéro duplication de système, cohérence d’architecture ; refuser ou simplifier ce qui fragilise.
+2. **Product system** — UX et valeur : utile / compréhensible / nécessaire ; pas de bruit technique côté public.
+3. **UI system** — design system et identité : tokens, classes `algo-*`, motion maîtrisée.
+
+Référencé aussi dans **`config/algo-system-rules.ts`** (`ALGO_DESIGN_SOURCES.systemV1Cores`) et **`config/algo-qa-gate.ts`** (`ALGO_QA_SOURCES.systemV1Cores`). En cas de conflit avec un prompt ponctuel : **doctrine + checklist + ce document + code font foi**.
+
 ## Chrome app · viewport (Navbar / BottomNav)
 
 - Tokens dans `src/app/globals.css` : **`--algo-nav-stack`** (offset sous le header fixe, dont bandeau « Zone » mobile), **`--algo-mobile-bottom-safe`** (place pour la barre basse + safe-area), classe **`algo-min-h-viewport-content`** pour loaders / blocs centrés verticalement dans `<main>`.
