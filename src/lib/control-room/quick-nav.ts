@@ -8,6 +8,7 @@ export const CONTROL_ROOM_QUICK_NAV: ReadonlyArray<{
 }> = [
   { href: "/", label: "Accueil" },
   { href: "/control-center", label: "Control Center" },
+  { href: "/brain-interface", label: "Brain Interface" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/intelligence", label: "Intelligence" },
   { href: "/trends", label: "Tendances" },

@@ -1,0 +1,32 @@
+/* Flux neuronal léger — GPU-friendly (stroke uniquement) */
+@keyframes brain-neural-dash {
+  to {
+    stroke-dashoffset: -96;
+  }
+}
+
+@keyframes brain-node-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.flow {
+  stroke-dasharray: 6 12;
+  animation: brain-neural-dash 18s linear infinite;
+}
+
+.nodePulse {
+  animation: brain-node-pulse 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow,
+  .nodePulse {
+    animation: none;
+  }
+}

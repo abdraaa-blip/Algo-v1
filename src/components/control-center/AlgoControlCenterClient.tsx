@@ -255,6 +255,13 @@ export function AlgoControlCenterClient() {
           <p className="algo-type-body max-w-prose">{t.pageSubtitle}</p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
+              href="/brain-interface"
+              className="text-sm font-semibold text-[var(--color-text-tertiary)] hover:text-[color:var(--color-violet)] transition-colors inline-flex items-center gap-1"
+            >
+              {t.linkBrainInterface}
+              <ArrowRight size={14} aria-hidden />
+            </Link>
+            <Link
               href="/control-room"
               className="text-sm font-semibold text-[var(--color-text-tertiary)] hover:text-[color:var(--color-violet)] transition-colors inline-flex items-center gap-1"
             >

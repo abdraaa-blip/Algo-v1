@@ -167,6 +167,30 @@ export const ALGO_UI_CONTROL_CENTER = {
   linkControlRoom: "Control room (perception)",
   linkStatus: "Statut",
   linkDocsCores: "Cadre 3 noyaux",
+  linkBrainInterface: "Brain Interface (immersion)",
   productionHint:
     "Production : confirme les variables sur Vercel avant un déploiement sensible.",
+} as const;
+
+/** `/brain-interface` — immersion optionnelle ; mêmes sondes que Control Center (pas de métaphore « conscience »). */
+export const ALGO_UI_BRAIN_INTERFACE = {
+  pageTitle: "Brain Interface",
+  eyebrow: "Mode avancé · immersion",
+  subtitle:
+    "Visualisation légère branchée sur les sondes réelles : identité produit, pas une seconde source de vérité.",
+  scoresHint: "Scores alignés sur Control Center (sondes v1 / complète).",
+  moduleCore: "Core",
+  moduleProduct: "Product",
+  moduleUi: "UI",
+  moduleBrain: "Brain",
+  syncButton: "Synchroniser les sondes",
+  linkControlCenter: "Control Center",
+  productQTitle: "Décision produit",
+  productQValue:
+    "Valeur principale : renforcer l’identité ALGO pour les profils techniques et la démo. Ce n’est pas un gain de productivité mesurable comme le Control Center.",
+  productQPlace:
+    "Emplacement : page dédiée `/brain-interface`, lien depuis le Control Center — pas sur l’accueil ni dans les parcours grand public.",
+  productQDefault:
+    "Par défaut : désactivé pour le grand public ; opt-in explicite (mode avancé / démo).",
+  reducedMotionNote: "Animations réduites selon tes préférences système.",
 } as const;
