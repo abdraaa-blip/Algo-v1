@@ -1,7 +1,7 @@
 // =============================================================================
 // ALGO V1 · Design System Tokens
-// Source unique de toutes les valeurs visuelles.
-// Aucune couleur, spacing ou durée n'est déclarée hors de ce fichier.
+// Valeurs alignées sur `@theme` dans `src/app/globals.css` (rendu web).
+// Hiérarchie typographique réutilisable : classes `.algo-type-*` + `.algo-eyebrow` dans globals.
 // =============================================================================
 
 export const tokens = {
@@ -10,7 +10,7 @@ export const tokens = {
   colors: {
     bg: {
       primary: "#07070f", // fond global · noir profond, pas gris fade
-      secondary: "#0d0d1a", // fond secondaire · drawers, modals
+      secondary: "#0c0c18", // aligné --color-bg-secondary (@theme)
       card: "rgba(255, 255, 255, 0.04)",
       cardHover: "rgba(255, 255, 255, 0.07)",
     },
@@ -30,10 +30,11 @@ export const tokens = {
       amber: "#FFD166", // timing intermédiaire
     },
     text: {
-      primary: "#f0f0f8",
-      secondary: "rgba(240, 240, 248, 0.60)",
-      muted: "rgba(240, 240, 248, 0.35)",
-      faint: "rgba(240, 240, 248, 0.20)",
+      primary: "#f4f4fc", // --color-text-primary
+      secondary: "rgba(244, 244, 252, 0.76)",
+      tertiary: "rgba(244, 244, 252, 0.50)",
+      muted: "rgba(244, 244, 252, 0.28)",
+      faint: "rgba(244, 244, 252, 0.18)",
       inverse: "#07070f",
     },
     badge: {
@@ -156,6 +157,18 @@ export const tokens = {
     },
     numeric: "tabular-nums", // font-variant-numeric pour les métriques
   },
+
+  /** Rappel : implémentations CSS dans globals — ne pas recopier les clamp ailleurs */
+  typographyClasses: {
+    display: "algo-type-display",
+    pageTitle: "algo-type-page-title",
+    title: "algo-type-title",
+    body: "algo-type-body",
+    caption: "algo-type-caption",
+    mono: "algo-type-mono",
+    eyebrow: "algo-eyebrow",
+    sectionStack: "algo-stack-section",
+  } as const,
 
   // ─── Durées d'animation ────────────────────────────────────────────────────
   // Règle : durées harmoniques uniquement (150ms, 250ms, 350ms, 2s, 3s, 4s, 8s, 12s)

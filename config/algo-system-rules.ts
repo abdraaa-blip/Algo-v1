@@ -99,6 +99,8 @@ export const ALGO_SYSTEM_RULES = {
     font: 'Inter, system-ui (voir --font-family-sans).',
     metrics:
       'Chiffres et scores : préférer `tabular-nums` / tokens.font.numeric pour l’alignement visuel.',
+    scale:
+      'Hiérarchie réutilisable dans `globals.css` : **`algo-type-display`**, **`algo-type-page-title`** (titres de section type `SectionHeader`), **`algo-type-title`**, **`algo-type-body`**, **`algo-type-caption`**, **`algo-type-mono`**, **`algo-eyebrow`** ; espacement vertical de blocs : **`algo-stack-section`**. Rappel TS : `tokens.typographyClasses`.',
   },
 
   uiCopy: {

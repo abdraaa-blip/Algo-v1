@@ -60,16 +60,58 @@ export default function DesignSystemPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-14 min-h-0 w-full text-[var(--color-text-primary)]">
+    <div className="max-w-4xl mx-auto px-4 py-10 min-h-0 w-full text-[var(--color-text-primary)] algo-stack-section">
       <div>
-        <h1 className="text-[28px] font-black tracking-tight text-[var(--color-text-primary)]">
-          Design System
-        </h1>
-        <p className="text-[13px] mt-1 text-[var(--color-text-muted)]">
+        <h1 className="algo-type-display">Design System</h1>
+        <p className="algo-type-caption mt-2 max-w-prose">
           Dev only · Banc de test visuel ALGO · Non indexable ·{" "}
-          <code>notFound()</code> en production
+          <code className="text-[var(--color-text-secondary)]">notFound()</code>{" "}
+          en production
         </p>
       </div>
+
+      {/* ── Typographie & surfaces (globals + tokens) ─────────────────── */}
+      <Section title="Typographie · classes">
+        <div className="space-y-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-5">
+          <p className="algo-type-display">algo-type-display</p>
+          <p className="algo-type-title">algo-type-title</p>
+          <p className="algo-type-page-title">algo-type-page-title</p>
+          <p className="algo-type-body max-w-prose">
+            algo-type-body — paragraphe secondaire lisible, couleur texte
+            secondaire du thème.
+          </p>
+          <p className="algo-type-caption">algo-type-caption</p>
+          <p className="algo-type-mono text-[var(--color-text-secondary)]">
+            12 847 vues · 02:14:07
+          </p>
+          <p className="algo-eyebrow font-semibold text-cyan-400/90">
+            algo-eyebrow (accent optionnel)
+          </p>
+        </div>
+      </Section>
+
+      <Section title="Surfaces · patterns">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="algo-surface p-4 text-sm text-[var(--color-text-secondary)]">
+            <span className="algo-eyebrow font-bold text-[var(--color-text-muted)]">
+              algo-surface
+            </span>
+            <p className="mt-2">
+              Panneau standard : fond carte, bordure, ombre légère, transition
+              au survol des états liés.
+            </p>
+          </div>
+          <div className="algo-card-hit p-4 text-sm text-[var(--color-text-secondary)]">
+            <span className="algo-eyebrow font-bold text-[var(--color-text-muted)]">
+              algo-card-hit
+            </span>
+            <p className="mt-2">
+              Carte interactive : lift discret, glow violet au hover (désactivé
+              si reduced motion).
+            </p>
+          </div>
+        </div>
+      </Section>
 
       {/* ── Badge ──────────────────────────────────────────────────────── */}
       <Section title="Badge">
@@ -302,19 +344,12 @@ function Section({
   title: string;
   children: React.ReactNode;
 }) {
+  const slug = title.replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase();
   return (
-    <section aria-labelledby={`ds-${title}`} className="space-y-5">
+    <section aria-labelledby={`ds-${slug}`} className="space-y-5">
       <h2
-        id={`ds-${title}`}
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          color: "rgba(240,240,248,0.28)",
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
-          paddingBottom: 8,
-        }}
+        id={`ds-${slug}`}
+        className="algo-eyebrow font-bold text-[var(--color-text-muted)] border-b border-[var(--color-border)] pb-2"
       >
         {title}
       </h2>

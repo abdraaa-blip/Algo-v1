@@ -11,6 +11,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 - Hiérarchie couleur / texte : **`@theme`** dans `globals.css` (source de vérité) · `design-tokens.ts` pour usage TS · composants critiques : `Button`, `SectionHeader`, barre basse `BottomNav`.
 - Gouttière page : classe **`.algo-page-gutter`** (`max-width` 7xl + `clamp` horizontal) — préférer à `max-w-7xl mx-auto px-*` dupliqué sur les nouveaux écrans ; le **SiteFooter** l’utilise déjà.
 - Libellés d’étage : **`.algo-eyebrow`** (petites caps homogènes) — évite dix variantes `text-[10px] tracking-*` différentes sur un même parcours.
+- Hiérarchie titres / corps : **`.algo-type-display`**, **`.algo-type-page-title`**, **`.algo-type-title`**, **`.algo-type-body`**, **`.algo-type-caption`**, **`.algo-type-mono`** ; blocs espacés : **`.algo-stack-section`** (`globals.css`) · rappel TS **`tokens.typographyClasses`** dans `src/design-system/tokens.ts`.
 
 ## QA intelligent (avant validation / build / fin de session)
 

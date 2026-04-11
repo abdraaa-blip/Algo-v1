@@ -37,6 +37,7 @@ describe("config/algo-system-rules", () => {
     );
     expect(ALGO_SYSTEM_RULES.layout.structure).toMatch(/min-w-0|ClientLayout/i);
     expect(ALGO_SYSTEM_RULES.layout.surfaces).toMatch(/algo-surface/i);
+    expect(ALGO_SYSTEM_RULES.typography.scale).toMatch(/algo-type-display/i);
     expect(ALGO_SYSTEM_RULES.animation.policy).toMatch(/ms|bounce|ease/i);
     expect(ALGO_SYSTEM_RULES.coherence.checklist.length).toBeGreaterThanOrEqual(
       3,
@@ -46,5 +47,11 @@ describe("config/algo-system-rules", () => {
   it("réexporte tokens avec couleurs clés", () => {
     expect(tokens.colors.accent.violet).toMatch(/^#/);
     expect(tokens.colors.bg.primary).toMatch(/^#/);
+  });
+
+  it("expose les classes typographiques canoniques", () => {
+    expect(tokens.typographyClasses.display).toBe("algo-type-display");
+    expect(tokens.typographyClasses.pageTitle).toBe("algo-type-page-title");
+    expect(tokens.typographyClasses.sectionStack).toBe("algo-stack-section");
   });
 });

@@ -22,11 +22,9 @@ export function SectionHeader({
   return (
     <div className={cn("flex items-start justify-between gap-4", className)}>
       <div className="space-y-1 min-w-0">
-        <h2 className="text-[var(--color-text-primary)] font-bold text-base sm:text-lg tracking-tight leading-snug truncate">
-          {title}
-        </h2>
+        <h2 className="algo-type-page-title truncate">{title}</h2>
         {subtitle && (
-          <p className="text-[var(--color-text-tertiary)] text-sm leading-relaxed max-w-prose">
+          <p className="text-sm leading-relaxed text-[var(--color-text-tertiary)] max-w-prose">
             {subtitle}
           </p>
         )}

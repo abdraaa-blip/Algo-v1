@@ -63,15 +63,10 @@ export function Card({
       rel={isExternal ? "noopener noreferrer" : undefined}
       className={cn(
         // Layout - Fixed height and card-stable to prevent CLS
-        "group block rounded-[16px] border overflow-hidden h-[220px] card-stable",
-        // Glassmorphism
-        "bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.08)]",
-        // Backdrop
-        "backdrop-blur-[12px]",
-        // Transitions
-        "transition-[transform,border-color,box-shadow] duration-[250ms] ease-out",
-        // Hover
-        "hover:scale-[1.012] hover:border-[rgba(123,97,255,0.22)] hover:bg-[rgba(255,255,255,0.07)]",
+        "group block rounded-[var(--radius-lg)] border border-[var(--color-border)] overflow-hidden h-[220px] card-stable",
+        "bg-[var(--color-card)] backdrop-blur-[12px]",
+        "transition-[transform,border-color,box-shadow] duration-[var(--duration-normal,260ms)] ease-out",
+        "hover:scale-[1.012] hover:border-[color-mix(in_srgb,var(--color-violet)_28%,var(--color-border))] hover:bg-[var(--color-card-hover)]",
         // Focus
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60",
         // Animations conditionnelles

@@ -6,12 +6,12 @@ type Size = "sm" | "md" | "lg";
 
 const variantCls: Record<Variant, string> = {
   primary: [
-    "bg-violet-500 text-white",
-    "hover:bg-violet-400",
+    "bg-[var(--color-violet)] text-white",
+    "hover:brightness-[1.07]",
     "active:brightness-[0.94]",
-    "shadow-[0_0_20px_rgba(123,97,255,0.28)]",
-    "disabled:bg-violet-500/30 disabled:text-white/30 disabled:shadow-none disabled:active:brightness-100",
-    "focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-primary)]",
+    "shadow-[var(--shadow-algo-glow-violet)]",
+    "disabled:bg-[var(--color-card)] disabled:text-[var(--color-text-muted)] disabled:shadow-none disabled:brightness-100 disabled:active:brightness-100",
+    "focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-violet)_55%,white)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-primary)]",
   ].join(" "),
   ghost: [
     "bg-white/5 text-[var(--color-text-secondary)]",
