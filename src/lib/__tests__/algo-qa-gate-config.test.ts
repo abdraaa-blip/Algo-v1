@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, it, expect } from "vitest";
 import {
   ALGO_QA_CHECKLIST,
+  ALGO_QA_COMMIT_CLASSIFICATION,
   ALGO_QA_PHILOSOPHY,
   ALGO_QA_RELEASE_COMMANDS,
   ALGO_QA_SOURCES,
@@ -45,10 +46,37 @@ describe("config/algo-qa-gate", () => {
     expect(ALGO_QA_SOURCES.operationsPlaybook).toBe(
       "docs/ALGO_OPERATIONS_PLAYBOOK.md",
     );
+    expect(ALGO_QA_SOURCES.gitCommitProtocol).toBe(
+      "docs/ALGO_GIT_COMMIT_PROTOCOL.md",
+    );
+  });
+
+  it("référence le protocole Git et les niveaux SAFE / RISKY / CRITICAL", () => {
+    const protocolPath = path.join(
+      process.cwd(),
+      ALGO_QA_SOURCES.gitCommitProtocol,
+    );
+    const text = readFileSync(protocolPath, "utf8");
+    expect(text).toMatch(/SAFE/i);
+    expect(text).toMatch(/RISKY/i);
+    expect(text).toMatch(/CRITICAL/i);
+    expect(ALGO_QA_COMMIT_CLASSIFICATION.levels).toEqual([
+      "SAFE",
+      "RISKY",
+      "CRITICAL",
+    ]);
+    expect(ALGO_QA_COMMIT_CLASSIFICATION.riskyMinimumGate).toContain(
+      "verify:release",
+    );
   });
 
   it("expose une checklist couvrante", () => {
-    expect(ALGO_QA_CHECKLIST.technique.length).toBeGreaterThanOrEqual(2);
+    expect(ALGO_QA_CHECKLIST.technique.length).toBeGreaterThanOrEqual(3);
+    expect(
+      ALGO_QA_CHECKLIST.technique.some((s) =>
+        s.includes("ALGO_GIT_COMMIT_PROTOCOL"),
+      ),
+    ).toBe(true);
     expect(
       ALGO_QA_CHECKLIST.uiUx.some((s) => s.includes("algo-system-rules")),
     ).toBe(true);

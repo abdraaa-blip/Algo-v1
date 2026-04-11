@@ -78,4 +78,4 @@ git push origin <branche>
 - `AGENTS.md` — QA gate, hooks, IA, copy.
 - `docs/README.md` — index documentation.
 - `docs/ALGO_OPERATIONS_PLAYBOOK.md` — déploiement, smoke, arbitrage.
-- `config/algo-qa-gate.ts` — checklist exécutable et philosophie QA.
+- `config/algo-qa-gate.ts` — `ALGO_QA_SOURCES.gitCommitProtocol`, `ALGO_QA_COMMIT_CLASSIFICATION`, checklist `ALGO_QA_CHECKLIST`, commandes `ALGO_QA_RELEASE_COMMANDS`.

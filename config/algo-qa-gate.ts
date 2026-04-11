@@ -15,6 +15,7 @@
  * - `docs/ALGO_OPERATIONS_PLAYBOOK.md` (déploiement / smoke / anti-directives parallèles ; arbitrage priorités ; nettoyage caches `npm run clean` ; blueprints externes vs packs génériques)
  * - `docs/ALGO_GTM_NOTES.md` (positionnement / GTM brouillon — ne remplace pas doctrine ni prompts)
  * - `docs/README.md` (index navigation des docs canoniques)
+ * - `docs/ALGO_GIT_COMMIT_PROTOCOL.md` (SAFE / RISKY / CRITICAL avant commit ; complète Husky)
  * - `AGENTS.md` (pile IA, copy, brain)
  *
  * Gate standard : `verify:release` inclut `verify:api-guards` (chaque `route.ts` sous `src/app/api`, hors cron et webhook Stripe) puis `npm audit`. Approfondissement : voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` (`verify:full`, etc.).
@@ -40,6 +41,8 @@ export const ALGO_QA_SOURCES = {
   operationsPlaybook: 'docs/ALGO_OPERATIONS_PLAYBOOK.md',
   releaseReadiness: 'docs/ALGO_RELEASE_READINESS.md',
   gtmNotes: 'docs/ALGO_GTM_NOTES.md',
+  /** Protocole Git : analyse du diff, SAFE / RISKY / CRITICAL, commandes attendues. */
+  gitCommitProtocol: 'docs/ALGO_GIT_COMMIT_PROTOCOL.md',
   docsIndex: 'docs/README.md',
   /** Synthèse présentation produit (pitch / onboarding) — secondaire vs checklist & doctrine. */
   productMasterOverview: 'docs/product/master-overview.md',
@@ -66,6 +69,13 @@ export const ALGO_QA_RELEASE_COMMANDS = {
   optionalDeeper: ['npm run verify:full', 'npm run typecheck', 'npm run lint:strict'] as const,
 } as const
 
+/** Niveaux de risque commit (détail : `ALGO_QA_SOURCES.gitCommitProtocol`). */
+export const ALGO_QA_COMMIT_CLASSIFICATION = {
+  levels: ['SAFE', 'RISKY', 'CRITICAL'] as const,
+  /** Gate minimale recommandée avant commit+push quand le changement n’est pas SAFE. */
+  riskyMinimumGate: 'npm run verify:release',
+} as const
+
 export const ALGO_QA_PHILOSOPHY = {
   tagline: 'Système vivant mais structuré : il peut évoluer, pas se fragmenter.',
   neverValidate: [
@@ -83,6 +93,7 @@ export const ALGO_QA_PHILOSOPHY = {
 /** Checklist obligatoire avant « terminé » / PR / build sensible. */
 export const ALGO_QA_CHECKLIST = {
   technique: [
+    'Git / versioning : classifier le diff SAFE · RISKY · CRITICAL (`docs/ALGO_GIT_COMMIT_PROTOCOL.md`) ; hors SAFE, lancer `npm run verify:release` avant merge ; ne pas commit si CRITICAL (build cassé, secrets, contournement garde-fous).',
     'TypeScript / build : pas d’erreurs de compilation ; imports résolus ; pas de dead code évident introduit.',
     'Dépendances : pas d’incohérence manifeste (versions, doublons de logique métier).',
     'Composants : pas de régression sur les routes ou pages touchées ; éviter les composants orphelins inutiles.',

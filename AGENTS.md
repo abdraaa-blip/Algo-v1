@@ -7,7 +7,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 ## QA intelligent (avant validation / build / fin de session)
 
 - **Index navigation `docs/`** : **`docs/README.md`** (carte vers doctrine, UX, ops, intégrations — pas un second wiki).
-- **Checklist + philosophie + commandes** : `config/algo-qa-gate.ts` (`ALGO_QA_CHECKLIST`, `ALGO_QA_SOURCES`, `ALGO_QA_RELEASE_COMMANDS`).
+- **Checklist + philosophie + commandes** : `config/algo-qa-gate.ts` (`ALGO_QA_CHECKLIST`, `ALGO_QA_SOURCES`, `ALGO_QA_RELEASE_COMMANDS`, `ALGO_QA_COMMIT_CLASSIFICATION`).
 - **Design évolutif sans 2ᵉ charte** : **`docs/ALGO_DESIGN_EVOLUTION.md`** (renvoie vers `algo-system-rules.ts`, tokens, control room, offline evolution).
 - **Opérations & déploiement** : **`docs/ALGO_OPERATIONS_PLAYBOOK.md`** — point d’entrée unique (évite les pavés de directives Cursor parallèles) ; sections **Arbitrage** et **Blueprints externes** si un pack « prod / ops » générique diverge du dépôt ; Vercel / smoke / `verify:release` ; pas d’auto-réparation du code hors PR ; caches build locaux sûrs : `npm run clean` ou `node scripts/clear-cache.js` (ajouter `--dry-run` pour simulation).
 - Toujours croiser le design avec **`config/algo-system-rules.ts`**. Règle Cursor : `.cursor/rules/algo-qa-intelligent.mdc` (**alwaysApply**).
