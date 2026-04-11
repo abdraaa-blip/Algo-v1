@@ -206,6 +206,18 @@ export function AlgoControlRoomClient() {
               Lecture calme : signaux légers, schéma statique. Pas la pensée du
               modèle, pas la topologie serveur réelle.
             </p>
+            <p className="text-xs pt-1">
+              <Link
+                href="/control-center"
+                className="font-semibold text-[color:var(--color-violet)] hover:underline"
+              >
+                Control Center
+              </Link>
+              <span className="text-[var(--color-text-muted)]">
+                {" "}
+                · pilotage (sondes, build, audits)
+              </span>
+            </p>
           </header>
 
           <section

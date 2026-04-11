@@ -2,6 +2,8 @@
 
 Route : **`/control-room`**. Composant principal : `src/components/control-room/AlgoControlRoomClient.tsx`.
 
+**Control Center (complément)** : route **`/control-center`** · `src/components/control-center/AlgoControlCenterClient.tsx` — tableau de bord **opérationnel** (sondes `/api/v1/health`, `/api/health`, résumé déploiement via `GET /api/control-center/summary`, liens modules). Ne remplace pas la control room : **perception** vs **pilotage sobre**.
+
 ## Rôle (deux mondes)
 
 | Monde | Rôle |

@@ -126,3 +126,47 @@ export const ALGO_UI_OBSERVABILITY_DISABLED = {
   ctaControlRoom: "Control room",
   ctaHome: "Accueil",
 } as const;
+
+/** `/control-center` — pilotage sobre (scores dérivés des sondes, pas de promesse UX auto). */
+export const ALGO_UI_CONTROL_CENTER = {
+  pageTitle: "Control Center",
+  pageSubtitle:
+    "Vue opérationnelle : sondes réelles, liens utiles, sans empiler de données techniques inutiles.",
+  eyebrowOps: "Pilotage",
+  scoreGlobal: "Santé estimée",
+  scoreStability: "Stabilité",
+  scorePerformance: "Performance",
+  scoreUx: "UX",
+  uxNotAutomated:
+    "Non calculé en live : voir la charte UX et l'audit cognitif dans la doc produit.",
+  methodology: "Méthodologie",
+  modulesTitle: "Modules",
+  moduleCore: "Core system",
+  moduleCoreHint: "Stabilité, doctrine, gate QA",
+  moduleProduct: "Product system",
+  moduleProductHint: "Valeur utilisateur et parcours",
+  moduleUi: "UI system",
+  moduleUiHint: "Tokens, globals, design system",
+  moduleBrain: "Auto Brain",
+  moduleBrainHint: "Entrée Q&R · brain canonique",
+  buildTitle: "Build et déploiement",
+  buildEnv: "Environnement",
+  buildCommit: "Commit",
+  buildDeploy: "Déploiement",
+  buildVersion: "Version npm",
+  buildUnknown: "Non communiqué",
+  auditTitle: "Audits",
+  auditFull: "Sonde complète",
+  auditFullHint: "Interroge `/api/health` (serveur + intégrations, plus lourd).",
+  auditQuick: "Sonde légère",
+  auditQuickHint: "Interroge `/api/v1/health` uniquement.",
+  logsTitle: "Journal essentiel",
+  logsEmpty: "Aucune entrée récente affichée ici.",
+  logsObsDisabled:
+    "Logs détaillés : désactivés sur cet environnement (voir observabilité).",
+  linkControlRoom: "Control room (perception)",
+  linkStatus: "Statut",
+  linkDocsCores: "Cadre 3 noyaux",
+  productionHint:
+    "Production : confirme les variables sur Vercel avant un déploiement sensible.",
+} as const;
