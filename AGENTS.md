@@ -13,6 +13,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 - Toujours croiser le design avec **`config/algo-system-rules.ts`**. Règle Cursor : `.cursor/rules/algo-qa-intelligent.mdc` (**alwaysApply**).
 - Gate release typique : `npm run verify:release` (inclut **`npm run verify:api-guards`**, **`npm audit`**, **`npm run typecheck`** et **`npm run lint:strict`** avant tests / `build`). Approfondissement : `npm run verify:full` (voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` dans `config/algo-qa-gate.ts`).
 - **Git hooks (Husky)** : après `npm install`, `prepare` active Husky — **`.husky/pre-commit`** (si `.ts`/`.tsx` stagés : `tsc`, `eslint` sur fichiers stagés, `autopilot:quick`) · **`.husky/pre-push`** (`typecheck` + `lint:strict`). La gate complète reste **`npm run verify:release`** (alignée CI `.github/workflows/ci.yml`) avant merge / release.
+- **Validation avant commit (classification)** : **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** — analyse du diff, niveaux **SAFE / RISKY / CRITICAL**, commandes Git attendues, maintenance post-changement ; complète les hooks (jugement d’impact, pas seulement TS/ESLint).
 
 ## Rituel cohérence (audit ciblé · optionnel)
 

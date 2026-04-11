@@ -64,6 +64,7 @@
 | Sujet | Chemin |
 |--------|--------|
 | Playbook unique (Vercel, smoke, anti-pavés, arbitrage, **blueprints externes**) | **`docs/ALGO_OPERATIONS_PLAYBOOK.md`** |
+| Protocole Git · SAFE / RISKY / CRITICAL avant commit | **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** |
 | Control room (`/control-room`) | **`docs/ALGO_CONTROL_ROOM.md`** |
 | Positionnement / GTM (brouillon, sous doctrine) | **`docs/ALGO_GTM_NOTES.md`** |
 

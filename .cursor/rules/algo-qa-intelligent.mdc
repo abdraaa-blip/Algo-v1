@@ -21,6 +21,11 @@ Avant de **valider** une tâche, un module ou une PR, ou de dire « c’est term
 - Signaler **clairement** ; proposer **correction minimale** ; ne pas valider un état **cassé** ou **incohérent** avec ALGO.
 - Ne pas **réécrire tout le système** ; préserver l’existant sauf nécessité démontrée.
 
+## Avant tout commit (classification Git)
+
+- Lire **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** : analyser le diff (archi, IA, UI, perf, sécurité) ; classer **SAFE** (hooks suffisent), **RISKY** (corriger / réduire le diff puis **`npm run verify:release`** avant commit+push), **CRITICAL** (ne pas commit tant que non corrigé).
+- Ne jamais pousser du code cassant ni contourner les garde-fous pour aller plus vite.
+
 ## Avant merge / release sensible
 
 - Lancer ou demander **`npm run verify:release`** (`package.json` : ecosystem, i18n, **`verify:api-guards`**, **`npm audit`**, **`typecheck`**, **`lint:strict`**, tests, build).
