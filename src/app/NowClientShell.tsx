@@ -281,7 +281,7 @@ export function NowClientShell({
                         ? "Actualisation..."
                         : `MAJ il y a ${timeSinceUpdate}s`}{" "}
                       &bull;{" "}
-                      <span className="text-white/30">Refresh auto 30s</span>
+                      <span className="text-white/30">Mise à jour auto · 30s</span>
                     </span>
                   </p>
                 </div>
@@ -293,11 +293,11 @@ export function NowClientShell({
                   onClick={() => handleTrendClick(topTrend)}
                   className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-2xl p-4 min-w-[280px] text-left hover:border-yellow-500/40 transition-colors group"
                 >
-                  <div className="flex items-center gap-2 text-[10px] text-yellow-400 uppercase tracking-widest mb-2">
-                    <Sparkles size={12} />
-                    <span>Signal #1 · Tier {topTrend.score.tier}</span>
-                    <span className="ml-auto text-white/40 group-hover:text-white/60">
-                      Voir details →
+                  <div className="flex items-center gap-2 algo-eyebrow font-semibold text-yellow-400/90 mb-2">
+                    <Sparkles size={12} className="shrink-0" aria-hidden />
+                    <span>Signal #1 · palier {topTrend.score.tier}</span>
+                    <span className="ml-auto text-white/40 group-hover:text-white/60 normal-case tracking-normal text-[11px] font-medium">
+                      Voir détails →
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-1">
@@ -318,8 +318,8 @@ export function NowClientShell({
                       )}
                     >
                       {topTrend.prediction.recommendedAction === "post_now"
-                        ? "POST NOW"
-                        : "PREPARE"}
+                        ? "Publier maintenant"
+                        : "Préparer"}
                     </span>
                   </div>
                 </button>

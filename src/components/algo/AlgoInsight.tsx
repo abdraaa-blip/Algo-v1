@@ -256,9 +256,8 @@ export function AlgoInsight({
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-bold text-white">Analyse ALGO</h3>
-            <Sparkles size={12} className="text-violet-400" />
+            <Sparkles size={12} className="text-violet-400" aria-hidden />
           </div>
-          <p className="text-[10px] text-white/40">Intelligence artificielle</p>
         </div>
       </div>
 

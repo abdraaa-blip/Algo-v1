@@ -101,7 +101,7 @@ export function InsightPanel({
           className="text-violet-400 shrink-0"
           aria-hidden
         />
-        <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+        <span className="algo-eyebrow font-bold text-white/50">
           {labels.title}
         </span>
       </div>

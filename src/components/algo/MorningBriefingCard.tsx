@@ -43,7 +43,7 @@ export function MorningBriefingCard({
     >
       <div className="flex items-center justify-between gap-2 mb-3">
         <div>
-          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400/90">
+          <p className="algo-eyebrow font-semibold text-cyan-400/90">
             Briefing signal
           </p>
           <p className="text-xs sm:text-sm font-semibold text-white/85 mt-0.5">
@@ -69,7 +69,7 @@ export function MorningBriefingCard({
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-white/35">
+                  <span className="algo-eyebrow font-semibold text-white/40">
                     {s.label}
                   </span>
                   {s.meta ? (

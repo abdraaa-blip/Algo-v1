@@ -42,8 +42,8 @@ export function ShareStrip({ url, title, snippet, className }: Props) {
 
   return (
     <div className={className}>
-      <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-widest mb-2 flex items-center gap-2">
-        <Share2 size={12} className="text-cyan-400/80" />
+      <p className="algo-eyebrow font-bold mb-2 flex items-center gap-2">
+        <Share2 size={12} className="text-cyan-400/80 shrink-0" aria-hidden />
         Partager
       </p>
       <div className="flex flex-wrap gap-2">

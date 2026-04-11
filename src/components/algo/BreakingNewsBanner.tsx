@@ -86,7 +86,7 @@ export function BreakingNewsBanner({ className }: BreakingNewsBannerProps) {
           <AlertTriangle className="w-5 h-5 text-white motion-safe:animate-pulse" />
         </div>
 
-        <span className="flex-shrink-0 px-2 py-0.5 bg-white/20 rounded text-[10px] font-bold tracking-wide text-white">
+        <span className="algo-eyebrow flex-shrink-0 px-2 py-0.5 bg-white/20 rounded font-bold text-white">
           {ALGO_UI_BREAKING.label}
         </span>
 
