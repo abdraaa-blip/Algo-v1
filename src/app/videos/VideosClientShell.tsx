@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Video, Play, Eye, Clock, RefreshCw } from 'lucide-react'
+import { Video, Play, Eye, Clock, RefreshCw, TriangleAlert } from 'lucide-react'
 import { FilterBar } from '@/components/ui/FilterBar'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -16,6 +16,7 @@ import { getCountryCodeFromScope } from '@/data/countries'
 import { cn } from '@/lib/utils'
 import type { FilterOption } from '@/types'
 import { formatRelativeScopeTime } from '@/lib/geo/time-format'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 // Self-contained type
 interface RealVideo {
@@ -109,9 +110,11 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
     refreshIntervalLabel?: string
     source?: string
   } | null>(null)
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const fetchVideos = useCallback(async () => {
     try {
+      setFetchError(null)
       // Get country code from scope (handles global, region, and country types)
       const countryCode = getCountryCodeFromScope(scope)
       const regionCode = scopeToRegion[countryCode] || ''
@@ -120,6 +123,9 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
         : '/api/live-videos'
       
       const res = await fetch(url, { signal: AbortSignal.timeout(15000) })
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`)
+      }
       const data = await res.json()
       
       if (data.success && Array.isArray(data.data)) {
@@ -133,9 +139,26 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
         } else {
           setVideosMeta(null)
         }
+      } else {
+        setVideos([])
+        setFetchedAt(null)
+        setVideosMeta(null)
+        setFetchError(
+          mapUserFacingApiError(
+            typeof data.error === 'string' && data.error.trim() !== ''
+              ? data.error
+              : 'Failed to fetch'
+          )
+        )
       }
     } catch (error) {
       console.error('[ALGO Videos] Fetch failed:', error)
+      setVideos([])
+      setFetchedAt(null)
+      setVideosMeta(null)
+      setFetchError(
+        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
+      )
     } finally {
       setLoading(false)
       setRefreshing(false)
@@ -246,6 +269,26 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
         </div>
       </div>
 
+      {fetchError ? (
+        <div
+          role="alert"
+          className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p className="flex items-start gap-2 text-sm text-rose-100/90">
+            <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+            <span>{fetchError}</span>
+          </p>
+          <button
+            type="button"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="shrink-0 rounded-lg border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25 disabled:opacity-50"
+          >
+            Réessayer
+          </button>
+        </div>
+      ) : null}
+
       {/* Region Filter */}
       <div
         className="sticky top-14 z-[100] -mx-4 px-4 py-2 border-b border-[var(--color-border)] algo-sticky-subnav"
@@ -268,7 +311,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       )}
 
       {/* Empty */}
-      {!loading && filtered.length === 0 && (
+      {!loading && !fetchError && filtered.length === 0 && (
         <EmptyState
           icon={Video}
           title={labels.emptyTitle}
@@ -278,7 +321,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       )}
 
       {/* Featured Video */}
-      {!loading && filtered.length > 0 && (
+      {!loading && !fetchError && filtered.length > 0 && (
         <section>
           <SectionHeader 
             title={labels.featuredSectionTitle} 
@@ -372,7 +415,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       )}
 
       {/* All Videos Grid */}
-      {!loading && filtered.length > 5 && (
+      {!loading && !fetchError && filtered.length > 5 && (
         <section>
           <SectionHeader 
             title={labels.allSectionTitle} 

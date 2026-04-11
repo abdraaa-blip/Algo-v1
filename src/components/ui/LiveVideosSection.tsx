@@ -2,13 +2,14 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { Play, Eye, ExternalLink, ChevronRight } from 'lucide-react'
+import { Play, Eye, ExternalLink, ChevronRight, TriangleAlert } from 'lucide-react'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { DataStatusIndicator } from '@/components/ui/DataStatusIndicator'
 import { useScope } from '@/hooks/useScope'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 // Self-contained type to avoid importing from real-data-service
 interface RealVideo {
@@ -41,22 +42,42 @@ export function LiveVideosSection({
   const [loading, setLoading] = useState(true)
   const [fetchedAt, setFetchedAt] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const fetchVideos = useCallback(async () => {
     try {
+      setFetchError(null)
       const url = country
         ? `/api/live-videos?country=${country}`
         : '/api/live-videos'
       
       const res = await fetch(url, { signal: AbortSignal.timeout(15000) })
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`)
+      }
       const data = await res.json()
       
       if (data.success && Array.isArray(data.data)) {
         setVideos(data.data.slice(0, limit))
         setFetchedAt(data.fetchedAt)
+      } else {
+        setVideos([])
+        setFetchedAt(null)
+        setFetchError(
+          mapUserFacingApiError(
+            typeof data.error === 'string' && data.error.trim() !== ''
+              ? data.error
+              : 'Failed to fetch'
+          )
+        )
       }
     } catch (error) {
       console.error('[ALGO Videos] Fetch failed:', error)
+      setVideos([])
+      setFetchedAt(null)
+      setFetchError(
+        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
+      )
     } finally {
       setLoading(false)
       setRefreshing(false)
@@ -104,6 +125,25 @@ export function LiveVideosSection({
 
       {/* Content wrapper with min-height to prevent CLS */}
       <div className="min-h-[280px]">
+        {fetchError ? (
+          <div
+            role="alert"
+            className="mb-4 flex flex-col gap-2 rounded-xl border border-rose-500/20 bg-rose-500/5 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p className="flex items-start gap-2 text-xs text-rose-100/90">
+              <TriangleAlert className="mt-0.5 size-3.5 shrink-0 text-rose-300" aria-hidden />
+              <span>{fetchError}</span>
+            </p>
+            <button
+              type="button"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="shrink-0 self-start rounded-lg border border-rose-400/30 bg-rose-500/15 px-2.5 py-1 text-[11px] font-semibold text-rose-100 hover:bg-rose-500/25 disabled:opacity-50 sm:self-center"
+            >
+              Réessayer
+            </button>
+          </div>
+        ) : null}
         {/* Loading */}
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -114,7 +154,7 @@ export function LiveVideosSection({
         )}
 
         {/* Videos Grid */}
-        {!loading && videos.length > 0 && (
+        {!loading && !fetchError && videos.length > 0 && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {videos.map((video, index) => (
@@ -144,7 +184,7 @@ export function LiveVideosSection({
         )}
 
         {/* Empty state */}
-        {!loading && videos.length === 0 && (
+        {!loading && !fetchError && videos.length === 0 && (
           <div className="text-center py-8 text-[var(--color-text-tertiary)]">
             <Play size={32} className="mx-auto mb-2 opacity-50" />
             <p>Aucune vidéo disponible</p>

@@ -34,4 +34,9 @@ describe('mapUserFacingApiError', () => {
   it('maps Fetch failed', () => {
     expect(mapUserFacingApiError('Fetch failed')).toContain('données')
   })
+
+  it('maps session / JWT expiry hints', () => {
+    expect(mapUserFacingApiError('JWT expired')).toContain('Session')
+    expect(mapUserFacingApiError('invalid jwt')).toContain('Session')
+  })
 })

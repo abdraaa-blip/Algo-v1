@@ -61,6 +61,13 @@ export function mapUserFacingApiError(message: string | null | undefined): strin
   if (lower === 'failed to fetch' || lower.includes('networkerror when attempting to fetch')) {
     return 'Impossible de joindre le serveur. Vérifie la connexion.'
   }
+  if (
+    lower.includes('jwt expired') ||
+    lower.includes('session expired') ||
+    lower.includes('invalid jwt')
+  ) {
+    return 'Session expirée. Reconnecte-toi.'
+  }
 
   const httpMatch = /^http\s+(\d{3})$/i.exec(raw)
   if (httpMatch) {
