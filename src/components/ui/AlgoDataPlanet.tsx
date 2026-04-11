@@ -539,7 +539,10 @@ export function AlgoDataPlanet() {
   }, [enabled, pathname, tuning]);
 
   return (
-    <div aria-hidden className="fixed inset-0 pointer-events-none z-0">
+    <div
+      aria-hidden
+      className="fixed inset-0 z-0 max-w-full overflow-hidden pointer-events-none"
+    >
       {enabled ? (
         <canvas
           ref={canvasRef}

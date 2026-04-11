@@ -153,7 +153,7 @@ export function ContentCard({ content, onClick }: ContentCardProps) {
             src={content.thumbnail}
             alt={content.title}
             fill
-            className="object-cover"
+            className="object-cover object-top"
             containerClassName="w-full h-full"
             platform={content.platform || "default"}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

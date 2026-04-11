@@ -98,6 +98,9 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   color-scheme: dark;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
@@ -114,7 +117,9 @@ body {
   font-family: var(--font-family-sans);
   line-height: 1.5;
   min-height: 100dvh;
+  max-width: 100%;
   overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 /* Surfaces & micro-interactions · système unifié (PHASE 2 / 5) */

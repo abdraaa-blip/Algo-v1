@@ -293,7 +293,10 @@ export function AlgoLivingBackground() {
   }, [enabled, tuning, tabVisible]);
 
   return (
-    <div aria-hidden className="fixed inset-0 pointer-events-none z-0">
+    <div
+      aria-hidden
+      className="fixed inset-0 z-0 max-w-full overflow-hidden pointer-events-none"
+    >
       {enabled ? (
         <canvas ref={canvasRef} className="absolute inset-0 opacity-80" />
       ) : (

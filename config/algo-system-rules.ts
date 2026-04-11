@@ -79,7 +79,7 @@ export const ALGO_SYSTEM_RULES = {
 
   layout: {
     structure:
-      'Mobile-first ; largeurs de lecture maîtrisées (`max-w-*` + `mx-auto` + `px-*` cohérents) ; éviter le scroll horizontal involontaire (`overflow-x` sur `body` + chaîne **`ClientLayout` → `<main>` → conteneur flex** avec `w-full min-w-0`, `PageTransition` idem). Fond global : `html` / `body` + `AlgoLivingBackground` (`ClientLayout`, `fixed` + `pointer-events: none`, empilement sous contenu) — éviter de redéfinir `bg-[var(--color-bg-primary)]` sur chaque page racine sauf besoin isolé (plein écran, export, etc.).',
+      'Mobile-first ; largeurs de lecture maîtrisées (`max-w-*` + `mx-auto` + `px-*` cohérents) ; éviter le scroll horizontal involontaire (`overflow-x` + `overscroll-behavior-x` sur `html`/`body`, chaîne **`ClientLayout` → `<main>` → flex** avec `w-full min-w-0 max-w-full overflow-x-clip`, `PageTransition` idem). Encoches : `viewportFit: cover` + `env(safe-area-inset-*)` sur **Navbar** / padding-top du **`<main>`**. Fonds `fixed` (**`AlgoLivingBackground`**, **`AlgoDataPlanet`**) : `max-w-full overflow-hidden` + `pointer-events: none`. Éviter de redéfinir `bg-[var(--color-bg-primary)]` sur chaque page racine sauf besoin isolé.',
     surfaces:
       'Cartes et panneaux : classes utilitaires **`algo-surface`** et **`algo-interactive`** (globals) pour bordure, rayon et transitions unifiées.',
     spacing:

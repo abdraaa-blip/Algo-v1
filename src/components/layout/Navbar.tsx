@@ -109,7 +109,7 @@ export function Navbar() {
   }).format(nowTs);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-[200]">
+    <header className="fixed top-0 inset-x-0 z-[200] max-w-full overflow-x-clip pt-[env(safe-area-inset-top,0px)]">
       {/* Main navbar container */}
       <div className="algo-nav-chrome">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 h-14 flex items-center gap-2 sm:gap-4">

@@ -231,7 +231,7 @@ function VideoCard({ video }: { video: RealVideo }) {
           src={video.thumbnail}
           alt={video.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
           platform="youtube"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />

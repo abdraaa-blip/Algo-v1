@@ -18,7 +18,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-[200] md:hidden algo-bar-mobile"
+      className="fixed bottom-0 inset-x-0 z-[200] max-w-full overflow-x-clip md:hidden algo-bar-mobile"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       aria-label="Navigation mobile"
     >

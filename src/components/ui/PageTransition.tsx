@@ -33,7 +33,7 @@ export function PageTransition({ children, className }: PageTransitionProps) {
   return (
     <div
       className={cn(
-        "w-full min-w-0 transition-[opacity,transform] ease-out",
+        "w-full min-w-0 max-w-full overflow-x-clip transition-[opacity,transform] ease-out",
         isTransitioning && "opacity-0 translate-y-1.5",
         !isTransitioning && "opacity-100 translate-y-0",
         className,

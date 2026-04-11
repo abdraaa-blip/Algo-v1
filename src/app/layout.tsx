@@ -14,6 +14,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5, // Allow zoom for accessibility
   userScalable: true, // Required for WCAG 2.1 compliance
+  /** iOS / encoches : active env(safe-area-inset-*) pour le chrome fixe */
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
