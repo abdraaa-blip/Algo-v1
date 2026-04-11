@@ -66,15 +66,15 @@ export default function DesignSystemPage() {
       {/* ── Button ─────────────────────────────────────────────────────── */}
       <Section title="Button">
         <div className="flex flex-wrap gap-3">
-          <Button variant="primary">Primary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="primary" loading>Loading</Button>
+          <Button variant="primary">Principal</Button>
+          <Button variant="ghost">Discret</Button>
+          <Button variant="outline">Contour</Button>
+          <Button variant="primary" loading>Patience…</Button>
           <Button variant="primary" icon={Zap}>Avec icône</Button>
           <Button variant="primary" icon={Zap} iconPosition="end">Icône fin</Button>
-          <Button variant="primary" disabled>Disabled</Button>
-          <Button variant="primary" size="sm">Small</Button>
-          <Button variant="primary" size="lg">Large</Button>
+          <Button variant="primary" disabled>Inactif</Button>
+          <Button variant="primary" size="sm">Compact</Button>
+          <Button variant="primary" size="lg">Grand</Button>
         </div>
       </Section>
 

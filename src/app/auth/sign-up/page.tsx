@@ -31,7 +31,7 @@ export default function SignUpPage() {
     }
 
     if (password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caracteres')
+      setError('Le mot de passe doit contenir au moins 6 caractères')
       setIsLoading(false)
       return
     }
@@ -52,7 +52,7 @@ export default function SignUpPage() {
       if (error) throw error
       router.push('/auth/sign-up-success')
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'Erreur lors de l&apos;inscription')
+      setError(error instanceof Error ? error.message : "Erreur lors de l'inscription")
     } finally {
       setIsLoading(false)
     }
@@ -71,16 +71,16 @@ export default function SignUpPage() {
               <span className="text-white">AL</span>
               <span className="text-[var(--color-violet)]">GO</span>
             </h1>
-            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Trend Intelligence</p>
+            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Veille tendances</p>
           </Link>
         </div>
 
         {/* Signup Card */}
         <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-8 shadow-[var(--shadow-algo-sm)]">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Creer un compte</h2>
+            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Créer un compte</h2>
             <p className="text-[var(--color-text-secondary)] mt-1">
-              Rejoignez ALGO pour suivre les tendances
+              Rejoins ALGO pour suivre les tendances
             </p>
           </div>
 
@@ -90,7 +90,7 @@ export default function SignUpPage() {
               <Input
                 id="displayName"
                 type="text"
-                placeholder="Votre pseudo"
+                placeholder="Ton pseudo"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 className="bg-[var(--color-card)] border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-violet)] focus:ring-[var(--color-violet-muted)]"
@@ -98,7 +98,7 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Email</Label>
+              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Adresse e-mail</Label>
               <Input
                 id="email"
                 type="email"
@@ -132,7 +132,7 @@ export default function SignUpPage() {
               </div>
               {password && (
                 <p className={`text-xs ${passwordColor}`}>
-                  Force du mot de passe: {passwordStrength}
+                  Solidité du mot de passe : {passwordStrength}
                 </p>
               )}
             </div>
@@ -170,13 +170,13 @@ export default function SignUpPage() {
               loading={isLoading}
               icon={UserPlus}
             >
-              {isLoading ? 'Creation du compte...' : 'Creer mon compte'}
+              {isLoading ? 'Création du compte…' : 'Créer mon compte'}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-[var(--color-text-secondary)] text-sm">
-              Deja un compte ?{' '}
+              Déjà un compte ?{' '}
               <Link href="/auth/login" className="text-[var(--color-violet)] hover:underline">
                 Se connecter
               </Link>

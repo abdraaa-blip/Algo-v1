@@ -34,7 +34,7 @@ export default function AuthSignUpError({
             className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-violet-500 text-white font-medium hover:bg-violet-600 transition-colors"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           
           <Link

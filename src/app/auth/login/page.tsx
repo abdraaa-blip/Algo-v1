@@ -48,7 +48,7 @@ export default function LoginPage() {
               <span className="text-white">AL</span>
               <span className="text-[var(--color-violet)]">GO</span>
             </h1>
-            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Trend Intelligence</p>
+            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Veille tendances</p>
           </Link>
         </div>
 
@@ -57,13 +57,13 @@ export default function LoginPage() {
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Connexion</h2>
             <p className="text-[var(--color-text-secondary)] mt-1">
-              Connectez-vous pour acceder a votre compte
+              Connecte-toi pour accéder à ton compte
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Email</Label>
+              <Label htmlFor="email" className="text-[var(--color-text-secondary)]">Adresse e-mail</Label>
               <Input
                 id="email"
                 type="email"
@@ -112,7 +112,7 @@ export default function LoginPage() {
               loading={isLoading}
               icon={LogIn}
             >
-              {isLoading ? 'Connexion...' : 'Se connecter'}
+              {isLoading ? 'Connexion…' : 'Se connecter'}
             </Button>
           </form>
 
@@ -120,7 +120,7 @@ export default function LoginPage() {
             <p className="text-[var(--color-text-secondary)] text-sm">
               Pas encore de compte ?{' '}
               <Link href="/auth/sign-up" className="text-[var(--color-violet)] hover:underline">
-                Creer un compte
+                Créer un compte
               </Link>
             </p>
           </div>

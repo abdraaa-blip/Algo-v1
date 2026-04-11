@@ -256,7 +256,7 @@ export function MusicClientShell() {
                 onClick={fetchData}
                 className="mt-4 px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-400 text-sm font-medium hover:bg-emerald-500/30 transition-colors"
               >
-                Reessayer
+                Réessayer
               </button>
             </div>
           )}

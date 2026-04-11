@@ -36,7 +36,7 @@ export default function VideosError({
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-500/15 border border-red-500/25 text-red-300 text-sm font-semibold hover:bg-red-500/25 transition-all duration-150"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           
           <Link

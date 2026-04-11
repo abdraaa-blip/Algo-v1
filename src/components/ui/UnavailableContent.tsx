@@ -55,7 +55,7 @@ export function UnavailableContent({
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/10 text-white/60 text-sm hover:bg-white/20 hover:text-white transition-colors"
             >
               <RefreshCw size={14} />
-              Reessayer
+              Réessayer
             </button>
           )}
           {showBackButton && (
@@ -89,7 +89,7 @@ export function UnavailableContent({
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-violet-500/20 text-violet-300 font-medium hover:bg-violet-500/30 transition-colors"
           >
             <RefreshCw size={18} />
-            Reessayer
+            Réessayer
           </button>
         )}
         {showBackButton && (
@@ -127,7 +127,7 @@ export function VideoUnavailable({ onRetry }: { onRetry?: () => void }) {
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white/60 text-xs hover:bg-white/20 transition-colors"
         >
           <RefreshCw size={12} />
-          Reessayer
+          Réessayer
         </button>
       )}
     </div>

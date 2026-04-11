@@ -29,7 +29,7 @@ export default function NewsDetailError({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={reset} className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors">
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           <Link href="/news" className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white transition-colors">
             <Home size={16} />

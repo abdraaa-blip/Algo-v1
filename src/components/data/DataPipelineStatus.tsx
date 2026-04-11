@@ -350,7 +350,7 @@ export function FallbackMessage({
               className="mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-medium hover:bg-amber-500/30 transition-colors disabled:opacity-50"
             >
               <RefreshCw size={12} className={isRetrying ? 'animate-spin' : ''} />
-              {isRetrying ? 'Nouvelle tentative...' : 'Reessayer'}
+              {isRetrying ? 'Nouvelle tentative…' : 'Réessayer'}
             </button>
           )}
         </div>

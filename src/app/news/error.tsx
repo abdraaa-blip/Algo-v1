@@ -37,7 +37,7 @@ export default function NewsError({
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500/15 border border-amber-500/25 text-amber-300 text-sm font-semibold hover:bg-amber-500/25 transition-all duration-150"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           
           <Link

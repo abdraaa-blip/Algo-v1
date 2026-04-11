@@ -34,7 +34,7 @@ export default function TrendsError({
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-violet-500/15 border border-violet-500/25 text-violet-300 text-sm font-semibold hover:bg-violet-500/25 transition-all duration-150"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           
           <Link

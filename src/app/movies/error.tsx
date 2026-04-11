@@ -46,7 +46,7 @@ export default function MoviesError({
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-violet-500 text-white font-bold text-sm hover:bg-violet-400 transition-colors"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           <Link
             href="/"

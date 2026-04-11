@@ -49,7 +49,7 @@ export default function StarsPage() {
       <div style={{ textAlign: 'center', padding: 40, color: 'rgba(240,240,248,0.38)' }}>
         {error}
         <button onClick={fetchData} style={{ display: 'block', margin: '20px auto', padding: '10px 20px', background: '#7B61FF', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-          Reessayer
+          Réessayer
         </button>
       </div>
     )
@@ -67,7 +67,7 @@ export default function StarsPage() {
     <div>
       <header style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', margin: 0 }}>Stars</h1>
-        <p style={{ fontSize: 14, color: 'rgba(240,240,248,0.48)', marginTop: 8 }}>Celebrites tendance</p>
+        <p style={{ fontSize: 14, color: 'rgba(240,240,248,0.48)', marginTop: 8 }}>Célébrités tendance</p>
       </header>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>

@@ -105,7 +105,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-violet-500/15 border border-violet-500/25 text-violet-400 text-sm font-semibold hover:bg-violet-500/25 transition-colors"
               >
                 <RefreshCw size={14} />
-                Reessayer
+                Réessayer
               </button>
               <Link
                 href="/"

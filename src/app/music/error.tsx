@@ -34,7 +34,7 @@ export default function MusicError({
             className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-300 text-sm font-semibold hover:bg-emerald-500/25 transition-all duration-150"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           
           <Link

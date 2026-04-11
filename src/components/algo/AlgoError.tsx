@@ -26,7 +26,7 @@ export function AlgoError({ onRetry }: AlgoErrorProps) {
             color: '#a78bfa'
           }}
         >
-          Reessayer
+          Réessayer
         </button>
       )}
     </div>

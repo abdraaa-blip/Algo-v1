@@ -371,7 +371,7 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
               onClick={() => fetchStars()}
               className="px-4 py-2 bg-violet-500/20 border border-violet-500/30 rounded-lg text-violet-400 text-sm font-medium hover:bg-violet-500/30 transition-colors"
             >
-              Reessayer
+              Réessayer
             </button>
           </div>
         ) : stars.length === 0 ? (

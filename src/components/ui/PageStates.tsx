@@ -54,7 +54,7 @@ export function ErrorState({
           className="gap-2"
         >
           <RefreshCw className="w-4 h-4" />
-          Reessayer
+          Réessayer
         </Button>
       )}
     </div>
@@ -114,7 +114,7 @@ export function OfflineState({ onRetry, className = '' }: OfflineStateProps) {
           className="gap-2"
         >
           <RefreshCw className="w-4 h-4" />
-          Reessayer
+          Réessayer
         </Button>
       )}
     </div>

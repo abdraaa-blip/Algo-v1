@@ -39,6 +39,9 @@ export const ALGO_UI_LOADING = {
   nowNews: 'Lecture des actualités…',
 } as const
 
+/** CTA erreurs / états vides (orthographe unique : « Réessayer » avec deux « e »). */
+export const ALGO_UI_RETRY = { label: 'Réessayer' } as const
+
 export const ALGO_UI_ERROR = {
   title: 'Signal perdu',
   message: 'Impossible de charger pour l’instant. Réessaie dans un moment.',

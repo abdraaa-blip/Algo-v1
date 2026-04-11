@@ -35,7 +35,7 @@ export default function TrendingError({
             className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors"
           >
             <RefreshCw size={16} />
-            Reessayer
+            Réessayer
           </button>
           <Link
             href="/"

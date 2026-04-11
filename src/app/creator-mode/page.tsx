@@ -284,7 +284,7 @@ export default function CreatorModePage() {
               onClick={handleRefresh}
               className="px-4 py-2 rounded-xl text-sm font-medium bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 transition-all"
             >
-              Reessayer
+              Réessayer
             </button>
           </div>
         ) : (
