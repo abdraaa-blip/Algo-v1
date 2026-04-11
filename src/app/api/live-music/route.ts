@@ -40,7 +40,8 @@ const chartsMeta = {
   refreshIntervalMs: CHARTS_CACHE_MS,
   refreshIntervalLabel: '15 min',
   provider: 'Last.fm',
-  note: 'Sans LASTFM_API_KEY : données démo locales (voir offline-media-demos).',
+  note:
+    'Sans LASTFM_API_KEY : données démo locales (voir offline-media-demos). Charts Spotify optionnels : GET /api/spotify (SPOTIFY_CLIENT_ID + SPOTIFY_CLIENT_SECRET).',
 } as const
 
 export async function GET(request: NextRequest) {

@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 
 /**
- * Spotify Charts API - Fetches trending tracks and artists
- * Uses Spotify Web API for charts data
+ * Spotify Web API — charts / nouveautés (route optionnelle).
+ * La page **`/music`** consomme **`/api/live-music`** (Last.fm), pas cette route.
  */
 
 interface SpotifyTrack {
@@ -117,6 +117,21 @@ async function fetchNewReleases(token: string, country: string): Promise<Spotify
 }
 
 // Fallback trending tracks
+function mapFallbackToClientPayload(limit: number) {
+  const n = Math.min(limit, FALLBACK_TRACKS.length)
+  return FALLBACK_TRACKS.slice(0, n).map((t, i) => ({
+    id: `spotify_${t.id}`,
+    rank: i + 1,
+    title: t.name,
+    artist: t.artist,
+    popularity: t.popularity,
+    viralScore: t.viralScore,
+    platform: 'spotify' as const,
+    type: 'track' as const,
+    thumbnail: `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=1DB954&color=fff&size=300`,
+  }))
+}
+
 const FALLBACK_TRACKS = [
   { id: '1', name: 'Die With A Smile', artist: 'Lady Gaga, Bruno Mars', popularity: 98, viralScore: 95 },
   { id: '2', name: 'APT.', artist: 'ROSE & Bruno Mars', popularity: 96, viralScore: 92 },
@@ -134,7 +149,7 @@ export async function GET(req: NextRequest) {
   
   if (!rateLimit.success) {
     return NextResponse.json(
-      { error: 'Rate limit exceeded' },
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
       { status: 429, headers: createRateLimitHeaders(rateLimit) }
     )
   }
@@ -148,22 +163,17 @@ export async function GET(req: NextRequest) {
 
   // Use fallback if no token
   if (!token) {
+    const data = mapFallbackToClientPayload(limit)
     return NextResponse.json({
       success: true,
-      data: FALLBACK_TRACKS.slice(0, limit).map((t, i) => ({
-        id: `spotify_${t.id}`,
-        rank: i + 1,
-        title: t.name,
-        artist: t.artist,
-        popularity: t.popularity,
-        viralScore: t.viralScore,
-        platform: 'spotify',
-        type: 'track',
-        thumbnail: `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=1DB954&color=fff&size=300`
-      })),
+      data,
       fetchedAt: new Date().toISOString(),
       source: 'fallback',
-      count: Math.min(limit, FALLBACK_TRACKS.length)
+      count: data.length,
+      meta: {
+        canonicalMusicPage: '/music',
+        dataSource: 'last.fm sur /music ; cette route = Spotify Web API si credentials.',
+      },
     }, { headers: createRateLimitHeaders(rateLimit) })
   }
 
@@ -203,15 +213,24 @@ export async function GET(req: NextRequest) {
       source: 'live',
       count: data.length,
       country: country.toUpperCase(),
-      chartType: type
+      chartType: type,
+      meta: { chartType: type, country: country.toUpperCase() },
     }, { headers: createRateLimitHeaders(rateLimit) })
   } catch (error) {
     console.error('[ALGO Spotify] API error:', error)
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to fetch Spotify data',
-      data: FALLBACK_TRACKS.slice(0, limit),
-      source: 'fallback'
-    }, { status: 500 })
+    const data = mapFallbackToClientPayload(limit)
+    // HTTP 200 : le cron `/api/cron/ingest` n’accepte que `response.ok` ; on expose quand même `success: false`.
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to fetch Spotify data',
+        data,
+        source: 'fallback',
+        count: data.length,
+        fetchedAt: new Date().toISOString(),
+        meta: { degraded: true, sameShapeAsSuccess: true },
+      },
+      { status: 200, headers: createRateLimitHeaders(rateLimit) }
+    )
   }
 }
