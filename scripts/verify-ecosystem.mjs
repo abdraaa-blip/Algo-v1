@@ -80,8 +80,10 @@ console.log(
 )
 
 const migs = [
+  path.join(root, 'supabase', 'migrations', '20260409100000_profiles_auth.sql'),
   path.join(root, 'supabase', 'migrations', '20260409120000_algo_ecosystem_snapshots.sql'),
   path.join(root, 'supabase', 'migrations', '20260409130000_intelligence_radar_point.sql'),
+  path.join(root, 'supabase', 'migrations', '20260411120000_profiles_billing.sql'),
 ]
 console.log('')
 for (const mig of migs) {
