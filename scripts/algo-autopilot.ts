@@ -9,6 +9,12 @@
  * 4. Generates comprehensive reports
  * 
  * Run: npx tsx scripts/algo-autopilot.ts
+ *
+ * CI (GITHUB_ACTIONS / CI=true) : mode **lecture + correctifs minimaux** par défaut
+ * (pas de `eslint --fix` massif, pas de Prettier sur tout `src/`, pas de suppression
+ * d’imports « inutilisés » ni de mutation des `console.*`) — ces étapes cassent
+ * souvent `tsc` à cause de faux positifs. Forcer l’ancien comportement :
+ * `AUTOPILOT_AGGRESSIVE=1`.
  */
 
 import { execSync } from 'child_process'
@@ -26,6 +32,22 @@ const CONFIG = {
   LOCALES_DIR: 'locales',
   REPORT_DIR: 'reports',
   LOG_FILE: 'reports/autopilot-log.json',
+}
+
+/** Sur CI (GitHub Actions, etc.) : évite les auto-fix destructeurs qui cassent `tsc`. */
+function isCiSafeMode(): boolean {
+  const ci = process.env.CI
+  const onCiRunner =
+    process.env.GITHUB_ACTIONS === 'true' ||
+    ci === 'true' ||
+    ci === '1' ||
+    String(ci).toLowerCase() === 'true'
+  const aggressive = process.env.AUTOPILOT_AGGRESSIVE
+  return (
+    onCiRunner &&
+    aggressive !== '1' &&
+    aggressive !== 'true'
+  )
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -505,19 +527,25 @@ class IssueFixer {
     log('Starting automatic correction...')
     this.fixed = []
 
-    // Run ESLint auto-fix first
-    await this.runESLintFix()
+    const ciSafe = isCiSafeMode()
+    if (ciSafe) {
+      log(
+        'CI safe mode: skipping eslint --fix, Prettier, unused-import and console mutations (set AUTOPILOT_AGGRESSIVE=1 to force).',
+        'warning',
+      )
+    } else {
+      await this.runESLintFix()
+    }
 
-    // Fix individual issues
     for (const issue of issues) {
       if (!issue.fixable) continue
 
       switch (issue.type) {
         case 'unused-import':
-          await this.fixUnusedImport(issue)
+          if (!ciSafe) await this.fixUnusedImport(issue)
           break
         case 'console-log':
-          await this.fixConsoleLog(issue)
+          if (!ciSafe) await this.fixConsoleLog(issue)
           break
         case 'missing-alt':
           await this.fixMissingAlt(issue)
@@ -528,8 +556,9 @@ class IssueFixer {
       }
     }
 
-    // Run Prettier to format all files
-    await this.runPrettier()
+    if (!ciSafe) {
+      await this.runPrettier()
+    }
 
     log(`Correction complete: ${this.fixed.length} issues fixed`, 'success')
     return this.fixed
@@ -683,9 +712,9 @@ class Verifier {
       log('ESLint has warnings', 'warning')
     }
 
-    // Build check
+    // Build check (ne pas ignorer les erreurs : sinon le build est toujours « OK »)
     try {
-      runCommand('npx next build', true)
+      runCommand('npx next build')
       log('Build check passed', 'success')
     } catch {
       errors.push('Build failed')
@@ -919,19 +948,35 @@ async function main() {
     // Quick mode - just detect and fix, no verification
     if (isQuick) {
       reporter.updateLog(report, Date.now() - startTime)
-      
+
+      if (isCiSafeMode()) {
+        const tsErrors = issues.filter((i) => i.type === 'typescript-error')
+        if (tsErrors.length > 0) {
+          log(`Quick check (CI): ${tsErrors.length} TypeScript error(s) from scan`, 'error')
+          process.exit(1)
+        }
+        log(
+          `Quick check (CI): scan found ${report.stats.totalRemaining} non-blocking findings (translations, style, etc.) — voir reports/.`,
+          'warning',
+        )
+        process.exit(0)
+      }
+
       if (report.stats.totalRemaining > 0) {
         log(`${report.stats.totalRemaining} issues require manual attention`, 'warning')
         process.exit(1)
       }
-      
+
       log('Quick check passed!', 'success')
       process.exit(0)
     }
 
     // Step 3: Verify
     const verification = await verifier.verifyAll()
-    allPassed = verification.passed && report.stats.totalRemaining === 0
+    const ciSafe = isCiSafeMode()
+    // En CI on ne peut pas « tout corriger » (centaines de traductions / couleurs) : succès = vérif compil.
+    allPassed =
+      verification.passed && (ciSafe || report.stats.totalRemaining === 0)
 
     if (!allPassed && cycle < CONFIG.MAX_CYCLES) {
       log(`Cycle ${cycle} did not pass all checks. Running another cycle...`, 'warning')
@@ -940,8 +985,8 @@ async function main() {
     reporter.updateLog(report, Date.now() - startTime)
   }
 
-  // Step 5: Setup prevention (first run only)
-  if (cycle === 1) {
+  // Step 5: Setup prevention (local uniquement — sur CI cela écraserait le workflow du dépôt)
+  if (cycle === 1 && !isCiSafeMode()) {
     await prevention.setupHooks()
   }
 
