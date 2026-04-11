@@ -12,6 +12,7 @@
  * - `docs/README.md` (index des docs — ne dispense pas des checklists ci-dessous)
  * - `docs/ALGO_GTM_NOTES.md` (positionnement public — ne dispense pas des checklists ci-dessous)
  * - `docs/ALGO_OPERATIONS_PLAYBOOK.md` (déploiement / smoke / point d’entrée opérations)
+ * - `docs/ALGO_CICD_PIPELINE.md` (phases analyse → déploiement · GitHub + Husky + Vercel)
  * - `config/algo-qa-gate.ts` (checklist continue + `verify:release`)
  * - `config/algo-system-rules.ts` (design system)
  * - Workflows : `.github/workflows/ci.yml`, `.github/workflows/release-gate.yml` (`verify:release` / `verify:full` incluent `typecheck` + `lint:strict` ; `verify:release` inclut aussi `verify:api-guards` et `npm audit`)
@@ -21,6 +22,8 @@
 
 export const ALGO_DEPLOY_SOURCES = {
   releaseReadiness: 'docs/ALGO_RELEASE_READINESS.md',
+  /** Vue d’ensemble CI/CD (workflows, hooks, Vercel). */
+  cicdPipeline: 'docs/ALGO_CICD_PIPELINE.md',
   qaGate: 'config/algo-qa-gate.ts',
   designRules: 'config/algo-system-rules.ts',
   ciWorkflow: '.github/workflows/ci.yml',

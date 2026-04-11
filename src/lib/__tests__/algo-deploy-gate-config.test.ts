@@ -15,6 +15,7 @@ describe("config/algo-deploy-gate", () => {
     expect(ALGO_DEPLOY_SOURCES.qaGate).toBe("config/algo-qa-gate.ts");
     expect(ALGO_DEPLOY_SOURCES.designRules).toBe("config/algo-system-rules.ts");
     expect(ALGO_DEPLOY_SOURCES.ciWorkflow).toContain("ci.yml");
+    expect(ALGO_DEPLOY_SOURCES.cicdPipeline).toBe("docs/ALGO_CICD_PIPELINE.md");
   });
 
   it("commande minimale alignée verify:release", () => {

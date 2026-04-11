@@ -72,6 +72,7 @@ CLI manuel : **`npm run deploy:prod`** (`vercel deploy --prod --yes`) si le proj
 
 - Classification commit : **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`**
 - Constantes exportées : **`config/algo-qa-gate.ts`** (`ALGO_QA_SOURCES` dont `cicdPipeline` et `gitCommitProtocol`, `ALGO_QA_COMMIT_CLASSIFICATION`, `ALGO_QA_RELEASE_COMMANDS`)
+- Garde déploiement : **`config/algo-deploy-gate.ts`** (`ALGO_DEPLOY_SOURCES.cicdPipeline`, checklists blocage)
 - Playbook ops : **`docs/ALGO_OPERATIONS_PLAYBOOK.md`**
 - Index docs : **`docs/README.md`**
 - Agents : **`AGENTS.md`**

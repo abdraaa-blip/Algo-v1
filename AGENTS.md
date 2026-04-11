@@ -57,7 +57,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 ## Pré-déploiement (Vercel / CI/CD)
 
 - **Maturité release (qualitative)** : **`docs/ALGO_RELEASE_READINESS.md`** — six axes + statuts OK / à risque / inconnu ; **pas** de score global 0–100 ; la **CI** et **`config/algo-deploy-gate.ts`** font foi. **TypeScript** : `next.config.ts` a **`typescript.ignoreBuildErrors: false`** et **`npm run typecheck`** fait partie de **`verify:release`** — build et gate reflètent l’état TS réel ; voir dimension 1 du même doc.
-- **Garde finale** : `config/algo-deploy-gate.ts` (`ALGO_DEPLOY_CHECKLIST`, blocage, smoke, sécurité). Règle Cursor workflows : `.cursor/rules/algo-deploy-gate.mdc`.
+- **Garde finale** : `config/algo-deploy-gate.ts` (`ALGO_DEPLOY_CHECKLIST`, blocage, smoke, sécurité ; `ALGO_DEPLOY_SOURCES.cicdPipeline` → **`docs/ALGO_CICD_PIPELINE.md`**). Règle Cursor workflows : `.cursor/rules/algo-deploy-gate.mdc`.
 - **CI GitHub** (push/PR `main`/`master`) : **`npm run verify:release`** (inclut `verify:api-guards`, `npm audit`, typecheck, lint, tests, build) · env publique Next en job `env`.
 - **Release Gate PR** (`main`/`develop`) : `.github/workflows/release-gate.yml` → **`npm run verify:full`** (hérite du même gate + perf budget + rapport).
 - **Pipeline CI/CD** (phases analyse → déploiement Vercel, règles, workflows) : **`docs/ALGO_CICD_PIPELINE.md`** (`ALGO_QA_SOURCES.cicdPipeline` dans `config/algo-qa-gate.ts`).

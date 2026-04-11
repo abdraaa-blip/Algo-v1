@@ -8,8 +8,8 @@ alwaysApply: false
 
 Avant de **valider** un merge vers production ou de modifier les **workflows CI** :
 
-1. Lire **`config/algo-deploy-gate.ts`** (`ALGO_DEPLOY_CHECKLIST`, `ALGO_DEPLOY_BLOCK_POLICY`, `ALGO_DEPLOY_COMMANDS`).
-2. Croiser **`config/algo-qa-gate.ts`**, **`config/algo-system-rules.ts`**, et la rubrique qualitative **`docs/ALGO_RELEASE_READINESS.md`** (pas de score global LLM — CI + ce fichier font foi).
+1. Lire **`config/algo-deploy-gate.ts`** (`ALGO_DEPLOY_CHECKLIST`, `ALGO_DEPLOY_BLOCK_POLICY`, `ALGO_DEPLOY_COMMANDS`, `ALGO_DEPLOY_SOURCES`).
+2. Croiser **`docs/ALGO_CICD_PIPELINE.md`** (ordre global GitHub · Husky · Vercel), **`config/algo-qa-gate.ts`**, **`config/algo-system-rules.ts`**, et la rubrique qualitative **`docs/ALGO_RELEASE_READINESS.md`** (pas de score global LLM — CI + ce fichier font foi).
 3. La CI principale doit passer **`npm run verify:release`** (inclut **`verify:api-guards`**, **`npm audit`**, **`npm run typecheck`**, **`npm run lint:strict`**, tests, build). **`next.config.ts`** : `typescript.ignoreBuildErrors: false` — le build Next échoue sur les erreurs TS (`docs/ALGO_RELEASE_READINESS.md`, dimension 1).
 
 Si une étape échoue : **bloquer** le déploiement, expliquer, proposer un **patch minimal** — jamais promouvoir un build instable ou incohérent.
