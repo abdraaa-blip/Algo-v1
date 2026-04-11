@@ -247,7 +247,7 @@ export default function RisingStarsClientShell({
   const remainingExploding = explodingStars.slice(1);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-0 w-full">
       {/* Background avec nouvelles animations */}
       <LiveCurve
         growthRate={topStar?.viral_score || 50}

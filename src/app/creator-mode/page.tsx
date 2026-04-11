@@ -272,7 +272,7 @@ export default function CreatorModePage() {
   }, [mutate]);
 
   return (
-    <main className="min-h-screen pb-20">
+    <main className="min-h-0 w-full">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={80} color="green" opacity={0.08} />
         <div className="relative max-w-7xl mx-auto px-4 pt-8 pb-6">

@@ -34,7 +34,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4">
       <div className="text-center space-y-5 max-w-sm">
         <div className="size-14 rounded-2xl bg-rose-500/12 border border-rose-500/18 flex items-center justify-center mx-auto">
           <AlertTriangle

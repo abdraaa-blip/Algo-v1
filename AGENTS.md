@@ -4,6 +4,11 @@
 This version has breaking changes · APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+## Chrome app · viewport (Navbar / BottomNav)
+
+- Tokens dans `src/app/globals.css` : **`--algo-nav-stack`** (offset sous le header fixe, dont bandeau « Zone » mobile), **`--algo-mobile-bottom-safe`** (place pour la barre basse + safe-area), classe **`algo-min-h-viewport-content`** pour loaders / blocs centrés verticalement dans `<main>`.
+- Sous-navigation `sticky` : **`top-[var(--algo-nav-stack)]`**, pas `top-14` (hauteur réelle du header > `3.5rem` sur mobile).
+
 ## QA intelligent (avant validation / build / fin de session)
 
 - **Index navigation `docs/`** : **`docs/README.md`** (carte vers doctrine, UX, ops, intégrations — pas un second wiki ; section **Ordre de lecture des vérités** pour trancher sans dupliquer une « core rules » isolée).

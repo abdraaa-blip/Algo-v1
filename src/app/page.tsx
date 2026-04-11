@@ -341,7 +341,7 @@ export default function HomePage() {
   }, [dailyHook, news, content]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-0 w-full">
       {/* Signal Sweep - once per session violet line scan effect */}
       <SignalSweep />
 
@@ -349,7 +349,7 @@ export default function HomePage() {
       <BreakingNewsBanner />
 
       {/* Trending Ticker - scrolling live trends */}
-      <TrendingTicker className="sticky top-0 z-40" />
+      <TrendingTicker className="sticky z-[90] top-[var(--algo-nav-stack)]" />
 
       {/* Hero Section - responsive padding */}
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">

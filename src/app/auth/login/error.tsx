@@ -17,7 +17,7 @@ export default function AuthLoginError({
   }, [error]);
 
   return (
-    <div className="min-h-dvh flex items-center justify-center p-4 bg-[var(--color-bg-primary)]">
+    <div className="algo-min-h-viewport-content flex items-center justify-center p-4 bg-[var(--color-bg-primary)]">
       <div className="max-w-md w-full text-center space-y-6">
         <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
           <AlertTriangle className="w-8 h-8 text-red-400" />

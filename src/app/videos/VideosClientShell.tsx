@@ -339,7 +339,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       ) : null}
 
       {/* Region Filter */}
-      <div className="sticky top-14 z-[100] -mx-4 px-4 py-2 border-b border-[var(--color-border)] algo-sticky-subnav">
+      <div className="sticky z-[100] -mx-4 px-4 py-2 border-b border-[var(--color-border)] algo-sticky-subnav top-[var(--algo-nav-stack)]">
         <FilterBar
           filters={regionFilters}
           active={activeRegion}

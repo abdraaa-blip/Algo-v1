@@ -664,7 +664,7 @@ export default function TrendsPage() {
   const followedTrends = trends.filter((t) => following.has(t.id));
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-0 w-full">
       {/* Header */}
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={60} color="violet" opacity={0.06} />
@@ -732,7 +732,7 @@ export default function TrendsPage() {
       )}
 
       {/* Tabs */}
-      <section className="sticky top-14 z-40 algo-sticky-subnav">
+      <section className="sticky z-40 algo-sticky-subnav top-[var(--algo-nav-stack)]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-1 overflow-x-auto py-3 scrollbar-hide">
             {TABS.map((tab) => (

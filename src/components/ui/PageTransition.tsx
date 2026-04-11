@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface PageTransitionProps {
@@ -17,16 +17,25 @@ export function PageTransition({ children, className }: PageTransitionProps) {
   const pathname = usePathname();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayChildren, setDisplayChildren] = useState(children);
+  const prevPathRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Pas de fade initial ni à chaque re-render (référence children instable)
+    if (prevPathRef.current === null) {
+      prevPathRef.current = pathname;
+      setDisplayChildren(children);
+      return;
+    }
+    if (prevPathRef.current === pathname) {
+      setDisplayChildren(children);
+      return;
+    }
+    prevPathRef.current = pathname;
     setIsTransitioning(true);
-
-    // Small delay for exit animation
     const timer = setTimeout(() => {
       setDisplayChildren(children);
       setIsTransitioning(false);
     }, 150);
-
     return () => clearTimeout(timer);
   }, [pathname, children]);
 

@@ -4,7 +4,7 @@ import { Radar } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4">
       <div className="text-center space-y-6 max-w-sm">
         {/* Icon */}
         <div className="size-16 rounded-3xl bg-violet-500/12 border border-violet-500/20 flex items-center justify-center mx-auto">

@@ -367,7 +367,7 @@ export default function IntelligenceLogsPage() {
   };
 
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)] p-4 sm:p-6">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)] p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>

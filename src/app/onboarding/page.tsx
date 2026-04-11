@@ -90,7 +90,7 @@ export default function OnboardingPage() {
     (step === 4 && profile !== null);
 
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4 py-12">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-8">
         <div className="flex gap-1.5">
           {Array.from({ length: TOTAL }).map((_, i) => (

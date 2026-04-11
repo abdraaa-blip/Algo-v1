@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function SignUpSuccessPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 text-[var(--color-text-primary)]">
+    <div className="algo-min-h-viewport-content flex items-center justify-center p-6 text-[var(--color-text-primary)]">
       <div className="w-full max-w-md text-center">
         {/* ALGO Logo */}
         <div className="mb-8">

@@ -88,6 +88,33 @@
   --grain-opacity: 0.26;
 }
 
+/* Offset header fixe (Navbar : h-14 + bandeau Zone en <640px) + barre basse mobile */
+:root {
+  --algo-nav-chrome-h: calc(3.5rem + 2.875rem);
+  --algo-nav-stack: calc(env(safe-area-inset-top, 0px) + var(--algo-nav-chrome-h));
+  --algo-mobile-bottom-safe: calc(3.5rem + env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --algo-nav-chrome-h: 3.5rem;
+  }
+}
+
+/* Loaders / pages centrées dans <main> : soustrait header + barre basse (< md) */
+.algo-min-h-viewport-content {
+  box-sizing: border-box;
+  min-height: calc(
+    100dvh - var(--algo-nav-stack) - var(--algo-mobile-bottom-safe)
+  );
+}
+
+@media (min-width: 768px) {
+  .algo-min-h-viewport-content {
+    min-height: calc(100dvh - var(--algo-nav-stack));
+  }
+}
+
 /* ─── Base ───────────────────────────────────────────────────────────────── */
 
 *, *::before, *::after {

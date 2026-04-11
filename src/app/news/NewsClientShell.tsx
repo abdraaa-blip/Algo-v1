@@ -135,7 +135,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
 
   if (loading && news.length === 0) {
     return (
-      <div className="min-h-screen text-[var(--color-text-primary)] p-4">
+      <div className="min-h-0 w-full text-[var(--color-text-primary)] p-4">
         <h1 className="text-2xl font-bold mb-6">{labels.title}</h1>
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -151,7 +151,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
 
   if (error && news.length === 0) {
     return (
-      <div className="min-h-screen text-[var(--color-text-primary)] p-4 flex flex-col items-center justify-center">
+      <div className="min-h-0 w-full text-[var(--color-text-primary)] p-4 flex flex-col items-center justify-center">
         <p className="text-red-400 mb-4">{error}</p>
         <button
           onClick={fetchNews}
@@ -164,7 +164,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   }
 
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)]">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)]">
       <div className="max-w-4xl mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold flex items-center gap-2">

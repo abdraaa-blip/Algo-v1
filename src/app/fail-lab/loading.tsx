@@ -3,7 +3,7 @@ import { ALGO_UI_LOADING } from "@/lib/copy/ui-strings";
 
 export default function Loading() {
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center">
+    <div className="algo-min-h-viewport-content flex items-center justify-center">
       <AlgoLoader message={ALGO_UI_LOADING.failLab} />
     </div>
   );

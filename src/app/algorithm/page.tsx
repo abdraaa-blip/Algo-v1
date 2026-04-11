@@ -38,7 +38,7 @@ const signalIcons = {
 
 export default function AlgorithmPage() {
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)]">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)]">
       {/* Background */}
       <LiveCurve growthRate={10} className="fixed inset-0 opacity-40" />
 

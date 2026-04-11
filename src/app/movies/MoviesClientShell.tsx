@@ -115,8 +115,10 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
   // Featured movie (highest viral score)
   const featuredMovie = movies[0];
 
+  const showInitialSkeleton = isLoading && movies.length === 0;
+
   return (
-    <div className="min-h-screen px-4 py-6 space-y-8 max-w-7xl mx-auto">
+    <div className="min-h-0 w-full px-4 py-6 space-y-8 max-w-7xl mx-auto">
       {/* Back Button */}
       <BackButton fallbackHref="/" />
 
@@ -196,8 +198,14 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
         </div>
       </div>
 
+      {showInitialSkeleton ? (
+        <div className="space-y-4 animate-pulse" aria-busy aria-label={ALGO_UI_LOADING.movies}>
+          <div className="h-56 sm:h-72 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)]" />
+        </div>
+      ) : null}
+
       {/* Featured Movie */}
-      {featuredMovie && (
+      {!showInitialSkeleton && featuredMovie ? (
         <section className="relative rounded-2xl overflow-hidden border border-[var(--color-border)]">
           {/* Backdrop */}
           <div className="absolute inset-0">
@@ -395,13 +403,13 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
             </div>
           </div>
         </section>
-      )}
+      ) : null}
 
       {/* Grid */}
       <section>
         <SectionHeader title="Trending maintenant" className="mb-4" />
 
-        {isLoading && (
+        {showInitialSkeleton ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {Array.from({ length: 10 }).map((_, i) => (
               <div key={i} className="animate-pulse">
@@ -411,9 +419,9 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
               </div>
             ))}
           </div>
-        )}
+        ) : null}
 
-        {!isLoading && movies.length > 0 && (
+        {!showInitialSkeleton && movies.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {movies.slice(1).map((movie, index) => (
               <MovieCard
@@ -424,7 +432,7 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
               />
             ))}
           </div>
-        )}
+        ) : null}
       </section>
 
       {/* Detail Modal */}

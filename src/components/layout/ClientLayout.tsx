@@ -47,17 +47,17 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     <ScopeProvider>
       {!mounted ? (
         <>
-          {/* Minimal header placeholder to prevent layout shift */}
+          {/* Hauteur alignée sur Navbar (2 rangées < sm) pour éviter saut + trou noir */}
           <header className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)] bg-[var(--color-bg-primary)]/95 border-b border-[var(--color-border)]">
-            <div className="h-14" />
+            <div className="h-[var(--algo-nav-chrome-h)] min-w-0" aria-hidden />
           </header>
           <main
             id="main-content"
-            className="relative z-10 w-full min-w-0 max-w-full overflow-x-clip pt-[calc(72px+env(safe-area-inset-top,0px))] sm:pt-[calc(3.5rem+env(safe-area-inset-top,0px))] pb-20 md:pb-0 min-h-dvh flex flex-col"
+            className="relative z-10 w-full min-w-0 max-w-full overflow-x-clip pt-[var(--algo-nav-stack)] pb-[var(--algo-mobile-bottom-safe)] md:pb-0 min-h-dvh flex flex-col"
             role="main"
             aria-label="Contenu principal"
           >
-            <div className="flex-1 w-full min-w-0 max-w-full overflow-x-clip">
+            <div className="flex-1 min-h-0 w-full min-w-0 max-w-full overflow-x-clip">
               {children}
             </div>
             <SiteFooter />
@@ -78,11 +78,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <Navbar />
           <main
             id="main-content"
-            className="relative z-10 w-full min-w-0 max-w-full overflow-x-clip pt-[calc(72px+env(safe-area-inset-top,0px))] sm:pt-[calc(3.5rem+env(safe-area-inset-top,0px))] pb-20 md:pb-0 min-h-dvh flex flex-col"
+            className="relative z-10 w-full min-w-0 max-w-full overflow-x-clip pt-[var(--algo-nav-stack)] pb-[var(--algo-mobile-bottom-safe)] md:pb-0 min-h-dvh flex flex-col"
             role="main"
             aria-label="Contenu principal"
           >
-            <div className="flex-1 w-full min-w-0 max-w-full overflow-x-clip">
+            <div className="flex-1 min-h-0 w-full min-w-0 max-w-full overflow-x-clip">
               <PageTransition>{children}</PageTransition>
             </div>
             <SiteFooter />

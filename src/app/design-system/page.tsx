@@ -60,7 +60,7 @@ export default function DesignSystemPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-14 min-h-dvh text-[var(--color-text-primary)]">
+    <div className="max-w-4xl mx-auto px-4 py-10 space-y-14 min-h-0 w-full text-[var(--color-text-primary)]">
       <div>
         <h1 className="text-[28px] font-black tracking-tight text-[var(--color-text-primary)]">
           Design System

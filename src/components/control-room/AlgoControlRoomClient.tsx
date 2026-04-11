@@ -154,8 +154,8 @@ export function AlgoControlRoomClient() {
     : null;
 
   return (
-    <main className="min-h-screen text-[var(--color-text-primary)]">
-      <div className="relative min-h-screen flex flex-col">
+    <main className="min-h-0 w-full text-[var(--color-text-primary)]">
+      <div className="relative min-h-0 w-full flex flex-col">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_28%,rgba(94,207,255,0.07),transparent_52%)] pointer-events-none" />
 
         <div

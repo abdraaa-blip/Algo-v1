@@ -237,7 +237,7 @@ export default function ViralControlCenterPage() {
   }, [load]);
 
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)] p-4 sm:p-6">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)] p-4 sm:p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>

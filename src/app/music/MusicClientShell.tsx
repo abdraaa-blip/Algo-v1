@@ -130,7 +130,7 @@ export function MusicClientShell() {
   }, [fetchData]);
 
   return (
-    <div className="min-h-screen px-4 py-6 space-y-6 max-w-7xl mx-auto">
+    <div className="min-h-0 w-full px-4 py-6 space-y-6 max-w-7xl mx-auto">
       {/* Back Button */}
       <BackButton fallbackHref="/" />
 

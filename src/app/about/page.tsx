@@ -141,7 +141,7 @@ export default function AboutPage() {
   const { scrollYProgress } = useScroll();
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-[var(--color-text-primary)]">
+    <div className="relative min-h-0 w-full overflow-hidden text-[var(--color-text-primary)]">
       <LiveCurve growthRate={15} className="fixed inset-0 opacity-40" />
 
       {/* Progress bar */}
@@ -152,7 +152,7 @@ export default function AboutPage() {
 
       <div className="relative z-10">
         {/* HERO - L'algorithme des algorithmes */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
+        <section className="relative flex flex-col items-center justify-center px-6 py-20 min-h-[calc(100dvh-var(--algo-nav-stack))]">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -105,7 +105,7 @@ export default function StatusPage() {
   }, []);
 
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)] p-6">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)] p-6">
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div>

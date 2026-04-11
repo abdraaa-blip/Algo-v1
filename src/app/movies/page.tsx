@@ -43,7 +43,7 @@ export default function MoviesPage() {
 
 function MoviesSkeleton() {
   return (
-    <div className="min-h-screen p-4 space-y-6">
+    <div className="min-h-0 w-full p-4 space-y-6">
       <div className="h-10 w-64 bg-[var(--color-card)] rounded-lg animate-pulse" />
       <div className="flex gap-2 overflow-x-auto pb-2">
         {Array.from({ length: 5 }).map((_, i) => (

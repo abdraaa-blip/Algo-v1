@@ -196,7 +196,7 @@ export default function ViralAnalyzerPage() {
   }, [inputType, url, description, inferredUrlPlatform, descriptionPlatform]);
 
   return (
-    <main className="min-h-screen pb-20">
+    <main className="min-h-0 w-full">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={100} color="violet" opacity={0.1} />
         <div className="relative max-w-7xl mx-auto px-4 pt-8 pb-6">

@@ -258,7 +258,7 @@ export function ViralAnalyzerShell({
         : description.length > 20;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[var(--color-bg-secondary)] to-[var(--color-bg-primary)]">
+    <div className="min-h-0 w-full bg-gradient-to-b from-[var(--color-bg-secondary)] to-[var(--color-bg-primary)]">
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
         <BackButton fallbackHref="/" />
 

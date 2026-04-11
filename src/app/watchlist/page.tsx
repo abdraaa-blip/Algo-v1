@@ -16,7 +16,7 @@ export default function WatchlistPage() {
   const { trends, unfollow, isLoaded } = useWatchlist();
 
   return (
-    <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
+    <main className="min-h-0 w-full text-[var(--color-text-primary)]">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={80} color="violet" opacity={0.08} />
         <div className="relative max-w-4xl mx-auto px-4 pt-8 pb-6">

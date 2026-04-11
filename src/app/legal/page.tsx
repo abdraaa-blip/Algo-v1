@@ -37,7 +37,7 @@ export default function LegalPage() {
   const mailOk = /^[^\s@[\]]+@[^\s@[\]]+\.[^\s@[\]]+$/.test(contactEmail);
 
   return (
-    <div className="min-h-screen text-[var(--color-text-primary)]">
+    <div className="min-h-0 w-full text-[var(--color-text-primary)]">
       <div className="max-w-2xl mx-auto px-4 py-12 pb-24">
         <p className="text-xs text-white/40 mb-6">
           <Link href="/" className="hover:text-white/70">

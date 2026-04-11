@@ -21,7 +21,7 @@ export default function MusicPage() {
 
 function MusicSkeleton() {
   return (
-    <div className="min-h-screen p-4 space-y-6">
+    <div className="min-h-0 w-full p-4 space-y-6">
       <div className="h-10 w-48 bg-[var(--color-card)] rounded-lg animate-pulse" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 9 }).map((_, i) => (

@@ -487,7 +487,7 @@ export default function AlgoAiPage() {
   };
 
   return (
-    <main className="min-h-screen pb-20">
+    <main className="min-h-0 w-full">
       <section className="max-w-6xl mx-auto px-4 pt-8 pb-4">
         <Link href="/" className="text-xs text-white/45 hover:text-white/70">
           ← Retour

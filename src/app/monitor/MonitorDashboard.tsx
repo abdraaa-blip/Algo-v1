@@ -79,7 +79,7 @@ export function MonitorDashboard() {
 
   if (!metrics) {
     return (
-      <div className="min-h-screen bg-[#030014] text-white flex items-center justify-center">
+      <div className="min-h-0 w-full bg-[#030014] text-white flex items-center justify-center">
         <div className="animate-pulse">Initialisation du moniteur ALGO…</div>
       </div>
     );
@@ -101,7 +101,7 @@ export function MonitorDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030014] text-white p-6">
+    <div className="min-h-0 w-full bg-[#030014] text-white p-6">
       {/* Header */}
       <header className="mb-8">
         <div className="flex items-center justify-between">

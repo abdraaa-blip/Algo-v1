@@ -3,7 +3,7 @@ import { ALGO_UI_ERROR } from "@/lib/copy/ui-strings";
 
 export default function AuthErrorPage() {
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4 py-12">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-8 text-center">
         <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/15 border border-red-500/22 flex items-center justify-center">
           <span className="text-3xl">!</span>

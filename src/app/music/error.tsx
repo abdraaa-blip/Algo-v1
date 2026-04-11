@@ -17,7 +17,7 @@ export default function MusicError({
   }, [error]);
 
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4">
       <div className="text-center space-y-6 max-w-sm">
         <div className="size-16 rounded-2xl bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center mx-auto">
           <Music size={28} strokeWidth={1.5} className="text-emerald-400" />

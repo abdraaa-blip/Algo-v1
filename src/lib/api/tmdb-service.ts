@@ -230,21 +230,37 @@ export async function fetchTrendingMovies(
   }
 
   try {
-    const url = `${TMDB_BASE_URL}/trending/movie/${timeWindow}?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const baseUrl = `${TMDB_BASE_URL}/trending/movie/${timeWindow}?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const fetchPage = async (page: number) => {
+      const response = await fetch(`${baseUrl}&page=${page}`, {
+        signal: AbortSignal.timeout(10000),
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`TMDB API returned ${response.status}`);
+      }
+      return response.json() as Promise<{ results?: TMDBMovie[] }>;
+    };
 
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(10000),
-      headers: { Accept: "application/json" },
-    });
+    const [data1, data2] = await Promise.all([
+      fetchPage(1),
+      fetchPage(2).catch(() => ({ results: [] as TMDBMovie[] })),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`TMDB API returned ${response.status}`);
+    const seen = new Set<number>();
+    const merged: TMDBMovie[] = [];
+    for (const movie of [
+      ...(data1.results ?? []),
+      ...(data2.results ?? []),
+    ]) {
+      if (!movie?.id || seen.has(movie.id)) continue;
+      seen.add(movie.id);
+      merged.push(movie);
     }
 
-    const data = await response.json();
     const now = new Date();
 
-    const movies: RealMovie[] = data.results.map((movie: TMDBMovie) => ({
+    const movies: RealMovie[] = merged.map((movie: TMDBMovie) => ({
       id: `tmdb_movie_${movie.id}`,
       title: movie.title,
       overview: movie.overview || "No description available",
@@ -306,21 +322,34 @@ export async function fetchTrendingTV(
   }
 
   try {
-    const url = `${TMDB_BASE_URL}/trending/tv/${timeWindow}?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const baseUrl = `${TMDB_BASE_URL}/trending/tv/${timeWindow}?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const fetchPage = async (page: number) => {
+      const response = await fetch(`${baseUrl}&page=${page}`, {
+        signal: AbortSignal.timeout(10000),
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`TMDB API returned ${response.status}`);
+      }
+      return response.json() as Promise<{ results?: TMDBTVShow[] }>;
+    };
 
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(10000),
-      headers: { Accept: "application/json" },
-    });
+    const [data1, data2] = await Promise.all([
+      fetchPage(1),
+      fetchPage(2).catch(() => ({ results: [] as TMDBTVShow[] })),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`TMDB API returned ${response.status}`);
+    const seen = new Set<number>();
+    const merged: TMDBTVShow[] = [];
+    for (const show of [...(data1.results ?? []), ...(data2.results ?? [])]) {
+      if (!show?.id || seen.has(show.id)) continue;
+      seen.add(show.id);
+      merged.push(show);
     }
 
-    const data = await response.json();
     const now = new Date();
 
-    const shows: RealTVShow[] = data.results.map((show: TMDBTVShow) => ({
+    const shows: RealTVShow[] = merged.map((show: TMDBTVShow) => ({
       id: `tmdb_tv_${show.id}`,
       title: show.name,
       overview: show.overview || "No description available",
@@ -455,21 +484,37 @@ export async function fetchNowPlaying(
   }
 
   try {
-    const url = `${TMDB_BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const baseUrl = `${TMDB_BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}&language=fr-FR&region=${region}`;
+    const fetchPage = async (page: number) => {
+      const response = await fetch(`${baseUrl}&page=${page}`, {
+        signal: AbortSignal.timeout(10000),
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`TMDB API returned ${response.status}`);
+      }
+      return response.json() as Promise<{ results?: TMDBMovie[] }>;
+    };
 
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(10000),
-      headers: { Accept: "application/json" },
-    });
+    const [data1, data2] = await Promise.all([
+      fetchPage(1),
+      fetchPage(2).catch(() => ({ results: [] as TMDBMovie[] })),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`TMDB API returned ${response.status}`);
+    const seen = new Set<number>();
+    const merged: TMDBMovie[] = [];
+    for (const movie of [
+      ...(data1.results ?? []),
+      ...(data2.results ?? []),
+    ]) {
+      if (!movie?.id || seen.has(movie.id)) continue;
+      seen.add(movie.id);
+      merged.push(movie);
     }
 
-    const data = await response.json();
     const now = new Date();
 
-    const movies: RealMovie[] = data.results.map((movie: TMDBMovie) => ({
+    const movies: RealMovie[] = merged.map((movie: TMDBMovie) => ({
       id: `tmdb_movie_${movie.id}`,
       title: movie.title,
       overview: movie.overview || "No description available",

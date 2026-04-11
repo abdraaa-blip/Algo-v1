@@ -87,7 +87,7 @@ export function LoginClientShell({ labels }: { labels: LoginLabels }) {
   }
 
   return (
-    <div className="min-h-[calc(100dvh-56px)] flex items-center justify-center px-4 py-12">
+    <div className="algo-min-h-viewport-content flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-8">
         {/* Header */}
         <div className="text-center space-y-1">

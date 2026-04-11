@@ -44,7 +44,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 text-[var(--color-text-primary)]">
+    <div className="algo-min-h-viewport-content flex items-center justify-center p-6 text-[var(--color-text-primary)]">
       <div className="w-full max-w-md">
         {/* ALGO Logo */}
         <div className="text-center mb-8">
