@@ -42,6 +42,7 @@ function getContentHref(content: { id: string; platform?: string }): string {
   // Already prefixed - use as-is
   if (
     id.startsWith("youtube-") ||
+    id.startsWith("yt-") ||
     id.startsWith("tmdb-") ||
     id.startsWith("lastfm-") ||
     id.startsWith("news-")

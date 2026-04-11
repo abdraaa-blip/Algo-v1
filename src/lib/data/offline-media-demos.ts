@@ -73,7 +73,7 @@ export function buildDemoHomeYoutubeItems(regionCode: string) {
       500,
     );
     return {
-      id: item.id,
+      id: `youtube-${item.id}`,
       title: item.title,
       category: "Culture",
       platform: "YouTube",

@@ -27,6 +27,7 @@ import {
 import { AlgoSignalShareCard } from "@/components/algo/AlgoSignalShareCard";
 import { HomeFirstMoments } from "@/components/home/HomeFirstMoments";
 import { ALGO_UI_LOADING } from "@/lib/copy/ui-strings";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 
 const PastPredictions = dynamic(
   () =>
@@ -74,6 +75,8 @@ interface NewsItem {
   source: string;
   publishedAt: string;
   url?: string;
+  /** Depuis `/api/live-news` (urlToImage ou image, sinon placeholder côté API). */
+  thumbnail?: string;
 }
 
 const TREND_REGIONS = [...CORE_TREND_REGIONS];
@@ -533,7 +536,20 @@ export default function HomePage() {
                 className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm transition-colors hover:text-white algo-s${i + 1}`}
                 style={{ color: "rgba(240,240,248,0.6)" }}
               >
-                <span className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-[var(--color-red-alert)] animate-pulse" />
+                {item.thumbnail ? (
+                  <span className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-md overflow-hidden shrink-0 bg-white/5 ring-1 ring-white/10">
+                    <ImageWithFallback
+                      src={item.thumbnail}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      platform="news"
+                      sizes="40px"
+                    />
+                  </span>
+                ) : (
+                  <span className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-[var(--color-red-alert)] animate-pulse shrink-0" />
+                )}
                 <span className="max-w-[180px] sm:max-w-[280px] truncate">
                   {item.title}
                 </span>

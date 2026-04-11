@@ -97,6 +97,7 @@ export function getContentById(id: string): Content | undefined {
 export function isRealApiContentId(id: string): boolean {
   return (
     id.startsWith("youtube-") ||
+    id.startsWith("yt-") ||
     id.startsWith("yt_") ||
     id.startsWith("tmdb-") ||
     id.startsWith("tmdb_movie_") ||
@@ -106,8 +107,10 @@ export function isRealApiContentId(id: string): boolean {
     id.startsWith("artist_") ||
     id.startsWith("news-") ||
     id.startsWith("news_") ||
+    id.startsWith("reddit-") ||
     id.startsWith("reddit_") ||
     id.startsWith("gh_") ||
+    id.startsWith("hn-") ||
     id.startsWith("hn_") ||
     id.startsWith("github_") ||
     id.startsWith("hackernews_")
@@ -120,7 +123,8 @@ export function isRealApiContentId(id: string): boolean {
 export function getContentTypeFromId(
   id: string,
 ): "video" | "film" | "music" | "news" | "trend" | "unknown" {
-  if (id.startsWith("youtube-") || id.startsWith("yt_")) return "video";
+  if (id.startsWith("youtube-") || id.startsWith("yt-") || id.startsWith("yt_"))
+    return "video";
   if (
     id.startsWith("tmdb-") ||
     id.startsWith("tmdb_movie_") ||
@@ -134,7 +138,15 @@ export function getContentTypeFromId(
   )
     return "music";
   if (id.startsWith("news-") || id.startsWith("news_")) return "news";
-  if (id.startsWith("reddit_") || id.startsWith("gh_")) return "trend";
+  if (
+    id.startsWith("reddit_") ||
+    id.startsWith("reddit-") ||
+    id.startsWith("gh_") ||
+    id.startsWith("hn_") ||
+    id.startsWith("hn-") ||
+    id.startsWith("hackernews_")
+  )
+    return "trend";
   return "unknown";
 }
 

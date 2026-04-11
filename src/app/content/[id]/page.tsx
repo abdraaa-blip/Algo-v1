@@ -27,7 +27,11 @@ import { AlgoSignalShareCard } from "@/components/algo/AlgoSignalShareCard";
 import { ShareStrip } from "@/components/growth/ShareStrip";
 import { absoluteUrl } from "@/lib/seo/site";
 
-import { getContentById, getAllContentIds } from "@/services/contentService";
+import {
+  getContentById,
+  getAllContentIds,
+  fetchRealContent,
+} from "@/services/contentService";
 import { cn } from "@/lib/utils";
 import type { BadgeType, Category, Content, Platform } from "@/types";
 import { fillLocaleStrings } from "@/types";
@@ -468,12 +472,12 @@ function generateFallbackContent(id: string): Content | null {
     youtube: {
       platform: "YouTube",
       category: "Video",
-      url: `https://youtube.com/watch?v=${id.replace("youtube-", "")}`,
+      url: `https://youtube.com/watch?v=${id.replace(/^youtube-/, "")}`,
     },
     hn: {
       platform: "HackerNews",
       category: "Tech",
-      url: `https://news.ycombinator.com/item?id=${id.replace("hn_", "")}`,
+      url: `https://news.ycombinator.com/item?id=${id.replace(/^hn_/, "").replace(/^hn-/, "")}`,
     },
     gh: {
       platform: "GitHub",
@@ -483,7 +487,7 @@ function generateFallbackContent(id: string): Content | null {
     reddit: {
       platform: "Reddit",
       category: "Discussion",
-      url: `https://reddit.com/comments/${id.replace("reddit_", "")}`,
+      url: `https://reddit.com/comments/${id.replace(/^reddit_/, "").replace(/^reddit-/, "")}`,
     },
   };
 
@@ -531,13 +535,16 @@ async function getContentByIdAsync(id: string): Promise<Content | null> {
 
   let result: Content | null = null;
 
-  // 2. YouTube content
-  if (id.startsWith("youtube-")) {
-    const videoId = id.replace("youtube-", "");
-    result = await fetchYouTubeContent(videoId);
-    if (result) return result;
-    // Fallback for YouTube - provide direct link
-    return generateFallbackContent(id);
+  // 2. YouTube (home `/api/youtube` = youtube-…, viral = yt-…)
+  if (id.startsWith("youtube-") || id.startsWith("yt-")) {
+    const videoId = id.startsWith("youtube-")
+      ? id.slice("youtube-".length)
+      : id.slice("yt-".length);
+    if (videoId) {
+      result = await fetchYouTubeContent(videoId);
+      if (result) return result;
+      return generateFallbackContent(`youtube-${videoId}`);
+    }
   }
 
   // 3. TMDB content
@@ -549,7 +556,32 @@ async function getContentByIdAsync(id: string): Promise<Content | null> {
     return null;
   }
 
+  if (id.startsWith("tmdb_movie_")) {
+    const numericId = id.slice("tmdb_movie_".length);
+    if (/^\d+$/.test(numericId)) {
+      result = await fetchTMDBContent(numericId, "movie");
+      if (result) return result;
+    }
+    return null;
+  }
+
+  if (id.startsWith("tmdb_tv_")) {
+    const numericId = id.slice("tmdb_tv_".length);
+    if (/^\d+$/.test(numericId)) {
+      result = await fetchTMDBContent(numericId, "tv");
+      if (result) return result;
+    }
+    return null;
+  }
+
   // 4. Reddit content
+  if (id.startsWith("reddit-")) {
+    const postId = id.slice("reddit-".length);
+    result = await fetchRedditContent(postId);
+    if (result) return result;
+    return generateFallbackContent(id);
+  }
+
   if (id.startsWith("reddit_")) {
     const postId = id.replace("reddit_", "");
     result = await fetchRedditContent(postId);
@@ -566,6 +598,13 @@ async function getContentByIdAsync(id: string): Promise<Content | null> {
   }
 
   // 6. HackerNews content
+  if (id.startsWith("hn-")) {
+    const storyId = id.slice("hn-".length);
+    result = await fetchHackerNewsContent(storyId);
+    if (result) return result;
+    return generateFallbackContent(id);
+  }
+
   if (id.startsWith("hn_")) {
     const storyId = id.replace("hn_", "");
     result = await fetchHackerNewsContent(storyId);
@@ -573,10 +612,11 @@ async function getContentByIdAsync(id: string): Promise<Content | null> {
     return generateFallbackContent(id);
   }
 
-  // 7. Try raw YouTube ID (legacy support)
+  // 7. Try raw YouTube ID (legacy support + démos sans préfixe)
   if (!id.startsWith("c") && id.length >= 8 && id.length <= 12) {
     const ytContent = await fetchYouTubeContent(id);
     if (ytContent) return ytContent;
+    return generateFallbackContent(`youtube-${id}`);
   }
 
   // 8. For unknown IDs that look like they have a source prefix, try to extract and fetch
@@ -587,6 +627,10 @@ async function getContentByIdAsync(id: string): Promise<Content | null> {
       result = await fetchHackerNewsContent(numId);
       if (result) return result;
     }
+  }
+
+  if (id.startsWith("news-") || id.startsWith("news_")) {
+    return await fetchRealContent(id);
   }
 
   return null;
