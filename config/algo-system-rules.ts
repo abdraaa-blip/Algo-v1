@@ -79,7 +79,7 @@ export const ALGO_SYSTEM_RULES = {
 
   layout: {
     structure:
-      'Mobile-first ; largeurs de lecture maîtrisées (`max-w-*` + `mx-auto` + `px-*` cohérents) ; éviter le scroll horizontal involontaire (`overflow-x` sur body). Fond global : `html` / `body` + `AlgoLivingBackground` (`ClientLayout`, `fixed` + `pointer-events: none`, empilement sous contenu) — éviter de redéfinir `bg-[var(--color-bg-primary)]` sur chaque page racine sauf besoin isolé (plein écran, export, etc.).',
+      'Mobile-first ; largeurs de lecture maîtrisées (`max-w-*` + `mx-auto` + `px-*` cohérents) ; éviter le scroll horizontal involontaire (`overflow-x` sur `body` + chaîne **`ClientLayout` → `<main>` → conteneur flex** avec `w-full min-w-0`, `PageTransition` idem). Fond global : `html` / `body` + `AlgoLivingBackground` (`ClientLayout`, `fixed` + `pointer-events: none`, empilement sous contenu) — éviter de redéfinir `bg-[var(--color-bg-primary)]` sur chaque page racine sauf besoin isolé (plein écran, export, etc.).',
     surfaces:
       'Cartes et panneaux : classes utilitaires **`algo-surface`** et **`algo-interactive`** (globals) pour bordure, rayon et transitions unifiées.',
     spacing:

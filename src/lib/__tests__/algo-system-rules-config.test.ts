@@ -35,6 +35,7 @@ describe("config/algo-system-rules", () => {
     expect(ALGO_SYSTEM_RULES.experience.cognitiveAlignment).toMatch(
       /ALGO_UX_CHARTER/i,
     );
+    expect(ALGO_SYSTEM_RULES.layout.structure).toMatch(/min-w-0|ClientLayout/i);
     expect(ALGO_SYSTEM_RULES.layout.surfaces).toMatch(/algo-surface/i);
     expect(ALGO_SYSTEM_RULES.animation.policy).toMatch(/ms|bounce|ease/i);
     expect(ALGO_SYSTEM_RULES.coherence.checklist.length).toBeGreaterThanOrEqual(
