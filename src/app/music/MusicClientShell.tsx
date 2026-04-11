@@ -54,7 +54,8 @@ export function MusicClientShell() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
-  const [source, setSource] = useState<'live' | 'cache' | 'fallback'>('live')
+  const [source, setSource] = useState<'live' | 'cache' | 'fallback' | 'mixed'>('live')
+  const [chartsMetaNote, setChartsMetaNote] = useState<string | null>(null)
 
   const fetchData = useCallback(async () => {
     setIsLoading(true)
@@ -73,7 +74,13 @@ export function MusicClientShell() {
         setTracks(data.tracks || [])
         setArtists(data.artists || [])
         setSource(data.source || 'live')
-        setLastUpdate(new Date())
+        const meta = data.meta && typeof data.meta === 'object' ? data.meta : null
+        setChartsMetaNote(typeof meta?.note === 'string' ? meta.note : null)
+        const at =
+          typeof data.fetchedAt === 'string'
+            ? new Date(data.fetchedAt)
+            : new Date()
+        setLastUpdate(Number.isNaN(at.getTime()) ? new Date() : at)
       } else {
         throw new Error(data.error || 'Unknown error')
       }
@@ -88,11 +95,11 @@ export function MusicClientShell() {
   useEffect(() => {
     void fetchData()
     
-    // Refresh every 30 seconds for live data
+    // Aligné sur le cache serveur Last.fm (~15 min) : évite requêtes inutiles toutes les 30 s.
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
       void fetchData()
-    }, 30000)
+    }, 15 * 60 * 1000)
     return () => clearInterval(interval)
   }, [fetchData])
 
@@ -109,7 +116,9 @@ export function MusicClientShell() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white">Classements Musique</h1>
-            <p className="text-sm text-[var(--color-text-secondary)]">Via Last.fm (MAJ toutes les 15 min)</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              Last.fm · rafraîchissement auto ~15 min (cache serveur)
+            </p>
           </div>
         </div>
         
@@ -119,14 +128,22 @@ export function MusicClientShell() {
             'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
             source === 'live' ? 'bg-amber-500/20 text-amber-400' :
             source === 'cache' ? 'bg-zinc-500/20 text-zinc-400' :
-            'bg-red-500/20 text-red-400'
+            source === 'mixed' ? 'bg-violet-500/15 text-violet-300' :
+            'bg-slate-500/20 text-slate-300'
           )}>
             <span className={cn(
               'w-1.5 h-1.5 rounded-full',
               source === 'live' ? 'bg-amber-400' :
-              source === 'cache' ? 'bg-zinc-400' : 'bg-red-400'
+              source === 'cache' ? 'bg-zinc-400' :
+              source === 'mixed' ? 'bg-violet-400' : 'bg-slate-400'
             )} />
-            {source === 'live' ? 'Donnees recentes' : source === 'cache' ? 'Cache (15min)' : 'Hors ligne'}
+            {source === 'live'
+              ? 'Données récentes'
+              : source === 'cache'
+                ? 'Cache (15 min)'
+                : source === 'mixed'
+                  ? 'Mixte'
+                  : 'Mode démo'}
           </div>
           
           <button
@@ -159,11 +176,20 @@ export function MusicClientShell() {
         ))}
       </div>
 
-      <DataQualityChip
-        source={selectedCountry ? `lastfm:${selectedCountry}` : 'lastfm:global'}
-        freshness={lastUpdate ? formatRelativeScopeTime(lastUpdate, scope) : 'pending'}
-        confidence={source === 'live' ? 'high' : source === 'cache' ? 'medium' : 'low'}
-      />
+      <div className="space-y-2">
+        <DataQualityChip
+          source={selectedCountry ? `lastfm:${selectedCountry}` : 'lastfm:global'}
+          freshness={lastUpdate ? formatRelativeScopeTime(lastUpdate, scope) : 'pending'}
+          confidence={
+            source === 'live' ? 'high' : source === 'cache' ? 'medium' : source === 'mixed' ? 'medium' : 'low'
+          }
+        />
+        {chartsMetaNote && (
+          <p className="text-[11px] text-[var(--color-text-tertiary)] leading-relaxed max-w-3xl">
+            {chartsMetaNote}
+          </p>
+        )}
+      </div>
 
       {/* Tabs */}
       <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--color-card)] w-fit">

@@ -28,6 +28,8 @@ interface NewsItem {
   fetchedAt?: string
   category?: string
   importanceScore?: number
+  /** true si l’image est un placeholder (pas l’URL média de l’article). */
+  imageIsPlaceholder?: boolean
 }
 
 interface NewsClientShellProps {
@@ -61,6 +63,11 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   const [error, setError] = useState<string | null>(null)
   const [lastFetchedAt, setLastFetchedAt] = useState<string | null>(null)
   const [newsSource, setNewsSource] = useState<string>('live-news')
+  const [newsMeta, setNewsMeta] = useState<{
+    refreshIntervalLabel?: string
+    pipeline?: string
+    rssMaxItems?: number
+  } | null>(null)
   
   const labels = {
     title: t('news.title'),
@@ -87,8 +94,17 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
       const data = await response.json()
       // API returns data in 'data' field, not 'news'
       setNews(data.data || data.news || [])
-      setLastFetchedAt(new Date().toISOString())
+      setLastFetchedAt(typeof data.fetchedAt === 'string' ? data.fetchedAt : new Date().toISOString())
       setNewsSource(String(data.source || 'live-news'))
+      setNewsMeta(
+        data.meta && typeof data.meta === 'object'
+          ? {
+              refreshIntervalLabel: data.meta.refreshIntervalLabel,
+              pipeline: data.meta.pipeline,
+              rssMaxItems: data.meta.rssMaxItems,
+            }
+          : null
+      )
     } catch (err) {
       console.error('[ALGO News] Fetch error:', err)
       setError(labels.error)
@@ -148,12 +164,21 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
             {news.length} articles
           </span>
         </header>
-        <div className="mb-4">
+        <div className="mb-4 space-y-2">
           <DataQualityChip
             source={newsSource}
             freshness={lastFetchedAt ? formatRelativeScopeTime(lastFetchedAt, scope) : 'pending'}
             confidence={news.length >= 12 ? 'high' : news.length >= 5 ? 'medium' : 'low'}
           />
+          {newsMeta?.refreshIntervalLabel && (
+            <p className="text-[11px] text-[var(--color-text-tertiary)] leading-relaxed">
+              Cache côté serveur jusqu’à ~{newsMeta.refreshIntervalLabel} · pas un flux temps réel.
+              {newsMeta.rssMaxItems != null ? ` RSS max ${newsMeta.rssMaxItems} titres/pays.` : ''}
+            </p>
+          )}
+          {newsMeta?.pipeline && (
+            <p className="text-[10px] text-[var(--color-text-muted)] leading-snug">{newsMeta.pipeline}</p>
+          )}
         </div>
         
         {news.length === 0 ? (
@@ -194,6 +219,7 @@ const NewsRow = memo(function NewsRow({
   image,
   publishedAt,
   importanceScore = 50,
+  imageIsPlaceholder = false,
   labels,
   scope,
 }: NewsRowProps) {
@@ -220,7 +246,12 @@ const NewsRow = memo(function NewsRow({
         className="flex gap-4 p-4"
       >
         {/* Image */}
-        <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-[var(--color-card)]">
+        <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-[var(--color-card)] relative">
+          {imageIsPlaceholder && (
+            <span className="absolute bottom-0 left-0 right-0 z-[1] bg-black/55 text-[8px] text-zinc-200 px-0.5 py-px text-center">
+              illus.
+            </span>
+          )}
           <ImageWithFallback
             src={thumb}
             alt=""

@@ -46,6 +46,7 @@ function formatViewCount(count: number): string {
   return count.toString()
 }
 
+/** Relatif court (FR) — basé sur l’horloge du serveur ; l’UI scope peut affiner côté client. */
 function formatRelativeTime(dateString: string): string {
   const date = new Date(dateString)
   const now = new Date()
@@ -54,10 +55,11 @@ function formatRelativeTime(dateString: string): string {
   const diffHours = Math.floor(diffMs / 3600000)
   const diffDays = Math.floor(diffMs / 86400000)
   
-  if (diffMins < 60) return `${diffMins}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
-  return date.toLocaleDateString()
+  if (diffMins < 1) return 'à l’instant'
+  if (diffMins < 60) return `il y a ${diffMins} min`
+  if (diffHours < 24) return `il y a ${diffHours} h`
+  if (diffDays < 7) return `il y a ${diffDays} j`
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
 }
 
 function parseDuration(duration: string): string {

@@ -6,6 +6,9 @@ import { sanitizeInput } from '@/lib/security'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+/** Aligné sur `CACHE_DURATION_MS` dans `src/lib/api/real-data-service.ts` (cache mémoire news). */
+const UPSTREAM_CACHE_MS = 15 * 60 * 1000
+
 function fallbackNewsImage(index: number, title: string): string {
   let h = 0
   const s = title || `article-${index}`
@@ -60,10 +63,12 @@ export async function GET(request: NextRequest) {
     
     // Map data to client-expected format
     const mappedData = result.data.map((article, index) => {
-      const imageUrl =
+      const hasArticleImage = Boolean(
         article.urlToImage && article.urlToImage.startsWith('http')
-          ? article.urlToImage
-          : fallbackNewsImage(index, article.title)
+      )
+      const imageUrl = hasArticleImage
+        ? article.urlToImage!
+        : fallbackNewsImage(index, article.title)
       return {
       id: article.id || `news_${index}_${Date.now()}`,
       title: article.title,
@@ -76,6 +81,7 @@ export async function GET(request: NextRequest) {
       fetchedAt: result.fetchedAt,
       category: 'general',
       importanceScore: importanceFromPublishedAt(article.publishedAt),
+      imageIsPlaceholder: !hasArticleImage,
     }
     })
     
@@ -89,12 +95,15 @@ export async function GET(request: NextRequest) {
       count: mappedData.length,
       // Transparency metadata
       meta: {
-        refreshIntervalMs: 15 * 60 * 1000,
+        refreshIntervalMs: UPSTREAM_CACHE_MS,
         refreshIntervalLabel: '15 min',
         region: country?.toUpperCase() || 'ALL',
-        dataFreshness: result.source === 'live' ? 'recent' : 'cached',
-        sourceName: 'Google News RSS',
-      }
+        dataFreshness:
+          result.source === 'live' ? 'recent' : result.source === 'cached' ? 'cached' : 'static',
+        pipeline:
+          'Flux : Google News RSS (sans clé) si dispo, sinon NewsAPI si clé, sinon démo interne.',
+        rssMaxItems: 15,
+      },
     }, { headers: createRateLimitHeaders(rateLimit) })
   } catch (error) {
     console.error('[ALGO API] Live news fetch failed:', error)

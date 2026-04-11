@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { CheckCircle, XCircle, Loader2, RefreshCw, Wifi, Video, Newspaper, BrainCircuit } from 'lucide-react'
+import { CheckCircle, XCircle, Loader2, RefreshCw, Wifi, Video, Newspaper, BrainCircuit, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface ApiStatus {
@@ -9,11 +9,11 @@ interface ApiStatus {
   apis: {
     newsapi: {
       configured: boolean
-      test: { success: boolean; count: number; source: string; error?: string } | null
+      test: { success: boolean; count: number; source: 'live' | 'error' | 'unconfigured'; error?: string } | null
     }
     youtube: {
       configured: boolean
-      test: { success: boolean; count: number; source: string; error?: string } | null
+      test: { success: boolean; count: number; source: 'live' | 'error' | 'unconfigured'; error?: string } | null
     }
   }
 }
@@ -65,7 +65,7 @@ export default function StatusPage() {
       setStatus(statusData)
       setModelWeights(modelData)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch status')
+      setError(err instanceof Error ? err.message : 'Impossible de charger le statut')
     } finally {
       setLoading(false)
     }
@@ -80,8 +80,8 @@ export default function StatusPage() {
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-black tracking-tight">ALGO Status</h1>
-            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Live API Connection Status</p>
+            <h1 className="text-3xl font-black tracking-tight">Statut ALGO</h1>
+            <p className="text-[var(--color-text-secondary)] text-sm mt-1">Connexions API live (NewsAPI, YouTube)</p>
           </div>
           <button
             onClick={fetchStatus}
@@ -108,7 +108,7 @@ export default function StatusPage() {
           <div className="space-y-6">
             {/* Timestamp */}
             <div className="text-xs text-[var(--color-text-muted)] text-center">
-              Last checked: {new Date(status.timestamp).toLocaleString()}
+              Dernière vérif : {new Date(status.timestamp).toLocaleString()}
             </div>
 
             {/* NewsAPI Status */}
@@ -117,7 +117,8 @@ export default function StatusPage() {
               icon={Newspaper}
               configured={status.apis.newsapi.configured}
               test={status.apis.newsapi.test}
-              description="Real-time news headlines from France, US, UK, Nigeria"
+              envHint="NEWSAPI_KEY ou NEWS_API_KEY"
+              description="Titres d’actualité (FR, US, UK, Nigeria) via NewsAPI"
             />
 
             {/* YouTube API Status */}
@@ -126,33 +127,69 @@ export default function StatusPage() {
               icon={Video}
               configured={status.apis.youtube.configured}
               test={status.apis.youtube.test}
-              description="Trending videos from YouTube by country"
+              envHint="YOUTUBE_API_KEY"
+              description="Tendances YouTube par pays (Data API v3)"
             />
 
-            {/* Overall Status */}
+            {/* Synthèse */}
+            {(() => {
+              const newsLive = Boolean(status.apis.newsapi.test?.success && status.apis.newsapi.test?.source === 'live')
+              const ytLive = Boolean(status.apis.youtube.test?.success && status.apis.youtube.test?.source === 'live')
+              const newsUn = status.apis.newsapi.test?.source === 'unconfigured'
+              const ytUn = status.apis.youtube.test?.source === 'unconfigured'
+              const newsFault = Boolean(
+                status.apis.newsapi.configured &&
+                  status.apis.newsapi.test &&
+                  !newsLive &&
+                  status.apis.newsapi.test.source === 'error'
+              )
+              const ytFault = Boolean(
+                status.apis.youtube.configured &&
+                  status.apis.youtube.test &&
+                  !ytLive &&
+                  status.apis.youtube.test.source === 'error'
+              )
+              const allLive = newsLive && ytLive
+              const allUnconfigured = newsUn && ytUn
+              const anyFault = newsFault || ytFault
+              const anyLive = newsLive || ytLive
+
+              const tone =
+                allLive ? 'ok' :
+                allUnconfigured && !anyFault ? 'neutral' :
+                anyFault && !anyLive ? 'fault' :
+                'partial'
+              return (
             <div className={cn(
               'p-6 rounded-2xl border text-center',
-              status.apis.newsapi.test?.success && status.apis.youtube.test?.success
-                ? 'bg-green-500/10 border-green-500/20'
-                : 'bg-yellow-500/10 border-yellow-500/20'
+              tone === 'ok' && 'bg-green-500/10 border-green-500/20',
+              tone === 'neutral' && 'bg-slate-500/10 border-slate-500/25',
+              tone === 'partial' && 'bg-amber-500/10 border-amber-500/25',
+              tone === 'fault' && 'bg-orange-500/10 border-orange-500/25'
             )}>
               <Wifi size={32} className={cn(
                 'mx-auto mb-3',
-                status.apis.newsapi.test?.success && status.apis.youtube.test?.success
-                  ? 'text-green-400'
-                  : 'text-yellow-400'
+                tone === 'ok' && 'text-green-400',
+                tone === 'neutral' && 'text-slate-400',
+                tone === 'partial' && 'text-amber-400',
+                tone === 'fault' && 'text-orange-400'
               )} />
               <h3 className="text-lg font-bold">
-                {status.apis.newsapi.test?.success && status.apis.youtube.test?.success
-                  ? 'All Systems Operational'
-                  : 'Partial Connection'}
+                {tone === 'ok' && 'Tout est opérationnel'}
+                {tone === 'neutral' && 'Mode sans clés live'}
+                {tone === 'partial' && 'Connexion partielle'}
+                {tone === 'fault' && 'Live à vérifier'}
               </h3>
               <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-                {status.apis.newsapi.test?.success && status.apis.youtube.test?.success
-                  ? 'Real-time data is flowing'
-                  : 'Some APIs may not be fully connected'}
+                {tone === 'ok' && 'Les deux flux répondent correctement.'}
+                {tone === 'neutral' &&
+                  'Normal en local : ajoute NEWSAPI_KEY et YOUTUBE_API_KEY dans .env.local (voir .env.example). Le reste de l’app peut tourner en démo / fallbacks.'}
+                {tone === 'partial' && 'Au moins une source répond ; l’autre est absente ou en pause.'}
+                {tone === 'fault' && 'Les clés sont présentes mais un appel a échoué : regarde le détail sous chaque carte.'}
               </p>
             </div>
+              )
+            })()}
 
             {/* Model Weights Status */}
             {modelWeights && (
@@ -164,7 +201,7 @@ export default function StatusPage() {
               )}>
                 <div className="flex items-center gap-2 mb-3">
                   <BrainCircuit size={18} className={modelWeights.rollbackApplied ? 'text-yellow-400' : 'text-cyan-400'} />
-                  <h3 className="font-bold text-lg">Adaptive Model Weights</h3>
+                  <h3 className="font-bold text-lg">Poids du modèle (adaptatif)</h3>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="p-2 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
@@ -180,11 +217,11 @@ export default function StatusPage() {
                   <div className="p-2 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
                     <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Rollback</p>
                     <p className={cn('font-bold', modelWeights.rollbackApplied ? 'text-yellow-400' : 'text-green-400')}>
-                      {modelWeights.rollbackApplied ? 'Applied' : 'Not applied'}
+                      {modelWeights.rollbackApplied ? 'Actif' : 'Inactif'}
                     </p>
                   </div>
                   <div className="p-2 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
-                    <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">History snapshots</p>
+                    <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Historique</p>
                     <p className="font-bold text-[var(--color-text-primary)]">{modelWeights.history.count}</p>
                   </div>
                 </div>
@@ -214,34 +251,40 @@ function StatusCard({
   icon: Icon,
   configured,
   test,
-  description
+  description,
+  envHint,
 }: {
   title: string
   icon: React.ElementType
   configured: boolean
-  test: { success: boolean; count: number; source: string; error?: string } | null
+  test: { success: boolean; count: number; source: 'live' | 'error' | 'unconfigured'; error?: string } | null
   description: string
+  envHint: string
 }) {
-  const isSuccess = test?.success
-  const isError = test && !test.success
+  const isLive = Boolean(test?.success && test?.source === 'live')
+  const isUnconfigured = test?.source === 'unconfigured'
+  const isFault = Boolean(test && !isLive && test.source === 'error')
 
   return (
     <div className={cn(
       'p-5 rounded-2xl border transition-all',
-      isSuccess ? 'bg-green-500/5 border-green-500/20' :
-      isError ? 'bg-red-500/5 border-red-500/20' :
+      isLive ? 'bg-green-500/5 border-green-500/20' :
+      isUnconfigured ? 'bg-amber-500/5 border-amber-500/20' :
+      isFault ? 'bg-red-500/5 border-red-500/20' :
       'bg-[var(--color-card)] border-[var(--color-border)]'
     )}>
       <div className="flex items-start gap-4">
         <div className={cn(
           'p-3 rounded-xl',
-          isSuccess ? 'bg-green-500/20' :
-          isError ? 'bg-red-500/20' :
+          isLive ? 'bg-green-500/20' :
+          isUnconfigured ? 'bg-amber-500/15' :
+          isFault ? 'bg-red-500/20' :
           'bg-[var(--color-card)]'
         )}>
           <Icon size={24} className={cn(
-            isSuccess ? 'text-green-400' :
-            isError ? 'text-red-400' :
+            isLive ? 'text-green-400' :
+            isUnconfigured ? 'text-amber-400' :
+            isFault ? 'text-red-400' :
             'text-[var(--color-text-secondary)]'
           )} />
         </div>
@@ -249,47 +292,54 @@ function StatusCard({
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-bold text-lg">{title}</h3>
-            {isSuccess && <CheckCircle size={18} className="text-green-400" />}
-            {isError && <XCircle size={18} className="text-red-400" />}
+            {isLive && <CheckCircle size={18} className="text-green-400" aria-hidden />}
+            {isUnconfigured && <AlertCircle size={18} className="text-amber-400" aria-hidden />}
+            {isFault && <XCircle size={18} className="text-red-400" aria-hidden />}
           </div>
           
           <p className="text-sm text-[var(--color-text-tertiary)] mb-3">{description}</p>
 
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="p-2 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
-              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">API Key</p>
+              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Clé API</p>
               <p className={cn(
                 'font-mono text-xs',
-                configured ? 'text-green-400' : 'text-red-400'
+                configured ? 'text-green-400' : 'text-amber-400'
               )}>
-                {configured ? 'Présente (non affichée)' : 'Non configurée'}
+                {configured ? 'Présente (masquée)' : 'Absente du .env'}
               </p>
             </div>
 
             <div className="p-2 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
-              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Status</p>
+              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Statut</p>
               <p className={cn(
                 'font-bold',
-                isSuccess ? 'text-green-400' : isError ? 'text-red-400' : 'text-[var(--color-text-secondary)]'
+                isLive ? 'text-green-400' : isUnconfigured ? 'text-amber-400' : isFault ? 'text-red-400' : 'text-[var(--color-text-secondary)]'
               )}>
-                {isSuccess ? `${test.count} items` : isError ? 'Error' : 'Unknown'}
+                {isLive ? `${test!.count} éléments` : isUnconfigured ? 'À configurer' : isFault ? 'Échec live' : '—'}
               </p>
             </div>
           </div>
 
-          {test?.error && (
+          {isUnconfigured && (
+            <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
+              Variable attendue : <span className="font-mono text-[var(--color-text-primary)]">{envHint}</span> · voir <span className="font-mono">.env.example</span>
+            </p>
+          )}
+
+          {isFault && test?.error && (
             <div className="mt-3 p-2 rounded-lg bg-red-500/10 text-red-300 text-xs">
               {test.error}
             </div>
           )}
 
-          {isSuccess && (
+          {isLive && (
             <div className="mt-3 flex items-center gap-2 text-xs text-green-400">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              <span>LIVE - Data source: {test.source}</span>
+              <span>En direct · source : {test!.source}</span>
             </div>
           )}
         </div>

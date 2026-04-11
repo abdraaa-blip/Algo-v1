@@ -26,11 +26,11 @@ export async function GET(request: NextRequest) {
     apis: {
       newsapi: {
         configured: !!newsKey,
-        test: null as { success: boolean; count: number; source: string; error?: string } | null
+        test: null as { success: boolean; count: number; source: 'live' | 'error' | 'unconfigured'; error?: string } | null
       },
       youtube: {
         configured: !!youtubeKey,
-        test: null as { success: boolean; count: number; source: string; error?: string } | null
+        test: null as { success: boolean; count: number; source: 'live' | 'error' | 'unconfigured'; error?: string } | null
       }
     }
   }
@@ -69,8 +69,7 @@ export async function GET(request: NextRequest) {
     results.apis.newsapi.test = {
       success: false,
       count: 0,
-      source: 'error',
-      error: 'API key not configured'
+      source: 'unconfigured',
     }
   }
   
@@ -108,8 +107,7 @@ export async function GET(request: NextRequest) {
     results.apis.youtube.test = {
       success: false,
       count: 0,
-      source: 'error',
-      error: 'API key not configured'
+      source: 'unconfigured',
     }
   }
   

@@ -98,6 +98,10 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
   const [loading, setLoading] = useState(true)
   const [fetchedAt, setFetchedAt] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [videosMeta, setVideosMeta] = useState<{
+    refreshIntervalLabel?: string
+    source?: string
+  } | null>(null)
 
   const fetchVideos = useCallback(async () => {
     try {
@@ -114,6 +118,14 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       if (data.success && Array.isArray(data.data)) {
         setVideos(data.data)
         setFetchedAt(data.fetchedAt)
+        if (data.meta && typeof data.meta === 'object') {
+          setVideosMeta({
+            refreshIntervalLabel: data.meta.refreshIntervalLabel,
+            source: data.source,
+          })
+        } else {
+          setVideosMeta(null)
+        }
       }
     } catch (error) {
       console.error('[ALGO Videos] Fetch failed:', error)
@@ -130,12 +142,12 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
     }
   }, [isLoaded, fetchVideos])
 
-  // Auto-refresh every 30 seconds for live data
+  // Cache serveur ~15 min : polling léger toutes les 5 min (évite charge inutile).
   useEffect(() => {
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
       fetchVideos()
-    }, 30000)
+    }, 5 * 60 * 1000)
     return () => clearInterval(interval)
   }, [fetchVideos])
 
@@ -185,12 +197,15 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
                   scope={scope}
                   source="YouTube"
                   hasAutoRefresh={true}
-                  refreshIntervalMs={30000}
+                  refreshIntervalMs={5 * 60 * 1000}
                   variant="badge"
                   showTimestamp={false}
                 />
               </div>
-              <p className="text-sm text-[var(--color-text-tertiary)]">Videos tendances YouTube (mises a jour toutes les 30s)</p>
+              <p className="text-sm text-[var(--color-text-tertiary)]">
+                Tendances YouTube · cache serveur ~{videosMeta?.refreshIntervalLabel ?? '15 min'}
+                {videosMeta?.source === 'fallback' ? ' · mode démo sans clé' : ''}
+              </p>
             </div>
             
             <button

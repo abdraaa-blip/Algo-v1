@@ -33,6 +33,16 @@ const COUNTRY_MAP: Record<string, string> = {
 // Keep mapping aligned with shared UI presets
 void EXTENDED_MUSIC_COUNTRIES
 
+/** Aligné sur `CACHE_DURATION_MS` dans `src/lib/api/lastfm-service.ts`. */
+const CHARTS_CACHE_MS = 15 * 60 * 1000
+
+const chartsMeta = {
+  refreshIntervalMs: CHARTS_CACHE_MS,
+  refreshIntervalLabel: '15 min',
+  provider: 'Last.fm',
+  note: 'Sans LASTFM_API_KEY : données démo locales (voir offline-media-demos).',
+} as const
+
 export async function GET(request: NextRequest) {
   const identifier = getClientIdentifier(request)
   const rateLimit = checkRateLimit(`api-live-music:${identifier}`, { limit: 60, windowMs: 60_000 })
@@ -59,7 +69,8 @@ export async function GET(request: NextRequest) {
           type: 'tracks',
           country: country || 'Global',
           ...tracksResult,
-          count: tracksResult.data.length
+          count: tracksResult.data.length,
+          meta: chartsMeta,
         })
         
       case 'artists':
@@ -69,7 +80,8 @@ export async function GET(request: NextRequest) {
           type: 'artists',
           country: country || 'Global',
           ...artistsResult,
-          count: artistsResult.data.length
+          count: artistsResult.data.length,
+          meta: chartsMeta,
         })
         
       case 'all':
@@ -82,8 +94,9 @@ export async function GET(request: NextRequest) {
           ...allResult,
           counts: {
             tracks: allResult.tracks.length,
-            artists: allResult.artists.length
-          }
+            artists: allResult.artists.length,
+          },
+          meta: chartsMeta,
         })
     }
   } catch (error) {

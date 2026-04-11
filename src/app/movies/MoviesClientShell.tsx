@@ -63,10 +63,10 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [sortBy, setSortBy] = useState<'viralScore' | 'rating' | 'socialMentions'>('viralScore')
 
-  const { data, isLoading } = useSWR<{ movies: Movie[] }>(
+  const { data, isLoading } = useSWR<{ movies: Movie[]; source?: string; fetchedAt?: string }>(
     `/api/movies?type=${activeType}`,
     fetcher,
-    { refreshInterval: 60000 }
+    { refreshInterval: 15 * 60 * 1000 }
   )
 
   const movies = data?.movies?.sort((a, b) => {
@@ -91,12 +91,26 @@ export function MoviesClientShell({ locale, labels }: MoviesClientShellProps) {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Films & Series</h1>
-            <p className="text-sm text-[var(--color-text-secondary)]">Ce qui fait le buzz en ce moment</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              TMDB · cache serveur ~15 min · sans clé : affiches démo
+            </p>
           </div>
         </div>
         <DataQualityChip
-          source="tmdb + movie intelligence"
-          freshness={isLoading ? 'refreshing' : 'active'}
+          source={
+            data?.source === 'fallback'
+              ? 'tmdb:demo'
+              : data?.source === 'mixed'
+                ? 'tmdb:mixte'
+                : `tmdb:${data?.source ?? 'live'}`
+          }
+          freshness={
+            isLoading
+              ? 'refreshing'
+              : data?.fetchedAt
+                ? new Date(data.fetchedAt).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+                : 'active'
+          }
           confidence={movies.length >= 12 ? 'high' : movies.length >= 5 ? 'medium' : 'low'}
         />
       </header>
