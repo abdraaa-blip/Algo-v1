@@ -29,6 +29,7 @@ En cas de conflit (ex. une optimisation UI vs une règle du deploy gate, ou une 
 | Index navigation `docs/` (carte, pas wiki parallèle) | **`docs/README.md`** |
 | Checklist agent + release | `config/algo-qa-gate.ts` → `npm run verify:release` |
 | Avant commit (SAFE / RISKY / CRITICAL) + hooks Husky | **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** · constantes `ALGO_QA_SOURCES.gitCommitProtocol`, `ALGO_QA_COMMIT_CLASSIFICATION` dans `config/algo-qa-gate.ts` |
+| CI/CD complet (Actions, push → Vercel, qualité) | **`docs/ALGO_CICD_PIPELINE.md`** · `ALGO_QA_SOURCES.cicdPipeline` |
 | Pré-déploiement / philosophie CD | `config/algo-deploy-gate.ts`, `.github/workflows/` (CI + release gate via `verify:release` / `verify:full` incluent **`npm run typecheck`**) |
 | Maturité release (rubric qualitative, pas score unique) | **`docs/ALGO_RELEASE_READINESS.md`** |
 | Évolution hors hot path, anti-patterns | `docs/ALGO_OFFLINE_EVOLUTION.md` |

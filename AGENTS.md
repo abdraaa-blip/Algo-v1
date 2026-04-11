@@ -60,6 +60,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 - **Garde finale** : `config/algo-deploy-gate.ts` (`ALGO_DEPLOY_CHECKLIST`, blocage, smoke, sécurité). Règle Cursor workflows : `.cursor/rules/algo-deploy-gate.mdc`.
 - **CI GitHub** (push/PR `main`/`master`) : **`npm run verify:release`** (inclut `verify:api-guards`, `npm audit`, typecheck, lint, tests, build) · env publique Next en job `env`.
 - **Release Gate PR** (`main`/`develop`) : `.github/workflows/release-gate.yml` → **`npm run verify:full`** (hérite du même gate + perf budget + rapport).
+- **Pipeline CI/CD** (phases analyse → déploiement Vercel, règles, workflows) : **`docs/ALGO_CICD_PIPELINE.md`** (`ALGO_QA_SOURCES.cicdPipeline` dans `config/algo-qa-gate.ts`).
 
 ## Design system & UI (règles persistantes)
 

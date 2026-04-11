@@ -1,3 +1,4 @@
+# Release gate PR — `verify:full` (voir `docs/ALGO_CICD_PIPELINE.md`).
 name: ALGO Release Gate
 
 on:

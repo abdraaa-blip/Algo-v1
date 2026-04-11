@@ -16,6 +16,7 @@
  * - `docs/ALGO_GTM_NOTES.md` (positionnement / GTM brouillon — ne remplace pas doctrine ni prompts)
  * - `docs/README.md` (index navigation des docs canoniques)
  * - `docs/ALGO_GIT_COMMIT_PROTOCOL.md` (SAFE / RISKY / CRITICAL avant commit ; complète Husky)
+ * - `docs/ALGO_CICD_PIPELINE.md` (GitHub Actions + Vercel + phases analyse → déploiement)
  * - `AGENTS.md` (pile IA, copy, brain)
  *
  * Gate standard : `verify:release` inclut `verify:api-guards` (chaque `route.ts` sous `src/app/api`, hors cron et webhook Stripe) puis `npm audit`. Approfondissement : voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` (`verify:full`, etc.).
@@ -43,6 +44,8 @@ export const ALGO_QA_SOURCES = {
   gtmNotes: 'docs/ALGO_GTM_NOTES.md',
   /** Protocole Git : analyse du diff, SAFE / RISKY / CRITICAL, commandes attendues. */
   gitCommitProtocol: 'docs/ALGO_GIT_COMMIT_PROTOCOL.md',
+  /** Pipeline CI/CD : GitHub, Husky, Vercel, ordre des phases. */
+  cicdPipeline: 'docs/ALGO_CICD_PIPELINE.md',
   docsIndex: 'docs/README.md',
   /** Synthèse présentation produit (pitch / onboarding) — secondaire vs checklist & doctrine. */
   productMasterOverview: 'docs/product/master-overview.md',

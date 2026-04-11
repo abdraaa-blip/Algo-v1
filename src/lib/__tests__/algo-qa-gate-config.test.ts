@@ -49,6 +49,16 @@ describe("config/algo-qa-gate", () => {
     expect(ALGO_QA_SOURCES.gitCommitProtocol).toBe(
       "docs/ALGO_GIT_COMMIT_PROTOCOL.md",
     );
+    expect(ALGO_QA_SOURCES.cicdPipeline).toBe("docs/ALGO_CICD_PIPELINE.md");
+  });
+
+  it("référence le pipeline CI/CD (GitHub, Vercel, verify)", () => {
+    const cicdPath = path.join(process.cwd(), ALGO_QA_SOURCES.cicdPipeline);
+    const text = readFileSync(cicdPath, "utf8");
+    expect(text).toContain("ci.yml");
+    expect(text).toContain("verify:release");
+    expect(text).toMatch(/Vercel/i);
+    expect(text).toContain("Husky");
   });
 
   it("référence le protocole Git et les niveaux SAFE / RISKY / CRITICAL", () => {

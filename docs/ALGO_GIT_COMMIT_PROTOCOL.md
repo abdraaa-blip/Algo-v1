@@ -78,4 +78,5 @@ git push origin <branche>
 - `AGENTS.md` — QA gate, hooks, IA, copy.
 - `docs/README.md` — index documentation.
 - `docs/ALGO_OPERATIONS_PLAYBOOK.md` — déploiement, smoke, arbitrage.
-- `config/algo-qa-gate.ts` — `ALGO_QA_SOURCES.gitCommitProtocol`, `ALGO_QA_COMMIT_CLASSIFICATION`, checklist `ALGO_QA_CHECKLIST`, commandes `ALGO_QA_RELEASE_COMMANDS`.
+- **`docs/ALGO_CICD_PIPELINE.md`** — GitHub Actions, Vercel, ordre global analyse → déploiement.
+- `config/algo-qa-gate.ts` — `ALGO_QA_SOURCES.gitCommitProtocol`, `ALGO_QA_SOURCES.cicdPipeline`, `ALGO_QA_COMMIT_CLASSIFICATION`, checklist `ALGO_QA_CHECKLIST`, commandes `ALGO_QA_RELEASE_COMMANDS`.

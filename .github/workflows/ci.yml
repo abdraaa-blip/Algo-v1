@@ -1,3 +1,5 @@
+# CI ALGO — gate alignée sur `npm run verify:release` (voir `config/algo-qa-gate.ts`).
+# Pipeline global GitHub + Vercel + Husky : `docs/ALGO_CICD_PIPELINE.md`.
 name: CI
 
 on:
