@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 
 /**
@@ -92,7 +93,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const category = (searchParams.get('category') || 'viral') as keyof typeof TRENDING_SUBREDDITS
   const sort = (searchParams.get('sort') || 'hot') as 'hot' | 'rising' | 'top'
-  const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 50)
 
   const subreddits = TRENDING_SUBREDDITS[category] || TRENDING_SUBREDDITS.viral
 

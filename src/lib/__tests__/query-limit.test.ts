@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { parseOptionalListLimit } from '@/lib/api/query-limit'
+import {
+  parseDefaultedListLimit,
+  parseOptionalListLimit,
+} from '@/lib/api/query-limit'
 
 describe('parseOptionalListLimit', () => {
   it('retourne undefined si absent ou vide', () => {
@@ -15,5 +18,19 @@ describe('parseOptionalListLimit', () => {
 
   it('rejète NaN', () => {
     expect(parseOptionalListLimit('x')).toBeUndefined()
+  })
+})
+
+describe('parseDefaultedListLimit', () => {
+  it('défaut si absent ou invalide', () => {
+    expect(parseDefaultedListLimit(null, 20, 50)).toBe(20)
+    expect(parseDefaultedListLimit('', 20, 50)).toBe(20)
+    expect(parseDefaultedListLimit('nope', 20, 50)).toBe(20)
+  })
+
+  it('borne 1..maxVal', () => {
+    expect(parseDefaultedListLimit('0', 20, 50)).toBe(1)
+    expect(parseDefaultedListLimit('200', 20, 50)).toBe(50)
+    expect(parseDefaultedListLimit('12', 20, 50)).toBe(12)
   })
 })

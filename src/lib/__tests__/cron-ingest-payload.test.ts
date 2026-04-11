@@ -59,4 +59,16 @@ describe('cron ingest payload', () => {
   it('businessLevelErrorFromJson sans message explicite', () => {
     expect(businessLevelErrorFromJson({ success: false })).toBe('success:false')
   })
+
+  it('normalise live-series (tableau data)', () => {
+    const payload = {
+      success: true,
+      data: [{ id: 1, name: 'Show A' }],
+      count: 1,
+      meta: { appliedLimit: 25 },
+    }
+    const rows = normalizeIngestPayload(payload, 'Series')
+    expect(rows).toHaveLength(1)
+    expect((rows[0] as { name?: string }).name).toBe('Show A')
+  })
 })

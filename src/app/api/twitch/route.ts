@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 
 /**
@@ -154,7 +155,7 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = new URL(req.url)
   const type = searchParams.get('type') || 'games' // games, streams, clips
-  const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50)
+  const limit = parseDefaultedListLimit(searchParams.get('limit'), 20, 50)
 
   const token = await getTwitchToken()
 

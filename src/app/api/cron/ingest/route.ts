@@ -12,7 +12,8 @@ import {
  * Auth entrante : `Authorization: Bearer ${CRON_SECRET}` (Vercel l’ajoute si CRON_SECRET est défini).
  *
  * Note : cette route agrège surtout des métriques / logs. Les réponses des APIs internes
- * n’ont pas toutes un champ `data` : normalisation dans `src/lib/cron/ingest-payload.ts`.
+ * n’ont pas toutes un champ `data` : normalisation dans `src/lib/cron/ingest-payload.ts`
+ * (dont `Series` → `data[]` depuis `/api/live-series`).
  * Si une route renvoie **HTTP 200** avec **`success: false`** (ex. Spotify dégradé), le
  * payload `data` est quand même normalisé et **`error`** remonte pour `total_errors`.
  */
@@ -119,6 +120,7 @@ export async function GET(req: NextRequest) {
       { name: 'Twitch', url: '/api/twitch?type=streams&limit=20' },
       { name: 'Spotify', url: '/api/spotify?limit=20' },
       { name: 'Movies', url: '/api/live-movies?limit=30' },
+      { name: 'Series', url: '/api/live-series?limit=25' },
       { name: 'Music', url: '/api/live-music?limit=30' },
     ]
 
