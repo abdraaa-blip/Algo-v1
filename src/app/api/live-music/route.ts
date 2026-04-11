@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { parseOptionalListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { fetchTopTracks, fetchTopArtists, fetchAllMusicCharts } from '@/lib/api/lastfm-service'
 import { EXTENDED_MUSIC_COUNTRIES } from '@/lib/geo/global-presets'
@@ -57,37 +58,42 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const type = searchParams.get('type') || 'all' // tracks, artists, all
   const countryCode = searchParams.get('country')
-  const limit = parseInt(searchParams.get('limit') || '30', 10)
-  
+  const listLimit = parseOptionalListLimit(searchParams.get('limit'))
+  const chartDepth = listLimit ?? 30
+
   const country = countryCode ? COUNTRY_MAP[countryCode.toUpperCase()] : undefined
-  
+  const metaWithLimit = {
+    ...chartsMeta,
+    appliedLimit: listLimit ?? null,
+  } as const
+
   try {
     switch (type) {
       case 'tracks':
-        const tracksResult = await fetchTopTracks(country, limit)
+        const tracksResult = await fetchTopTracks(country, chartDepth)
         return NextResponse.json({
           success: true,
           type: 'tracks',
           country: country || 'Global',
           ...tracksResult,
           count: tracksResult.data.length,
-          meta: chartsMeta,
+          meta: metaWithLimit,
         })
         
       case 'artists':
-        const artistsResult = await fetchTopArtists(country, limit)
+        const artistsResult = await fetchTopArtists(country, chartDepth)
         return NextResponse.json({
           success: true,
           type: 'artists',
           country: country || 'Global',
           ...artistsResult,
           count: artistsResult.data.length,
-          meta: chartsMeta,
+          meta: metaWithLimit,
         })
         
       case 'all':
       default:
-        const allResult = await fetchAllMusicCharts(country)
+        const allResult = await fetchAllMusicCharts(country, chartDepth)
         return NextResponse.json({
           success: true,
           type: 'all',
@@ -97,7 +103,7 @@ export async function GET(request: NextRequest) {
             tracks: allResult.tracks.length,
             artists: allResult.artists.length,
           },
-          meta: chartsMeta,
+          meta: metaWithLimit,
         })
     }
   } catch (error) {

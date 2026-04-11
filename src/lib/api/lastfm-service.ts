@@ -277,15 +277,20 @@ export async function fetchTopArtists(country?: string, limit: number = 50): Pro
 /**
  * Fetch all music charts
  */
-export async function fetchAllMusicCharts(country?: string): Promise<{
+export async function fetchAllMusicCharts(
+  country?: string,
+  /** Profondeur par liste (tracks + artists), défaut 30, typiquement issu de `?limit=`. */
+  perList = 30,
+): Promise<{
   tracks: RealTrack[]
   artists: RealArtist[]
   fetchedAt: string
   source: 'live' | 'cache' | 'fallback' | 'mixed'
 }> {
+  const cap = Math.min(100, Math.max(1, Math.floor(perList) || 30))
   const [tracksResult, artistsResult] = await Promise.all([
-    fetchTopTracks(country, 30),
-    fetchTopArtists(country, 30)
+    fetchTopTracks(country, cap),
+    fetchTopArtists(country, cap),
   ])
   
   const sources = new Set([tracksResult.source, artistsResult.source])
