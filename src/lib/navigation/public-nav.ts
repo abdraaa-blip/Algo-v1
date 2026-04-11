@@ -1,6 +1,6 @@
 /**
  * Navigation publique · hiérarchie produit (SaaS lisible, marché large).
- * Barre = parcours principal ; « Plus » = médias, espace pro et infos sans surcharger la première lecture.
+ * Libellés via clés `nav.*` dans `src/i18n/locales/*.json` + `useTranslation`.
  */
 import type { LucideIcon } from "lucide-react";
 import {
@@ -19,27 +19,28 @@ import {
 
 export type PublicNavItem = {
   readonly href: string;
-  readonly label: string;
+  /** Clé plate pour `useTranslation` (ex. nav.home) */
+  readonly labelKey: string;
   readonly icon: LucideIcon;
 };
 
 /** Liens toujours visibles dans la barre (ordre = parcours valeur). */
 export const NAV_PRIMARY: readonly PublicNavItem[] = [
-  { href: "/", label: "Accueil", icon: Flame },
-  { href: "/trends", label: "Tendances", icon: TrendingUp },
-  { href: "/creator-mode", label: "Créer", icon: Sparkles },
-  { href: "/ai", label: "ALGO AI", icon: BrainCircuit },
+  { href: "/", labelKey: "nav.home", icon: Flame },
+  { href: "/trends", labelKey: "nav.trends", icon: TrendingUp },
+  { href: "/creator-mode", labelKey: "nav.create", icon: Sparkles },
+  { href: "/ai", labelKey: "nav.algoAi", icon: BrainCircuit },
 ] as const;
 
 /** Rubriques accessibles via « Plus » (découverte médias, pro, à propos). */
 export const NAV_MORE: readonly PublicNavItem[] = [
-  { href: "/videos", label: "Vidéos", icon: Play },
-  { href: "/news", label: "Actu", icon: Newspaper },
-  { href: "/movies", label: "Films", icon: Film },
-  { href: "/music", label: "Musique", icon: Music },
-  { href: "/intelligence", label: "Intelligence", icon: Activity },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/about", label: "À propos", icon: Info },
+  { href: "/videos", labelKey: "nav.videos", icon: Play },
+  { href: "/news", labelKey: "nav.news", icon: Newspaper },
+  { href: "/movies", labelKey: "nav.movies", icon: Film },
+  { href: "/music", labelKey: "nav.music", icon: Music },
+  { href: "/intelligence", labelKey: "nav.intelligence", icon: Activity },
+  { href: "/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard },
+  { href: "/about", labelKey: "nav.about", icon: Info },
 ] as const;
 
 export function isNavMoreActive(pathname: string): boolean {

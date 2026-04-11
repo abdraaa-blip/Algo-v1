@@ -5,6 +5,15 @@
 
   "nav": {
     "now": "الآن",
+    "home": "الرئيسية",
+    "plus": "المزيد",
+    "moreSection": "الأقسام",
+    "create": "إنشاء",
+    "algoAi": "ALGO AI",
+    "intelligence": "الذكاء",
+    "dashboard": "لوحة التحكم",
+    "movies": "أفلام",
+    "music": "موسيقى",
     "trends": "الترندات",
     "videos": "الفيديوهات",
     "news": "الأخبار",

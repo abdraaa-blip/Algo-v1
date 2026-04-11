@@ -5,6 +5,15 @@
 
   "nav": {
     "now": "Now",
+    "home": "Home",
+    "plus": "More",
+    "moreSection": "Sections",
+    "create": "Create",
+    "algoAi": "ALGO AI",
+    "intelligence": "Intelligence",
+    "dashboard": "Dashboard",
+    "movies": "Movies",
+    "music": "Music",
     "trends": "Trends",
     "videos": "Videos",
     "news": "News",

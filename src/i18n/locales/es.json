@@ -5,7 +5,16 @@
 
   "nav": {
     "now": "Ahora",
-    "trends": "Trends",
+    "home": "Inicio",
+    "plus": "Más",
+    "moreSection": "Secciones",
+    "create": "Crear",
+    "algoAi": "ALGO AI",
+    "intelligence": "Inteligencia",
+    "dashboard": "Panel",
+    "movies": "Películas",
+    "music": "Música",
+    "trends": "Tendencias",
     "videos": "Videos",
     "news": "Noticias",
     "creator": "Creador",

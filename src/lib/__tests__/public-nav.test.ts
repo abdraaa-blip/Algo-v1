@@ -14,6 +14,7 @@ describe("public-nav", () => {
       "/creator-mode",
       "/ai",
     ]);
+    expect(NAV_PRIMARY.every((i) => i.labelKey.startsWith("nav."))).toBe(true);
   });
 
   it("regroupe les rubriques secondaires dans NAV_MORE", () => {
@@ -21,6 +22,7 @@ describe("public-nav", () => {
     const hrefs = NAV_MORE.map((i) => i.href);
     expect(hrefs).toContain("/intelligence");
     expect(hrefs).toContain("/videos");
+    expect(NAV_MORE.every((i) => i.labelKey.startsWith("nav."))).toBe(true);
   });
 
   it("isNavMoreActive reflète le chemin courant", () => {

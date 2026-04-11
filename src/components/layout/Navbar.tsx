@@ -16,6 +16,7 @@ import {
   NAV_PRIMARY,
   isNavMoreActive,
 } from "@/lib/navigation/public-nav";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   Search,
   Bell,
@@ -27,6 +28,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const { scope, setScope } = useScopeContext();
   const scrollRef = useRef<HTMLElement>(null);
@@ -147,7 +149,7 @@ export function Navbar() {
                 )}
                 aria-label="Navigation principale"
               >
-                {NAV_PRIMARY.map(({ href, label, icon: Icon }) => {
+                {NAV_PRIMARY.map(({ href, labelKey, icon: Icon }) => {
                   const isActive =
                     href === "/" ? pathname === "/" : pathname.startsWith(href);
                   return (
@@ -170,7 +172,9 @@ export function Navbar() {
                         strokeWidth={isActive ? 2 : 1.5}
                         aria-hidden="true"
                       />
-                      <span className="text-[11px] sm:text-xs">{label}</span>
+                      <span className="text-[11px] sm:text-xs">
+                        {t(labelKey)}
+                      </span>
                     </Link>
                   );
                 })}
@@ -211,7 +215,7 @@ export function Navbar() {
                     : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[color-mix(in_srgb,var(--color-text-primary)_8%,transparent)]",
                 )}
               >
-                <span className="text-[11px] sm:text-xs">Plus</span>
+                <span className="text-[11px] sm:text-xs">{t("nav.plus")}</span>
                 <ChevronDown
                   size={14}
                   className={cn(
@@ -233,10 +237,10 @@ export function Navbar() {
                   )}
                 >
                   <p className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
-                    Rubriques
+                    {t("nav.moreSection")}
                   </p>
                   <ul className="max-h-[min(70vh,22rem)] overflow-y-auto">
-                    {NAV_MORE.map(({ href, label, icon: Icon }) => {
+                    {NAV_MORE.map(({ href, labelKey, icon: Icon }) => {
                       const isActive =
                         href === "/"
                           ? pathname === "/"
@@ -256,7 +260,7 @@ export function Navbar() {
                             )}
                           >
                             <Icon size={16} aria-hidden />
-                            {label}
+                            {t(labelKey)}
                           </Link>
                         </li>
                       );
@@ -279,7 +283,7 @@ export function Navbar() {
 
             <Link
               href="/search"
-              aria-label="Rechercher"
+              aria-label={t("nav.search")}
               className="algo-interactive w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[color-mix(in_srgb,var(--color-text-primary)_8%,transparent)] transition-[color,background-color,transform] duration-200 active:bg-[color-mix(in_srgb,var(--color-text-primary)_11%,transparent)]"
             >
               <Search size={18} strokeWidth={1.5} aria-hidden="true" />
