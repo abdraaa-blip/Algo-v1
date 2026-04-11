@@ -24,4 +24,4 @@ Tu complètes le portail QA (`algo-qa-intelligent.mdc`) avec un **focus pipeline
 - Échec prod : **rollback Vercel** (Promote / version précédente) puis correctif en PR ; option Git : `git revert` + push.
 - Analyse logs : observabilité / Vercel logs — pas de contournement silencieux.
 
-Références : **`docs/ALGO_CICD_PIPELINE.md`**, **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`**, **`config/algo-deploy-gate.ts`**.
+Références : **`docs/README.md`** (§ *Ordre de lecture des vérités* — pas de second wiki `docs/system/`), **`docs/ALGO_CICD_PIPELINE.md`**, **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`**, **`config/algo-deploy-gate.ts`**.

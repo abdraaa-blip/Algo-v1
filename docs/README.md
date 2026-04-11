@@ -8,6 +8,19 @@
 - **Vérité produit / règles** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `AGENTS.md`, fichiers sous `config/`.
 - Les pages ici **expliquent et cadr**ent ; en cas de doute sur un comportement, le **code** et la **CI** font foi. Mettre à jour ce **index** quand un **nouveau document canonique majeur** apparaît à la racine de `docs/`.
 
+### Ordre de lecture des vérités (anti-fragmentation)
+
+Pas de dossier parallèle type `docs/system/` ni de fichier « unique roi » qui dupliquerait la doctrine : les sources sont **réparties** à dessein. En cas de doute ou de conflit, lire **dans cet ordre** :
+
+1. **`docs/algo-doctrine.md`** — règles non négociables.
+2. **`docs/ALGO_CHECKLIST_PROOFS.md`** — preuves / chemins code vs produit.
+3. **`AGENTS.md`** — pile Next, QA, IA, hooks, liens ops.
+4. **`config/algo-qa-gate.ts`** et **`config/algo-deploy-gate.ts`** — checklists et commandes (`verify:release`, etc.).
+5. **`docs/ALGO_CICD_PIPELINE.md`** — flux GitHub · Husky · Vercel · rollback.
+6. **Code sous `src/`** + résultat de **`npm run verify:release`** — comportement réel et CI font foi sur l’implémentation.
+
+Pas de **score unique 0–100** « santé système » par LLM : voir **`docs/ALGO_RELEASE_READINESS.md`** (rubric qualitative).
+
 ---
 
 ## Racine & agents

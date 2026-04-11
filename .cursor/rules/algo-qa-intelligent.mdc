@@ -10,7 +10,7 @@ Avant de **valider** une tâche, un module ou une PR, ou de dire « c’est term
 1. **Auto-audit** sur le périmètre modifié : technique, UI/UX, logique système, perf (voir `config/algo-qa-gate.ts` → `ALGO_QA_CHECKLIST`).
 2. **Référence design obligatoire** : `config/algo-system-rules.ts` (`ALGO_SYSTEM_RULES`, `ALGO_DESIGN_SOURCES`) · cadrage UX : `docs/ALGO_UX_CHARTER.md` · audit cognitif / parcours : `docs/ALGO_UX_COGNITIVE_AUDIT.md`.
 3. **Cohérence produit** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `docs/ALGO_PRODUCTION_BOUNDARIES.md` (sketchs « prod ready »), `AGENTS.md` · messages / GTM brouillon : `docs/ALGO_GTM_NOTES.md` (sous doctrine, pas source code).
-4. **Opérations / déploiement / anti-pavés de directives** : `docs/ALGO_OPERATIONS_PLAYBOOK.md` (point d’entrée unique vers QA gate, deploy gate, offline evolution) · **CI/CD** : `docs/ALGO_CICD_PIPELINE.md` (GitHub + Husky + Vercel) · maturité release qualitative : `docs/ALGO_RELEASE_READINESS.md` · index `docs/` : `docs/README.md`.
+4. **Opérations / déploiement / anti-pavés de directives** : `docs/ALGO_OPERATIONS_PLAYBOOK.md` (point d’entrée unique vers QA gate, deploy gate, offline evolution) · **CI/CD** : `docs/ALGO_CICD_PIPELINE.md` (GitHub + Husky + Vercel) · maturité release qualitative : `docs/ALGO_RELEASE_READINESS.md` · index `docs/` : `docs/README.md` (**§ Ordre de lecture des vérités** — pas de second wiki `docs/system/`).
 
 ## Audit cohérence plus large (optionnel)
 

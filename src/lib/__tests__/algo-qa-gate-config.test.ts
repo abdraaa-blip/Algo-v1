@@ -10,6 +10,18 @@ import {
 } from "../../../config/algo-qa-gate";
 
 describe("config/algo-qa-gate", () => {
+  it("docs/README définit un ordre de lecture des vérités (sans second wiki)", () => {
+    const readme = readFileSync(
+      path.join(process.cwd(), "docs", "README.md"),
+      "utf8",
+    );
+    expect(readme).toMatch(/Ordre de lecture des vérités/i);
+    expect(readme).toMatch(/algo-doctrine\.md/);
+    expect(readme).toMatch(/pas de dossier parallèle|docs\/system/i);
+    expect(readme).toContain("ALGO_RELEASE_READINESS.md");
+    expect(readme).toMatch(/score unique/i);
+  });
+
   it("référence le fichier design system", () => {
     expect(ALGO_QA_SOURCES.designAndUiRules).toBe(
       "config/algo-system-rules.ts",
