@@ -96,7 +96,7 @@ export function CommandPalette() {
     { id: 'nav-stars', title: 'Stars montantes', subtitle: 'Artistes du moment', icon: <Sparkles size={18} />, action: () => navigate('/rising-stars'), category: 'navigation', keywords: ['stars', 'artistes'] },
     { id: 'nav-videos', title: 'Videos', subtitle: 'Contenus video', icon: <Video size={18} />, action: () => navigate('/videos'), category: 'navigation', keywords: ['videos', 'tiktok'] },
     { id: 'nav-movies', title: 'Films et Series', subtitle: 'A regarder', icon: <Film size={18} />, action: () => navigate('/movies'), category: 'navigation', keywords: ['films', 'movies', 'series', 'netflix'] },
-    { id: 'nav-news', title: 'Actualités', subtitle: 'Les dernières infos', icon: <Newspaper size={18} />, action: () => navigate('/news'), category: 'navigation', keywords: ['news', 'actualités', 'actualites'] },
+    { id: 'nav-news', title: 'Actualités', subtitle: 'Les dernières infos', icon: <Newspaper size={18} />, action: () => navigate('/news'), category: 'navigation', keywords: ['news', 'actualités', 'actualites', 'données', 'donnees'] },
     { id: 'nav-creator', title: 'Mode Createur', subtitle: 'Outils pour creer', icon: <Mic size={18} />, action: () => navigate('/creator-mode'), category: 'navigation', keywords: ['creator'] },
     { id: 'nav-watchlist', title: 'A regarder', subtitle: 'Tes favoris', icon: <Bookmark size={18} />, action: () => navigate('/watchlist'), category: 'navigation', keywords: ['watchlist'] },
     { id: 'nav-profile', title: 'Profil', subtitle: 'Mon compte', icon: <User size={18} />, action: () => navigate('/profile'), category: 'navigation', keywords: ['profile'] },

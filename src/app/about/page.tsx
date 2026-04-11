@@ -37,16 +37,16 @@ function AnimatedSection({
 }
 
 const USE_CASES = [
-  { icon: Sparkles, audience: "Le createur de contenu", benefit: "qui veut poster avant que la tendance ne peak, pas apres" },
+  { icon: Sparkles, audience: "Le créateur de contenu", benefit: "qui veut poster avant le pic de la tendance, pas après" },
   { icon: Users, audience: "L'influenceur", benefit: "qui veut savoir ce que son audience voudra demain, pas hier" },
-  { icon: Eye, audience: "L'esprit curieux", benefit: "qui veut decouvrir les meilleurs films, series, musiques et videos maintenant, sans passer des heures a chercher" },
-  { icon: Newspaper, audience: "Le journaliste", benefit: "qui detecte une histoire avant qu'elle ne devienne une histoire" },
-  { icon: Briefcase, audience: "L'agence", benefit: "qui apporte a ses clients non pas des opinions mais des signaux" },
+  { icon: Eye, audience: "L'esprit curieux", benefit: "qui veut découvrir les meilleurs films, séries, musiques et vidéos maintenant, sans passer des heures à chercher" },
+  { icon: Newspaper, audience: "Le journaliste", benefit: "qui repère une histoire avant qu'elle ne devienne une histoire" },
+  { icon: Briefcase, audience: "L'agence", benefit: "qui apporte à ses clients non pas des opinions mais des signaux" },
   { icon: Mic, audience: "Le community manager", benefit: "qui veut repérer tôt ce qui compte pour son calendrier éditorial" },
-  { icon: Lightbulb, audience: "L'entrepreneur", benefit: "qui repere les shifts culturels avant qu'ils ne deviennent des shifts de marche" },
-  { icon: Film, audience: "Le cinephile", benefit: "qui veut savoir quel film tout le monde va regarder la semaine prochaine" },
-  { icon: Music, audience: "L'amateur de musique", benefit: "qui decouvre le prochain hit avant qu'il n'explose" },
-  { icon: Coffee, audience: "La personne qui veut simplement savoir", benefit: "ce qui se passe maintenant, pourquoi ca compte, et ce qui vient ensuite" },
+  { icon: Lightbulb, audience: "L'entrepreneur", benefit: "qui repère les shifts culturels avant qu'ils ne deviennent des shifts de marché" },
+  { icon: Film, audience: "Le cinéphile", benefit: "qui veut savoir quel film tout le monde va regarder la semaine prochaine" },
+  { icon: Music, audience: "L'amateur de musique", benefit: "qui découvre le prochain hit avant qu'il n'explose" },
+  { icon: Coffee, audience: "La personne qui veut simplement savoir", benefit: "ce qui se passe maintenant, pourquoi ça compte, et ce qui vient ensuite" },
 ]
 
 const ALGO_TELLS_YOU = [

@@ -223,14 +223,14 @@ function detectAnomalies(params: {
     anomalies.push({
       type: 'spike',
       severity: 'medium',
-      message: 'Spike de volume detecte sur sources sociales/video.',
+      message: 'Pic de volume détecté sur les sources sociales et vidéo.',
     })
   }
   if (params.frictionRate > 0.2) {
     anomalies.push({
       type: 'friction',
       severity: 'high',
-      message: 'Friction utilisateur elevee: prioriser stabilite UX/perf.',
+      message: 'Friction utilisateur élevée : prioriser la stabilité UX / perf.',
     })
   }
   if (params.engagementRate < 0.05) {
@@ -254,7 +254,7 @@ function inferProductOpportunities(titles: string[]): GlobalIntelligenceSnapshot
     type: 'product' as const,
     title: `Signal produit emergent: ${k}`,
     confidence: 0.62,
-    rationale: 'Frequence croissante sur titres sociaux/video + potentiel UGC.',
+    rationale: 'Fréquence croissante sur titres sociaux / vidéo + potentiel UGC.',
   }))
   return mapped
 }
@@ -311,13 +311,13 @@ export async function buildGlobalIntelligence(params?: {
   const opportunities: GlobalIntelligenceSnapshot['opportunities'] = [
     {
       type: 'content',
-      title: 'Accelerer les contenus sur signaux montants',
+      title: 'Accélérer les contenus sur signaux montants',
       confidence: categories.some((c) => c.momentum === 'up') ? 0.74 : 0.58,
       rationale: 'Catégories avec momentum positif détectées dans les flux agrégés.',
     },
     {
       type: 'timing',
-      title: 'Fenetre de publication dynamique',
+      title: 'Fenêtre de publication dynamique',
       confidence: 0.66,
       rationale: "Combinaison engagement/friction et volume social pour ajuster le timing de publication.",
     },

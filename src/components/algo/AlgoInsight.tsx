@@ -15,50 +15,50 @@ interface AlgoInsightProps {
 // ALGO's signature phrases and personality
 const ALGO_PHRASES = {
   intro: [
-    "ALGO detecte un signal fort.",
-    "Mon analyse indique une opportunite.",
-    "Les donnees convergent vers un pattern interessant.",
-    "Signal viral capte.",
-    "Pattern detecte dans les donnees.",
+    "ALGO détecte un signal fort.",
+    "Mon analyse indique une opportunité.",
+    "Les données convergent vers un pattern intéressant.",
+    "Signal viral capté.",
+    "Pattern détecté dans les données.",
   ],
   urgency: {
     critical: [
-      "Fenetre critique. Action immediate requise.",
+      "Fenêtre critique. Action immédiate requise.",
       "Le pic approche. C'est maintenant ou jamais.",
-      "Saturation dans moins de 6h. Agis maintenant.",
+      "Saturation dans moins de 6 h. Agis maintenant.",
     ],
     high: [
       "Timing optimal dans les prochaines heures.",
-      "La vague monte. Position-toi avant les autres.",
-      "Momentum ideal pour te demarquer.",
+      "La vague monte. Positionne-toi avant les autres.",
+      "Momentum idéal pour te démarquer.",
     ],
     medium: [
-      "Bonne fenetre d'opportunite.",
-      "Le sujet gagne en traction. Prepare ton contenu.",
+      "Bonne fenêtre d'opportunité.",
+      "Le sujet gagne en traction. Prépare ton contenu.",
       "Signal stable. Tu as le temps de bien faire.",
     ],
     low: [
-      "Tendance emergente a surveiller.",
-      "Signal precoce detecte. Avantage first-mover possible.",
-      "A monitorer pour les prochaines heures.",
+      "Tendance émergente à surveiller.",
+      "Signal précoce détecté. Avantage first-mover possible.",
+      "À monitorer pour les prochaines heures.",
     ]
   },
   why: [
-    "Voici pourquoi ca fonctionne:",
-    "L'analyse revele:",
-    "Les patterns montrent:",
-    "Ce qui fait la difference:",
+    "Voici pourquoi ça fonctionne :",
+    "L'analyse révèle :",
+    "Les patterns montrent :",
+    "Ce qui fait la différence :",
   ],
   action: [
-    "Ce que tu dois faire maintenant:",
-    "Action recommandee:",
-    "Pour maximiser ton impact:",
-    "Ma recommandation:",
+    "Ce que tu dois faire maintenant :",
+    "Action recommandée :",
+    "Pour maximiser ton impact :",
+    "Ma recommandation :",
   ],
   confidence: {
-    high: "Confiance elevee sur cette prediction.",
-    medium: "Niveau de confiance moyen - plusieurs scenarios possibles.",
-    low: "Signal faible - a confirmer avec d'autres indicateurs.",
+    high: "Confiance élevée sur cette prédiction.",
+    medium: "Niveau de confiance moyen — plusieurs scénarios possibles.",
+    low: "Signal faible — à confirmer avec d'autres indicateurs.",
   }
 }
 
@@ -88,38 +88,38 @@ function generateInsight(title: string, category?: string, score?: number): {
   
   const categoryInsights: Record<string, { why: string; action: string; tips: string[] }> = {
     Tech: {
-      why: "Les sujets tech generent de l'engagement car ils impactent directement la vie quotidienne. Les gens cherchent a comprendre et anticiper.",
-      action: "Fais une reaction rapide ou un tutoriel. Le format 'Ce que ca change pour toi' fonctionne tres bien.",
+      why: "Les sujets tech génèrent de l'engagement car ils impactent directement la vie quotidienne. Les gens cherchent à comprendre et anticiper.",
+      action: "Fais une réaction rapide ou un tutoriel. Le format « Ce que ça change pour toi » fonctionne très bien.",
       tips: ["Simplifie le jargon technique", "Montre l'impact concret", "Donne ton avis personnel"]
     },
     Sport: {
-      why: "Le sport cree des emotions fortes et une communaute engagee. Les gens veulent partager leurs reactions.",
-      action: "Reagis a chaud pendant ou juste apres l'evenement. L'authenticite prime sur la qualite.",
-      tips: ["Poste pendant le match", "Montre ta vraie reaction", "Interagis avec les commentaires"]
+      why: "Le sport crée des émotions fortes et une communauté engagée. Les gens veulent partager leurs réactions.",
+      action: "Réagis à chaud pendant ou juste après l'événement. L'authenticité prime sur la qualité.",
+      tips: ["Poste pendant le match", "Montre ta vraie réaction", "Interagis avec les commentaires"]
     },
     Cinema: {
-      why: "Les fans de cinema sont passionnes et adorent les theories et analyses. Le contenu a une duree de vie plus longue.",
-      action: "Analyse, theories, ou reactions au trailer. Le format 'X choses que tu as rate' marche bien.",
-      tips: ["Evite les spoilers majeurs", "Fais des predictions audacieuses", "Compare avec d'autres oeuvres"]
+      why: "Les fans de cinéma sont passionnés et adorent les théories et analyses. Le contenu a une durée de vie plus longue.",
+      action: "Analyse, théories ou réactions au trailer. Le format « X choses que tu as ratées » marche bien.",
+      tips: ["Évite les spoilers majeurs", "Fais des prédictions audacieuses", "Compare avec d'autres œuvres"]
     },
     Politique: {
-      why: "Les sujets politiques generent des debats passionnes. L'engagement est eleve mais le ton compte.",
-      action: "Resume factuel ou analyse des consequences. Reste informatif plutot qu'opinione.",
-      tips: ["Reste factuel", "Evite la polemique gratuite", "Apporte de la valeur ajoutee"]
+      why: "Les sujets politiques génèrent des débats passionnés. L'engagement est élevé mais le ton compte.",
+      action: "Résumé factuel ou analyse des conséquences. Reste informatif plutôt que partisan.",
+      tips: ["Reste factuel", "Évite la polémique gratuite", "Apporte de la valeur ajoutée"]
     },
     Divertissement: {
       why: "Le divertissement est viral par nature. Les gens veulent participer et se sentir dans le coup.",
-      action: "Participe au trend avec ta touche personnelle. La creativite et l'humour priment.",
-      tips: ["Ajoute ta personnalite", "Fais-le rapidement", "N'aie pas peur d'etre creatif"]
+      action: "Participe au trend avec ta touche personnelle. La créativité et l'humour priment.",
+      tips: ["Ajoute ta personnalité", "Fais-le rapidement", "N'aie pas peur d'être créatif"]
     },
     Finance: {
-      why: "Les sujets financiers touchent directement le portefeuille des gens. Ils cherchent des conseils et de la reassurance.",
-      action: "Explique ce qui se passe et ce que ca signifie. Evite les conseils d'investissement directs.",
-      tips: ["Simplifie les concepts", "Donne du contexte historique", "Reste prudent sur les predictions"]
+      why: "Les sujets financiers touchent directement le portefeuille des gens. Ils cherchent des conseils pour se rassurer.",
+      action: "Explique ce qui se passe et ce que ça signifie. Évite les conseils d'investissement directs.",
+      tips: ["Simplifie les concepts", "Donne du contexte historique", "Reste prudent sur les prédictions"]
     },
     default: {
-      why: "Ce sujet genere de l'interet car il touche a des preoccupations actuelles de l'audience.",
-      action: "Cree du contenu qui apporte de la valeur - information, divertissement, ou inspiration.",
+      why: "Ce sujet génère de l'intérêt car il touche à des préoccupations actuelles de l'audience.",
+      action: "Crée du contenu qui apporte de la valeur — information, divertissement ou inspiration.",
       tips: ["Connais ton audience", "Apporte ta perspective unique", "Sois authentique"]
     }
   }

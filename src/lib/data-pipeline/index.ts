@@ -342,11 +342,11 @@ export function getRefreshIntervalLabel(ms: number): string {
 
 const FALLBACK_MESSAGES = {
   news: 'Les actualités sont temporairement indisponibles. Réessaie dans quelques minutes.',
-  youtube: 'Les videos YouTube sont temporairement indisponibles.',
+  youtube: 'Les vidéos YouTube sont temporairement indisponibles.',
   trends: 'Les tendances sont temporairement indisponibles.',
   music: 'Les classements musicaux sont temporairement indisponibles.',
   movies: 'Les films sont temporairement indisponibles.',
-  celebrities: 'Les celebrites sont temporairement indisponibles.',
+  celebrities: 'Les célébrités sont temporairement indisponibles.',
 } as const
 
 export function createFallbackPacket<T>(

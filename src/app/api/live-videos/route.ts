@@ -230,7 +230,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       fetchedAt: new Date().toISOString(),
       count: 0,
       error: error instanceof Error ? error.message : 'Unknown error',
-      fallbackMessage: 'Les videos YouTube sont temporairement indisponibles.',
+      fallbackMessage: 'Les vidéos YouTube sont temporairement indisponibles.',
     })
   }
 }

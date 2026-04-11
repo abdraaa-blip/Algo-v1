@@ -193,7 +193,7 @@ export function createComebackNotification(daysMissed: number): NotificationTrig
   } else {
     message = {
       title: 'ALGO a change!',
-      body: 'Nouvelles fonctionnalites et bonus de retour massif'
+      body: 'Nouvelles fonctionnalités et gros bonus de retour'
     }
   }
   

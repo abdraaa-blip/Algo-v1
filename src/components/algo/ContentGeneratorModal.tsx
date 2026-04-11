@@ -24,17 +24,17 @@ interface ContentGeneratorModalProps {
 // Simulated AI generation (in production, this would call an API)
 function generateContent(trend: string, category: string, emotion: string): GeneratedContent {
   const hooks = [
-    `Personne ne vous dit ca sur ${trend}...`,
-    `J'ai decouvert quelque chose de choquant sur ${trend}`,
+    `Personne ne te dit ça sur ${trend}…`,
+    `J'ai découvert quelque chose de choquant sur ${trend}`,
     `Voici pourquoi tout le monde parle de ${trend}`,
-    `La verite sur ${trend} que les medias cachent`,
-    `POV: Tu decouvres ${trend} pour la premiere fois`,
+    `La vérité sur ${trend} que les médias cachent`,
+    `POV : tu découvres ${trend} pour la première fois`,
   ]
   
   const angles = [
     `Analyse critique avec ton point de vue personnel`,
-    `Reaction authentique en temps reel`,
-    `Explication simple pour les debutants`,
+    `Réaction authentique en temps réel`,
+    `Explication simple pour les débutants`,
     `Comparaison avec des situations similaires`,
     `Story-time basé sur ton expérience`,
   ]
@@ -42,10 +42,10 @@ function generateContent(trend: string, category: string, emotion: string): Gene
   const formats = ['Face cam reaction', 'Voice-over + montage', 'POV immersif', 'Duet/Stitch', 'Green screen']
   
   const ideas = [
-    `Fais une reaction spontanee a ${trend} en montrant ton ecran`,
-    `Explique ${trend} comme si tu parlais a un ami qui ne connait rien`,
-    `Compare ${trend} avec ce qui s'est passe l'annee derniere`,
-    `Raconte une anecdote personnelle liee a ${trend}`,
+    `Fais une réaction spontanée à ${trend} en montrant ton écran`,
+    `Explique ${trend} comme si tu parlais à un ami qui ne connaît rien`,
+    `Compare ${trend} avec ce qui s'est passé l'année dernière`,
+    `Raconte une anecdote personnelle liée à ${trend}`,
     `Demonte les fake news autour de ${trend}`,
   ]
   
@@ -159,7 +159,7 @@ export function ContentGeneratorModal({
                 <Lightbulb size={28} className="text-violet-400" />
               </div>
               <p className="text-sm text-white/60 mb-4">
-                Clique pour generer une idee de contenu basee sur cette tendance
+                Clique pour générer une idée de contenu basée sur cette tendance
               </p>
               <Button
                 variant="primary"
@@ -167,7 +167,7 @@ export function ContentGeneratorModal({
                 icon={Sparkles}
                 onClick={handleGenerate}
               >
-                Generer une idee
+                Générer une idée
               </Button>
             </div>
           )}
@@ -176,7 +176,7 @@ export function ContentGeneratorModal({
             <div className="text-center py-12">
               <div className="w-12 h-12 rounded-full border-2 border-violet-400/30 border-t-violet-400 animate-spin mx-auto mb-4" />
               <p className="text-sm text-white/60">Analyse de la tendance...</p>
-              <p className="text-[10px] text-white/30 mt-1">Generation de l&apos;idee optimale</p>
+              <p className="text-[10px] text-white/30 mt-1">Génération de l&apos;idée optimale</p>
             </div>
           )}
           
@@ -285,7 +285,7 @@ export function ContentGeneratorModal({
                 icon={RefreshCw}
                 onClick={handleGenerate}
               >
-                Regenerer une autre idee
+                Régénérer une autre idée
               </Button>
             </div>
           )}

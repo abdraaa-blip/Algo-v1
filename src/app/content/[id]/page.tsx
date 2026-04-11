@@ -75,7 +75,7 @@ async function fetchYouTubeContent(videoId: string): Promise<Content | null> {
         timing: 'now',
         bestPlatform: ['YouTube', 'TikTok'],
         bestFormat: 'reaction',
-        timingLabel: fillLocaleStrings({ fr: 'Fenetre active', en: 'Active window' }),
+        timingLabel: fillLocaleStrings({ fr: 'Fenêtre active', en: 'Active window' }),
         postWindow: { status: 'optimal' },
       },
       sourceDistribution: [

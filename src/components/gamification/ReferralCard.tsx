@@ -60,7 +60,7 @@ export function ReferralCard() {
   }
 
   const handleShare = async (platform: 'twitter' | 'whatsapp' | 'telegram' | 'native') => {
-    const message = `Decouvre ALGO - L'algorithme qui detecte ce qui va devenir viral avant tout le monde. Utilise mon code: ${referralCode}`
+    const message = `Découvre ALGO — l'algorithme qui repère ce qui peut partir en viral tôt. Utilise mon code : ${referralCode}`
     
     switch (platform) {
       case 'twitter':
@@ -75,7 +75,7 @@ export function ReferralCard() {
       case 'native':
         if (navigator.share) {
           await navigator.share({
-            title: 'ALGO - Detecte le viral',
+            title: 'ALGO — repère les signaux',
             text: message,
             url: referralLink
           })

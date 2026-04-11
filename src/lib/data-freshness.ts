@@ -46,7 +46,7 @@ export const DATA_STATUS_CONFIG = {
     label: 'Erreur',
     labelShort: 'ERREUR',
     color: 'red',
-    description: 'Impossible de charger les donnees',
+    description: 'Impossible de charger les données',
     maxAgeMs: 0,
   },
   loading: {
@@ -270,7 +270,7 @@ export const DATA_SOURCES: Record<string, DataSourceConfig> = {
   },
   'fallback': {
     id: 'fallback',
-    name: 'Donnees de secours',
+    name: 'Données de secours',
     type: 'static',
     refreshInterval: 0,
     canBeLive: false,

@@ -248,14 +248,14 @@ function generateEstimatedTrends(country: string): CachedData<RealTrend> {
   // Country-specific trending topics
   const countryTopics: Record<string, Array<{ title: string; desc: string; traffic: string }>> = {
     FR: [
-      { title: 'Ligue 1 Resultats', desc: 'Scores et classements du championnat', traffic: '500K+' },
-      { title: 'ChatGPT 5', desc: 'Nouvelles fonctionnalites IA', traffic: '350K+' },
-      { title: 'Elections 2027', desc: 'Sondages et analyses politiques', traffic: '280K+' },
-      { title: 'Festival Cannes', desc: 'Films en competition', traffic: '200K+' },
-      { title: 'Meteo France', desc: 'Previsions et alertes', traffic: '450K+' },
-      { title: 'SNCF Greve', desc: 'Perturbations transports', traffic: '380K+' },
-      { title: 'Netflix Top 10', desc: 'Series les plus regardees', traffic: '420K+' },
-      { title: 'iPhone 17 Rumors', desc: 'Fuites et specifications', traffic: '180K+' },
+      { title: 'Ligue 1 Résultats', desc: 'Scores et classements du championnat', traffic: '500K+' },
+      { title: 'ChatGPT 5', desc: 'Nouvelles fonctionnalités IA', traffic: '350K+' },
+      { title: 'Élections 2027', desc: 'Sondages et analyses politiques', traffic: '280K+' },
+      { title: 'Festival Cannes', desc: 'Films en compétition', traffic: '200K+' },
+      { title: 'Météo France', desc: 'Prévisions et alertes', traffic: '450K+' },
+      { title: 'SNCF Grève', desc: 'Perturbations transports', traffic: '380K+' },
+      { title: 'Netflix Top 10', desc: 'Séries les plus regardées', traffic: '420K+' },
+      { title: 'iPhone 17 Rumors', desc: 'Fuites et spécifications', traffic: '180K+' },
     ],
     US: [
       { title: 'NBA Playoffs', desc: 'Live scores and highlights', traffic: '1.2M+' },
@@ -451,56 +451,56 @@ function generateFallbackNews(): RealNewsArticle[] {
   
   const newsTemplates = [
     {
-      title: 'Tech: Les nouvelles fonctionnalites IA qui changent tout',
-      description: 'L intelligence artificielle continue de revolutionner notre quotidien avec des applications toujours plus innovantes.',
+      title: 'Tech : les nouvelles fonctionnalités IA qui changent tout',
+      description: 'L\'intelligence artificielle continue de révolutionner notre quotidien avec des applications toujours plus innovantes.',
       source: 'Tech Insider',
       country: 'US',
       image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800'
     },
     {
-      title: 'Sport: Resultats et analyses des matchs du jour',
-      description: 'Retour sur les rencontres sportives majeures et les performances des equipes.',
+      title: 'Sport : résultats et analyses des matchs du jour',
+      description: 'Retour sur les rencontres sportives majeures et les performances des équipes.',
       source: 'Sport Live',
       country: 'FR',
-      image: 'https://images.unsplash.com/photo-1461896836934- voices-8cd0b8bf?w=800'
+      image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800'
     },
     {
-      title: 'Cinema: Les films les plus attendus de la saison',
-      description: 'Decouvrez les sorties cinema qui vont marquer les prochaines semaines.',
+      title: 'Cinéma : les films les plus attendus de la saison',
+      description: 'Découvre les sorties ciné qui vont marquer les prochaines semaines.',
       source: 'Cine Actu',
       country: 'FR',
       image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800'
     },
     {
       title: 'Musique: Les artistes qui dominent les charts',
-      description: 'Tour d horizon des tubes du moment et des nouveaux talents a suivre.',
+      description: 'Tour d\'horizon des tubes du moment et des nouveaux talents à suivre.',
       source: 'Music Today',
       country: 'US',
       image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800'
     },
     {
-      title: 'Economie: Les marches financiers en mouvement',
-      description: 'Analyse des tendances economiques et des indicateurs cles.',
+      title: 'Économie : les marchés financiers en mouvement',
+      description: 'Analyse des tendances économiques et des indicateurs clés.',
       source: 'Finance Daily',
       country: 'GB',
       image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800'
     },
     {
-      title: 'Culture: Les evenements qui font vibrer la scene culturelle',
-      description: 'Expositions, spectacles et festivals a ne pas manquer.',
+      title: 'Culture : les événements qui font vibrer la scène culturelle',
+      description: 'Expositions, spectacles et festivals à ne pas manquer.',
       source: 'Culture Mag',
       country: 'FR',
       image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800'
     },
     {
-      title: 'Gaming: Les jeux video qui cartonnent en ce moment',
+      title: 'Gaming : les jeux vidéo qui cartonnent en ce moment',
       description: 'Tests, previews et actualités du monde vidéoludique.',
       source: 'Game Zone',
       country: 'US',
       image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800'
     },
     {
-      title: 'Mode: Les tendances qui definissent le style actuel',
+      title: 'Mode : les tendances qui définissent le style actuel',
       description: 'Fashion week, streetwear et inspirations du moment.',
       source: 'Style Report',
       country: 'FR',
@@ -511,16 +511,16 @@ function generateFallbackNews(): RealNewsArticle[] {
   // Time-based news
   if (hour >= 6 && hour < 12) {
     newsTemplates.unshift({
-      title: 'Matinale: Ce qu il faut retenir de l actualite',
-      description: 'Resume des informations importantes pour bien commencer la journee.',
+      title: 'Matinale : ce qu\'il faut retenir de l\'actualité',
+      description: 'Résumé des informations importantes pour bien commencer la journée.',
       source: 'Morning Brief',
       country: 'FR',
       image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800'
     })
   } else if (hour >= 18) {
     newsTemplates.unshift({
-      title: 'Soiree: Le recap de la journee en quelques minutes',
-      description: 'Les faits marquants et les infos a retenir avant de conclure la journee.',
+      title: 'Soirée : le récap de la journée en quelques minutes',
+      description: 'Les faits marquants et les infos à retenir avant de conclure la journée.',
       source: 'Evening Digest',
       country: 'FR',
       image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800'

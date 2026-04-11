@@ -36,7 +36,7 @@ const DATA_SOURCES = [
   },
   {
     name: 'YouTube Trending',
-    description: 'Videos tendances par region',
+    description: 'Vidéos tendances par région',
     refreshInterval: '30 minutes',
     method: 'YouTube Data API v3',
     regions: ['FR', 'US', 'UK', 'NG'],
@@ -44,7 +44,7 @@ const DATA_SOURCES = [
   },
   {
     name: 'Google News',
-    description: 'Actualites par categorie et region',
+    description: 'Actualités par catégorie et région',
     refreshInterval: '15 minutes',
     method: 'RSS Feed',
     regions: ['FR', 'US', 'UK'],
@@ -60,7 +60,7 @@ const DATA_SOURCES = [
   },
   {
     name: 'TMDB',
-    description: 'Films et series populaires',
+    description: 'Films et séries populaires',
     refreshInterval: '1 heure',
     method: 'TMDB API v3',
     regions: ['Global'],
@@ -100,17 +100,17 @@ const INTELLIGENCE_MODULES = [
   },
   {
     name: 'Emotion Engine',
-    description: 'Detecte l\'emotion dominante du contenu (curiosite, colere, humour, inspiration, peur).',
+    description: 'Détecte l\'émotion dominante du contenu (curiosité, colère, humour, inspiration, peur).',
     icon: Brain,
   },
   {
     name: 'Action Generator',
-    description: 'Suggere des actions concretes pour capitaliser sur les tendances.',
+    description: 'Suggère des actions concrètes pour capitaliser sur les tendances.',
     icon: CheckCircle,
   },
   {
     name: 'Coherence Guard',
-    description: 'Valide les donnees et empeche l\'affichage de contenus invalides.',
+    description: 'Valide les données et empêche l\'affichage de contenus invalides.',
     icon: Shield,
   },
 ]
@@ -219,7 +219,7 @@ export default function TransparencyPage() {
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Database className="w-6 h-6 text-violet-400" />
-            <h2 className="text-xl font-bold">Sources de Donnees</h2>
+            <h2 className="text-xl font-bold">Sources de données</h2>
           </div>
           
           <div className="space-y-4">

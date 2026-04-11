@@ -328,7 +328,7 @@ export function generateRecommendations(
 
   // Saturation recommendations
   if (saturation.level === 'untapped') {
-    recommendations.push('Territoire vierge - opportunite unique')
+    recommendations.push('Territoire vierge — opportunité unique')
   } else if (saturation.level === 'low') {
     recommendations.push('Peu de concurrence - excellent potentiel')
   } else if (saturation.level === 'high') {

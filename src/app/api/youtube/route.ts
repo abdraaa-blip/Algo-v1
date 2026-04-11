@@ -69,7 +69,7 @@ function transformYouTubeData(data: YouTubeResponse, regionCode: string) {
         timing: 'now',
         bestPlatform: ['YouTube', 'TikTok'],
         bestFormat: 'reaction',
-        timingLabel: { fr: 'Fenetre active', en: 'Active window' },
+        timingLabel: { fr: 'Fenêtre active', en: 'Active window' },
         postWindow: { status: 'optimal' as const },
       },
       sourceDistribution: [

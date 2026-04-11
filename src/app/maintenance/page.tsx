@@ -43,8 +43,8 @@ export default function MaintenancePage() {
         <div className="space-y-2 text-left p-4 rounded-xl bg-white/[0.02] border border-white/5">
           <p className="text-xs font-semibold text-white/40 uppercase tracking-wide">Statut</p>
           <div className="space-y-1.5">
-            <StatusItem status="done" label="Sauvegarde des donnees" />
-            <StatusItem status="progress" label="Mise a jour des serveurs" />
+            <StatusItem status="done" label="Sauvegarde des données" />
+            <StatusItem status="progress" label="Mise à jour des serveurs" />
             <StatusItem status="pending" label="Tests de performance" />
             <StatusItem status="pending" label="Remise en ligne" />
           </div>

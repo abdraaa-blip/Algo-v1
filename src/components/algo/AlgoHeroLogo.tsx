@@ -9,13 +9,13 @@ const TAGLINES = [
     highlights: [
       { text: 'quoi poster', color: 'text-violet-400' },
       { text: 'quand', color: 'text-emerald-400' },
-      { text: 'pourquoi ca va marcher', color: 'text-orange-400' },
+      { text: 'pourquoi ça va marcher', color: 'text-orange-400' },
     ],
     connector: ', ',
     ending: '.'
   },
   {
-    text: 'Detecte les tendances',
+    text: 'Détecte les tendances',
     highlights: [
       { text: 'avant tout le monde', color: 'text-cyan-400' },
     ],
@@ -30,15 +30,15 @@ const TAGLINES = [
       { text: 'Twitter', color: 'text-blue-400' },
     ],
     connector: ', ',
-    ending: ' en temps reel.'
+    ending: ' en temps réel.'
   },
   {
     text: 'Ton avantage',
     highlights: [
-      { text: 'competitif', color: 'text-emerald-400' },
+      { text: 'compétitif', color: 'text-emerald-400' },
     ],
     connector: ' ',
-    ending: ' sur les autres createurs.'
+    ending: ' sur les autres créateurs.'
   },
   {
     text: 'Transforme les',
@@ -57,7 +57,7 @@ const TAGLINES = [
     ending: ' tous les autres.'
   },
   {
-    text: 'Prevois ce qui va',
+    text: 'Prévois ce qui va',
     highlights: [
       { text: 'exploser', color: 'text-orange-400' },
     ],
@@ -70,7 +70,7 @@ const TAGLINES = [
       { text: 'deviner', color: 'text-red-400' },
     ],
     connector: ' ',
-    ending: '. Commence a savoir.'
+    ending: '. Commence à savoir.'
   },
   {
     text: 'Un meta-radar',

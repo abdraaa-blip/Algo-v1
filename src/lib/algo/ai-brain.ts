@@ -110,7 +110,7 @@ function generateExplanation(
     return `Signal emergent: ce contenu montre des signes de traction avec ${formatNumber(views)} vues. A surveiller pour une potentielle acceleration.`
   }
   
-  return `Contenu actif sur ${source} avec des metriques standards. Pas de signal viral detecte actuellement.`
+  return `Contenu actif sur ${source} avec des métriques standards. Pas de signal viral détecté actuellement.`
 }
 
 // ============================================================================

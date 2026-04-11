@@ -321,13 +321,13 @@ export default async function NewsPage({ params }: Props) {
         insight={insight}
         watchersCount={Math.floor(importanceScore * 8)}
         labels={{
-          title: 'Insight pour createurs',
-          postNow: { high: 'Reagis maintenant!', medium: 'Opportunite moderee', low: 'Signal faible' },
-          timing: { now: 'Breaking - agis vite', too_late: 'Sujet deja traite', too_early: 'Trop tot' },
-          bestPlatform: 'Plateformes ideales',
-          bestFormat: 'Format recommande',
-          watchers: '{count} createurs surveillent cette actu',
-          postWindow: { optimal: 'Fenetre optimale', saturated: 'Sujet sature', fading: 'Interet en baisse' },
+          title: 'Insight pour créateurs',
+          postNow: { high: 'Réagis maintenant !', medium: 'Opportunité modérée', low: 'Signal faible' },
+          timing: { now: 'Breaking — agis vite', too_late: 'Sujet déjà traité', too_early: 'Trop tôt' },
+          bestPlatform: 'Plateformes idéales',
+          bestFormat: 'Format recommandé',
+          watchers: '{count} créateurs surveillent cette actu',
+          postWindow: { optimal: 'Fenêtre optimale', saturated: 'Sujet saturé', fading: 'Intérêt en baisse' },
         }}
       />
 
@@ -342,8 +342,8 @@ export default async function NewsPage({ params }: Props) {
             <span className="text-violet-400 mt-0.5">•</span>
             <span>
               {speedScore > 80 
-                ? 'Cette actu est fraiche - cree une reaction ou analyse dans les 2 prochaines heures'
-                : 'Trouve un angle original pour te demarquer sur ce sujet'
+                ? 'Cette actu est fraîche — crée une réaction ou une analyse dans les 2 prochaines heures'
+                : 'Trouve un angle original pour te démarquer sur ce sujet'
               }
             </span>
           </li>
@@ -375,7 +375,7 @@ export default async function NewsPage({ params }: Props) {
 
       {/* Disclaimer */}
       <p className="mt-4 text-[10px] text-[var(--color-text-muted)] text-center">
-        Source: {news.source} via Google News · Analyse ALGO en temps reel
+        Source : {news.source} via Google News · Analyse ALGO en temps réel
       </p>
     </div>
     </>

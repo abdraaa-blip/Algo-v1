@@ -12,7 +12,7 @@ interface RefreshButtonProps {
 
 /**
  * RefreshButton - Bouton de rafraichissement manuel
- * Permet a l'utilisateur de forcer un refresh des donnees et de vider le cache
+ * Permet à l'utilisateur de forcer un rafraîchissement des données et de vider le cache
  */
 export function RefreshButton({ className, onRefresh, floating = false }: RefreshButtonProps) {
   const [isRefreshing, setIsRefreshing] = useState(false)

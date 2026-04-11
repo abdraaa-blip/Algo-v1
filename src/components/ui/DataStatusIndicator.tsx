@@ -240,7 +240,7 @@ export function DataStatusIndicator({
             'transition-all duration-150',
             'disabled:opacity-50'
           )}
-          aria-label="Actualiser les donnees"
+          aria-label="Actualiser les données"
         >
           <RefreshCw size={12} className={isRefreshing ? 'animate-spin' : ''} />
         </button>

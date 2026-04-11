@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
         dataFreshness: 'error',
       },
       // Fallback message for UI
-      fallbackMessage: 'Les donnees sont temporairement indisponibles. Veuillez reessayer.',
+      fallbackMessage: 'Les données sont temporairement indisponibles. Réessaie dans un instant.',
     }, { status: 500 })
   }
 }
