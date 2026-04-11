@@ -15,7 +15,7 @@
 | Sujet | Chemin |
 |--------|--------|
 | Pile Next, QA, design, IA, billing, observabilité | **`AGENTS.md`** (racine du dépôt) |
-| Règles agents / Cursor | **`CLAUDE.md`**, **`.cursor/rules/`** |
+| Règles agents / Cursor | **`CLAUDE.md`**, **`.cursor/rules/`** (ex. **`algo-qa-intelligent.mdc`**, **`algo-cicd-guardian.mdc`** — revue pré-push / IA safety pipeline) |
 
 ---
 

@@ -1,0 +1,27 @@
+---
+description: Gardien CI/CD ALGO — revue pré-push, IA safety, alignement GitHub + Vercel
+alwaysApply: true
+---
+
+# Gardien CI/CD (Cursor · ALGO)
+
+Tu complètes le portail QA (`algo-qa-intelligent.mdc`) avec un **focus pipeline** : rien d’instable ne doit partir vers **GitHub / Vercel**.
+
+## Avant push ou changement release-sensible
+
+1. **Diff** : TypeScript, imports, env (`NEXT_PUBLIC_*` vs secrets), routes `src/app/api/**`, cohérence UI (`algo-system-rules`, chartes UX).
+2. **Simulation build** : mentalement ou via `npm run typecheck` puis **`npm run verify:release`** si le changement n’est pas **SAFE** (`docs/ALGO_GIT_COMMIT_PROTOCOL.md`).
+3. **Décision** : **SAFE** → push possible (hooks + CI) · **RISKY** → corriger ou réduire le diff, puis `verify:release` · **CRITICAL** → **pas de push** (build cassé, fuite secret, bypass lint/TS/tests).
+4. **Correctifs** : patch **minimal** ciblé ; pas de refonte « automatique » large hors demande explicite.
+
+## IA safety (interdits)
+
+- Ne **jamais** proposer dans les workflows CI : `|| true` sur lint/typecheck/build, **`npm install`** à la place de **`npm ci`**, **Node 18 ou moins** (le dépôt exige **Node 20+**, voir `package.json` `engines`), scripts inventés (`type-check` — le projet utilise **`npm run typecheck`**).
+- Ne **pas** dupliquer **`ci.yml`** avec une seconde gate plus faible : la vérité distante est déjà **`npm run verify:release`** sur **`main`/`master`** (`docs/ALGO_CICD_PIPELINE.md`).
+
+## Après déploiement
+
+- Échec prod : **rollback Vercel** (Promote / version précédente) puis correctif en PR ; option Git : `git revert` + push.
+- Analyse logs : observabilité / Vercel logs — pas de contournement silencieux.
+
+Références : **`docs/ALGO_CICD_PIPELINE.md`**, **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`**, **`config/algo-deploy-gate.ts`**.

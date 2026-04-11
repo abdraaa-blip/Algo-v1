@@ -59,6 +59,8 @@ describe("config/algo-qa-gate", () => {
     expect(text).toContain("verify:release");
     expect(text).toMatch(/Vercel/i);
     expect(text).toContain("Husky");
+    expect(text).toMatch(/rollback|git revert/i);
+    expect(text).toMatch(/algo-ci|une seule gate|ci\.yml/i);
   });
 
   it("référence le protocole Git et les niveaux SAFE / RISKY / CRITICAL", () => {

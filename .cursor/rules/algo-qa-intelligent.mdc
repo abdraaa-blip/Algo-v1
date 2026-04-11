@@ -24,6 +24,7 @@ Avant de **valider** une tâche, un module ou une PR, ou de dire « c’est term
 ## Avant tout commit (classification Git)
 
 - Lire **`docs/ALGO_GIT_COMMIT_PROTOCOL.md`** : analyser le diff (archi, IA, UI, perf, sécurité) ; classer **SAFE** (hooks suffisent), **RISKY** (corriger / réduire le diff puis **`npm run verify:release`** avant commit+push), **CRITICAL** (ne pas commit tant que non corrigé).
+- Complément pipeline / IA safety : **`.cursor/rules/algo-cicd-guardian.mdc`** (anti workflows affaiblis, rollback, une seule gate `ci.yml`).
 - Ne jamais pousser du code cassant ni contourner les garde-fous pour aller plus vite.
 
 ## Avant merge / release sensible

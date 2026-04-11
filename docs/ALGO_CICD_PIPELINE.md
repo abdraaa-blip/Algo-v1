@@ -27,6 +27,11 @@ Ce document **orchestre** les pièces déjà dans le dépôt ; il ne remplace pa
 
 Variables d’environnement **publiques** minimalistes pour le build CI : voir `env` dans **`ci.yml`** / **`release-gate.yml`** (placeholders Supabase — suffisant pour compiler ; la prod reste sur Vercel).
 
+### Une seule gate « build + checks » sur push (`main` / `master`)
+
+- **Ne pas** ajouter un second workflow du type `algo-ci.yml` qui relancerait `build` / `lint` en parallèle de **`ci.yml`** : double consommation de minutes, risque de divergences, et tentation d’assouplir la gate (`|| true`, `npm install`, mauvaise version Node).
+- La **vérité** distante pour chaque push reste **`ci.yml`** → **`npm run verify:release`** (déjà plus strict qu’un simple `build` + `lint` optionnels).
+
 ---
 
 ## Hooks locaux (Husky)
@@ -47,6 +52,26 @@ Ils **complètent** la phase 2 ; ils ne remplacent pas le jugement **RISKY** ni 
 5. **Après échec de build Vercel** : corriger à partir des logs ; ne pas « forcer » un contournement (ignore TS, suppression de tests).
 
 CLI manuel : **`npm run deploy:prod`** (`vercel deploy --prod --yes`) si le projet est déjà `vercel link`.
+
+---
+
+## Rollback (échec post-déploiement)
+
+1. **Vercel** : Dashboard → **Deployments** → déploiement précédent stable → **Promote to Production** (ou équivalent « rollback » selon l’UI). Chaque déploiement reste une **version** ré-adressable.
+2. **Git** (correctif propre) : `git revert <sha>` (ou branche hotfix) puis push sur **`main`** / **`master`** — la CI et Vercel rejouent sur un historique sain.
+3. **Ne pas** laisser une régression en prod au prétexte d’un rollback « rapide » sans ticket / correctif suivi.
+
+---
+
+## Vision « avancée » (Cursor · GitHub · Vercel)
+
+Ordre logique (sans second workflow affaibli) :
+
+1. **Cursor / agent** : revue + classification SAFE / RISKY / CRITICAL (`docs/ALGO_GIT_COMMIT_PROTOCOL.md`) · règle **`.cursor/rules/algo-cicd-guardian.mdc`** (IA safety pipeline).
+2. **Commit local** : hooks Husky.
+3. **Push** → **GitHub Actions** `ci.yml` → `verify:release`.
+4. **Vercel** : build + deploy si intégration Git active.
+5. **Suivi** : logs Vercel / observabilité ; rollback si nécessaire (section ci-dessus).
 
 ---
 
@@ -76,3 +101,4 @@ CLI manuel : **`npm run deploy:prod`** (`vercel deploy --prod --yes`) si le proj
 - Playbook ops : **`docs/ALGO_OPERATIONS_PLAYBOOK.md`**
 - Index docs : **`docs/README.md`**
 - Agents : **`AGENTS.md`**
+- Règle Cursor gardien pipeline : **`.cursor/rules/algo-cicd-guardian.mdc`**
