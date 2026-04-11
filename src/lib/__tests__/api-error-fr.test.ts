@@ -39,4 +39,8 @@ describe('mapUserFacingApiError', () => {
     expect(mapUserFacingApiError('JWT expired')).toContain('Session')
     expect(mapUserFacingApiError('invalid jwt')).toContain('Session')
   })
+
+  it('maps Search failed', () => {
+    expect(mapUserFacingApiError('Search failed')).toContain('recherche')
+  })
 })

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Search, X, Loader2 } from 'lucide-react'
+import { ArrowLeft, Search, X, Loader2, TriangleAlert } from 'lucide-react'
 import { LiveCurve } from '@/components/algo/LiveCurve'
 import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
 import { MomentumPill } from '@/components/algo/MomentumPill'
@@ -12,6 +12,7 @@ import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { AudienceScopeToggle } from '@/components/growth/AudienceScopeToggle'
 import { cn } from '@/lib/utils'
 import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface SearchResult {
   id: string
@@ -31,6 +32,7 @@ export default function SearchPage() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [searched, setSearched] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
   const abortRef = useRef<AbortController | null>(null)
 
@@ -38,6 +40,7 @@ export default function SearchPage() {
     if (q.length < 2) {
       setResults([])
       setSearched(false)
+      setSearchError(null)
       return
     }
 
@@ -48,6 +51,7 @@ export default function SearchPage() {
     abortRef.current = new AbortController()
     
     setLoading(true)
+    setSearchError(null)
     
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&type=all&limit=20`, {
@@ -106,11 +110,15 @@ export default function SearchPage() {
       
       setResults(combined)
       setSearched(true)
+      setSearchError(null)
     } catch (e) {
       if ((e as Error).name === 'AbortError') return
       console.error('[ALGO] Search error:', e)
       setResults([])
       setSearched(true)
+      setSearchError(
+        mapUserFacingApiError(e instanceof Error ? e.message : 'Search failed')
+      )
     } finally {
       setLoading(false)
     }
@@ -128,6 +136,7 @@ export default function SearchPage() {
     setQuery('')
     setResults([])
     setSearched(false)
+    setSearchError(null)
     setLoading(false)
     if (abortRef.current) abortRef.current.abort()
   }
@@ -199,13 +208,32 @@ export default function SearchPage() {
         {/* Loading */}
         {loading && <AlgoLoader message={ALGO_UI_LOADING.search} />}
 
+        {searched && !loading && searchError ? (
+          <div
+            role="alert"
+            className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p className="flex items-start gap-2 text-sm text-rose-100/90">
+              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+              <span>{searchError}</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => void performSearch(query.trim())}
+              className="shrink-0 rounded-lg border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25"
+            >
+              Réessayer
+            </button>
+          </div>
+        ) : null}
+
         {/* No Results */}
-        {searched && !loading && results.length === 0 && (
+        {searched && !loading && !searchError && results.length === 0 && (
           <AlgoEmpty icon={'\u{1F50D}'} title={`Aucun resultat pour "${query}"`} />
         )}
 
         {/* Results */}
-        {searched && !loading && results.length > 0 && (
+        {searched && !loading && !searchError && results.length > 0 && (
           <div className="space-y-3">
             {results.map((result) => (
               <Link

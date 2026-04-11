@@ -41,6 +41,7 @@ const EXACT: Record<string, string> = {
   'User already registered': 'Un compte existe déjà avec cet email.',
   'Update failed': 'Mise à jour impossible. Réessaie.',
   'Fetch failed': 'Impossible de charger les données. Réessaie.',
+  'Search failed': 'Impossible de lancer la recherche. Réessaie.',
 }
 
 export function mapUserFacingApiError(message: string | null | undefined): string {

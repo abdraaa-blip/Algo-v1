@@ -2,7 +2,7 @@
 // CreatorClientShell - Alternative creator mode shell
 import { useState, useEffect, useCallback } from 'react'
 import Link          from 'next/link'
-import { ExternalLink, ChevronDown, Clapperboard } from 'lucide-react'
+import { ExternalLink, ChevronDown, Clapperboard, TriangleAlert } from 'lucide-react'
 
 import { LiveCurve }     from '@/components/ui/LiveCurve'
 import { Badge }         from '@/components/ui/Badge'
@@ -16,6 +16,7 @@ import { track }         from '@/services/analyticsService'
 import { cn }            from '@/lib/utils'
 import type { Content, Platform } from '@/types'
 import { fillLocaleStrings } from '@/types'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -122,23 +123,28 @@ export function CreatorClientShell({
   const [expanded, setExpanded] = useState(false)
   const [lastFetchedAt, setLastFetchedAt] = useState<string | null>(null)
   const [sourceLabel, setSourceLabel] = useState('live aggregator')
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const fetchContents = useCallback(async () => {
     try {
+      setFetchError(null)
       const res = await fetch('/api/live?limit=15')
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`)
+      }
       const data = await res.json()
-      
+
       if (data.success && data.data) {
         const allItems: Record<string, unknown>[] = []
         const dataKeys = Object.keys(data.data)
-        
+
         for (const sourceKey of dataKeys) {
           const sourceData = data.data[sourceKey]
           if (Array.isArray(sourceData)) {
-            allItems.push(...sourceData.map(item => ({ ...item, source: sourceKey })))
+            allItems.push(...sourceData.map((item) => ({ ...item, source: sourceKey })))
           }
         }
-        
+
         const transformed = allItems.slice(0, 15).map(transformToContent)
         setContents(transformed)
         setLastFetchedAt(new Date().toISOString())
@@ -146,9 +152,33 @@ export function CreatorClientShell({
         if (transformed.length > 0 && !selected) {
           setSelected(transformed[0])
         }
+        if (transformed.length === 0) {
+          setSelected(null)
+        }
+      } else {
+        setFetchError(
+          mapUserFacingApiError(
+            typeof data.error === 'string' && data.error.trim() !== '' ? data.error : 'Failed to fetch'
+          )
+        )
+        setContents((prev) => {
+          if (prev.length > 0) return prev
+          setSelected(null)
+          setLastFetchedAt(null)
+          return []
+        })
       }
     } catch (error) {
       console.error('[ALGO Creator] Failed to fetch:', error)
+      setFetchError(
+        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
+      )
+      setContents((prev) => {
+        if (prev.length > 0) return prev
+        setSelected(null)
+        setLastFetchedAt(null)
+        return []
+      })
     } finally {
       setLoading(false)
     }
@@ -184,7 +214,29 @@ export function CreatorClientShell({
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         <BackButton fallbackHref="/" />
         <SectionHeader title={labels.title} subtitle={labels.subtitle} />
-        <p className="text-white/50">Aucun contenu disponible pour le moment.</p>
+        {fetchError ? (
+          <div
+            role="alert"
+            className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p className="flex items-start gap-2 text-sm text-rose-100/90">
+              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+              <span>{fetchError}</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setLoading(true)
+                void fetchContents()
+              }}
+              className="shrink-0 rounded-lg border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25"
+            >
+              Réessayer
+            </button>
+          </div>
+        ) : (
+          <p className="text-white/50">Aucun contenu disponible pour le moment.</p>
+        )}
       </div>
     )
   }
@@ -197,6 +249,24 @@ export function CreatorClientShell({
         subtitle={labels.subtitle}
         className="mb-6 mt-4"
       />
+      {fetchError ? (
+        <div
+          role="alert"
+          className="mb-4 flex flex-col gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p className="flex items-start gap-2 text-sm text-amber-100/90">
+            <TriangleAlert className="mt-0.5 size-4 shrink-0 text-amber-300" aria-hidden />
+            <span>{fetchError}</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => void fetchContents()}
+            className="shrink-0 rounded-lg border border-amber-400/30 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-100 hover:bg-amber-500/25"
+          >
+            Réessayer
+          </button>
+        </div>
+      ) : null}
       <div className="mb-4">
         <DataQualityChip
           source={sourceLabel}

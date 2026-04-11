@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { FlaskConical, ArrowRight } from 'lucide-react'
+import { FlaskConical, ArrowRight, TriangleAlert } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { MomentumPill } from '@/components/ui/MomentumPill'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { BackButton } from '@/components/ui/BackButton'
 import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
 import { cn } from '@/lib/utils'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface FailLabLabels {
   title: string
@@ -63,41 +64,70 @@ const LESSONS = [
   "Utilise des hashtags pertinents et une description complète avec mots-clés",
 ]
 
+function buildFailItems(rows: Record<string, unknown>[]): FailItem[] {
+  return rows.slice(0, 8).map((item, i) => ({
+    id: String(item.id || `fail-${i}`),
+    title: String(item.title || item.name || 'Sans titre'),
+    platform: String(item.source || item.platform || 'youtube'),
+    category: String(item.category || 'viral'),
+    growthRate: -Math.floor(Math.random() * 30 + 10),
+    growthTrend: 'down' as const,
+    failReason: FAIL_REASONS[i % FAIL_REASONS.length],
+    lesson: LESSONS[i % LESSONS.length],
+    sourceUrl: String(item.url || item.link || '#'),
+  }))
+}
+
 export function FailLabClientShell({ labels }: FailLabClientShellProps) {
   const [fails, setFails] = useState<FailItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
+
+  const loadFails = useCallback(async () => {
+    try {
+      setFetchError(null)
+      const res = await fetch('/api/live?limit=12')
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`)
+      }
+      const data = await res.json()
+
+      if (data.success && data.data) {
+        const rows: Record<string, unknown>[] = []
+        if (Array.isArray(data.data)) {
+          rows.push(...data.data)
+        } else if (typeof data.data === 'object') {
+          for (const key of Object.keys(data.data)) {
+            const sourceData = data.data[key]
+            if (Array.isArray(sourceData)) {
+              rows.push(...sourceData.map((item) => ({ ...item, source: key })))
+            }
+          }
+        }
+
+        setFails(buildFailItems(rows))
+      } else {
+        setFails([])
+        setFetchError(
+          mapUserFacingApiError(
+            typeof data.error === 'string' && data.error.trim() !== '' ? data.error : 'Failed to fetch'
+          )
+        )
+      }
+    } catch (error) {
+      console.error('[ALGO Fail Lab] Failed to fetch:', error)
+      setFails([])
+      setFetchError(
+        mapUserFacingApiError(error instanceof Error ? error.message : 'Failed to fetch')
+      )
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        // Fetch live trending data and transform into "fail lab" educational content
-        // We take real trending items and create hypothetical "what could go wrong" scenarios
-        const res = await fetch('/api/live?limit=12')
-        const data = await res.json()
-        
-        if (data.success && Array.isArray(data.data)) {
-          // Transform real trending content into educational "fail" scenarios
-          const transformed: FailItem[] = data.data.slice(0, 8).map((item: Record<string, unknown>, i: number) => ({
-            id: String(item.id || `fail-${i}`),
-            title: String(item.title || item.name || 'Untitled'),
-            platform: String(item.source || item.platform || 'youtube'),
-            category: String(item.category || 'viral'),
-            growthRate: -Math.floor(Math.random() * 30 + 10), // Negative growth for fails
-            growthTrend: 'down' as const,
-            failReason: FAIL_REASONS[i % FAIL_REASONS.length],
-            lesson: LESSONS[i % LESSONS.length],
-            sourceUrl: String(item.url || '#'),
-          }))
-          setFails(transformed)
-        }
-      } catch (error) {
-        console.error('[ALGO Fail Lab] Failed to fetch:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
+    void loadFails()
+  }, [loadFails])
 
   if (loading) {
     return (
@@ -115,15 +145,37 @@ export function FailLabClientShell({ labels }: FailLabClientShellProps) {
       
       <SectionHeader title={labels.title} subtitle={labels.subtitle} />
 
+      {fetchError ? (
+        <div
+          role="alert"
+          className="flex flex-col gap-3 rounded-xl border border-rose-500/20 bg-rose-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p className="flex items-start gap-2 text-sm text-rose-100/90">
+            <TriangleAlert className="mt-0.5 size-4 shrink-0 text-rose-300" aria-hidden />
+            <span>{fetchError}</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setLoading(true)
+              void loadFails()
+            }}
+            className="shrink-0 rounded-lg border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25"
+          >
+            Réessayer
+          </button>
+        </div>
+      ) : null}
+
       {/* Intro - analytical tone */}
       <p className="text-sm text-white/38 leading-relaxed rounded-2xl border border-white/5 bg-white/[0.02] px-4 py-3.5">
         {labels.intro}
       </p>
 
       {/* List */}
-      {fails.length === 0 ? (
+      {!fetchError && fails.length === 0 ? (
         <EmptyState icon={FlaskConical} title={labels.emptyTitle} />
-      ) : (
+      ) : fails.length > 0 ? (
         <div className="space-y-4" role="list" aria-label={labels.title}>
           {fails.map((fail, i) => (
             <article
@@ -191,7 +243,7 @@ export function FailLabClientShell({ labels }: FailLabClientShellProps) {
             </article>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

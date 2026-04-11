@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { Bell, BellOff, ChevronRight, Clock, X } from 'lucide-react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { Bell, BellOff, ChevronRight, Clock, X, TriangleAlert } from 'lucide-react'
 import { LiveCurve } from '@/components/algo/LiveCurve'
 import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
 import { MomentumPill } from '@/components/algo/MomentumPill'
@@ -14,6 +14,7 @@ import { TrendIntelligenceCard, generateTrendIntelligence } from '@/components/a
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { AlgoSignalShareCard } from '@/components/algo/AlgoSignalShareCard'
 import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { mapUserFacingApiError } from '@/lib/copy/api-error-fr'
 
 interface Trend {
   id: string
@@ -248,15 +249,20 @@ export default function TrendsPage() {
   const [trends, setTrends] = useState<Trend[]>(FALLBACK_TRENDS)
   const [loading, setLoading] = useState(true)
   const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null)
+  const [fetchError, setFetchError] = useState<string | null>(null)
+  const fetchTrendsRef = useRef<(() => Promise<void>) | null>(null)
   const { following, toggleFollow } = useFollowedTrends()
 
   useEffect(() => {
     async function fetchTrends() {
       try {
+        setFetchError(null)
         const res = await fetch('/api/live-trends')
-        if (res.ok) {
-          const data = await res.json()
-          if (data.data?.length) {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`)
+        }
+        const data = await res.json()
+        if (data.data?.length) {
             const mapped = data.data.map((t: Record<string, unknown>, i: number) => {
               const title = String(t.title || t.name || 'Sans titre')
               const description = String(t.description || t.trafficVolume || '')
@@ -409,16 +415,23 @@ export default function TrendsPage() {
             })
             setTrends(mapped)
           }
-        }
       } catch (e) {
         console.warn('[ALGO] Failed to fetch trends:', e)
+        setFetchError(
+          mapUserFacingApiError(e instanceof Error ? e.message : 'Failed to fetch trends')
+        )
       } finally {
         setLoading(false)
       }
     }
+
+    fetchTrendsRef.current = fetchTrends
     
-    fetchTrends()
-    const interval = setInterval(fetchTrends, 15 * 60 * 1000)
+    void fetchTrends()
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
+      void fetchTrends()
+    }, 15 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])
 
@@ -463,6 +476,30 @@ export default function TrendsPage() {
           </p>
         </div>
       </section>
+
+      {fetchError ? (
+        <section className="max-w-7xl mx-auto px-4 pt-2">
+          <div
+            role="alert"
+            className="flex flex-col gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p className="flex items-start gap-2 text-sm text-amber-100/90">
+              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-amber-300" aria-hidden />
+              <span>{fetchError}</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setLoading(true)
+                void fetchTrendsRef.current?.()
+              }}
+              className="shrink-0 rounded-lg border border-amber-400/30 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-100 hover:bg-amber-500/25"
+            >
+              Réessayer
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       {/* Followed Trends Alert */}
       {followedTrends.length > 0 && (
