@@ -12,6 +12,7 @@ import {
   getRegionName,
 } from "@/data/countries";
 import { useScope } from "@/hooks/useScope";
+import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types";
 
@@ -25,7 +26,7 @@ const LANGS: { code: Locale; label: string; flag: string }[] = [
 
 export default function SettingsPage() {
   const { scope, setScope } = useScope();
-  const [lang, setLang] = useState<Locale>("fr");
+  const { locale, changeLocale } = useTranslation();
   const [saved, setSaved] = useState(false);
   const [checkoutAvailable, setCheckoutAvailable] = useState(false);
   const [portalAvailable, setPortalAvailable] = useState(false);
@@ -117,8 +118,9 @@ export default function SettingsPage() {
   }, []);
 
   function save() {
+    /** Langue : `changeLocale` écrit `algo_locale` · zone : `setScope` persiste déjà */
     try {
-      localStorage.setItem("algo_lang", lang);
+      localStorage.removeItem("algo_lang");
     } catch {
       /* ignore */
     }
@@ -137,15 +139,19 @@ export default function SettingsPage() {
         >
           Langue
         </h2>
+        <p className="text-[11px] text-white/40 leading-relaxed mb-2">
+          Le changement de langue s&apos;applique tout de suite à la navigation
+          et aux libellés pris en charge.
+        </p>
         <div className="space-y-1.5">
           {LANGS.map((l) => {
-            const isActive = lang === l.code;
+            const isActive = locale === l.code;
             return (
               <button
                 key={l.code}
                 type="button"
                 aria-pressed={isActive}
-                onClick={() => setLang(l.code)}
+                onClick={() => changeLocale(l.code)}
                 className={cn(
                   "w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-sm font-semibold text-start",
                   "transition-all duration-150",
@@ -292,7 +298,7 @@ export default function SettingsPage() {
               Regions
             </p>
             {availableRegions.map((r) => {
-              const name = getRegionName(r, lang);
+              const name = getRegionName(r, locale);
               const isActive = scope.type === "region" && scope.code === r.code;
 
               return (
@@ -332,7 +338,7 @@ export default function SettingsPage() {
               Pays
             </p>
             {availableCountries.map((c) => {
-              const name = getCountryName(c, lang);
+              const name = getCountryName(c, locale);
               const isActive =
                 scope.type === "country" && scope.code === c.code;
 

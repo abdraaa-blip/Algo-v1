@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ConsentManageLink } from "@/components/growth/ConsentBanner";
 import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from "@/lib/seo/site";
+import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
 
 /**
  * Liens transverses : légal, découverte (RSS), consentement · discret pour ne pas polluer l’UI.
@@ -53,6 +54,13 @@ export function SiteFooter() {
           Flux RSS
         </a>
         <ConsentManageLink className="hover:text-[var(--color-text-secondary)] transition-colors duration-200 underline-offset-2 hover:underline" />
+        <LocaleSwitcher />
+        <Link
+          href="/settings"
+          className="hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        >
+          Réglages
+        </Link>
       </div>
     </footer>
   );

@@ -61,7 +61,12 @@ export default function OnboardingPage() {
   function finish() {
     try {
       localStorage.setItem(ONBOARDING_KEY, "1");
-      localStorage.setItem("algo_lang", lang);
+      localStorage.setItem("algo_locale", lang);
+      try {
+        localStorage.removeItem("algo_lang");
+      } catch {
+        /* ignore */
+      }
       if (profile) localStorage.setItem("algo_profile", profile);
       if (country) {
         const c = availableCountries.find((c) => c.code === country);

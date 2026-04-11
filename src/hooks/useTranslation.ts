@@ -42,6 +42,12 @@ function detectLocale(): Locale {
     if (stored && ["fr", "en", "es", "de", "ar"].includes(stored)) {
       return stored as Locale;
     }
+    /** @deprecated Paramètres utilisaient `algo_lang` — migrer une fois */
+    const legacy = localStorage.getItem("algo_lang");
+    if (legacy && ["fr", "en", "es", "de", "ar"].includes(legacy)) {
+      localStorage.setItem("algo_locale", legacy);
+      return legacy as Locale;
+    }
   } catch {
     // Ignore storage errors
   }
@@ -76,6 +82,11 @@ export function useTranslation() {
     setLocale(newLocale);
     if (typeof window !== "undefined") {
       localStorage.setItem("algo_locale", newLocale);
+      try {
+        localStorage.removeItem("algo_lang");
+      } catch {
+        /* ignore */
+      }
     }
   }, []);
 
