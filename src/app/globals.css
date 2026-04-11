@@ -98,10 +98,12 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  color-scheme: dark;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
 }
 
@@ -110,6 +112,7 @@ body {
   padding: 0;
   background: var(--color-bg-primary);
   font-family: var(--font-family-sans);
+  line-height: 1.5;
   min-height: 100dvh;
   overflow-x: hidden;
 }
@@ -274,17 +277,19 @@ body::before {
 
 .skip-to-content:focus {
   position: fixed;
-  top: 16px;
-  left: 16px;
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
   width: auto;
   height: auto;
   padding: 12px 24px;
-  background: #7B61FF;
-  color: white;
+  background: var(--color-violet);
+  color: var(--color-text-primary);
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(123, 97, 255, 0.4);
+  box-shadow: var(--shadow-algo-glow-violet);
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 
 /* prefers-reduced-motion : bloc unique en fin de fichier (PHASE 9) */
@@ -300,13 +305,20 @@ body::before {
 }
 
 /* Ensure all interactive elements have minimum touch target */
-button, 
-a, 
+button,
+a,
 [role="button"],
 input[type="checkbox"],
 input[type="radio"] {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Footer : liens denses, zone confortable sans élargir artificiellement chaque libellé */
+footer[role="contentinfo"] a {
+  min-width: auto;
+  padding: 0.35rem 0.5rem;
+  box-sizing: border-box;
 }
 
 /* Small buttons should have padding to meet touch target */

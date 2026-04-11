@@ -51,11 +51,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <header className="fixed top-0 left-0 right-0 h-14 bg-[var(--color-bg-primary)]/95 border-b border-[var(--color-border)] z-50" />
           <main
             id="main-content"
-            className="pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
+            className="relative z-10 w-full min-w-0 pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
             role="main"
             aria-label="Contenu principal"
           >
-            <div className="flex-1">{children}</div>
+            <div className="flex-1 w-full min-w-0">{children}</div>
             <SiteFooter />
           </main>
         </>
@@ -74,11 +74,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <Navbar />
           <main
             id="main-content"
-            className="relative z-10 pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
+            className="relative z-10 w-full min-w-0 pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
             role="main"
             aria-label="Contenu principal"
           >
-            <div className="flex-1">
+            <div className="flex-1 w-full min-w-0">
               <PageTransition>{children}</PageTransition>
             </div>
             <SiteFooter />
