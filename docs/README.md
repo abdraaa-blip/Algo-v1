@@ -4,7 +4,7 @@
 
 ## Principe
 
-- **Vérité d’exécution** : code sous `src/`, migrations Supabase, **`npm run verify:release`** (dont **`verify:api-guards`** sur les routes `api`), workflows `.github/workflows/`.
+- **Vérité d’exécution** : code sous `src/`, migrations Supabase, **`npm run verify:release`** (dont **`verify:api-guards`** sur les routes `api` et **`npm audit`**), workflows `.github/workflows/`.
 - **Vérité produit / règles** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `AGENTS.md`, fichiers sous `config/`.
 - Les pages ici **expliquent et cadr**ent ; en cas de doute sur un comportement, le **code** et la **CI** font foi. Mettre à jour ce **index** quand un **nouveau document canonique majeur** apparaît à la racine de `docs/`.
 

@@ -32,7 +32,7 @@ Légende : **OK** = présent et exploitable · **Partiel** = existe mais incompl
 
 ## Commandes utiles
 
-- Qualité release : `npm run verify:release` (inclut `lint:strict`, garde **`npm run verify:api-guards`** — chaque `src/app/api/.../route.ts` hors cron/webhook Stripe doit référencer le rate limiting)
+- Qualité release : `npm run verify:release` (inclut `lint:strict`, **`npm audit`**, garde **`npm run verify:api-guards`** — chaque `src/app/api/.../route.ts` hors cron/webhook Stripe doit référencer le rate limiting)
 - TypeScript : `npm run typecheck` (inclus dans `verify:release` ; `next.config.ts` : `ignoreBuildErrors: false`)
 - Tests unitaires : `npm run test:run`
 - Écosystème : `npm run ecosystem:check`

@@ -64,7 +64,7 @@ En cas de doute entre un **pack** et le dépôt : **le dépôt et la CI font foi
 
 ## Avant merge ou release
 
-1. `npm run verify:release` (écosystème, i18n, **`verify:api-guards`**, `typecheck`, `lint:strict`, tests, build — voir `ALGO_QA_RELEASE_COMMANDS.steps` dans `config/algo-qa-gate.ts`).
+1. `npm run verify:release` (écosystème, i18n, **`verify:api-guards`**, **`npm audit`**, `typecheck`, `lint:strict`, tests, build — voir `ALGO_QA_RELEASE_COMMANDS.steps` dans `config/algo-qa-gate.ts`).
 2. TypeScript : `npm run typecheck` seul si tu veux un retour rapide (déjà dans `verify:release`) ; voir `docs/ALGO_RELEASE_READINESS.md` (dimension 1).
 3. Pas de **secrets** dans le client ni de clés commitées : suivre `.env.example` et la checklist deploy gate.
 

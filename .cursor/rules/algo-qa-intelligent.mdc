@@ -23,7 +23,7 @@ Avant de **valider** une tâche, un module ou une PR, ou de dire « c’est term
 
 ## Avant merge / release sensible
 
-- Lancer ou demander **`npm run verify:release`** (`package.json` : ecosystem, i18n, **`verify:api-guards`**, **`typecheck`**, **`lint:strict`**, tests, build).
+- Lancer ou demander **`npm run verify:release`** (`package.json` : ecosystem, i18n, **`verify:api-guards`**, **`npm audit`**, **`typecheck`**, **`lint:strict`**, tests, build).
 - Typage : **`next.config.ts`** → `typescript.ignoreBuildErrors: false` ; le **`next build`** valide aussi le TS. Pour un retour rapide seul : **`npm run typecheck`**. Aller plus loin : `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` dans `config/algo-qa-gate.ts` (`verify:full`, `lint:strict`, …).
 
 ## Avant déploiement production (Vercel / CD)

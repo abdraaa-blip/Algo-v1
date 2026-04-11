@@ -14,7 +14,7 @@ Priorité : **stabilité et sécurité** avant polish visuel.
 
 | Contrôle | Où / comment |
 |----------|----------------|
-| Build & tests | `npm run verify:release` (inclut `ecosystem:check`, `i18n:check`, **`verify:api-guards`**, `typecheck`, `lint:strict`, `test:run`, `build` — voir `package.json`). |
+| Build & tests | `npm run verify:release` (inclut `ecosystem:check`, `i18n:check`, **`verify:api-guards`**, **`npm audit`**, `typecheck`, `lint:strict`, `test:run`, `build` — voir `package.json`). |
 | CI / workflows | **`.github/workflows/ci.yml`** : `npm run verify:release` (bloque sur erreur TS). **`release-gate.yml`** : `npm run verify:full` (même gate + `perf:budget` + `report:daily`). |
 | Gate release PR | `npm run verify:full` · workflow `.github/workflows/release-gate.yml`. |
 | Runtime / crash | Pas d’erreur runtime bloquante sur parcours fumés ; logs hébergeur après déploiement. |

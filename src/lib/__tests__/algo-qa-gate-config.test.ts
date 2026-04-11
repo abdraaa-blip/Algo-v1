@@ -37,6 +37,7 @@ describe('config/algo-qa-gate', () => {
   it('définit la commande verify:release', () => {
     expect(ALGO_QA_RELEASE_COMMANDS.fullGate).toContain('verify:release')
     expect(ALGO_QA_RELEASE_COMMANDS.steps).toContain('npm run verify:api-guards')
+    expect(ALGO_QA_RELEASE_COMMANDS.steps).toContain('npm audit')
     expect(ALGO_QA_RELEASE_COMMANDS.steps).toContain('npm run typecheck')
     expect(ALGO_QA_RELEASE_COMMANDS.steps).toContain('npm run lint:strict')
     expect(ALGO_QA_RELEASE_COMMANDS.steps).toContain('npm run build')

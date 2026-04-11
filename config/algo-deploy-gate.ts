@@ -14,7 +14,7 @@
  * - `docs/ALGO_OPERATIONS_PLAYBOOK.md` (déploiement / smoke / point d’entrée opérations)
  * - `config/algo-qa-gate.ts` (checklist continue + `verify:release`)
  * - `config/algo-system-rules.ts` (design system)
- * - Workflows : `.github/workflows/ci.yml`, `.github/workflows/release-gate.yml` (`verify:release` / `verify:full` incluent `typecheck` + `lint:strict` ; `verify:release` inclut aussi `verify:api-guards`)
+ * - Workflows : `.github/workflows/ci.yml`, `.github/workflows/release-gate.yml` (`verify:release` / `verify:full` incluent `typecheck` + `lint:strict` ; `verify:release` inclut aussi `verify:api-guards` et `npm audit`)
  *
  * Tests Vitest : `src/lib/__tests__/algo-deploy-gate-config.test.ts`.
  */
@@ -79,7 +79,7 @@ export const ALGO_DEPLOY_CHECKLIST = {
   security: [
     'Aucune clé API ou secret dans le code client ou les bundles publics.',
     'Variables sensibles uniquement via env serveur / Vercel ; `NEXT_PUBLIC_*` réservé au non-secret.',
-    'Endpoints sensibles : auth / rate limit selon patterns existants du dépôt ; `npm run verify:api-guards` (dans `verify:release`) empêche une nouvelle route `api/.../route.ts` sans garde.',
+    'Endpoints sensibles : auth / rate limit selon patterns existants du dépôt ; `npm run verify:api-guards` (dans `verify:release`) empêche une nouvelle route `api/.../route.ts` sans garde ; `npm audit` dans la même gate signale les advisories npm connues.',
   ],
   functionalSmoke: [
     'APIs principales du périmètre touché : réponses attendues (200 / schémas) en staging ou via tests.',

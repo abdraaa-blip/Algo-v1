@@ -47,7 +47,7 @@ Ce document **ancre** l’idée d’« auto-amélioration » dans une pratique *
 
 | Levier | Rôle |
 |--------|------|
-| `npm run verify:release` | Gate technique (écosystème, i18n, **`verify:api-guards`**, typecheck, lint strict, tests, build). |
+| `npm run verify:release` | Gate technique (écosystème, i18n, **`verify:api-guards`**, **`npm audit`**, typecheck, lint strict, tests, build). |
 | `config/algo-qa-gate.ts` + `.cursor/rules/algo-qa-intelligent.mdc` | Checklist continue, anti-fragmentation. |
 | `docs/ALGO_COHERENCE_RITUAL.md` + `.cursor/rules/algo-coherence-review.mdc` | Audit cadré (périmètre + critère d’arrêt). |
 | `config/algo-deploy-gate.ts` + workflows CI | Garde pré-prod / release. |

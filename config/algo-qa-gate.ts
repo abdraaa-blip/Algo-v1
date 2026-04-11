@@ -17,7 +17,7 @@
  * - `docs/README.md` (index navigation des docs canoniques)
  * - `AGENTS.md` (pile IA, copy, brain)
  *
- * Gate standard : `verify:release` inclut aussi `verify:api-guards` (chaque `route.ts` sous `src/app/api`, hors cron et webhook Stripe). Approfondissement : voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` (`verify:full`, etc.).
+ * Gate standard : `verify:release` inclut `verify:api-guards` (chaque `route.ts` sous `src/app/api`, hors cron et webhook Stripe) puis `npm audit`. Approfondissement : voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` (`verify:full`, etc.).
  *
  * Tests Vitest : `src/lib/__tests__/algo-qa-gate-config.test.ts`.
  *
@@ -57,6 +57,7 @@ export const ALGO_QA_RELEASE_COMMANDS = {
     'npm run ecosystem:check',
     'npm run i18n:check',
     'npm run verify:api-guards',
+    'npm audit',
     'npm run typecheck',
     'npm run lint:strict',
     'npm run test:run',

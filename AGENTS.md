@@ -11,7 +11,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 - **Design évolutif sans 2ᵉ charte** : **`docs/ALGO_DESIGN_EVOLUTION.md`** (renvoie vers `algo-system-rules.ts`, tokens, control room, offline evolution).
 - **Opérations & déploiement** : **`docs/ALGO_OPERATIONS_PLAYBOOK.md`** — point d’entrée unique (évite les pavés de directives Cursor parallèles) ; sections **Arbitrage** et **Blueprints externes** si un pack « prod / ops » générique diverge du dépôt ; Vercel / smoke / `verify:release` ; pas d’auto-réparation du code hors PR ; caches build locaux sûrs : `npm run clean` ou `node scripts/clear-cache.js` (ajouter `--dry-run` pour simulation).
 - Toujours croiser le design avec **`config/algo-system-rules.ts`**. Règle Cursor : `.cursor/rules/algo-qa-intelligent.mdc` (**alwaysApply**).
-- Gate release typique : `npm run verify:release` (inclut **`npm run verify:api-guards`**, **`npm run typecheck`** et **`npm run lint:strict`** avant tests / `build`). Approfondissement : `npm run verify:full` (voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` dans `config/algo-qa-gate.ts`).
+- Gate release typique : `npm run verify:release` (inclut **`npm run verify:api-guards`**, **`npm audit`**, **`npm run typecheck`** et **`npm run lint:strict`** avant tests / `build`). Approfondissement : `npm run verify:full` (voir `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` dans `config/algo-qa-gate.ts`).
 
 ## Rituel cohérence (audit ciblé · optionnel)
 
@@ -56,7 +56,7 @@ This version has breaking changes · APIs, conventions, and file structure may a
 
 - **Maturité release (qualitative)** : **`docs/ALGO_RELEASE_READINESS.md`** — six axes + statuts OK / à risque / inconnu ; **pas** de score global 0–100 ; la **CI** et **`config/algo-deploy-gate.ts`** font foi. **TypeScript** : `next.config.ts` a **`typescript.ignoreBuildErrors: false`** et **`npm run typecheck`** fait partie de **`verify:release`** — build et gate reflètent l’état TS réel ; voir dimension 1 du même doc.
 - **Garde finale** : `config/algo-deploy-gate.ts` (`ALGO_DEPLOY_CHECKLIST`, blocage, smoke, sécurité). Règle Cursor workflows : `.cursor/rules/algo-deploy-gate.mdc`.
-- **CI GitHub** (push/PR `main`/`master`) : **`npm run verify:release`** (inclut `verify:api-guards`, typecheck, lint, tests, build) · env publique Next en job `env`.
+- **CI GitHub** (push/PR `main`/`master`) : **`npm run verify:release`** (inclut `verify:api-guards`, `npm audit`, typecheck, lint, tests, build) · env publique Next en job `env`.
 - **Release Gate PR** (`main`/`develop`) : `.github/workflows/release-gate.yml` → **`npm run verify:full`** (hérite du même gate + perf budget + rapport).
 
 ## Design system & UI (règles persistantes)
