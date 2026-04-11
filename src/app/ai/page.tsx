@@ -22,6 +22,12 @@ type AlgoAskStructuredClient = {
   nextStep?: string
 }
 
+type AlgoStandardAskClient = {
+  comprehension: string
+  reponse: string
+  action: string
+}
+
 type UiMessage = {
   id: string
   role: 'user' | 'assistant'
@@ -34,6 +40,10 @@ type UiMessage = {
   transparencyLines?: string[]
   /** Présent si le modèle a rempli le contrat structuré (mode guide /api/ai/ask). */
   structured?: AlgoAskStructuredClient
+  /** Enveloppe lecture · réponse · action (`src/core/system.ts`). */
+  standard?: AlgoStandardAskClient
+  systemRoute?: string
+  systemConfidence?: number
 }
 
 type TrendLite = { title: string; score: number; category: string }
@@ -84,11 +94,11 @@ function nowIso() {
 
 function fallbackAnswer(mode: AiMode, question: string, country: string | null, expertise: AlgoExpertiseLevel): UiMessage {
   const base =
-    "Connexion partielle aux modules : je ne vais pas inventer des signaux. Voici ce qui reste solide sans le moteur complet."
+    'Je garde une lecture **sobre** sans inventer de signaux. Voici une base solide pour avancer tout de suite.'
   const countryInfo = country ? ` Contexte pays : ${country}.` : ''
   const guidance =
     mode === 'analysis'
-      ? ' Vérifie hook, format et fenêtre de publication avant de décider — ce triplet bat la plupart des intuitions.'
+      ? ' Vérifie hook, format et fenêtre de publication avant de décider · ce triplet bat la plupart des intuitions.'
       : mode === 'ideas'
         ? ' Trois angles sûrs : réaction courte, tuto ultra-ciblé, comparatif « avant / après ». Choisis-en un et teste un seul hook.'
         : mode === 'exploration'
@@ -105,7 +115,7 @@ function fallbackAnswer(mode: AiMode, question: string, country: string | null, 
     confidence: 'low',
     sources: ['repli local ALGO'],
     transparencyLines: [
-      'Réponse de secours : le modèle ou le réseau n’a pas pu répondre normalement.',
+      'Réponse de secours : lecture raccourcie, sans détail distant sur cette passe.',
       expertiseTransparencyLineFr(expertise),
     ],
   }
@@ -237,20 +247,32 @@ export default function AlgoAiPage() {
         const json = (await res.json()) as {
           success?: boolean
           answer?: string
+          degraded?: boolean
           structured?: AlgoAskStructuredClient
+          standard?: AlgoStandardAskClient
+          quality?: { isClear: boolean; isUseful: boolean; isCoherent: boolean }
+          systemRoute?: string
+          systemConfidence?: number
           transparencyLines?: string[]
         }
         const baseLines = Array.isArray(json.transparencyLines) ? json.transparencyLines : []
+        const answerText =
+          typeof json.answer === 'string' && json.answer.trim()
+            ? json.answer.trim()
+            : 'Je te propose de reformuler en une phrase : plateforme, objectif, délai. Ensuite ouvre /trends pour caler un angle concret.'
         assistant = {
           id: crypto.randomUUID(),
           role: 'assistant',
           mode,
-          text: json.answer || "Je n'ai pas pu générer une réponse complète.",
+          text: answerText,
           at: nowIso(),
-          confidence: status === 'ready' ? 'high' : 'medium',
+          confidence: json.degraded ? 'low' : status === 'ready' ? 'high' : 'medium',
           sources: ['/api/ai/ask', '/api/live-trends', '/api/context'],
           transparencyLines: [...baseLines, expertiseTransparencyLineFr(expertise)],
           structured: json.structured,
+          standard: json.standard,
+          systemRoute: json.systemRoute,
+          systemConfidence: json.systemConfidence,
         }
       } else if (mode === 'analysis') {
         const res = await fetch('/api/ai/analyze', {
@@ -391,7 +413,7 @@ export default function AlgoAiPage() {
   }
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)]">
+    <main className="min-h-screen pb-20">
       <section className="max-w-6xl mx-auto px-4 pt-8 pb-4">
         <Link href="/" className="text-xs text-white/45 hover:text-white/70">
           ← Retour
@@ -404,7 +426,7 @@ export default function AlgoAiPage() {
                 ALGO AI
               </h1>
               <p className="text-sm text-white/60 mt-1 max-w-2xl">
-                Intelligence analytique du système : signaux, tranchage, prochain pas — calibrée sur la même ligne directrice
+                Intelligence analytique du système : signaux, tranchage, prochain pas · calibrée sur la même ligne directrice
                 que le reste d’ALGO (création, viralité, analyse, garde-fous). Les scores et briefings sont des indicateurs,
                 pas des certitudes.
               </p>
@@ -414,7 +436,7 @@ export default function AlgoAiPage() {
             </span>
           </div>
           <p className="text-[11px] text-white/40 mt-3">
-            Transparence : si les APIs ou le modèle manquent de contexte, elle le dit et baisse la confiance — pas de mémoire
+            Transparence : si les APIs ou le modèle manquent de contexte, elle le dit et baisse la confiance · pas de mémoire
             fantôme, pas de sources inventées. Comportement ancré sur une directive interne sobre (pas de mysticisme, pas de
             promesses irréalistes sur les algorithmes des réseaux).{' '}
             <Link href={SITE_TRANSPARENCY_AI_CALIBRATION_HREF} className="text-cyan-400/85 hover:text-cyan-300 underline underline-offset-2">
@@ -513,13 +535,34 @@ export default function AlgoAiPage() {
                     <div className="text-[10px] uppercase tracking-wider font-bold text-white/45">
                       {msg.role === 'assistant' ? `ALGO AI · ${MODE_LABELS[msg.mode]}` : 'Toi'}
                     </div>
-                    {msg.confidence ? (
-                      <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded', msg.confidence === 'high' ? 'text-emerald-300 bg-emerald-500/10' : msg.confidence === 'medium' ? 'text-amber-300 bg-amber-500/10' : 'text-rose-300 bg-rose-500/10')}>
-                        confiance {msg.confidence}
-                      </span>
-                    ) : null}
+                    <div className="flex flex-wrap items-center gap-1.5 justify-end">
+                      {msg.role === 'assistant' && msg.mode === 'assistant' && msg.systemRoute ? (
+                        <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-white/5 text-white/45 border border-white/10">
+                          route {msg.systemRoute}
+                          {typeof msg.systemConfidence === 'number'
+                            ? ` · ${Math.round(msg.systemConfidence * 100)}%`
+                            : ''}
+                        </span>
+                      ) : null}
+                      {msg.confidence ? (
+                        <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded', msg.confidence === 'high' ? 'text-emerald-300 bg-emerald-500/10' : msg.confidence === 'medium' ? 'text-amber-300 bg-amber-500/10' : 'text-rose-300 bg-rose-500/10')}>
+                          confiance {msg.confidence}
+                        </span>
+                      ) : null}
+                    </div>
                   </header>
-                  <p className="text-sm text-white/80 whitespace-pre-wrap">{msg.text}</p>
+                  {msg.role === 'assistant' && msg.mode === 'assistant' && msg.standard ? (
+                    <div className="mb-2 rounded-lg border border-cyan-500/15 bg-black/20 p-2.5 space-y-2 text-[12px]">
+                      <p className="text-[10px] uppercase tracking-wider font-bold text-cyan-200/80">Lecture</p>
+                      <p className="text-white/60 leading-relaxed">{msg.standard.comprehension}</p>
+                      <p className="text-[10px] uppercase tracking-wider font-bold text-cyan-200/80 pt-1">Réponse</p>
+                      <p className="text-sm text-white/80 whitespace-pre-wrap">{msg.standard.reponse}</p>
+                      <p className="text-[10px] uppercase tracking-wider font-bold text-emerald-200/85 pt-1">Action</p>
+                      <p className="text-white/75 leading-relaxed border-l-2 border-emerald-500/35 pl-2">{msg.standard.action}</p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-white/80 whitespace-pre-wrap">{msg.text}</p>
+                  )}
                   {msg.role === 'assistant' &&
                   msg.mode === 'assistant' &&
                   msg.structured &&
@@ -550,7 +593,7 @@ export default function AlgoAiPage() {
                           <span className="text-violet-200/90 font-semibold">Piste privilégiée : </span>
                           {msg.structured.recommendedChoice.title}
                           {msg.structured.recommendedChoice.criterion ? (
-                            <span className="text-white/55"> — {msg.structured.recommendedChoice.criterion}</span>
+                            <span className="text-white/55"> · {msg.structured.recommendedChoice.criterion}</span>
                           ) : null}
                         </p>
                       ) : null}
@@ -600,7 +643,7 @@ export default function AlgoAiPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={3}
-              placeholder={`${MODE_LABELS[mode]} — objectif, plateforme, contrainte (une question précise)...`}
+              placeholder={`${MODE_LABELS[mode]} · objectif, plateforme, contrainte (une question précise)...`}
               className={cn('algo-input-field resize-y min-h-[5.5rem]')}
             />
             <div className="flex items-center justify-between gap-2">

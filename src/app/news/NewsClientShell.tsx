@@ -14,7 +14,7 @@ import { TrendLevelBadge, getTrendLevel } from '@/components/algo/TrendLevelBadg
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { DataQualityChip } from '@/components/ui/DataQualityChip'
 import { formatRelativeScopeTime } from '@/lib/geo/time-format'
-import { ALGO_UI_EMPTY, ALGO_UI_ERROR, ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
+import { scopeToCountryCode } from '@/types'
 
 // Types
 interface NewsItem {
@@ -63,12 +63,12 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   const [newsSource, setNewsSource] = useState<string>('live-news')
   
   const labels = {
-    title: t('news.title', 'Actualites'),
-    loading: t('news.loading', ALGO_UI_LOADING.news),
-    error: t('news.error', ALGO_UI_ERROR.message),
-    empty: t('news.empty', ALGO_UI_EMPTY.title),
-    readMore: t('news.readMore', 'Lire'),
-    retry: t('common.retry', 'Reessayer')
+    title: t('news.title'),
+    loading: t('state.loading'),
+    error: t('state.error.generic'),
+    empty: t('state.empty.news'),
+    readMore: t('news.readMore'),
+    retry: t('state.error.retry'),
   }
   
   const fetchNews = useCallback(async () => {
@@ -76,7 +76,8 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
       setLoading(true)
       setError(null)
       
-      const country = scope === 'france' ? 'fr' : 'us'
+      const scopeCc = scopeToCountryCode(scope)?.toUpperCase() ?? null
+      const country = scopeCc === 'FR' ? 'fr' : 'us'
       const response = await fetch(`/api/live-news?country=${country}`)
       
       if (!response.ok) {
@@ -110,7 +111,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   
   if (loading && news.length === 0) {
     return (
-      <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] p-4">
+      <div className="min-h-screen text-[var(--color-text-primary)] p-4">
         <h1 className="text-2xl font-bold mb-6">{labels.title}</h1>
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -123,7 +124,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   
   if (error && news.length === 0) {
     return (
-      <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] p-4 flex flex-col items-center justify-center">
+      <div className="min-h-screen text-[var(--color-text-primary)] p-4 flex flex-col items-center justify-center">
         <p className="text-red-400 mb-4">{error}</p>
         <button
           onClick={fetchNews}
@@ -136,7 +137,7 @@ export function NewsClientShell({ initialNews = [] }: NewsClientShellProps) {
   }
   
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen text-[var(--color-text-primary)]">
       <div className="max-w-4xl mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -185,6 +186,7 @@ interface NewsRowProps extends NewsItem {
 }
 
 const NewsRow = memo(function NewsRow({
+  id,
   title,
   source,
   sourceName,

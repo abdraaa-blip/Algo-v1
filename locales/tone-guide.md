@@ -1,4 +1,4 @@
-# ALGO — Guide de voix (Tone Guide)
+# ALGO · Guide de voix (Tone Guide)
 
 ## Source machine (prompts & cohérence)
 
@@ -23,14 +23,14 @@ Expert **calme** : maîtrise sans arrogance; chaque mot utile (« l’appli sile
 
 ## Règles
 
-1. **Court** — une phrase, pas un paragraphe.
-2. **Actif** — pas de voix passive.
-3. **Jamais "Oops!"** — interdit.
-4. **Jamais condescendant** — surtout dans le Fail Lab.
-5. **Tutoiement** — toujours, en français.
-6. **Métaphore radar** — signaux, fréquences, ondes, réception.
+1. **Court** : une phrase, pas un paragraphe.
+2. **Actif** : pas de voix passive.
+3. **Jamais "Oops!"** : interdit.
+4. **Jamais condescendant** : surtout dans le Fail Lab.
+5. **Tutoiement** : toujours, en français.
+6. **Métaphore radar** : signaux, fréquences, ondes, réception.
 
-## Fail Lab — Règle spéciale
+## Fail Lab : règle spéciale
 
 Le ton du Fail Lab est analytique et neutre.
 On analyse l'échec, on n'humilie pas.

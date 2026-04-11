@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — MediaService
+// ALGO V1 · MediaService
 // Service unifie pour les videos et la musique
 // Connecte a YouTube Data API et Last.fm
 // =============================================================================

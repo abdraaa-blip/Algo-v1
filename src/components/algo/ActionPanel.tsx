@@ -219,7 +219,7 @@ export function ActionPanel({
             Generer une idee
           </Button>
           <Button
-            variant="secondary"
+            variant="outline"
             size="md"
             onClick={() => setIsExpanded(!isExpanded)}
           >

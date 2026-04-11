@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 export const metadata: Metadata = buildPageMetadata({
   title: 'ALGO AI',
   description:
-    "Intelligence analytique d'ALGO : guide stratégique, analyse de signaux, idées et veille — réponses directes, utiles, alignées avec Viral Analyzer et les tendances du produit.",
+    "Intelligence analytique d'ALGO : guide stratégique, analyse de signaux, idées et veille · réponses directes, utiles, alignées avec Viral Analyzer et les tendances du produit.",
   path: '/ai',
   keywords: ['ALGO AI', 'assistant IA', 'tendances', 'analyse', 'recommandations', 'radar'],
 })

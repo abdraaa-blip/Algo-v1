@@ -6,18 +6,25 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { fetchAllSources, fetchYouTubeTrending, fetchRedditHot, fetchHackerNews, fetchGitHubTrending, getSourceStatuses } from '@/lib/datasources'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
+import {
+  fetchAllSources,
+  fetchYouTubeTrending,
+  fetchRedditHot,
+  fetchHackerNews,
+  fetchGitHubTrending,
+  getSourceStatuses,
+  type SourceStatus,
+} from '@/lib/datasources'
 import { DATA_SOURCES } from '@/lib/data-pipeline'
 
 export const revalidate = 300 // Revalidate every 5 minutes
 
 // Helper to create honest response metadata
-function createResponseMeta(country: string, sourceStatuses: Record<string, unknown>) {
+function createResponseMeta(country: string, sourceStatuses: SourceStatus[]) {
   const now = new Date()
-  const activeCount = Object.values(sourceStatuses).filter(
-    (s: unknown) => (s as { status: string })?.status === 'success'
-  ).length
-  const totalCount = Object.keys(sourceStatuses).length
+  const activeCount = sourceStatuses.filter((s) => s.status === 'live' || s.status === 'cached').length
+  const totalCount = sourceStatuses.length
   
   return {
     fetchedAt: now.toISOString(),
@@ -37,6 +44,15 @@ function createResponseMeta(country: string, sourceStatuses: Record<string, unkn
 }
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-live:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const startTime = Date.now()
   
   try {

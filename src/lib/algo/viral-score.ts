@@ -56,21 +56,23 @@ export function calculateViralScore(
   historicalScores?: number[]
 ): ViralScoreBreakdown {
   const now = Date.now()
-  const ageHours = (now - item.publishedAt) / (1000 * 60 * 60)
-  
+  const publishedAt = item.publishedAt ?? now
+  const ageHours = Math.max((now - publishedAt) / (1000 * 60 * 60), 0.01)
+
   // 1. View Velocity (25%)
   // Normalized: views per hour relative to expected baseline
-  const views = item.metrics.views || 0
+  const m = item.metrics ?? {}
+  const views = m.views || 0
   const viewsPerHour = ageHours > 0 ? views / ageHours : views
-  const followerBase = item.author.followers || 1000 // Default assumption
+  const followerBase = item.author?.followers || 1000 // Default assumption
   const viewVelocityRaw = viewsPerHour / Math.max(followerBase / 100, 1)
   const viewVelocity = Math.min(sigmoid(viewVelocityRaw, 2) * 100, 100)
   
   // 2. Engagement Rate (20%)
   // (likes + comments + shares) / views
-  const likes = item.metrics.likes || item.metrics.upvotes || 0
-  const comments = item.metrics.comments || 0
-  const shares = item.metrics.shares || 0
+  const likes = m.likes || m.upvotes || 0
+  const comments = m.comments || 0
+  const shares = m.shares || 0
   const engagementRaw = views > 0 
     ? ((likes + comments * 2 + shares * 3) / views) * 100 
     : 0
@@ -80,8 +82,8 @@ export function calculateViralScore(
   // For now, estimate based on source diversity
   // TODO: Implement actual cross-platform detection
   const crossPlatformSpread = item.source === 'youtube' && views > 100000 ? 60 :
-                              item.source === 'reddit' && (item.metrics.upvotes || 0) > 10000 ? 50 :
-                              item.source === 'hackernews' && (item.metrics.upvotes || 0) > 500 ? 45 :
+                              item.source === 'reddit' && (m.upvotes || 0) > 10000 ? 50 :
+                              item.source === 'hackernews' && (m.upvotes || 0) > 500 ? 45 :
                               item.source === 'github' && likes > 1000 ? 55 :
                               30
   

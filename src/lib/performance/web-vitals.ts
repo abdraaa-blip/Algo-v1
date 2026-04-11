@@ -260,25 +260,31 @@ export function observeLongTasks(callback: (duration: number) => void): () => vo
 /**
  * Defer non-critical work until browser is idle
  */
+function getDomWindow(): Window | undefined {
+  if (typeof globalThis === 'undefined') return undefined
+  const g = globalThis as unknown as { window?: Window }
+  return g.window
+}
+
 export function requestIdleCallback(
   callback: () => void,
   options?: { timeout?: number }
 ): number {
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    return window.requestIdleCallback(callback, options)
+  const win = getDomWindow()
+  if (typeof win?.requestIdleCallback === 'function') {
+    return win.requestIdleCallback(callback, options)
   }
-  
-  // Fallback for Safari
-  return window.setTimeout(callback, 1) as unknown as number
+  return setTimeout(callback, 1) as unknown as number
 }
 
 /**
  * Cancel idle callback
  */
 export function cancelIdleCallback(id: number): void {
-  if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-    window.cancelIdleCallback(id)
+  const win = getDomWindow()
+  if (typeof win?.cancelIdleCallback === 'function') {
+    win.cancelIdleCallback(id)
   } else {
-    window.clearTimeout(id)
+    clearTimeout(id)
   }
 }

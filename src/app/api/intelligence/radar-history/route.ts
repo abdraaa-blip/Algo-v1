@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/intelligence/radar-history?region=FR&days=7
- * Historique des points radar (score prédit, confiance, anomalies) — mémoire process + Supabase si lisible.
+ * Historique des points radar (score prédit, confiance, anomalies) · mémoire process + Supabase si lisible.
  */
 export async function GET(request: NextRequest) {
   const identifier = getClientIdentifier(request)

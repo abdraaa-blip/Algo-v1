@@ -1,7 +1,7 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — NotificationPrompt
+// ALGO V1 · NotificationPrompt
 // Composant de demande de permission pour les notifications push.
 // S'affiche une seule fois, disparait apres interaction.
 // =============================================================================

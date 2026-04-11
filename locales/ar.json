@@ -91,9 +91,9 @@
     "watchers":      "{count} personnes surveillent ce signal",
     "crossPlatform": "Signal détecté sur plusieurs plateformes",
     "postWindow": {
-      "optimal":   "Fenêtre ouverte — moment idéal",
-      "saturated": "Trend saturée — visibilité réduite",
-      "fading":    "Le signal s'éteint — trop tard"
+      "optimal":   "Fenêtre ouverte · moment idéal",
+      "saturated": "Trend saturée · visibilité réduite",
+      "fading":    "Le signal s'éteint · trop tard"
     }
   },
 

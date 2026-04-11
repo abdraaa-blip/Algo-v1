@@ -1,12 +1,12 @@
 // =============================================================================
-// ALGO V1 — geoService
+// ALGO V1 · geoService
 // Service de geolocalisation cote serveur (IP-based).
 // Utilise dans les Server Components et API Routes.
 // =============================================================================
 
 import { headers } from 'next/headers'
-import { COUNTRIES } from '@/data/countries'
-import type { AppScope } from '@/types'
+import { COUNTRIES, getCountryName } from '@/data/countries'
+import type { AppScope, Country } from '@/types'
 import { getLocaleForCountry } from '@/lib/geo/country-profile'
 
 export interface GeoInfo {
@@ -32,8 +32,8 @@ export async function detectCountryFromHeaders(): Promise<GeoInfo> {
   const timezone = headersList.get('x-vercel-ip-timezone') || null
 
   // Trouve le nom du pays dans notre liste
-  const country = countryCode ? COUNTRIES.find(c => c.code === countryCode) : null
-  const countryName = country?.name || null
+  const country = countryCode ? COUNTRIES.find((c: Country) => c.code === countryCode) : null
+  const countryName = country ? getCountryName(country, 'en') : null
 
   return {
     countryCode,
@@ -53,7 +53,7 @@ export async function getSuggestedScope(): Promise<AppScope> {
   
   if (geo.countryCode && geo.countryName) {
     // Verifie que le pays est supporte
-    const isSupported = COUNTRIES.some(c => c.code === geo.countryCode)
+    const isSupported = COUNTRIES.some((c: Country) => c.code === geo.countryCode)
     if (isSupported) {
       return {
         type: 'country',

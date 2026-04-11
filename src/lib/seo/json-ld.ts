@@ -6,7 +6,7 @@ export function organizationJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: SITE_NAME,
-    description: `${SITE_NAME} — ${SITE_TAGLINE}. ${SITE_SILENT_SLOGAN} Radar de tendances et d’aide à la décision basé sur des signaux publics.`,
+    description: `${SITE_NAME} · ${SITE_TAGLINE}. ${SITE_SILENT_SLOGAN} Radar de tendances et d’aide à la décision basé sur des signaux publics.`,
     url,
     logo: absoluteUrl('/icons/icon-512.png'),
     sameAs: [] as string[],

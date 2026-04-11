@@ -6,7 +6,7 @@ import { getSiteBaseUrl } from '@/lib/seo/site'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Mentions légales',
   description:
-    'Éditeur, hébergement et contact du service ALGO — informations à compléter via les variables d’environnement en production.',
+    'Éditeur, hébergement et contact du service ALGO · informations à compléter via les variables d’environnement en production.',
   path: '/legal',
   keywords: ['mentions légales', 'éditeur', 'hébergement', 'ALGO'],
 })
@@ -24,7 +24,7 @@ export default function LegalPage() {
   )
   const address = envOrPlaceholder(
     'NEXT_PUBLIC_SITE_OPERATOR_ADDRESS',
-    '[Adresse du siège / représentant légal — NEXT_PUBLIC_SITE_OPERATOR_ADDRESS]'
+    '[Adresse du siège / représentant légal · NEXT_PUBLIC_SITE_OPERATOR_ADDRESS]'
   )
   const contactEmail = envOrPlaceholder(
     'NEXT_PUBLIC_CONTACT_EMAIL',
@@ -32,12 +32,12 @@ export default function LegalPage() {
   )
   const hosting = envOrPlaceholder(
     'NEXT_PUBLIC_SITE_HOSTING',
-    '[Hébergeur et adresse — NEXT_PUBLIC_SITE_HOSTING, ex. Vercel Inc.]'
+    '[Hébergeur et adresse · NEXT_PUBLIC_SITE_HOSTING, ex. Vercel Inc.]'
   )
   const mailOk = /^[^\s@[\]]+@[^\s@[\]]+\.[^\s@[\]]+$/.test(contactEmail)
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen text-[var(--color-text-primary)]">
       <div className="max-w-2xl mx-auto px-4 py-12 pb-24">
         <p className="text-xs text-white/40 mb-6">
           <Link href="/" className="hover:text-white/70">

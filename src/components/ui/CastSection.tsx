@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ImageWithFallback } from './ImageWithFallback'
 
 // =============================================================================
-// CastSection — Horizontal scrolling cast members with clickable profiles
+// CastSection · Horizontal scrolling cast members with clickable profiles
 // =============================================================================
 
 interface CastMember {

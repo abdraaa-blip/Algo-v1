@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 export async function GET(req: NextRequest) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-trends:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || searchParams.get('scopeCode') || 'FR'
   const geo = country === 'global' ? 'FR' : country.toUpperCase()
@@ -38,7 +48,7 @@ export async function GET(req: NextRequest) {
         momentum: growthRate > 200 ? 'exploding' : growthRate > 100 ? 'rising' : 'stable',
         rank: i + 1,
         relatedContentIds: [],
-        explanation: `Sujet tendance sur Google ${geo} — ${trafficText} recherches.`,
+        explanation: `Sujet tendance sur Google ${geo} · ${trafficText} recherches.`,
         recommendedFormat: ['face_cam', 'reaction'],
         country: geo,
         language: geo === 'FR' ? 'fr' : 'en',

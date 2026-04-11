@@ -1,4 +1,4 @@
-/** Types partagés — historique score radar intelligence (pas de logique serveur). */
+/** Types partagés · historique score radar intelligence (pas de logique serveur). */
 
 export type RadarHistoryPointDTO = {
   at: string

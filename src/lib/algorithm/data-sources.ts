@@ -1,5 +1,5 @@
 /**
- * ALGO DATA SOURCES — Connexion au monde réel
+ * ALGO DATA SOURCES · Connexion au monde réel
  * 
  * Sources de données en temps réel:
  * - Google Trends (via SerpAPI / scraping)
@@ -204,7 +204,7 @@ export async function fetchAllTrendingSources(country: string = 'US'): Promise<{
 }
 
 // ============================================================================
-// FALLBACK DATA GENERATOR — Données réalistes quand les APIs sont down
+// FALLBACK DATA GENERATOR · Données réalistes quand les APIs sont down
 // ============================================================================
 
 const TRENDING_TOPICS_2026 = {

@@ -693,8 +693,6 @@ function MovieDetailModal({ movie, onClose }: { movie: Movie; onClose: () => voi
           {/* Action Panel - What to do with this content */}
           <ActionPanel
             viralScore={movie.viralScore}
-            category={movie.type === 'movie' ? 'Cinema' : 'Series'}
-            platform="YouTube"
             timeRemaining={movie.momentum === 'exploding' ? '6h restantes' : movie.momentum === 'rising' ? '24h restantes' : '48h restantes'}
             postBefore={movie.momentum === 'exploding' ? '18h' : undefined}
             emotion={movie.buzzKeywords?.includes('scandal') ? 'colere' : movie.buzzKeywords?.includes('award') ? 'joie' : 'surprise'}

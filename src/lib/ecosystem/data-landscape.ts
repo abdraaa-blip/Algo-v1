@@ -1,5 +1,5 @@
 /**
- * PHASE 1 — Audit « données » : état actuel du dépôt ALGO (Next.js).
+ * PHASE 1 · Audit « données » : état actuel du dépôt ALGO (Next.js).
  * À utiliser comme référence avant introduction d’une base unique (Postgres/Supabase tables métier).
  */
 
@@ -12,7 +12,7 @@ export interface DataDomainRow {
   notes: string
 }
 
-/** Vue normalisée cible (futures tables / vues) — pas encore toutes implémentées en SQL. */
+/** Vue normalisée cible (futures tables / vues) · pas encore toutes implémentées en SQL. */
 export const TARGET_ENTITY_VIEWS = [
   'viral_score_snapshot',
   'trend_signal',
@@ -71,6 +71,6 @@ export const DATA_LANDSCAPE: DataDomainRow[] = [
     domain: 'Méta & transparence',
     examples: ['/api/v1/manifest', '/api/meta/data-reliability'],
     storage: 'derived',
-    notes: 'Inventaire et carte statique alignés sur le code — aucun secret, utile intégrations / audit.',
+    notes: 'Inventaire et carte statique alignés sur le code · aucun secret, utile intégrations / audit.',
   },
 ]

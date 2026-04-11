@@ -279,7 +279,13 @@ export function normalizeMovieItem(item: Record<string, unknown>, region: string
     source: 'TMDB',
     timestamp: String(item.releaseDate || item.release_date || new Date().toISOString()),
     region,
-    score: Number(item.viralScore || item.vote_average * 10 || 50),
+    score: Number(
+      item.viralScore != null
+        ? item.viralScore
+        : typeof item.vote_average === 'number'
+          ? item.vote_average * 10
+          : 50
+    ) || 50,
     metadata: {
       overview: item.overview || item.description,
       poster: item.poster || item.poster_path,

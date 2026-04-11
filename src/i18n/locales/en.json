@@ -84,16 +84,16 @@
     "timing": {
       "now": "Post now",
       "too_late": "Too late",
-      "too_early": "Too early — watch"
+      "too_early": "Too early · watch"
     },
     "bestPlatform": "Best platform",
     "bestFormat": "Best format",
     "watchers": "{count} people watching this signal",
     "crossPlatform": "Signal detected on multiple platforms",
     "postWindow": {
-      "optimal": "Window open — ideal moment",
-      "saturated": "Trend saturated — reduced visibility",
-      "fading": "Signal fading — too late"
+      "optimal": "Window open · ideal moment",
+      "saturated": "Trend saturated · reduced visibility",
+      "fading": "Signal fading · too late"
     }
   },
 
@@ -290,8 +290,8 @@
       "retry": "Retry",
       "generic": "Can't load this right now. Try again in a moment."
     },
-    "offline": "Connection lost — showing last signals.",
-    "geolocRefused": "Location disabled — showing global trends.",
+    "offline": "Connection lost · showing last signals.",
+    "geolocRefused": "Location disabled · showing global trends.",
     "authRequired": "Sign in to access this feature."
   },
 

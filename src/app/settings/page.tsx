@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Check } from 'lucide-react'
 
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { ALGO_BILLING } from '@/lib/copy/ui-strings'
 import { availableCountries, availableRegions, getCountryName, getRegionName } from '@/data/countries'
 import { useScope } from '@/hooks/useScope'
 import { cn } from '@/lib/utils'
@@ -21,6 +22,84 @@ export default function SettingsPage() {
   const { scope, setScope } = useScope()
   const [lang, setLang] = useState<Locale>('fr')
   const [saved, setSaved] = useState(false)
+  const [checkoutAvailable, setCheckoutAvailable] = useState(false)
+  const [portalAvailable, setPortalAvailable] = useState(false)
+  const [billingPlan, setBillingPlan] = useState<'free' | 'pro'>('free')
+  const [checkoutBusy, setCheckoutBusy] = useState(false)
+  const [checkoutMessage, setCheckoutMessage] = useState<string | null>(null)
+  const [billingFlash, setBillingFlash] = useState<'success' | 'cancel' | null>(null)
+
+  useEffect(() => {
+    try {
+      const q = new URLSearchParams(window.location.search).get('billing')
+      if (q === 'success' || q === 'cancel') setBillingFlash(q)
+    } catch {
+      /* ignore */
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    void (async () => {
+      try {
+        const res = await fetch('/api/billing/status', { cache: 'no-store' })
+        const j = (await res.json()) as { checkoutAvailable?: boolean; plan?: string; portalAvailable?: boolean }
+        if (cancelled || !res.ok) return
+        if (j.checkoutAvailable) setCheckoutAvailable(true)
+        if (j.portalAvailable) setPortalAvailable(true)
+        else setPortalAvailable(false)
+        if (j.plan === 'pro') setBillingPlan('pro')
+        else setBillingPlan('free')
+      } catch {
+        /* ignore */
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const [portalBusy, setPortalBusy] = useState(false)
+
+  const startBillingPortal = useCallback(async () => {
+    setPortalBusy(true)
+    setCheckoutMessage(null)
+    try {
+      const res = await fetch('/api/billing/portal', { method: 'POST' })
+      const j = (await res.json()) as { url?: string; ok?: boolean }
+      if (res.ok && j.url) {
+        window.location.href = j.url
+        return
+      }
+      setCheckoutMessage(ALGO_BILLING.portalError)
+    } catch {
+      setCheckoutMessage(ALGO_BILLING.portalError)
+    } finally {
+      setPortalBusy(false)
+    }
+  }, [])
+
+  const startCheckout = useCallback(async () => {
+    setCheckoutMessage(null)
+    setCheckoutBusy(true)
+    try {
+      const res = await fetch('/api/billing/checkout', { method: 'POST' })
+      const j = (await res.json()) as { url?: string; ok?: boolean; error?: string }
+      if (res.status === 401 && j.error === 'auth_required') {
+        setCheckoutMessage(ALGO_BILLING.checkoutRequiresLogin)
+        return
+      }
+      if (res.ok && j.url) {
+        window.location.href = j.url
+        return
+      }
+      setCheckoutMessage(ALGO_BILLING.checkoutError)
+    } catch {
+      setCheckoutMessage(ALGO_BILLING.checkoutError)
+    } finally {
+      setCheckoutBusy(false)
+    }
+  }, [])
 
   function save() {
     try {
@@ -62,6 +141,68 @@ export default function SettingsPage() {
             )
           })}
         </div>
+      </section>
+
+      <section aria-labelledby="billing-heading" className="rounded-xl border border-white/8 bg-white/[0.03] p-4 space-y-3">
+        <h2 id="billing-heading" className="text-[10px] font-bold text-white/28 uppercase tracking-[0.12em]">
+          {ALGO_BILLING.sectionTitle}
+        </h2>
+        {billingFlash === 'success' ? (
+          <p className="text-xs text-emerald-400/95 leading-relaxed" role="status">
+            {ALGO_BILLING.successNote}
+          </p>
+        ) : null}
+        {billingFlash === 'cancel' ? (
+          <p className="text-xs text-white/45 leading-relaxed" role="status">
+            {ALGO_BILLING.cancelNote}
+          </p>
+        ) : null}
+        <p className="text-xs text-white/55 leading-relaxed">{ALGO_BILLING.valuePitch}</p>
+        <p className="text-[11px] font-medium text-violet-200/90">
+          {billingPlan === 'pro' ? ALGO_BILLING.planLabelPro : ALGO_BILLING.planLabelFree}
+        </p>
+        <p className="text-[11px] text-white/40 leading-relaxed">{ALGO_BILLING.freeLabel}</p>
+        <p className="text-[11px] text-white/40 leading-relaxed">{ALGO_BILLING.proPitch}</p>
+        {portalAvailable ? (
+          <button
+            type="button"
+            onClick={() => void startBillingPortal()}
+            disabled={portalBusy}
+            className={cn(
+              'w-full py-2.5 rounded-xl text-sm font-semibold border transition-all',
+              portalBusy
+                ? 'border-white/10 text-white/35 cursor-wait'
+                : 'border-white/14 text-white/70 hover:bg-white/[0.06]',
+            )}
+          >
+            {portalBusy ? 'Ouverture…' : ALGO_BILLING.portalCta}
+          </button>
+        ) : null}
+
+        {checkoutAvailable && billingPlan === 'pro' ? (
+          <p className="text-[11px] text-white/45 leading-relaxed">{ALGO_BILLING.proCheckoutDone}</p>
+        ) : checkoutAvailable ? (
+          <button
+            type="button"
+            onClick={() => void startCheckout()}
+            disabled={checkoutBusy}
+            className={cn(
+              'w-full py-2.5 rounded-xl text-sm font-semibold border transition-all',
+              checkoutBusy
+                ? 'border-white/10 text-white/35 cursor-wait'
+                : 'border-[rgba(123,97,255,0.35)] text-violet-200 hover:bg-[rgba(123,97,255,0.12)]',
+            )}
+          >
+            {checkoutBusy ? 'Redirection…' : ALGO_BILLING.checkoutCta}
+          </button>
+        ) : (
+          <p className="text-[11px] text-white/35 leading-relaxed">{ALGO_BILLING.checkoutUnavailable}</p>
+        )}
+        {checkoutMessage ? (
+          <p className="text-[11px] text-amber-300/90" role="alert">
+            {checkoutMessage}
+          </p>
+        ) : null}
       </section>
 
       <section aria-labelledby="zone-heading">

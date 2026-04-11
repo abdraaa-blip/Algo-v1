@@ -51,19 +51,19 @@ const USE_CASES = [
 
 const ALGO_TELLS_YOU = [
   { icon: TrendingUp, text: "Ce qui monte en visibilité maintenant et pourquoi (signaux agrégés, pas une vérité absolue)" },
-  { icon: Clock, text: "Des sujets qui accélèrent — indicateurs sur les prochains jours, pas une prédiction garantie" },
+  { icon: Clock, text: "Des sujets qui accélèrent · indicateurs sur les prochains jours, pas une prédiction garantie" },
   { icon: Film, text: "Quels films et séries créent du buzz dans les classements et flux que nous suivons" },
   { icon: Eye, text: "Quelles séries suscitent de l’engagement pour t’aider à choisir quoi regarder" },
   { icon: Music, text: "Quels sons et artistes ressortent dans les tendances musicales suivies" },
   { icon: Zap, text: "Quels formats et angles méritent un test, selon les signaux du moment (à valider par toi)" },
-  { icon: Newspaper, text: "Quels sujets d’actu gagnent en volume — pour suivre l’information tôt, sans certitude médiatique" },
+  { icon: Newspaper, text: "Quels sujets d’actu gagnent en volume · pour suivre l’information tôt, sans certitude médiatique" },
 ]
 
 export default function AboutPage() {
   const { scrollYProgress } = useScroll()
 
   return (
-    <div className="relative min-h-screen bg-[var(--color-bg-primary)] overflow-hidden text-[var(--color-text-primary)]">
+    <div className="relative min-h-screen overflow-hidden text-[var(--color-text-primary)]">
       <LiveCurve growthRate={15} className="fixed inset-0 opacity-40" />
       
       {/* Progress bar */}
@@ -218,7 +218,7 @@ export default function AboutPage() {
             <p className="text-xl md:text-2xl text-white/60 text-center leading-relaxed">
               Internet n&apos;a jamais ete aussi rapide. Le bruit n&apos;a jamais ete aussi fort. 
               <span className="text-white font-bold"> ALGO structure ces signaux pour t&apos;aider à décider plus tôt</span>
-              , avec des indicateurs clairs — pas une boule de cristal.
+              , avec des indicateurs clairs · pas une boule de cristal.
             </p>
           </AnimatedSection>
         </section>
@@ -262,7 +262,7 @@ export default function AboutPage() {
               Ouvre ALGO quand tu veux te synchroniser avec les signaux.
             </p>
             <p className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight mt-4" style={{ color: '#00FFB2' }}>
-              Décide avec une lecture plus nette — pas au hasard.
+              Décide avec une lecture plus nette · pas au hasard.
             </p>
           </AnimatedSection>
         </section>
@@ -288,13 +288,13 @@ export default function AboutPage() {
           </AnimatedSection>
         </section>
 
-        {/* ALGO AI — même ligne directrice */}
+        {/* ALGO AI · même ligne directrice */}
         <section className="px-6 py-16 max-w-xl mx-auto text-center">
           <AnimatedSection>
             <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-2">ALGO AI</p>
             <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">
               Même promesse que l&apos;appli : peu de bruit, des réponses utiles. L&apos;IA du produit est calibrée pour
-              rester rationnelle, sans mysticisme — avec une carte de rôles publique sur la page transparence.
+              rester rationnelle, sans mysticisme · avec une carte de rôles publique sur la page transparence.
             </p>
             <Link
               href={SITE_TRANSPARENCY_AI_CALIBRATION_HREF}

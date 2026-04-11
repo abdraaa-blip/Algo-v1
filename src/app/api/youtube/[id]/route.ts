@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 // =============================================================================
-// ALGO V1 — YouTube Video Detail API
+// ALGO V1 · YouTube Video Detail API
 // Fetches full video details including stats, description, and related videos
 // =============================================================================
 
@@ -9,6 +10,15 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-youtube-id:${identifier}`, { limit: 90, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { id } = await params
   const videoId = id.replace('youtube-', '').replace('yt-', '')
   const apiKey = process.env.YOUTUBE_API_KEY

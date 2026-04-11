@@ -6,7 +6,7 @@ import { recordRadarSnapshotIfDue } from '@/lib/intelligence/radar-snapshot-stor
 export const dynamic = 'force-dynamic'
 export const maxDuration = 120
 
-/** `ALGO_RADAR_CRON_REGIONS` ex. `FR,US,GB` — défaut léger (coût / latence) ; étend si besoin. */
+/** `ALGO_RADAR_CRON_REGIONS` ex. `FR,US,GB` · défaut léger (coût / latence) ; étend si besoin. */
 function parseRadarCronRegions(raw: string | undefined): string[] {
   if (!raw?.trim()) return ['FR', 'US']
   return raw

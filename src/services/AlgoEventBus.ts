@@ -28,6 +28,7 @@ export type AlgoEventType =
   | 'signal:breaking'
   | 'signal:exploding'
   | 'signal:early'
+  | 'score:weights'
   // System events
   | 'system:online'
   | 'system:offline'
@@ -53,6 +54,7 @@ export interface AlgoEventPayload {
   'signal:breaking': { item: unknown; score: number; source: string }
   'signal:exploding': { item: unknown; previousScore: number; newScore: number }
   'signal:early': { item: unknown; detectedAt: string; source: string }
+  'score:weights': { topic: string; overallScore: number; modelTelemetry: unknown }
   'system:online': { timestamp: string }
   'system:offline': { timestamp: string }
   'system:error': { error: string; source: string; recoverable: boolean }

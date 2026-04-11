@@ -152,11 +152,11 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
   const scopeLabel = scope.type === 'global' ? '' : ` · ${scope.name}`
 
   const regionFilters: FilterOption[] = [
-    { value: 'all', label: 'All Regions' },
-    { value: 'FR', label: 'France' },
-    { value: 'US', label: 'USA' },
-    { value: 'GB', label: 'UK' },
-    { value: 'NG', label: 'Nigeria' },
+    { id: 'all', value: 'all', label: 'All Regions' },
+    { id: 'FR', value: 'FR', label: 'France' },
+    { id: 'US', value: 'US', label: 'USA' },
+    { id: 'GB', value: 'GB', label: 'UK' },
+    { id: 'NG', value: 'NG', label: 'Nigeria' },
   ]
 
   return (

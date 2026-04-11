@@ -13,7 +13,7 @@ import { AlgoOrchestrator } from './AlgoOrchestrator'
 interface CoherenceCheck {
   name: string
   lastCheck: number
-  lastResult: 'pass' | 'fail' | 'pending'
+  lastResult: 'pass' | 'fail' | 'pending' | 'warn'
   fixAttempts: number
   lastFix: number | null
 }

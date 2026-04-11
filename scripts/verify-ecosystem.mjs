@@ -40,10 +40,10 @@ function has(k) {
   return v != null && String(v).trim() !== '' && !String(v).includes('your-')
 }
 
-console.log('ALGO ecosystem — verification\n')
+console.log('ALGO ecosystem · verification\n')
 
 const platformOk = has('ALGO_PLATFORM_API_KEY') || has('ALGO_PLATFORM_API_KEYS')
-console.log(`  ${platformOk ? '[ok]' : '[--]'} ALGO_PLATFORM_API_KEY / ALGO_PLATFORM_API_KEYS — /api/v1/*`)
+console.log(`  ${platformOk ? '[ok]' : '[--]'} ALGO_PLATFORM_API_KEY / ALGO_PLATFORM_API_KEYS · /api/v1/*`)
 
 const rows = [
   ['NEXT_PUBLIC_SUPABASE_URL', 'URL projet Supabase'],
@@ -55,28 +55,28 @@ const rows = [
 ]
 
 for (const [key, label] of rows) {
-  console.log(`  ${has(key) ? '[ok]' : '[--]'} ${key} — ${label}`)
+  console.log(`  ${has(key) ? '[ok]' : '[--]'} ${key} · ${label}`)
 }
 
 const hasPublicSupabaseKey = has('NEXT_PUBLIC_SUPABASE_ANON_KEY') || has('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY')
 const hasSecretSupabaseKey = has('SUPABASE_SERVICE_ROLE_KEY') || has('SUPABASE_SECRET_KEY')
 console.log(
-  `  ${hasPublicSupabaseKey ? '[ok]' : '[--]'} Cle publique Supabase (ANON ou PUBLISHABLE) — requise pour le client`
+  `  ${hasPublicSupabaseKey ? '[ok]' : '[--]'} Cle publique Supabase (ANON ou PUBLISHABLE) · requise pour le client`
 )
 console.log(
-  `  ${hasSecretSupabaseKey ? '[ok]' : '[--]'} Cle secrete Supabase (SERVICE_ROLE ou SECRET_KEY) — snapshots / radar SQL`
+  `  ${hasSecretSupabaseKey ? '[ok]' : '[--]'} Cle secrete Supabase (SERVICE_ROLE ou SECRET_KEY) · snapshots / radar SQL`
 )
 
-console.log(`  ${has('ALGO_SNAPSHOT_PERSIST') ? '[ok]' : '[--]'} ALGO_SNAPSHOT_PERSIST — persistance sur chaque GET /api/v1/trends`)
+console.log(`  ${has('ALGO_SNAPSHOT_PERSIST') ? '[ok]' : '[--]'} ALGO_SNAPSHOT_PERSIST · persistance sur chaque GET /api/v1/trends`)
 
 const regions = process.env.ALGO_SNAPSHOT_CRON_REGIONS
 console.log(
-  `  ${regions ? '[ok]' : '[--]'} ALGO_SNAPSHOT_CRON_REGIONS — ${regions || 'defaut ALL,FR,US (cron)'}`
+  `  ${regions ? '[ok]' : '[--]'} ALGO_SNAPSHOT_CRON_REGIONS · ${regions || 'defaut ALL,FR,US (cron)'}`
 )
 
 const radarRegions = process.env.ALGO_RADAR_CRON_REGIONS
 console.log(
-   `  ${radarRegions ? '[ok]' : '[--]'} ALGO_RADAR_CRON_REGIONS — ${radarRegions || 'defaut FR,US (cron radar)'}`
+   `  ${radarRegions ? '[ok]' : '[--]'} ALGO_RADAR_CRON_REGIONS · ${radarRegions || 'defaut FR,US (cron radar)'}`
 )
 
 const migs = [
@@ -88,11 +88,11 @@ for (const mig of migs) {
   console.log(`  ${fs.existsSync(mig) ? '[ok]' : '[!!]'} ${path.relative(root, mig)}`)
 }
 
-console.log(`  ${has('DATABASE_URL') || has('SUPABASE_DB_URL') ? '[ok]' : '[--]'} DATABASE_URL / SUPABASE_DB_URL — npm run db:apply-ecosystem`)
+console.log(`  ${has('DATABASE_URL') || has('SUPABASE_DB_URL') ? '[ok]' : '[--]'} DATABASE_URL / SUPABASE_DB_URL · npm run db:apply-ecosystem`)
 
 console.log('\nJobs automatises (code deja en place) :')
 console.log('  - Vercel Cron : GET /api/cron/snapshot-trends (toutes les 20 min)')
-console.log('  - Vercel Cron : GET /api/cron/radar-snapshot (toutes les 15 min) — historique intelligence')
+console.log('  - Vercel Cron : GET /api/cron/radar-snapshot (toutes les 15 min) · historique intelligence')
 console.log('  - POST /api/viral-analyzer : insert viral_score_snapshot si service role')
 console.log('  - GET /api/v1/trends : insert trend_signal si ALGO_SNAPSHOT_PERSIST=1')
 

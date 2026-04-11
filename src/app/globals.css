@@ -3,24 +3,24 @@
 /* ─── Design tokens comme CSS custom properties ─────────────────────────────
    Source : src/lib/design-tokens.ts (+ @theme ici)
    Ces variables sont utilisées par Tailwind v4 via @theme et directement
-   dans les keyframes. Elles ne remplacent pas tokens.ts — elles en sont
+   dans les keyframes. Elles ne remplacent pas tokens.ts · elles en sont
    le reflet CSS pour les animations et les valeurs non supportées par Tailwind.
 ──────────────────────────────────────────────────────────────────────────── */
 
 @theme {
-  /* Fond — profondeur, focus (PHASE 1) */
+  /* Fond · profondeur, focus (PHASE 1) */
   --color-bg-primary:    #07070f;
   --color-bg-secondary:  #0c0c18;
   --color-bg-elevated:   #111122;
   --color-card:          rgba(255,255,255,0.04);
   --color-card-hover:    rgba(255,255,255,0.07);
   
-  /* Bordures — hiérarchie discrète */
+  /* Bordures · hiérarchie discrète */
   --color-border:        rgba(255,255,255,0.08);
   --color-border-strong: rgba(255,255,255,0.14);
   --color-border-focus:  rgba(123, 97, 255, 0.45);
   
-  /* Accents — données / vie / alertes (saturation maîtrisée) */
+  /* Accents · données / vie / alertes (saturation maîtrisée) */
   --color-violet:        #7B61FF;
   --color-violet-muted:  rgba(123, 97, 255, 0.22);
   --color-blue-neon:     #5ecfff;
@@ -28,7 +28,7 @@
   --color-red-alert:     #e85d75;
   --color-amber:         #e8c86a;
   
-  /* Texte — lecture WCAG-friendly sur fond sombre */
+  /* Texte · lecture WCAG-friendly sur fond sombre */
   --color-text-primary:  #f0f0f8;
   --color-text-secondary: rgba(240,240,248,0.68);
   --color-text-tertiary:  rgba(240,240,248,0.42);
@@ -61,12 +61,12 @@
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1);
 
-  /* Ombres — volume sans agressivité */
+  /* Ombres · volume sans agressivité */
   --shadow-algo-sm:  0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35);
   --shadow-algo-md:  0 12px 40px rgba(0,0,0,0.45);
   --shadow-algo-glow-violet: 0 0 0 1px rgba(123,97,255,0.12), 0 20px 50px rgba(123,97,255,0.08);
 
-  /* Grain film — dessous le contenu (PHASE 8) */
+  /* Grain film · dessous le contenu (PHASE 8) */
   --grain-opacity: 0.28;
 }
 
@@ -95,6 +95,9 @@
 }
 
 html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
@@ -103,13 +106,15 @@ html {
 }
 
 body {
+  margin: 0;
+  padding: 0;
   background: var(--color-bg-primary);
   font-family: var(--font-family-sans);
   min-height: 100dvh;
   overflow-x: hidden;
 }
 
-/* Surfaces & micro-interactions — système unifié (PHASE 2 / 5) */
+/* Surfaces & micro-interactions · système unifié (PHASE 2 / 5) */
 .algo-surface {
   background: var(--color-card);
   border: 1px solid var(--color-border);
@@ -133,7 +138,7 @@ body {
   }
 }
 
-/* Barres fixes — même verre dépoli que la palette (Navbar / bottom) */
+/* Barres fixes · même verre dépoli que la palette (Navbar / bottom) */
 .algo-nav-chrome {
   background: color-mix(in srgb, var(--color-bg-primary) 93%, transparent);
   backdrop-filter: blur(20px);
@@ -155,7 +160,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Carte média / contenu — hover GPU-friendly, tokens unifiés */
+/* Carte média / contenu · hover GPU-friendly, tokens unifiés */
 .algo-card-hit {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
@@ -228,7 +233,7 @@ body {
   box-shadow: 0 0 0 2px var(--color-violet-muted);
 }
 
-/* Grain texture — sous l’UI (z bas), opacité pilotée par contexte */
+/* Grain texture · sous l’UI (z bas), opacité pilotée par contexte */
 body::before {
   content: '';
   position: fixed;
@@ -360,61 +365,61 @@ img {
 
 /* ─── Keyframes ──────────────────────────────────────────────────────────── */
 
-/* Rotation lente — ViralScoreRing outer arc (8s) */
+/* Rotation lente · ViralScoreRing outer arc (8s) */
 @keyframes algo-spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
-/* Sequenceur 3 points — AlgoLoader */
+/* Sequenceur 3 points · AlgoLoader */
 @keyframes algo-dot-seq {
   0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
   40%           { opacity: 1;   transform: scale(1);   }
 }
 
-/* Shimmer horizontal — SkeletonLoader */
+/* Shimmer horizontal · SkeletonLoader */
 @keyframes algo-shimmer {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(200%);  }
 }
 
-/* Glow pulsant — contenu isExploding (3.5s) - uses opacity for composite animation */
+/* Glow pulsant · contenu isExploding (3.5s) - uses opacity for composite animation */
 @keyframes algo-pulse-viral {
   0%, 100% { opacity: 0.7; }
   50%      { opacity: 1; }
 }
 
-/* Glow pulsant — badge Early signal (4s) - uses opacity for composite animation */
+/* Glow pulsant · badge Early signal (4s) - uses opacity for composite animation */
 @keyframes algo-pulse-early {
   0%, 100% { opacity: 0.8; }
   50%      { opacity: 1; }
 }
 
-/* Clignotement doux — dot dans les badges animés */
+/* Clignotement doux · dot dans les badges animés */
 @keyframes algo-dot-blink {
   0%, 100% { opacity: 1;   }
   50%      { opacity: 0.3; }
 }
 
-/* Brightness — badge Early glow */
+/* Brightness · badge Early glow */
 @keyframes algo-early-glow {
   0%, 100% { opacity: 1;   filter: brightness(1);   }
   50%      { opacity: 0.7; filter: brightness(1.4); }
 }
 
-/* Signal Scan — ligne verticale qui traverse l'écran à l'ouverture (0.9s, une fois) */
+/* Signal Scan · ligne verticale qui traverse l'écran à l'ouverture (0.9s, une fois) */
 @keyframes algo-signal-scan {
   0%   { transform: translateX(-2px); opacity: 0.65; }
   100% { transform: translateX(110vw); opacity: 0;   }
 }
 
-/* Fade + slide up — apparition des cartes (staggered) */
+/* Fade + slide up · apparition des cartes (staggered) */
 @keyframes algo-fade-up {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0);    }
 }
 
-/* Ripple — Heat Pulse sur contenu en explosion */
+/* Ripple · Heat Pulse sur contenu en explosion */
 @keyframes algo-ripple {
   0%   { transform: scale(0.96); opacity: 0.5; }
   100% { transform: scale(1.08); opacity: 0;   }
@@ -433,7 +438,7 @@ img {
 .algo-dot-blink  { animation: algo-dot-blink 2s ease-in-out infinite; }
 .algo-early-glow { animation: algo-early-glow 2.5s ease-in-out infinite; }
 
-/* Stagger classes — délais 0ms à 400ms, pas de 80ms */
+/* Stagger classes · délais 0ms à 400ms, pas de 80ms */
 .algo-s1 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 0ms   both; }
 .algo-s2 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 80ms  both; }
 .algo-s3 { animation: algo-fade-up var(--duration-slow) var(--ease-out) 160ms both; }
@@ -517,7 +522,7 @@ img {
   animation: pulse-subtle 2s ease-in-out infinite;
 }
 
-/* Heartbeat — pulse cardiaque de l'algorithme */
+/* Heartbeat · pulse cardiaque de l'algorithme */
 @keyframes algo-heartbeat {
   0%, 100% { transform: scale(1); }
   14%      { transform: scale(1.05); }
@@ -526,7 +531,7 @@ img {
   70%      { transform: scale(1); }
 }
 
-/* Data Flow — flux de données entrant */
+/* Data Flow · flux de données entrant */
 @keyframes algo-data-flow {
   0%   { transform: translateX(-100%); opacity: 0; }
   10%  { opacity: 1; }
@@ -534,13 +539,13 @@ img {
   100% { transform: translateX(100%); opacity: 0; }
 }
 
-/* Breathing glow — respiration lumineuse */
+/* Breathing glow · respiration lumineuse */
 @keyframes algo-breathe {
   0%, 100% { opacity: 0.3; filter: blur(20px); }
   50%      { opacity: 0.6; filter: blur(30px); }
 }
 
-/* Number tick — changement de chiffres */
+/* Number tick · changement de chiffres */
 @keyframes algo-number-tick {
   0%   { transform: translateY(0); opacity: 1; }
   50%  { transform: translateY(-100%); opacity: 0; }
@@ -861,7 +866,7 @@ html[data-font-size="xl"] {
   pointer-events: none;
 }
 
-/* ─── Prefers reduced motion — bloc unique (PHASE 9) ─────────────────────── */
+/* ─── Prefers reduced motion · bloc unique (PHASE 9) ─────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   *,

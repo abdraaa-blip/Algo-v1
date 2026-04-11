@@ -40,7 +40,7 @@ function normalizePostedItem(raw: unknown, index: number): RawContentInput | nul
 }
 
 /**
- * GET — rapport Core Intelligence à partir des tendances + news live (pays).
+ * GET · rapport Core Intelligence à partir des tendances + news live (pays).
  * Query: region=FR (ISO2)
  */
 export async function GET(request: NextRequest) {
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST — rapport à partir d’un tableau `items` (RawContentInput partiels acceptés).
+ * POST · rapport à partir d’un tableau `items` (RawContentInput partiels acceptés).
  * Body: { items: [...], userContext?: { locale?, regionHint?, interestByCategory? } }
  */
 export async function POST(request: NextRequest) {

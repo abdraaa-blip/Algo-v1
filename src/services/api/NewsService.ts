@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — NewsService
+// ALGO V1 · NewsService
 // Service unifie pour les actualites - connecte a Google News RSS
 // Architecture professionnelle: cache, validation, fallbacks
 // =============================================================================

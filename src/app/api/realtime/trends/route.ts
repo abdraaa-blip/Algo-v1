@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 export const revalidate = 30
 export const dynamic = 'force-dynamic'
@@ -222,6 +223,15 @@ function videoToTrend(video: VideoItem, index: number, country: string): TrendDa
 // ─── API Handler ──────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-realtime-trends:${identifier}`, { limit: 45, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const limit = parseInt(searchParams.get('limit') || '20')
   const country = searchParams.get('country') || 'US'

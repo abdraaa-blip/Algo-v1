@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import {
   analyticsEventStore,
   appendAnalyticsEvents,
@@ -35,6 +36,15 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`analytics-events-get:${identifier}`, { limit: 300, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const hours = parseInt(searchParams.get('hours') || '24')
   const cutoff = Date.now() - hours * 60 * 60 * 1000

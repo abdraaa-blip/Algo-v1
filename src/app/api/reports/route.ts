@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 interface ReportBody {
   contentId: string
@@ -12,6 +13,15 @@ interface ReportBody {
 const reports: Array<ReportBody & { id: string; createdAt: string; status: 'pending' | 'reviewed' | 'resolved' }> = []
 
 export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-reports:${identifier}`, { limit: 15, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const body = await request.json() as ReportBody
 

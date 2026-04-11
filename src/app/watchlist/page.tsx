@@ -16,7 +16,7 @@ export default function WatchlistPage() {
   const { trends, unfollow, isLoaded } = useWatchlist()
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={80} color="violet" opacity={0.08} />
         <div className="relative max-w-4xl mx-auto px-4 pt-8 pb-6">
@@ -68,7 +68,7 @@ export default function WatchlistPage() {
                   border: trend.isExploding ? '1px solid rgba(255,77,109,0.2)' : '1px solid rgba(255,255,255,0.06)'
                 }}
               >
-                <ViralScoreRing score={trend.viralScore || 75} size={48} />
+                <ViralScoreRing score={trend.score} size={48} />
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -77,10 +77,10 @@ export default function WatchlistPage() {
                       className="text-sm font-semibold hover:underline truncate"
                       style={{ color: 'rgba(240,240,248,0.85)' }}
                     >
-                      {trend.title}
+                      {trend.name}
                     </Link>
-                    {trend.badge && <Badge type={trend.badge} />}
-                    {trend.isExploding && <Badge type="Viral" label="En explosion" />}
+                    {trend.score >= 88 ? <Badge type="Viral" label="Fort" /> : null}
+                    {trend.isExploding ? <Badge type="Breaking" label="Explosion" /> : null}
                   </div>
                   <div className="flex items-center gap-3 text-[10px]" style={{ color: 'rgba(240,240,248,0.4)' }}>
                     <span>{trend.platform || 'Multi'}</span>
@@ -95,7 +95,7 @@ export default function WatchlistPage() {
                 
                 <button
                   onClick={() => unfollow(trend.id)}
-                  aria-label={`Retirer ${trend.title} de la watchlist`}
+                  aria-label={`Retirer ${trend.name} de la watchlist`}
                   className="p-2 rounded-lg text-xs font-bold transition-all hover:bg-[rgba(255,77,109,0.2)]"
                   style={{
                     background: 'rgba(255,255,255,0.05)',

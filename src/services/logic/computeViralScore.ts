@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — computeViralScore (Logic Layer)
+// ALGO V1 · computeViralScore (Logic Layer)
 // Fonctions pures. Aucun appel API. Aucune dépendance UI.
 // En V1 : retourne le score stocké dans les données mock.
 // En V2 : brancher sur les vraies métriques d'engagement temps réel.
@@ -11,7 +11,7 @@ import { tokens } from '@/design-system/tokens'
 /**
  * Calcule un Viral Score normalisé (0–100) à partir des métriques disponibles.
  *
- * Formule V1 (simplifiée — sera remplacée en V2) :
+ * Formule V1 (simplifiée · sera remplacée en V2) :
  *   - growthRate  → 40 pts max (taux de croissance)
  *   - views       → 20 pts max (portée absolue)
  *   - watchers    → 15 pts max (signal d'intérêt actif)
@@ -57,7 +57,7 @@ export function getScoreTier(score: number): ScoreTier {
 
 /**
  * Retourne la couleur associée au score selon les tokens du design system.
- * Aucune valeur arbitraire — toujours via tokens.
+ * Aucune valeur arbitraire · toujours via tokens.
  */
 export function getScoreColor(score: number): string {
   if (score >= 85) return tokens.colors.accent.violet

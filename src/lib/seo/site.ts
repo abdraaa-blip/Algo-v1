@@ -4,7 +4,7 @@
 
 export const SITE_NAME = 'ALGO'
 
-/** Positionnement public — ADN produit (cohérent avec pages transparence / légal). */
+/** Positionnement public · ADN produit (cohérent avec pages transparence / légal). */
 export const SITE_TAGLINE = "L'algorithme des algorithmes"
 
 /** Philosophie d’expérience : peu de bruit UI, signal utile pour tous les profils. */

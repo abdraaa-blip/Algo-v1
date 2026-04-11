@@ -6,6 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 export const revalidate = 300 // Revalidate every 5 minutes
 
@@ -73,6 +74,15 @@ function formatNumber(num: number): string {
 }
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-feed-rss:${identifier}`, { limit: 40, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return new NextResponse(`Rate limit exceeded. Retry after ${rateLimit.retryAfter ?? 0}s`, {
+      status: 429,
+      headers: createRateLimitHeaders(rateLimit),
+    })
+  }
+
   const { searchParams } = new URL(request.url)
   const country = searchParams.get('country') || 'US'
   const limit = parseInt(searchParams.get('limit') || '20')

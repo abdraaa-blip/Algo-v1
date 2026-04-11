@@ -47,7 +47,7 @@
   "dailyHook": {
     "shouldHaveSeen": "Was du heute gesehen haben solltest",
     "goingNow": "Was gerade abgeht",
-    "watchSignals": "Beobachte das — frühes Signal"
+    "watchSignals": "Beobachte das · frühes Signal"
   },
 
   "badge": {
@@ -84,16 +84,16 @@
     "timing": {
       "now": "Jetzt posten",
       "too_late": "Zu spät",
-      "too_early": "Zu früh — beobachten"
+      "too_early": "Zu früh · beobachten"
     },
     "bestPlatform": "Ideale Plattform",
     "bestFormat": "Empfohlenes Format",
     "watchers": "{count} Personen beobachten dieses Signal",
     "crossPlatform": "Signal auf mehreren Plattformen erkannt",
     "postWindow": {
-      "optimal": "Fenster offen — idealer Moment",
-      "saturated": "Trend gesättigt — reduzierte Sichtbarkeit",
-      "fading": "Signal verblasst — zu spät"
+      "optimal": "Fenster offen · idealer Moment",
+      "saturated": "Trend gesättigt · reduzierte Sichtbarkeit",
+      "fading": "Signal verblasst · zu spät"
     }
   },
 
@@ -290,8 +290,8 @@
       "retry": "Erneut versuchen",
       "generic": "Lädt gerade nicht. Versuch es in einem Moment erneut."
     },
-    "offline": "Verbindung verloren — zeige letzte Signale.",
-    "geolocRefused": "Standort deaktiviert — zeige globale Trends.",
+    "offline": "Verbindung verloren · zeige letzte Signale.",
+    "geolocRefused": "Standort deaktiviert · zeige globale Trends.",
     "authRequired": "Melde dich an um auf diese Funktion zuzugreifen."
   },
 

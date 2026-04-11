@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — FilmService
+// ALGO V1 · FilmService
 // Service unifie pour les films et series - connecte a TMDB
 // Architecture professionnelle: cache, validation, fallbacks
 // =============================================================================
@@ -125,13 +125,15 @@ export async function getTrendingFilms(): Promise<FilmServiceResponse> {
   }
   
   try {
-    const [movies, tvShows] = await Promise.all([
+    const [moviesRes, tvRes] = await Promise.all([
       fetchTrendingMovies('day'),
       fetchTrendingTV('day')
     ])
-    
+    const movies = moviesRes.data
+    const tvShows = tvRes.data
+
     const films: Film[] = []
-    
+
     // Transform movies
     for (const movie of movies) {
       const film: Film = {
@@ -145,7 +147,6 @@ export async function getTrendingFilms(): Promise<FilmServiceResponse> {
         voteCount: movie.voteCount,
         genres: movie.genres,
         description: movie.overview,
-        runtime: movie.runtime,
         popularity: movie.popularity,
         viralScore: calculateViralScore(movie.popularity, movie.voteCount, movie.rating),
         cast: [],
@@ -171,8 +172,6 @@ export async function getTrendingFilms(): Promise<FilmServiceResponse> {
         voteCount: show.voteCount,
         genres: show.genres,
         description: show.overview,
-        seasons: show.seasons,
-        episodes: show.episodes,
         popularity: show.popularity,
         viralScore: calculateViralScore(show.popularity, show.voteCount, show.rating),
         cast: [],

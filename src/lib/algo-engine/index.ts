@@ -1,8 +1,8 @@
 /**
- * ALGO ENGINE — Central Intelligence System
+ * ALGO ENGINE · Central Intelligence System
  * 
  * Lightweight, efficient analysis modules for content intelligence.
- * NO heavy AI, NO complex simulations — just smart, fast logic.
+ * NO heavy AI, NO complex simulations · just smart, fast logic.
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -63,7 +63,7 @@ export interface RawContentInput {
 
 /**
  * Calculate viral score from 0-100 based on available metrics.
- * Simple, deterministic logic — no AI needed.
+ * Simple, deterministic logic · no AI needed.
  */
 export function calculateViralScore(input: {
   growthRate?: number
@@ -160,7 +160,7 @@ const EMOTION_KEYWORDS: Record<EmotionType, string[]> = {
 
 /**
  * Analyze text to detect dominant emotion.
- * Simple keyword matching — fast and predictable.
+ * Simple keyword matching · fast and predictable.
  */
 export function analyzeEmotion(text: string): EmotionAnalysis {
   const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')

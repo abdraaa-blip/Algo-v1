@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Virality Engine
+// ALGO V1 · Virality Engine
 // Core service for calculating viral scores and predicting content performance
 // =============================================================================
 

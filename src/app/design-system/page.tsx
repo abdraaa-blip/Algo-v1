@@ -34,12 +34,12 @@ export default function DesignSystemPage() {
     bestPlatform: 'Plateforme idéale',
     bestFormat:   'Format recommandé',
     watchers:     '{count} personnes surveillent ce signal',
-    postWindow:   { optimal: 'Fenêtre ouverte — moment idéal', saturated: 'Trend saturée', fading: 'Signal s\'éteint' },
+    postWindow:   { optimal: 'Fenêtre ouverte · moment idéal', saturated: 'Trend saturée', fading: 'Signal s\'éteint' },
     formatLabels: { face_cam: 'Face cam', text: 'Texte animé', montage: 'Montage', narration: 'Narration', duet: 'Duet', reaction: 'Réaction' },
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-14 min-h-dvh bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="max-w-4xl mx-auto px-4 py-10 space-y-14 min-h-dvh text-[var(--color-text-primary)]">
       <div>
         <h1 className="text-[28px] font-black tracking-tight text-[var(--color-text-primary)]">
           Design System
@@ -59,7 +59,7 @@ export default function DesignSystemPage() {
           <Badge type="AlmostViral" label="Presque viral"  animated={false} />
           <Badge type="coolOff"     label="En déclin"      animated={false} />
           <Badge type="exploding"   label="En explosion"   />
-          <Badge type="Viral"       label="Viral — md"     size="md" />
+          <Badge type="Viral"       label="Viral · md"     size="md" />
         </div>
       </Section>
 

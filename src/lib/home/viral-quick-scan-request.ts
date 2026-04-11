@@ -1,4 +1,4 @@
-/** Shared with HomeFirstMoments — must match POST /api/viral-analyzer form fields. */
+/** Shared with HomeFirstMoments · must match POST /api/viral-analyzer form fields. */
 export type ViralQuickScanPlatform =
   | 'youtube'
   | 'tiktok'

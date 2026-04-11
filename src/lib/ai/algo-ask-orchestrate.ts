@@ -1,11 +1,13 @@
 /**
  * Point d’entrée orchestré pour `/api/ai/ask` : fusionne contexte client + signaux serveur
- * avant l’appel au modèle — sans routeur lourd ni modules multiples.
+ * avant l’appel au modèle · sans routeur lourd ni modules multiples.
  */
 
 import { askAlgo } from '@/lib/ai/algo-brain'
+import { buildAlgoAskFallbackResponse } from '@/lib/ai/algo-ask-fallback'
 import type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
 import type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
+import type { AlgoAskRoute } from '@/core/router'
 import { buildLiveTrendsPayload } from '@/lib/api/live-trends-query'
 import { validators } from '@/lib/security'
 
@@ -43,6 +45,8 @@ export async function orchestrateAskAlgo(input: {
   conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>
   expertiseLevel?: AlgoExpertiseLevel
   serverEnrich?: boolean
+  algoAskRoute?: AlgoAskRoute
+  routeHintLines?: string[]
 }): Promise<{ answer: string; structured?: AlgoAskStructured; meta: AskOrchestrationMeta }> {
   const clientTrends =
     input.clientContext?.currentTrends?.filter((t) => typeof t === 'string' && t.trim()) ?? []
@@ -73,14 +77,32 @@ export async function orchestrateAskAlgo(input: {
 
   const userCountryLabel = country || input.clientContext?.userCountry?.trim() || 'global'
 
-  const { answer, structured } = await askAlgo(
-    input.question,
-    { currentTrends: trends, userCountry: userCountryLabel },
-    {
-      conversationHistory: input.conversationHistory,
-      expertiseLevel: input.expertiseLevel,
-    }
-  )
+  let answer: string
+  let structured: AlgoAskStructured | undefined
+  try {
+    const out = await askAlgo(
+      input.question,
+      {
+        currentTrends: trends,
+        userCountry: userCountryLabel,
+        algoAskRoute: input.algoAskRoute,
+        routeHintLines: input.routeHintLines,
+      },
+      {
+        conversationHistory: input.conversationHistory,
+        expertiseLevel: input.expertiseLevel,
+      }
+    )
+    answer = out.answer
+    structured = out.structured
+  } catch (err) {
+    console.warn('[algo-ask-orchestrate] askAlgo exception · repli synthèse', err)
+    answer = buildAlgoAskFallbackResponse(input.question, {
+      userCountry: userCountryLabel,
+      firstTrendTitle: trends[0],
+    })
+    structured = undefined
+  }
 
   return {
     answer,

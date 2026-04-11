@@ -8,6 +8,19 @@ describe('central brain', () => {
   it('expose un registre de modules cohérent', () => {
     expect(BRAIN_MODULE_REGISTRY.centralBrain).toContain('core/brain')
     expect(BRAIN_MODULE_REGISTRY.askOrchestrate).toContain('algo-ask-orchestrate')
+    expect(BRAIN_MODULE_REGISTRY.masterDirectiveDoc).toBe('docs/ALGO_MASTER_SYSTEM_DIRECTIVE.md')
+    expect(BRAIN_MODULE_REGISTRY.systemLayer).toBe('src/core/system.ts')
+    expect(BRAIN_MODULE_REGISTRY.askRouter).toBe('src/core/router.ts')
+    expect(BRAIN_MODULE_REGISTRY.systemRouteData).toBe('src/core/system-data.ts')
+    expect(BRAIN_MODULE_REGISTRY.designSystemRules).toBe('config/algo-system-rules.ts')
+    expect(BRAIN_MODULE_REGISTRY.qaGate).toBe('config/algo-qa-gate.ts')
+    expect(BRAIN_MODULE_REGISTRY.deployGate).toBe('config/algo-deploy-gate.ts')
+    expect(BRAIN_MODULE_REGISTRY.offlineEvolution).toBe('docs/ALGO_OFFLINE_EVOLUTION.md')
+    expect(BRAIN_MODULE_REGISTRY.controlRoom).toBe('docs/ALGO_CONTROL_ROOM.md')
+    expect(BRAIN_MODULE_REGISTRY.operationsPlaybook).toBe('docs/ALGO_OPERATIONS_PLAYBOOK.md')
+    expect(BRAIN_MODULE_REGISTRY.observability).toBe('src/core/observability/')
+    expect(BRAIN_MODULE_REGISTRY.autonomyKnowledgeMemory).toBe('src/lib/autonomy/knowledge-memory.ts')
+    expect(BRAIN_MODULE_REGISTRY.autonomyLearningHistory).toBe('src/lib/autonomy/learning-history.ts')
   })
 
   it('priorités intent définies', () => {

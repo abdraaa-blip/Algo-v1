@@ -46,6 +46,7 @@ export function AlgoStatusBar({ sources: propSources }: AlgoStatusBarProps) {
       const interval = setInterval(checkHealth, 30000)
       return () => clearInterval(interval)
     }
+    return undefined
   }, [propSources])
 
   const activeCount = sources.filter(s => s.status === 'active').length

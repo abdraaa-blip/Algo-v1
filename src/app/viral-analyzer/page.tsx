@@ -183,7 +183,7 @@ export default function ViralAnalyzerPage() {
   }, [inputType, url, description, inferredUrlPlatform, descriptionPlatform])
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)]">
+    <main className="min-h-screen pb-20">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={100} color="violet" opacity={0.1} />
         <div className="relative max-w-7xl mx-auto px-4 pt-8 pb-6">
@@ -197,7 +197,7 @@ export default function ViralAnalyzerPage() {
             Viral Analyzer
           </h1>
           <p className="text-sm max-w-lg" style={{ color: 'rgba(240,240,248,0.5)' }}>
-            Analyse le potentiel avant publication — score ALGO exportable pour tes stories et posts.
+            Analyse le potentiel avant publication · score ALGO exportable pour tes stories et posts.
           </p>
           <div
             className="mt-4 max-w-2xl rounded-xl border border-emerald-400/20 bg-emerald-500/10 px-3 py-2.5 text-[11px] leading-relaxed text-emerald-100/90"
@@ -375,7 +375,7 @@ export default function ViralAnalyzerPage() {
               className="pt-2"
               url={sharePageUrl}
               title="Analyseur viral ALGO"
-              snippet={`Score viral ${result.viralScore}/100 — analyse avant publication sur ALGO.`}
+              snippet={`Score viral ${result.viralScore}/100 · analyse avant publication sur ALGO.`}
             />
           </div>
         )}

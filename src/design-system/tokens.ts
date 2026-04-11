@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Design System Tokens
+// ALGO V1 · Design System Tokens
 // Source unique de toutes les valeurs visuelles.
 // Aucune couleur, spacing ou durée n'est déclarée hors de ce fichier.
 // =============================================================================
@@ -10,8 +10,8 @@ export const tokens = {
 
   colors: {
     bg: {
-      primary:   '#07070f',  // fond global — noir profond, pas gris fade
-      secondary: '#0d0d1a',  // fond secondaire — drawers, modals
+      primary:   '#07070f',  // fond global · noir profond, pas gris fade
+      secondary: '#0d0d1a',  // fond secondaire · drawers, modals
       card:      'rgba(255, 255, 255, 0.04)',
       cardHover: 'rgba(255, 255, 255, 0.07)',
     },
@@ -104,7 +104,7 @@ export const tokens = {
       red:    '0 0 20px rgba(255, 77, 109, 0.25)',
       blue:   '0 0 20px rgba(0, 209, 255, 0.25)',
     },
-    // Fonction utilitaire — usage: tokens.shadow.glowDynamic('#7B61FF')
+    // Fonction utilitaire · usage: tokens.shadow.glowDynamic('#7B61FF')
     glowDynamic: (hex: string) => `0 0 20px ${hex}30`,
   },
 
@@ -152,7 +152,7 @@ export const tokens = {
     slow:    350,   // ouvertures, slideins
     breathe: 3000,  // pulse léger sur cartes
     pulse:   4000,  // early signal glow
-    curve:  12000,  // LiveCurve — déplacement lent
+    curve:  12000,  // LiveCurve · déplacement lent
     ring:    8000,  // ViralScoreRing outer arc rotation
   },
 

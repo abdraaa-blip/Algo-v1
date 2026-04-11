@@ -420,7 +420,7 @@ export function useRealtimePresence(roomId: string = 'algo-live') {
     channelRef.current
       .on('presence', { event: 'sync' }, () => {
         const state = channelRef.current?.presenceState() || {}
-        const allUsers = Object.values(state).flat() as Array<{ id: string; online_at: string }>
+        const allUsers = Object.values(state).flat() as unknown as Array<{ id: string; online_at: string }>
         setUsers(allUsers)
         setOnlineCount(allUsers.length)
       })

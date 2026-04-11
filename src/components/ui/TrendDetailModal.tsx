@@ -59,14 +59,22 @@ export function TrendDetailModal({ trend, onClose, onCopyHook }: TrendDetailModa
       bg: 'bg-blue-500/10',
       border: 'border-blue-500/30',
       text: 'text-blue-400'
-    }
+    },
+    too_late: {
+      color: 'slate',
+      icon: Timer,
+      label: 'FENETRE PASSEE',
+      bg: 'bg-slate-500/10',
+      border: 'border-slate-500/30',
+      text: 'text-slate-400'
+    },
   }
   
   // Safely get prediction with fallback
   const prediction = trend.prediction || {
     recommendedAction: 'prepare' as const,
     optimalWindow: ['2h', '4h', 'Demain'],
-    confidence: 0.5,
+    probability: 0.5,
     windowDuration: 120,
     peakTime: renderTimestamp + 7200000,
   }
@@ -108,11 +116,11 @@ export function TrendDetailModal({ trend, onClose, onCopyHook }: TrendDetailModa
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-start justify-between p-5 border-b border-white/5 bg-[#12121a]/95 backdrop-blur-md rounded-t-3xl">
           <div className="flex items-start gap-4">
-            <ViralScoreRing value={trend.score.total || trend.score.overall || 50} size="lg" />
+            <ViralScoreRing value={trend.score.overall} size="lg" />
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h2 className="text-xl font-black text-white">{trend.keyword}</h2>
-                <LiveIndicator size="sm" />
+                <LiveIndicator className="scale-90" />
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <MomentumPill 
@@ -150,12 +158,12 @@ export function TrendDetailModal({ trend, onClose, onCopyHook }: TrendDetailModa
                   {config.label}
                 </p>
                 <p className="text-[11px] text-white/40">
-                  Confiance: {Math.round((prediction.confidence || 0.5) * 100)}%
+                  Confiance: {Math.round((prediction.probability ?? 0.5) * 100)}%
                 </p>
               </div>
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
-              {prediction.reason || 'Trend en cours d\'analyse'}
+              {prediction.reasoning?.[0] ?? 'Trend en cours d\'analyse'}
             </p>
           </div>
           

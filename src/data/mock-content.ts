@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Données mock Content
+// ALGO V1 · Données mock Content
 // Conformes à l'interface Content de /src/types/index.ts.
 // Zéro champ manquant. Zéro Platform hors union. timingLabel sur les 5 locales.
 // =============================================================================
@@ -34,7 +34,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['TikTok', 'Instagram'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Poste maintenant — la fenêtre est ouverte', en: 'Post now — the window is open', es: 'Publica ahora — la ventana está abierta', de: 'Jetzt posten — das Fenster ist offen', ar: 'انشر الآن — النافذة مفتوحة' },
+      timingLabel: { fr: 'Poste maintenant · la fenêtre est ouverte', en: 'Post now · the window is open', es: 'Publica ahora · la ventana está abierta', de: 'Jetzt posten · das Fenster ist offen', ar: 'انشر الآن · النافذة مفتوحة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -70,7 +70,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok'],
       bestFormat: 'narration',
-      timingLabel: { fr: 'Signal précoce — fenêtre optimale', en: 'Early signal — optimal window', es: 'Señal temprana — ventana óptima', de: 'Frühes Signal — optimales Fenster', ar: 'إشارة مبكرة — نافذة مثالية' },
+      timingLabel: { fr: 'Signal précoce · fenêtre optimale', en: 'Early signal · optimal window', es: 'Señal temprana · ventana óptima', de: 'Frühes Signal · optimales Fenster', ar: 'إشارة مبكرة · نافذة مثالية' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -106,7 +106,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'YouTube', 'TikTok'],
       bestFormat: 'reaction',
-      timingLabel: { fr: 'Poste dans les 2h — après, la saturation commence', en: 'Post within 2h — saturation coming', es: 'Publica en 2h — la saturación llega', de: 'In 2h posten — Sättigung kommt', ar: 'انشر خلال ساعتين — التشبع قادم' },
+      timingLabel: { fr: 'Poste dans les 2h · après, la saturation commence', en: 'Post within 2h · saturation coming', es: 'Publica en 2h · la saturación llega', de: 'In 2h posten · Sättigung kommt', ar: 'انشر خلال ساعتين · التشبع قادم' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -141,7 +141,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Instagram', 'YouTube'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Fenêtre ouverte — potentiel moyen', en: 'Window open — medium potential', es: 'Ventana abierta — potencial medio', de: 'Fenster offen — mittleres Potenzial', ar: 'النافذة مفتوحة — إمكانات متوسطة' },
+      timingLabel: { fr: 'Fenêtre ouverte · potentiel moyen', en: 'Window open · medium potential', es: 'Ventana abierta · potencial medio', de: 'Fenster offen · mittleres Potenzial', ar: 'النافذة مفتوحة · إمكانات متوسطة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -177,7 +177,7 @@ export const mockContent: Content[] = [
       timing: 'too_late',
       bestPlatform: ['TikTok'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Signal en déclin — évite ce sujet', en: 'Signal fading — avoid this topic', es: 'Señal en declive — evita este tema', de: 'Signal nachlassend — Thema vermeiden', ar: 'الإشارة تتلاشى — تجنب هذا الموضوع' },
+      timingLabel: { fr: 'Signal en déclin · évite ce sujet', en: 'Signal fading · avoid this topic', es: 'Señal en declive · evita este tema', de: 'Signal nachlassend · Thema vermeiden', ar: 'الإشارة تتلاشى · تجنب هذا الموضوع' },
       postWindow: { status: 'fading' },
     },
     sourceDistribution: [
@@ -211,7 +211,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Signal précoce — 48h devant toi', en: 'Early signal — 48h window', es: 'Señal temprana — 48h de ventana', de: 'Frühes Signal — 48h Fenster', ar: 'إشارة مبكرة — نافذة 48 ساعة' },
+      timingLabel: { fr: 'Signal précoce · 48h devant toi', en: 'Early signal · 48h window', es: 'Señal temprana · 48h de ventana', de: 'Frühes Signal · 48h Fenster', ar: 'إشارة مبكرة · نافذة 48 ساعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -247,7 +247,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'TikTok', 'Instagram'],
       bestFormat: 'reaction',
-      timingLabel: { fr: 'Explose en ce moment — agis vite', en: 'Exploding now — act fast', es: 'Explotando ahora — actúa rápido', de: 'Explodiert jetzt — schnell handeln', ar: 'ينفجر الآن — تصرف بسرعة' },
+      timingLabel: { fr: 'Explose en ce moment · agis vite', en: 'Exploding now · act fast', es: 'Explotando ahora · actúa rápido', de: 'Explodiert jetzt · schnell handeln', ar: 'ينفجر الآن · تصرف بسرعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -282,7 +282,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['TikTok', 'Instagram', 'Snapchat'],
       bestFormat: 'duet',
-      timingLabel: { fr: 'Signal précoce — partage maintenant', en: 'Early signal — share now', es: 'Señal temprana — comparte ahora', de: 'Frühes Signal — jetzt teilen', ar: 'إشارة مبكرة — شارك الآن' },
+      timingLabel: { fr: 'Signal précoce · partage maintenant', en: 'Early signal · share now', es: 'Señal temprana · comparte ahora', de: 'Frühes Signal · jetzt teilen', ar: 'إشارة مبكرة · شارك الآن' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -310,14 +310,14 @@ export const mockContent: Content[] = [
     detectedAt: minsAgo(33),
     thumbnail: 'https://picsum.photos/seed/c009/400/225',
     sourceUrl: 'https://instagram.com',
-    explanation: "Le rire authentique et incontrôlé est l'un des formats les plus contagieux qui soit. L'effet miroir est immédiat — le spectateur rit avant même de comprendre la blague.",
+    explanation: "Le rire authentique et incontrôlé est l'un des formats les plus contagieux qui soit. L'effet miroir est immédiat · le spectateur rit avant même de comprendre la blague.",
     creatorTips: "Capture les moments de rire authentique plutôt que les blagues préparées. L'inattendu et l'incontrôlable sont la formule.",
     insight: {
       postNowProbability: 'high',
       timing: 'now',
       bestPlatform: ['Instagram', 'TikTok'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Viral international — portée mondiale', en: 'International viral — global reach', es: 'Viral internacional — alcance global', de: 'International viral — globale Reichweite', ar: 'فيروسي دولي — وصول عالمي' },
+      timingLabel: { fr: 'Viral international · portée mondiale', en: 'International viral · global reach', es: 'Viral internacional · alcance global', de: 'International viral · globale Reichweite', ar: 'فيروسي دولي · وصول عالمي' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -352,7 +352,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'TikTok'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Drama actif — 12h maximum', en: 'Active drama — 12h window max', es: 'Drama activo — máximo 12h', de: 'Aktives Drama — max. 12h', ar: 'دراما نشطة — 12 ساعة كحد أقصى' },
+      timingLabel: { fr: 'Drama actif · 12h maximum', en: 'Active drama · 12h window max', es: 'Drama activo · máximo 12h', de: 'Aktives Drama · max. 12h', ar: 'دراما نشطة · 12 ساعة كحد أقصى' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -387,7 +387,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'TikTok'],
       bestFormat: 'text',
-      timingLabel: { fr: 'Mème actif — adapte-le vite', en: 'Active meme — adapt it fast', es: 'Meme activo — adáptalo rápido', de: 'Aktives Meme — schnell anpassen', ar: 'ميم نشط — تكيف بسرعة' },
+      timingLabel: { fr: 'Mème actif · adapte-le vite', en: 'Active meme · adapt it fast', es: 'Meme activo · adáptalo rápido', de: 'Aktives Meme · schnell anpassen', ar: 'ميم نشط · تكيف بسرعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -422,7 +422,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Son émergent — utilise-le maintenant', en: 'Emerging sound — use it now', es: 'Sonido emergente — úsalo ahora', de: 'Aufkommender Sound — jetzt nutzen', ar: 'صوت ناشئ — استخدمه الآن' },
+      timingLabel: { fr: 'Son émergent · utilise-le maintenant', en: 'Emerging sound · use it now', es: 'Sonido emergente · úsalo ahora', de: 'Aufkommender Sound · jetzt nutzen', ar: 'صوت ناشئ · استخدمه الآن' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -450,7 +450,7 @@ export const mockContent: Content[] = [
     detectedAt: minsAgo(55),
     thumbnail: 'https://picsum.photos/seed/c013/400/225',
     sourceUrl: 'https://tiktok.com',
-    explanation: "Le format 'enfant qui explique' exploite le contraste entre innocence et complexité. C'est aussi du miroir social — on rit parce qu'on se reconnaît dans la simplification.",
+    explanation: "Le format 'enfant qui explique' exploite le contraste entre innocence et complexité. C'est aussi du miroir social · on rit parce qu'on se reconnaît dans la simplification.",
     creatorTips: "Fais expliquer un concept complexe de ton domaine par quelqu'un d'inattendu. L'écart entre le messager et le message est la source du viral.",
     insight: {
       postNowProbability: 'high',
@@ -492,7 +492,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Contenu de fond — portée internationale', en: 'Background content — international reach', es: 'Contenido de fondo — alcance internacional', de: 'Hintergrundinhalt — internationale Reichweite', ar: 'محتوى خلفي — وصول دولي' },
+      timingLabel: { fr: 'Contenu de fond · portée internationale', en: 'Background content · international reach', es: 'Contenido de fondo · alcance internacional', de: 'Hintergrundinhalt · internationale Reichweite', ar: 'محتوى خلفي · وصول دولي' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -527,7 +527,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Instagram', 'TikTok'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Filtre viral — 48h restantes', en: 'Viral filter — 48h left', es: 'Filtro viral — quedan 48h', de: 'Viraler Filter — 48h verbleibend', ar: 'فلتر فيروسي — 48 ساعة متبقية' },
+      timingLabel: { fr: 'Filtre viral · 48h restantes', en: 'Viral filter · 48h left', es: 'Filtro viral · quedan 48h', de: 'Viraler Filter · 48h verbleibend', ar: 'فلتر فيروسي · 48 ساعة متبقية' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -562,7 +562,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'Instagram', 'YouTube'],
       bestFormat: 'reaction',
-      timingLabel: { fr: 'Breaking now — agis dans l\'heure', en: 'Breaking now — act within the hour', es: 'Breaking now — actúa en una hora', de: 'Breaking now — sofort handeln', ar: 'عاجل الآن — تصرف خلال ساعة' },
+      timingLabel: { fr: 'Breaking now · agis dans l\'heure', en: 'Breaking now · act within the hour', es: 'Breaking now · actúa en una hora', de: 'Breaking now · sofort handeln', ar: 'عاجل الآن · تصرف خلال ساعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -597,7 +597,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Instagram', 'TikTok'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Trend stable — bonne fenêtre', en: 'Stable trend — good window', es: 'Tendencia estable — buena ventana', de: 'Stabiler Trend — gutes Fenster', ar: 'ترند مستقر — نافذة جيدة' },
+      timingLabel: { fr: 'Trend stable · bonne fenêtre', en: 'Stable trend · good window', es: 'Tendencia estable · buena ventana', de: 'Stabiler Trend · gutes Fenster', ar: 'ترند مستقر · نافذة جيدة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -632,7 +632,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok'],
       bestFormat: 'narration',
-      timingLabel: { fr: 'Trend de fond — durable', en: 'Background trend — durable', es: 'Tendencia de fondo — durable', de: 'Hintergrundtrend — dauerhaft', ar: 'ترند خلفي — دائم' },
+      timingLabel: { fr: 'Trend de fond · durable', en: 'Background trend · durable', es: 'Tendencia de fondo · durable', de: 'Hintergrundtrend · dauerhaft', ar: 'ترند خلفي · دائم' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -667,7 +667,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Instagram', 'TikTok'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Contenu émotionnel — toujours pertinent', en: 'Emotional content — always relevant', es: 'Contenido emocional — siempre relevante', de: 'Emotionaler Inhalt — immer relevant', ar: 'محتوى عاطفي — دائمًا ذو صلة' },
+      timingLabel: { fr: 'Contenu émotionnel · toujours pertinent', en: 'Emotional content · always relevant', es: 'Contenido emocional · siempre relevante', de: 'Emotionaler Inhalt · immer relevant', ar: 'محتوى عاطفي · دائمًا ذو صلة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -695,14 +695,14 @@ export const mockContent: Content[] = [
     detectedAt: minsAgo(28),
     thumbnail: 'https://picsum.photos/seed/c020/400/225',
     sourceUrl: 'https://tiktok.com',
-    explanation: "Le format 'quiz prix immobilier' joue sur la frustration collective. Chaque réponse déclenchée génère un commentaire — la mécanique d'engagement est parfaite.",
+    explanation: "Le format 'quiz prix immobilier' joue sur la frustration collective. Chaque réponse déclenchée génère un commentaire · la mécanique d'engagement est parfaite.",
     creatorTips: "Adapte le format 'devine le prix' à n'importe quel secteur choquant : salaires, menuiers, graphistes, médecins.",
     insight: {
       postNowProbability: 'high',
       timing: 'now',
       bestPlatform: ['TikTok', 'Instagram', 'Twitter'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Sujet chaud — 36h devant toi', en: 'Hot topic — 36h window', es: 'Tema caliente — ventana de 36h', de: 'Heißes Thema — 36h Fenster', ar: 'موضوع ساخن — نافذة 36 ساعة' },
+      timingLabel: { fr: 'Sujet chaud · 36h devant toi', en: 'Hot topic · 36h window', es: 'Tema caliente · ventana de 36h', de: 'Heißes Thema · 36h Fenster', ar: 'موضوع ساخن · نافذة 36 ساعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -730,14 +730,14 @@ export const mockContent: Content[] = [
     detectedAt: hoursAgo(9),
     thumbnail: 'https://picsum.photos/seed/c021/400/225',
     sourceUrl: 'https://youtube.com',
-    explanation: "Le format 'patrimoine méconnu' génère un fort sentiment d'exclusivité informationnelle. Le spectateur pense 'je savais pas ça' — c'est le moteur du partage.",
+    explanation: "Le format 'patrimoine méconnu' génère un fort sentiment d'exclusivité informationnelle. Le spectateur pense 'je savais pas ça' · c'est le moteur du partage.",
     creatorTips: "Documente un endroit oublié ou inaccessible dans ta ville. L'angle 'ce que personne ne montre' fonctionne dans toutes les cultures.",
     insight: {
       postNowProbability: 'medium',
       timing: 'now',
       bestPlatform: ['YouTube', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Bonne fenêtre — contenu durable', en: 'Good window — evergreen content', es: 'Buena ventana — contenido evergreen', de: 'Gutes Fenster — immergrüner Inhalt', ar: 'نافذة جيدة — محتوى دائم الخضرة' },
+      timingLabel: { fr: 'Bonne fenêtre · contenu durable', en: 'Good window · evergreen content', es: 'Buena ventana · contenido evergreen', de: 'Gutes Fenster · immergrüner Inhalt', ar: 'نافذة جيدة · محتوى دائم الخضرة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -771,7 +771,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Contenu durable — bon timing', en: 'Evergreen content — good timing', es: 'Contenido duradero — buen momento', de: 'Dauerhafter Inhalt — gutes Timing', ar: 'محتوى دائم — توقيت جيد' },
+      timingLabel: { fr: 'Contenu durable · bon timing', en: 'Evergreen content · good timing', es: 'Contenido duradero · buen momento', de: 'Dauerhafter Inhalt · gutes Timing', ar: 'محتوى دائم · توقيت جيد' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -805,7 +805,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Signal cross-platform — fort potentiel', en: 'Cross-platform signal — strong potential', es: 'Señal multiplataforma — gran potencial', de: 'Plattformübergreifendes Signal — starkes Potenzial', ar: 'إشارة متعددة المنصات — إمكانات قوية' },
+      timingLabel: { fr: 'Signal cross-platform · fort potentiel', en: 'Cross-platform signal · strong potential', es: 'Señal multiplataforma · gran potencial', de: 'Plattformübergreifendes Signal · starkes Potenzial', ar: 'إشارة متعددة المنصات · إمكانات قوية' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -841,7 +841,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['TikTok', 'YouTube'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Contenu evergreen — bon timing', en: 'Evergreen content — good timing', es: 'Contenido evergreen — buen momento', de: 'Immergrüner Inhalt — gutes Timing', ar: 'محتوى دائم — توقيت جيد' },
+      timingLabel: { fr: 'Contenu evergreen · bon timing', en: 'Evergreen content · good timing', es: 'Contenido evergreen · buen momento', de: 'Immergrüner Inhalt · gutes Timing', ar: 'محتوى دائم · توقيت جيد' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -893,7 +893,7 @@ export const mockContent: Content[] = [
 
   {
     id: 'c026',
-    title: "Cette IA dessine un portrait de toi depuis ta voix — sans photo",
+    title: "Cette IA dessine un portrait de toi depuis ta voix · sans photo",
     category: 'Insolite',
     platform: 'Twitter',
     country: 'US',
@@ -913,7 +913,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Twitter', 'TikTok'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Signal très précoce — fenêtre de 72h', en: 'Very early signal — 72h window', es: 'Señal muy temprana — ventana de 72h', de: 'Sehr frühes Signal — 72h Fenster', ar: 'إشارة مبكرة جدًا — نافذة 72 ساعة' },
+      timingLabel: { fr: 'Signal très précoce · fenêtre de 72h', en: 'Very early signal · 72h window', es: 'Señal muy temprana · ventana de 72h', de: 'Sehr frühes Signal · 72h Fenster', ar: 'إشارة مبكرة جدًا · نافذة 72 ساعة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -926,7 +926,7 @@ export const mockContent: Content[] = [
 
   {
     id: 'c027',
-    title: "Le marché nocturne de Abidjan filmé en slow motion — 4M de vues en 24h",
+    title: "Le marché nocturne de Abidjan filmé en slow motion · 4M de vues en 24h",
     category: 'Lifestyle',
     platform: 'Instagram',
     country: 'CI',
@@ -946,7 +946,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['Instagram', 'TikTok'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Bonne fenêtre — contenu esthétique durable', en: 'Good window — durable aesthetic content', es: 'Buena ventana — contenido estético duradero', de: 'Gutes Fenster — dauerhafter ästhetischer Inhalt', ar: 'نافذة جيدة — محتوى جمالي دائم' },
+      timingLabel: { fr: 'Bonne fenêtre · contenu esthétique durable', en: 'Good window · durable aesthetic content', es: 'Buena ventana · contenido estético duradero', de: 'Gutes Fenster · dauerhafter ästhetischer Inhalt', ar: 'نافذة جيدة · محتوى جمالي دائم' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -981,7 +981,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['TikTok', 'Twitter', 'YouTube'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Trend explosive — adapte-toi maintenant', en: 'Explosive trend — adapt now', es: 'Tendencia explosiva — adáptate ahora', de: 'Explosiver Trend — jetzt anpassen', ar: 'ترند انفجاري — تكيف الآن' },
+      timingLabel: { fr: 'Trend explosive · adapte-toi maintenant', en: 'Explosive trend · adapt now', es: 'Tendencia explosiva · adáptate ahora', de: 'Explosiver Trend · jetzt anpassen', ar: 'ترند انفجاري · تكيف الآن' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -995,7 +995,7 @@ export const mockContent: Content[] = [
 
   {
     id: 'c029',
-    title: "Hyper-realistic food miniatures — le time-lapse qui hypnotise",
+    title: "Hyper-realistic food miniatures · le time-lapse qui hypnotise",
     category: 'Insolite',
     platform: 'YouTube',
     country: 'JP',
@@ -1015,7 +1015,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Format indémodable — toujours bon timing', en: 'Timeless format — always good timing', es: 'Formato atemporal — siempre buen momento', de: 'Zeitloser Format — immer gutes Timing', ar: 'صيغة خالدة — دائمًا توقيت جيد' },
+      timingLabel: { fr: 'Format indémodable · toujours bon timing', en: 'Timeless format · always good timing', es: 'Formato atemporal · siempre buen momento', de: 'Zeitloser Format · immer gutes Timing', ar: 'صيغة خالدة · دائمًا توقيت جيد' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -1049,7 +1049,7 @@ export const mockContent: Content[] = [
       timing: 'now',
       bestPlatform: ['YouTube', 'Instagram'],
       bestFormat: 'montage',
-      timingLabel: { fr: 'Contenu émotion — fenêtre permanente', en: 'Emotional content — permanent window', es: 'Contenido emocional — ventana permanente', de: 'Emotionaler Inhalt — dauerhaftes Fenster', ar: 'محتوى عاطفي — نافذة دائمة' },
+      timingLabel: { fr: 'Contenu émotion · fenêtre permanente', en: 'Emotional content · permanent window', es: 'Contenido emocional · ventana permanente', de: 'Emotionaler Inhalt · dauerhaftes Fenster', ar: 'محتوى عاطفي · نافذة دائمة' },
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -1064,7 +1064,7 @@ export const mockContent: Content[] = [
   // C031–C040 : cas Fail Lab + Almost Viral pour la page dédiée
   {
     id: 'c031',
-    title: "La tendance 'quiet quitting creator' — trop tardif",
+    title: "La tendance 'quiet quitting creator' · trop tardif",
     category: 'Actu',
     platform: 'YouTube',
     country: 'US',
@@ -1079,13 +1079,13 @@ export const mockContent: Content[] = [
     sourceUrl: 'https://youtube.com',
     explanation: "Le 'quiet quitting creator' a eu son pic il y a 3 semaines. Ce contenu arrive trop tard sur la vague.",
     creatorTips: "Évite les sujets dont le pic est dépassé. Cherche la prochaine vague, pas la dernière.",
-    failReason: "Timing raté de 21 jours. Le sujet était viral mi-octobre — en novembre, la saturation est totale. Le hook manquait aussi d'originalité.",
+    failReason: "Timing raté de 21 jours. Le sujet était viral mi-octobre · en novembre, la saturation est totale. Le hook manquait aussi d'originalité.",
     insight: {
       postNowProbability: 'low',
       timing: 'too_late',
       bestPlatform: ['YouTube'],
       bestFormat: 'face_cam',
-      timingLabel: { fr: 'Trop tard — sujet saturé', en: 'Too late — saturated topic', es: 'Demasiado tarde — tema saturado', de: 'Zu spät — gesättigtes Thema', ar: 'متأخر جدًا — موضوع مشبع' },
+      timingLabel: { fr: 'Trop tard · sujet saturé', en: 'Too late · saturated topic', es: 'Demasiado tarde · tema saturado', de: 'Zu spät · gesättigtes Thema', ar: 'متأخر جدًا · موضوع مشبع' },
       postWindow: { status: 'fading' },
     },
     sourceDistribution: [
@@ -1098,7 +1098,7 @@ export const mockContent: Content[] = [
 
   {
     id: 'c032',
-    title: "#GenZ vs Millennial — un débat qui tourne en rond",
+    title: "#GenZ vs Millennial · un débat qui tourne en rond",
     category: 'Buzz',
     platform: 'Twitter',
     country: 'US',
@@ -1113,13 +1113,13 @@ export const mockContent: Content[] = [
     sourceUrl: 'https://twitter.com',
     explanation: "La guerre des générations est une trend cyclique qui s'épuise rapidement. Le pic est passé depuis 2 semaines.",
     creatorTips: "Les sujets générationnels ont une durée de vie très courte. Le pic durait 72h maximum.",
-    failReason: "Format vu et revu. Aucun angle nouveau. Le débat tourne en rond depuis trop longtemps — l'audience est lasse. Le hook était trop prévisible.",
+    failReason: "Format vu et revu. Aucun angle nouveau. Le débat tourne en rond depuis trop longtemps · l'audience est lasse. Le hook était trop prévisible.",
     insight: {
       postNowProbability: 'low',
       timing: 'too_late',
       bestPlatform: ['Twitter'],
       bestFormat: 'text',
-      timingLabel: { fr: 'Signal mort — passe à autre chose', en: 'Dead signal — move on', es: 'Señal muerta — sigue adelante', de: 'Totes Signal — weitermachen', ar: 'إشارة ميتة — انتقل لغيرها' },
+      timingLabel: { fr: 'Signal mort · passe à autre chose', en: 'Dead signal · move on', es: 'Señal muerta · sigue adelante', de: 'Totes Signal · weitermachen', ar: 'إشارة ميتة · انتقل لغيرها' },
       postWindow: { status: 'fading' },
     },
     sourceDistribution: [
@@ -1139,14 +1139,14 @@ export const mockContent: Content[] = [
     { id:'c037', country:'SN', lang:'fr', cat:'Culture' as const,   plat:'Instagram' as const, score:79, rate:140, trend:'up' as const,     badge:'Trend' as const,       views:1_500_000, explode:false, title:"La lutte sénégalaise filmée comme un blockbuster hollywoodien" },
     { id:'c038', country:'US', lang:'en', cat:'Insolite' as const,  plat:'Reddit' as const,    score:72, rate:95,  trend:'up' as const,     badge:'Trend' as const,       views:890_000,   explode:false, title:"AI generates fake physics laws and makes them completely believable" },
     { id:'c039', country:'BR', lang:'pt', cat:'Émotion' as const,   plat:'YouTube' as const,   score:88, rate:230, trend:'up' as const,     badge:'Viral' as const,       views:6_200_000, explode:true,  title:"Surfer brasileiro salva criança no mar e a cena viraliza globalmente" },
-    { id:'c040', country:'DE', lang:'de', cat:'Actu' as const,      plat:'YouTube' as const,   score:75, rate:105, trend:'up' as const,     badge:'Trend' as const,       views:1_200_000, explode:false, title:"Berliner Startup revolutioniert Müllsortierung mit KI — viral in 24h" },
-    { id:'c041', country:'MA', lang:'fr', cat:'Lifestyle' as const, plat:'YouTube' as const,   score:80, rate:130, trend:'up' as const,     badge:'Trend' as const,       views:1_800_000, explode:false, title:"48h dans le désert du Drâa sans téléphone — un Marocain documente tout" },
-    { id:'c042', country:'CA', lang:'en', cat:'Buzz' as const,      plat:'TikTok' as const,    score:85, rate:195, trend:'up' as const,     badge:'Viral' as const,       views:4_500_000, explode:false, title:"Canadian grandpa reacts to his grandson's rap debut — 10M views" },
+    { id:'c040', country:'DE', lang:'de', cat:'Actu' as const,      plat:'YouTube' as const,   score:75, rate:105, trend:'up' as const,     badge:'Trend' as const,       views:1_200_000, explode:false, title:"Berliner Startup revolutioniert Müllsortierung mit KI · viral in 24h" },
+    { id:'c041', country:'MA', lang:'fr', cat:'Lifestyle' as const, plat:'YouTube' as const,   score:80, rate:130, trend:'up' as const,     badge:'Trend' as const,       views:1_800_000, explode:false, title:"48h dans le désert du Drâa sans téléphone · un Marocain documente tout" },
+    { id:'c042', country:'CA', lang:'en', cat:'Buzz' as const,      plat:'TikTok' as const,    score:85, rate:195, trend:'up' as const,     badge:'Viral' as const,       views:4_500_000, explode:false, title:"Canadian grandpa reacts to his grandson's rap debut · 10M views" },
     { id:'c043', country:'NG', lang:'en', cat:'Culture' as const,   plat:'TikTok' as const,    score:90, rate:350, trend:'up' as const,     badge:'Early' as const,       views:820_000,   explode:false, title:"New Afrobeats dance challenge sweeps across 5 countries in 72h" },
     { id:'c044', country:'FR', lang:'fr', cat:'Drama' as const,     plat:'Twitter' as const,   score:82, rate:170, trend:'up' as const,     badge:'Breaking' as const,    views:3_300_000, explode:true,  title:"Ce tweet d'un DRH sur le 'quiet quitting' déclenche une tempête" },
-    { id:'c045', country:'JP', lang:'en', cat:'Lifestyle' as const, plat:'YouTube' as const,   score:76, rate:88,  trend:'stable' as const, badge:'Trend' as const,       views:1_600_000, explode:false, title:"Tokyo 5AM walking tour through the fish market — pure ASMR" },
-    { id:'c046', country:'BE', lang:'fr', cat:'Buzz' as const,      plat:'TikTok' as const,    score:69, rate:-8,  trend:'down' as const,   badge:'AlmostViral' as const, views:540_000,   explode:false, title:"Challenge 'manger belge pendant 7 jours' — concept raté" },
-    { id:'c047', country:'US', lang:'en', cat:'Émotion' as const,   plat:'YouTube' as const,   score:91, rate:290, trend:'up' as const,     badge:'Viral' as const,       views:9_800_000, explode:true,  title:"Street musician plays cello in NYC subway — strangers start crying" },
+    { id:'c045', country:'JP', lang:'en', cat:'Lifestyle' as const, plat:'YouTube' as const,   score:76, rate:88,  trend:'stable' as const, badge:'Trend' as const,       views:1_600_000, explode:false, title:"Tokyo 5AM walking tour through the fish market · pure ASMR" },
+    { id:'c046', country:'BE', lang:'fr', cat:'Buzz' as const,      plat:'TikTok' as const,    score:69, rate:-8,  trend:'down' as const,   badge:'AlmostViral' as const, views:540_000,   explode:false, title:"Challenge 'manger belge pendant 7 jours' · concept raté" },
+    { id:'c047', country:'US', lang:'en', cat:'Émotion' as const,   plat:'YouTube' as const,   score:91, rate:290, trend:'up' as const,     badge:'Viral' as const,       views:9_800_000, explode:true,  title:"Street musician plays cello in NYC subway · strangers start crying" },
     { id:'c048', country:'CM', lang:'fr', cat:'Actu' as const,      plat:'YouTube' as const,   score:77, rate:115, trend:'up' as const,     badge:'Trend' as const,       views:980_000,   explode:false, title:"Documentaire court : les entrepreneurs camerounais qui changent Douala" },
     { id:'c049', country:'CI', lang:'fr', cat:'Culture' as const,   plat:'Instagram' as const, score:83, rate:175, trend:'up' as const,     badge:'Early' as const,       views:650_000,   explode:false, title:"Le Zouglou ivoirien s'invite dans les charts européens" },
     { id:'c050', country:'KR', lang:'en', cat:'Insolite' as const,  plat:'TikTok' as const,    score:88, rate:260, trend:'up' as const,     badge:'Early' as const,       views:1_100_000, explode:false, title:"Korean student builds working mechanical keyboard from scratch in 24h" },

@@ -19,7 +19,7 @@ import { ALGO_DATA_RELIABILITY_PANEL } from '@/lib/copy/ui-strings'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Transparence des données',
   description:
-    'Comment ALGO collecte, traite et affiche les données de tendances — sources, rythmes de rafraîchissement et limites.',
+    'Comment ALGO collecte, traite et affiche les données de tendances · sources, rythmes de rafraîchissement et limites.',
   path: '/transparency',
   keywords: ['transparence', 'données', 'vie privée', 'sources', 'ALGO'],
 })
@@ -77,7 +77,7 @@ const SCORE_DEFINITIONS = [
   {
     name: 'Analyseur viral (page dédiée + scan rapide)',
     detail:
-      'Score multi-critères (accroche, alignement tendance, format, timing…) produit par un pipeline dédié — peut inclure des modèles si configurés. Toujours interpréter comme aide à la décision.',
+      'Score multi-critères (accroche, alignement tendance, format, timing…) produit par un pipeline dédié · peut inclure des modèles si configurés. Toujours interpréter comme aide à la décision.',
   },
   {
     name: 'Scores « Intelligence » / radar',
@@ -95,7 +95,7 @@ const INTELLIGENCE_MODULES = [
   {
     name: 'Viral Score',
     description:
-      'Estime un score 0–100 à partir de croissance, engagement et nouveauté perçue — indicateur interne, pas une prévision d’audience réelle.',
+      'Estime un score 0–100 à partir de croissance, engagement et nouveauté perçue · indicateur interne, pas une prévision d’audience réelle.',
     icon: Zap,
   },
   {
@@ -159,14 +159,14 @@ export default function TransparencyPage() {
           .
         </p>
 
-        {/* Score definitions — alignement produit */}
+        {/* Score definitions · alignement produit */}
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Scale className="w-6 h-6 text-emerald-400" />
             <h2 className="text-xl font-bold">Ce que signifient les scores</h2>
           </div>
           <p className="text-white/55 text-sm mb-4 leading-relaxed">
-            Plusieurs écrans affichent un chiffre sur 100. Ils ne partagent pas forcément la même formule — voici la
+            Plusieurs écrans affichent un chiffre sur 100. Ils ne partagent pas forcément la même formule · voici la
             distinction utile pour éviter toute confusion. Détail formule « radar » public :{' '}
             <Link href="/algorithm" className="text-cyan-400 hover:underline">
               page Algorithme
@@ -183,7 +183,7 @@ export default function TransparencyPage() {
           </div>
         </section>
 
-        {/* Calibrage ALGO AI — familles de rôle (lisible utilisateur) */}
+        {/* Calibrage ALGO AI · familles de rôle (lisible utilisateur) */}
         <section id="algo-ai-directive" className="mb-12 scroll-mt-24">
           <div className="flex items-center gap-3 mb-6">
             <Layers className="w-6 h-6 text-violet-400" />
@@ -192,8 +192,8 @@ export default function TransparencyPage() {
           <p className="text-[var(--color-text-secondary)] text-sm mb-4 leading-relaxed max-w-3xl">
             Le modèle reçoit une directive interne sobre (clarté, pas de mysticisme, indicateurs sans promesse magique).
             Les huit familles ci-dessous ne sont pas des « codes secrets » : c’est une carte des rôles que le prompt
-            vise à équilibrer — stratégie, sûreté, analyse, création, signaux sociaux, cohérence, production,
-            persistance — pour rester aligné avec le reste du produit ALGO.
+            vise à équilibrer · stratégie, sûreté, analyse, création, signaux sociaux, cohérence, production,
+            persistance · pour rester aligné avec le reste du produit ALGO.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {ALGO_DIRECTIVE_FAMILY_HINTS_FR.map((row) => (
@@ -275,7 +275,7 @@ export default function TransparencyPage() {
           
           <p className="text-white/60 mb-6 text-sm">
             Les agrégats de tendances s&apos;appuient surtout sur des règles, caches et scores dérivés des APIs.
-            Certaines fonctions — analyseur viral, ALGO AI — peuvent appeler des modèles lorsque les clés sont
+            Certaines fonctions · analyseur viral, ALGO AI · peuvent appeler des modèles lorsque les clés sont
             configurées. Voici les blocs fonctionnels décrits côté produit :
           </p>
           

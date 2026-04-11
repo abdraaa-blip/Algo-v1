@@ -72,7 +72,7 @@ export async function runModelWeightSnapshotJob(): Promise<{
   const adaptive = computeAdaptiveWeights()
   return persistModelWeightVersionIfNew({
     version: adaptive.version,
-    weights: adaptive.weights as Record<string, number>,
+    weights: adaptive.weights as unknown as Record<string, number>,
     notes: adaptive.notes,
     rollbackApplied: adaptive.rollbackApplied,
   })

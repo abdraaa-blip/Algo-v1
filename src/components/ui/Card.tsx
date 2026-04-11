@@ -8,7 +8,7 @@ import { ImageWithFallback } from './ImageWithFallback'
 import type { Content, BadgeType } from '@/types'
 import { formatViews, formatRelativeTime } from '@/i18n/utils'
 
-// ─── Labels passés par le parent — zéro texte hardcodé ───────────────────────
+// ─── Labels passés par le parent · zéro texte hardcodé ───────────────────────
 
 interface CardLabels {
   badge: Record<BadgeType | 'coolOff' | 'exploding', string>
@@ -96,12 +96,12 @@ export function Card({
           platform={content.platform?.toLowerCase() || 'default'}
         />
 
-        {/* Badge — position start pour RTL */}
+        {/* Badge · position start pour RTL */}
         <div className="absolute top-2 start-2">
           <Badge type={badgeType} label={badgeLabel} />
         </div>
 
-        {/* Platform — position end pour RTL */}
+        {/* Platform · position end pour RTL */}
         <div className="absolute top-2 end-2">
           <span
             className={cn(
@@ -150,7 +150,7 @@ export function Card({
           <span className="ms-auto text-white/18">{content.category}</span>
         </div>
 
-        {/* InsightPanel condensé — visible au hover desktop uniquement */}
+        {/* InsightPanel condensé · visible au hover desktop uniquement */}
         {showInsight && (
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-[200ms] pt-0.5">
             <InsightPanel

@@ -76,7 +76,7 @@ export function AlgoCoreIntelligencePanel({ region }: { region: string }) {
           <div>
             <h2 className="font-bold text-sm text-white">ALGO Core Intelligence</h2>
             <p className="text-[11px] text-white/50 mt-0.5 max-w-xl">
-              Analyse multi-facteurs, simulations (viral / stagnation / rejet), motifs, priorités et fiabilité — à partir
+              Analyse multi-facteurs, simulations (viral / stagnation / rejet), motifs, priorités et fiabilité · à partir
               des tendances et actus live pour la région sélectionnée. Indicateurs seulement.
             </p>
             <p className="text-[10px] text-[var(--color-text-muted)] mt-1">
@@ -86,7 +86,7 @@ export function AlgoCoreIntelligencePanel({ region }: { region: string }) {
               >
                 Même cadre éthique que ALGO AI
               </Link>
-              <span className="text-[var(--color-text-muted)]"> — transparence.</span>
+              <span className="text-[var(--color-text-muted)]"> · transparence.</span>
             </p>
             {report && (
               <p className="text-[10px] text-violet-300/80 mt-1 italic">&ldquo;{report.philosophy.tagline}&rdquo;</p>
@@ -181,7 +181,7 @@ export function AlgoCoreIntelligencePanel({ region }: { region: string }) {
                     {t.token}×{t.count}
                   </span>
                 ))}
-                {report.patterns.repeatedTokens.length === 0 && <span>—</span>}
+                {report.patterns.repeatedTokens.length === 0 && <span>–</span>}
               </p>
               {report.vigilance.notes.length > 0 ? (
                 <ul className="text-[11px] text-amber-200/80 list-disc pl-4 space-y-0.5">
@@ -239,7 +239,7 @@ export function AlgoCoreIntelligencePanel({ region }: { region: string }) {
                 Précoces : {report.virality.earlySignalsCount} · phases fortes : {report.virality.risingOrPeakCount}
               </p>
               <p className="text-[10px] text-white/45 mt-2">
-                {report.virality.topActionLabels.slice(0, 4).join(' · ') || '—'}
+                {report.virality.topActionLabels.slice(0, 4).join(' · ') || '–'}
               </p>
               <p className="text-[10px] text-white/35 mt-2">{report.userLayer.notes.join(' ')}</p>
             </div>

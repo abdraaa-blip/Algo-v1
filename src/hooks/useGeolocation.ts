@@ -1,7 +1,7 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — useGeolocation
+// ALGO V1 · useGeolocation
 // Hook de geolocalisation avec consentement utilisateur.
 // Regles :
 //   - Ne jamais declencher sans action utilisateur explicite.
@@ -29,7 +29,7 @@ export interface UseGeolocationReturn {
   suggestedScope: AppScope | null
 }
 
-// Mapping coordonnees vers pays (simplifie — utilise IP fallback en prod)
+// Mapping coordonnees vers pays (simplifie · utilise IP fallback en prod)
 async function reverseGeocode(lat: number, lon: number): Promise<{ code: string; name: string } | null> {
   try {
     // Utilise l'API gratuite de BigDataCloud pour le reverse geocoding

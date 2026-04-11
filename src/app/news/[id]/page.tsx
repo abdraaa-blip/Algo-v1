@@ -11,9 +11,11 @@ import { absoluteUrl } from '@/lib/seo/site'
 import { Badge } from '@/components/ui/Badge'
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { InsightPanel } from '@/components/ui/InsightPanel'
+import type { ContentFormat, Insight, PostWindowStatus, TimingStatus } from '@/types'
+import { fillLocaleStrings } from '@/types'
 
 // =============================================================================
-// ALGO V1 — News Detail Page
+// ALGO V1 · News Detail Page
 // Fetches real news from Google News RSS and displays with ALGO insights
 // =============================================================================
 
@@ -172,13 +174,20 @@ export default async function NewsPage({ params }: Props) {
   const tags = extractTitleKeywords(news.title, 5)
   const category = guessCategory(news.title)
 
-  const insight = {
-    postNowProbability: importanceScore > 85 ? 'high' as const : importanceScore > 70 ? 'medium' as const : 'low' as const,
-    timing: speedScore > 80 ? 'now' : speedScore > 50 ? 'now' : 'too_late',
+  const timing: TimingStatus =
+    speedScore > 80 ? 'now' : speedScore > 50 ? 'now' : 'too_late'
+  const postWindowStatus: PostWindowStatus =
+    speedScore > 80 ? 'optimal' : speedScore > 50 ? 'fading' : 'saturated'
+  const insight: Insight = {
+    postNowProbability: importanceScore > 85 ? 'high' : importanceScore > 70 ? 'medium' : 'low',
+    timing,
     bestPlatform: ['YouTube', 'TikTok', 'Twitter'],
-    bestFormat: 'news',
-    timingLabel: { fr: speedScore > 85 ? 'Breaking news' : 'Actualite chaude', en: 'Breaking news' },
-    postWindow: { status: speedScore > 80 ? 'optimal' : speedScore > 50 ? 'fading' : 'saturated' },
+    bestFormat: 'news' as ContentFormat,
+    timingLabel: fillLocaleStrings({
+      fr: speedScore > 85 ? 'Breaking news' : 'Actualité chaude',
+      en: 'Breaking news',
+    }),
+    postWindow: { status: postWindowStatus },
   }
 
   const shareUrl = absoluteUrl(`/news/${id}`)

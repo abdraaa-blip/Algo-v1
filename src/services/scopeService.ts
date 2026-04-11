@@ -1,7 +1,7 @@
 // =============================================================================
-// ALGO V1 — scopeService
+// ALGO V1 · scopeService
 // Logique pure de filtrage selon le Country Scope System.
-// Ces fonctions sont des fonctions pures — aucun effet de bord.
+// Ces fonctions sont des fonctions pures · aucun effet de bord.
 // Elles ne connaissent pas les composants UI.
 // =============================================================================
 
@@ -12,7 +12,7 @@ import type { AppScope, Content, Trend, NewsItem } from '@/types'
  * - Global → retourne tout
  * - Country → filtre par country code
  * - Si le filtrage par pays retourne 0 résultats, retourne le tableau complet
- *   (fallback global silencieux — expérience dégradée mais jamais vide)
+ *   (fallback global silencieux · expérience dégradée mais jamais vide)
  */
 export function filterContentsByScope(
   contents: Content[],

@@ -16,7 +16,7 @@ export type ForbiddenUiCopyHit = {
   excerpt: string
 }
 
-/** Relatif à `src/` — fichiers où les interdits sont cités à des fins documentaires. */
+/** Relatif à `src/` · fichiers où les interdits sont cités à des fins documentaires. */
 const SKIP_REL_TO_SRC = new Set([
   'lib/copy/algo-voice.ts',
   'lib/copy/ui-strings.ts',
@@ -71,7 +71,7 @@ function buildRules(): ReadonlyArray<{
     },
     {
       id: 'something-went-wrong',
-      hint: 'Message générique anglais — aligner sur ALGO_UI_ERROR ou i18n.',
+      hint: 'Message générique anglais · aligner sur ALGO_UI_ERROR ou i18n.',
       matchLine: (line) => line.toLowerCase().includes(somethingWrong.toLowerCase()),
     },
     {

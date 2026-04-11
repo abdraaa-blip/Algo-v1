@@ -8,6 +8,7 @@ import { AlgoCoreIntelligencePanel } from '@/components/intelligence/AlgoCoreInt
 import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from '@/lib/seo/site'
 import { ALGO_DATA_RELIABILITY_PANEL, ALGO_PRODUCT_RADAR, ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
 import { mergeRadarHistoryPoints } from '@/lib/intelligence/radar-history-utils'
+import { VIRAL_CONTROL_REGION_CODES } from '@/lib/intelligence/viral-control-regions'
 
 const RADAR_HISTORY_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000
 const RADAR_HISTORY_CAP = 240
@@ -309,8 +310,9 @@ export default function IntelligencePage() {
           points?: RadarHistoryPoint[]
         }
         if (cancelled || !json.success || !Array.isArray(json.points)) return
+        const incomingPoints = json.points
         setHistory((prev) =>
-          mergeRadarHistoryPoints(json.points, prev, {
+          mergeRadarHistoryPoints(incomingPoints, prev, {
             maxAgeMs: RADAR_HISTORY_MAX_AGE_MS,
             cap: RADAR_HISTORY_CAP,
           })
@@ -621,6 +623,8 @@ export default function IntelligencePage() {
     })
     const json = await res.json() as { success: boolean; data?: { status: string; policyReason: string } }
     if (!json.success) return
+    const nextExecution: DecisionItem['executionStatus'] =
+      json.data?.status === 'executed' ? 'executed' : 'blocked'
     setDecisionLog((prev) => {
       const last = prev[prev.length - 1]
       if (!last) return prev
@@ -628,8 +632,8 @@ export default function IntelligencePage() {
         item.id === proposal.id
           ? {
             ...item,
-            executionStatus: json.data?.status === 'executed' ? 'executed' : 'blocked',
-            policyReason: json.data?.policyReason || item.policyReason,
+            executionStatus: nextExecution,
+            policyReason: json.data?.policyReason ?? item.policyReason,
           }
           : item
       )
@@ -700,14 +704,14 @@ export default function IntelligencePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] p-4 sm:p-6">
+    <div className="min-h-screen text-[var(--color-text-primary)] p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h1 className="text-3xl font-black tracking-tight">Intelligence Radar</h1>
             <p className="text-[var(--color-text-secondary)] text-sm mt-1 max-w-xl">
               Vue agrégée : signaux globaux, estimation de dynamique virale et pistes produit. Tout est indicatif, mis en
-              cache, et soumis aux limites des APIs — pas d’exécution automatique sans politique explicite sur votre
+              cache, et soumis aux limites des APIs · pas d’exécution automatique sans politique explicite sur votre
               déploiement.
             </p>
             <p className="text-[11px] text-[var(--color-text-tertiary)] mt-2">
@@ -740,22 +744,33 @@ export default function IntelligencePage() {
               Learning
             </Link>
             <Link
+              href="/intelligence/viral-control"
+              className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
+            >
+              Viral Control
+            </Link>
+            <Link
               href="/intelligence/ops"
               className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
             >
               Ops
+            </Link>
+            <Link
+              href="/control-room"
+              className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
+            >
+              Control room
             </Link>
             <select
               value={region}
               onChange={(e) => setRegion(e.target.value)}
               className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm text-[var(--color-text-primary)]"
             >
-              <option value="FR">FR</option>
-              <option value="US">US</option>
-              <option value="GB">GB</option>
-              <option value="NG">NG</option>
-              <option value="MA">MA</option>
-              <option value="SN">SN</option>
+              {VIRAL_CONTROL_REGION_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {code}
+                </option>
+              ))}
             </select>
             <input
               type="password"

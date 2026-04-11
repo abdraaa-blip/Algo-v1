@@ -9,6 +9,9 @@ const cfg: Record<GrowthTrend, { icon: typeof TrendingUp; cls: string }> = {
 }
 
 const levelCfg: Record<MomentumLevel | 'rising' | 'steady' | 'fading', { icon: typeof TrendingUp; cls: string; label: string }> = {
+  high:      { icon: Flame,       cls: 'bg-orange-500/15 border-orange-500/25 text-orange-400', label: 'Fort' },
+  medium:    { icon: Zap,         cls: 'bg-violet-500/12 border-violet-500/22 text-violet-400', label: 'Moyen' },
+  low:       { icon: Minus,       cls: 'bg-white/5 border-white/10 text-white/35', label: 'Faible' },
   exploding: { icon: Flame,       cls: 'bg-orange-500/15 border-orange-500/25 text-orange-400', label: 'Explose' },
   rising:    { icon: TrendingUp,  cls: 'bg-emerald-500/12 border-emerald-500/22 text-emerald-400', label: 'Monte' },
   peaked:    { icon: Zap,         cls: 'bg-violet-500/12 border-violet-500/22 text-violet-400', label: 'Pic atteint' },

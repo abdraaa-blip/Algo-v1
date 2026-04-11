@@ -67,10 +67,10 @@ export function FadeTransition({
   useEffect(() => {
     if (show) {
       setShouldRender(true)
-    } else {
-      const timer = setTimeout(() => setShouldRender(false), duration)
-      return () => clearTimeout(timer)
+      return undefined
     }
+    const timer = setTimeout(() => setShouldRender(false), duration)
+    return () => clearTimeout(timer)
   }, [show, duration])
 
   if (!shouldRender) return null
@@ -108,10 +108,10 @@ export function SlideTransition({
   useEffect(() => {
     if (show) {
       setShouldRender(true)
-    } else {
-      const timer = setTimeout(() => setShouldRender(false), 300)
-      return () => clearTimeout(timer)
+      return undefined
     }
+    const timer = setTimeout(() => setShouldRender(false), 300)
+    return () => clearTimeout(timer)
   }, [show])
 
   if (!shouldRender) return null
@@ -153,10 +153,10 @@ export function ScaleTransition({
   useEffect(() => {
     if (show) {
       setShouldRender(true)
-    } else {
-      const timer = setTimeout(() => setShouldRender(false), 200)
-      return () => clearTimeout(timer)
+      return undefined
     }
+    const timer = setTimeout(() => setShouldRender(false), 200)
+    return () => clearTimeout(timer)
   }, [show])
 
   if (!shouldRender) return null

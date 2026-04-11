@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { fetchMovieDetails, fetchTVDetails } from '@/lib/api/tmdb-service'
 
 export const dynamic = 'force-dynamic'
@@ -53,6 +54,15 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-movies-id:${identifier}`, { limit: 90, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { id } = await params
   
   if (!id) {

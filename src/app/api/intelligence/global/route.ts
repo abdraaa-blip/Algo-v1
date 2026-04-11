@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { buildGlobalIntelligence } from '@/lib/intelligence/global-intelligence'
 
 export const dynamic = 'force-dynamic'
@@ -19,6 +20,15 @@ const GLOBAL_CACHE_TTL_MS = 30_000
 const globalCache = new Map<string, GlobalCacheEntry>()
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const region = searchParams.get('region') || 'FR'
   const locale = searchParams.get('locale') || 'fr'

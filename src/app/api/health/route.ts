@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { getAllCircuitStats } from '@/lib/resilience/circuit-breaker'
 import {
   getSupabasePublicApiKey,
@@ -14,7 +15,16 @@ import {
  * - 200: All systems operational
  * - 503: One or more critical systems degraded
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-health:${identifier}`, { limit: 120, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { status: 'error', error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const startTime = Date.now()
   
   const supabaseUrl = getSupabaseUrl()

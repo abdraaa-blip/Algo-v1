@@ -6,7 +6,7 @@ import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Talents émergents',
   description:
-    'Artistes, influenceurs et créateurs qui explosent — signaux de croissance et visibilité en temps réel.',
+    'Artistes, influenceurs et créateurs qui explosent · signaux de croissance et visibilité en temps réel.',
   path: '/rising-stars',
   keywords: ['rising stars', 'créateurs', 'influenceurs', 'musique', 'ALGO'],
 })

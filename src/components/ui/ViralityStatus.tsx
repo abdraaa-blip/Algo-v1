@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Flame, TrendingUp, Zap, Clock, AlertTriangle, Sparkles } from 'lucide-react'
 
 // =============================================================================
-// ALGO V1 — Virality Status Component
+// ALGO V1 · Virality Status Component
 // Shows the viral status of content with visual indicators
 // =============================================================================
 

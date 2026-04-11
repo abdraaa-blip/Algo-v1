@@ -3,7 +3,7 @@ import { ImageWithFallback } from './ImageWithFallback'
 import { Badge } from './Badge'
 
 // =============================================================================
-// SimilarContent — Grid/scroll of similar films, series, or videos
+// SimilarContent · Grid/scroll of similar films, series, or videos
 // =============================================================================
 
 interface SimilarItem {

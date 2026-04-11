@@ -299,13 +299,6 @@ export function ViralAnalyzerShell({ locale, labels }: ViralAnalyzerShellProps) 
                     </button>
                   ))}
                 </div>
-
-                {result.globalContext && (
-                  <div className="rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] p-3 text-xs text-[var(--color-text-secondary)]">
-                    Contexte global live: categorie dominante <span className="font-semibold">{result.globalContext.topCategory}</span> ·
-                    score viralite global {result.globalContext.predictiveViralityScore}.
-                  </div>
-                )}
               </div>
 
               {/* Error */}
@@ -392,6 +385,14 @@ export function ViralAnalyzerShell({ locale, labels }: ViralAnalyzerShellProps) 
                   </div>
                 </div>
               </div>
+
+              {result.globalContext ? (
+                <div className="rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] p-3 text-xs text-[var(--color-text-secondary)]">
+                  Contexte global live: categorie dominante{' '}
+                  <span className="font-semibold">{result.globalContext.topCategory}</span> · score viralite global{' '}
+                  {result.globalContext.predictiveViralityScore}.
+                </div>
+              ) : null}
 
               {/* Recommendations */}
               <div className="rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] p-6 space-y-4">

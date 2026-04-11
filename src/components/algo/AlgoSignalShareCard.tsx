@@ -10,7 +10,7 @@ type Props = {
   subtitle?: string
   badgeLabel?: string
   className?: string
-  /** Largeur logique de la carte capturée (px) — utile en modal étroit. */
+  /** Largeur logique de la carte capturée (px) · utile en modal étroit. */
   cardWidth?: number
 }
 
@@ -43,7 +43,7 @@ export function AlgoSignalShareCard({
       const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
       if (!blob) return
       const file = new File([blob], 'algo-signal.png', { type: 'image/png' })
-      const line = `${headline}${score > 0 ? ` · ${score}` : ''} — ALGO`
+      const line = `${headline}${score > 0 ? ` · ${score}` : ''} · ALGO`
       if (typeof navigator !== 'undefined' && navigator.share) {
         try {
           if (navigator.canShare?.({ files: [file] })) {
@@ -65,7 +65,7 @@ export function AlgoSignalShareCard({
     }
   }, [busy, headline, score])
 
-  const displayScore = score > 0 ? String(Math.round(score)) : '—'
+  const displayScore = score > 0 ? String(Math.round(score)) : '–'
 
   return (
     <div className={cn('space-y-2', className)}>
@@ -109,7 +109,7 @@ export function AlgoSignalShareCard({
               <p className="text-3xl font-black tabular-nums text-cyan-300">{displayScore}</p>
             </div>
             <p className="text-[10px] text-right text-[var(--color-text-secondary)] max-w-[55%] leading-snug">
-              {subtitle ?? "L'algorithme des algorithmes — meta-radar culturel."}
+              {subtitle ?? "L'algorithme des algorithmes · meta-radar culturel."}
             </p>
           </div>
           <p className="text-[9px] text-[var(--color-text-muted)]">{new Date().toLocaleDateString('fr-FR', { dateStyle: 'medium' })}</p>

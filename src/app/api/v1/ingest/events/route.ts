@@ -15,7 +15,7 @@ const RATE = { limit: 60, windowMs: 60_000 }
 
 /**
  * POST /api/v1/ingest/events
- * Même contrat métier que POST /api/analytics/events — pour apps externes authentifiées.
+ * Même contrat métier que POST /api/analytics/events · pour apps externes authentifiées.
  */
 export async function POST(request: NextRequest) {
   if (!platformApiKeysConfigured()) {

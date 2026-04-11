@@ -38,52 +38,51 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     initMonitoring()
   }, [])
 
-  // During SSR and initial hydration, render a minimal layout
-  if (!mounted) {
-    return (
-      <>
-        {/* Minimal header placeholder to prevent layout shift */}
-        <header className="fixed top-0 left-0 right-0 h-14 bg-[var(--color-bg-primary)]/95 border-b border-[var(--color-border)] z-50" />
-        <main
-          id="main-content"
-          className="pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
-          role="main"
-          aria-label="Contenu principal"
-        >
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-        </main>
-      </>
-    )
-  }
-
+  // ScopeProvider wraps both branches so useScopeContext works during SSR/prerender;
+  // chrome stays gated on mounted to limit hydration mismatch risk.
   return (
     <ScopeProvider>
-      <AlgoExperienceAttributes />
-      <AlgoLivingBackground />
-      <AlgoDataPlanet />
-      <Suspense fallback={null}>
-        <LoadingProgressBar />
-      </Suspense>
-      <WebVitalsReporter />
-      <OfflineBanner />
-      <GeolocationPrompt />
-      <AchievementToastManager />
-      <Navbar />
-      <main 
-        id="main-content" 
-        className="relative z-10 pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
-        role="main"
-        aria-label="Contenu principal"
-      >
-        <div className="flex-1">
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </div>
-        <SiteFooter />
-      </main>
-      <BottomNav />
+      {!mounted ? (
+        <>
+          {/* Minimal header placeholder to prevent layout shift */}
+          <header className="fixed top-0 left-0 right-0 h-14 bg-[var(--color-bg-primary)]/95 border-b border-[var(--color-border)] z-50" />
+          <main
+            id="main-content"
+            className="pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
+            role="main"
+            aria-label="Contenu principal"
+          >
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </main>
+        </>
+      ) : (
+        <>
+          <AlgoExperienceAttributes />
+          <AlgoLivingBackground />
+          <AlgoDataPlanet />
+          <Suspense fallback={null}>
+            <LoadingProgressBar />
+          </Suspense>
+          <WebVitalsReporter />
+          <OfflineBanner />
+          <GeolocationPrompt />
+          <AchievementToastManager />
+          <Navbar />
+          <main
+            id="main-content"
+            className="relative z-10 pt-[72px] sm:pt-14 pb-20 md:pb-0 min-h-dvh flex flex-col"
+            role="main"
+            aria-label="Contenu principal"
+          >
+            <div className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </div>
+            <SiteFooter />
+          </main>
+          <BottomNav />
+        </>
+      )}
     </ScopeProvider>
   )
 }

@@ -1,11 +1,11 @@
 // Next.js configuration - Production ready
 // Timestamp: 2026-04-07T23:25:00 - Removed turbopack.root for Vercel compatibility
+// TypeScript : `ignoreBuildErrors: false` — le build échoue sur les erreurs TS (aligné avec `npm run typecheck`).
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  // Skip TypeScript errors during build
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   
   // Remove X-Powered-By header for security

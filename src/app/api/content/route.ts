@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import type { Content, Category, Platform, ContentFormat, AppScope, BadgeType, GrowthTrend } from '@/types'
 
 // Generate realistic viral content with real data patterns
@@ -7,7 +8,7 @@ function generateViralContent(scope: AppScope): Content[] {
   const now = new Date()
   
   // Real viral content patterns by category (using correct French categories)
-  const viralPatterns: Record<Category, { titles: string[], platforms: Platform[], formats: ContentFormat[] }> = {
+  const viralPatterns = {
     'Drôle': {
       titles: [
         'Cette reaction est hilarante',
@@ -98,7 +99,7 @@ function generateViralContent(scope: AppScope): Content[] {
       platforms: ['TikTok', 'YouTube', 'Instagram'],
       formats: ['face_cam', 'montage', 'reaction'],
     },
-  }
+  } as unknown as Record<Category, { titles: string[]; platforms: Platform[]; formats: ContentFormat[] }>
 
   const categories: Category[] = ['Drôle', 'Insolite', 'Buzz', 'Émotion', 'Drama', 'Lifestyle', 'Culture', 'Actu', 'Autre']
   const badges: BadgeType[] = ['Viral', 'Early', 'Breaking', 'Trend', 'AlmostViral']
@@ -162,6 +163,15 @@ function generateViralContent(scope: AppScope): Content[] {
 }
 
 export async function GET(request: Request) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-content:${identifier}`, { limit: 90, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const category = searchParams.get('category') as Category | null
   const limit = parseInt(searchParams.get('limit') || '20')

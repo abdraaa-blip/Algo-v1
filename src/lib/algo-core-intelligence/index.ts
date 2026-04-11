@@ -1,5 +1,5 @@
 /**
- * ALGO Core Intelligence — couche opérationnelle (analyse, simulation, priorités).
+ * ALGO Core Intelligence · couche opérationnelle (analyse, simulation, priorités).
  * S’appuie sur algo-engine, autonomy/what-if et la validation existante.
  * Aucune reproduction des textes des archives : logique déterministe et vérifiable.
  */
@@ -23,7 +23,7 @@ export const ALGO_CORE_PHILOSOPHY_FR = {
     'Indicateurs et vérification, pas d’affirmations gratuites.',
     'Analyser avant d’agir, simuler avant de décider.',
     'Ajuster après observation, sans inventer de données.',
-    'Croiser création, distribution et risque quand la décision l’exige — pas de silo mental.',
+    'Croiser création, distribution et risque quand la décision l’exige · pas de silo mental.',
     'La friction (objections, saturation, contraintes) est une donnée à lire, pas du bruit à ignorer.',
   ],
 } as const
@@ -302,7 +302,7 @@ function vigilanceNotes(
     notes.push('Titres dupliqués détectés : risque de double comptage ou de scrap répété.')
   }
   if (lowReliabilityCount > 0) {
-    notes.push(`${lowReliabilityCount} élément(s) avec fiabilité basse — vérifier la provenance.`)
+    notes.push(`${lowReliabilityCount} élément(s) avec fiabilité basse · vérifier la provenance.`)
   }
   return { lowReliabilityCount, notes }
 }

@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 /**
  * Contexte public non nominatif pour personnalisation légère (SEO / UX).
- * Vercel : `x-vercel-ip-country`. Ailleurs : souvent vide — le client garde la langue navigateur.
+ * Vercel : `x-vercel-ip-country`. Ailleurs : souvent vide · le client garde la langue navigateur.
  */
 export function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-context:${identifier}`, { limit: 200, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const country =
     request.headers.get('x-vercel-ip-country') ||
     request.headers.get('cf-ipcountry') ||

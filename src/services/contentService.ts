@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — contentService
+// ALGO V1 · contentService
 // Logique d'acces et de filtrage des contenus.
 // REFACTORED: Now delegates to real API services instead of mock data
 // =============================================================================
@@ -7,6 +7,7 @@
 import { mockContent } from '@/data/mock-content'
 import { filterContentsByScope } from '@/services/scopeService'
 import type { Content, AppScope, Category, Platform, BadgeType, GrowthTrend } from '@/types'
+import { fillLocaleStrings } from '@/types'
 
 // Import real API services (used in async functions)
 // Services are imported dynamically to avoid circular dependencies
@@ -245,43 +246,35 @@ interface FilmData {
 }
 
 function transformFilmToContent(film: FilmData): Content {
+  const extra = film.trendingReason || `${film.title} capte l'attention avec une note de ${film.rating}/10`
   return {
     id: film.id,
     title: film.title,
-    explanation: film.description,
+    explanation: [film.description, `Pourquoi ca marche: ${extra}`].filter(Boolean).join('\n\n'),
     thumbnail: film.poster,
     viralScore: film.viralScore,
-    category: 'Cinema' as Category,
-    platform: film.type === 'movie' ? 'TMDB' : 'Streaming' as Platform,
+    category: 'Cinema',
+    platform: film.type === 'movie' ? 'TMDB' : 'YouTube',
+    country: 'FR',
+    language: 'fr',
     growthRate: 50,
-    growthTrend: 'up' as GrowthTrend,
-    badge: film.viralScore >= 85 ? 'Viral' : film.viralScore >= 70 ? 'Trend' : 'Early' as BadgeType,
+    growthTrend: 'up',
+    badge: film.viralScore >= 85 ? 'Viral' : film.viralScore >= 70 ? 'Trend' : 'Early',
     watchersCount: Math.round(film.viralScore * 100),
     isExploding: film.viralScore >= 85,
-    createdAt: new Date().toISOString(),
-    relatedTrendIds: [],
     tags: film.genres.slice(0, 3),
-    region: 'global',
+    sourceUrl: `https://www.themoviedb.org/${film.type === 'movie' ? 'movie' : 'tv'}/${film.id}`,
+    creatorTips: `Reagis a ${film.title} avec ton analyse personnelle.`,
     insight: {
       postNowProbability: film.viralScore >= 80 ? 'high' : 'medium',
       timing: 'now',
       bestPlatform: ['YouTube', 'TikTok'],
       bestFormat: 'reaction',
-      whyItWorks: film.trendingReason || `${film.title} capte l'attention avec une note de ${film.rating}/10`,
-      reproductionIdea: `Reagis a ${film.title} avec ton analyse personnelle`,
-      timingLabel: { fr: 'Timing optimal', en: 'Optimal timing' },
+      timingLabel: fillLocaleStrings({ fr: 'Timing optimal', en: 'Optimal timing' }),
       postWindow: { status: 'optimal' },
-      tips: [
-        'Donne ton avis sincere',
-        'Evite les spoilers majeurs',
-        'Ajoute des theories'
-      ]
     },
+    sourceDistribution: [{ platform: 'TMDB', percentage: 70, momentum: 'high' }],
     detectedAt: new Date().toISOString(),
-    contentMeta: {
-      type: film.type,
-      castNames: film.cast?.map(c => c.name) || []
-    }
   }
 }
 
@@ -297,39 +290,38 @@ interface VideoData {
 }
 
 function transformVideoToContent(video: VideoData): Content {
+  const cat = (video.category as Category) || 'Video'
   return {
     id: video.id,
     title: video.title,
-    explanation: `Video de ${video.channelTitle} avec ${video.viewCount.toLocaleString()} vues`,
+    explanation: `Video de ${video.channelTitle} avec ${video.viewCount.toLocaleString()} vues. Cette video fait le buzz.`,
     thumbnail: video.thumbnail,
     viralScore: video.viralScore,
-    category: video.category as Category || 'Video',
-    platform: 'YouTube' as Platform,
+    category: cat,
+    platform: 'YouTube',
+    country: 'FR',
+    language: 'fr',
     growthRate: 75,
-    growthTrend: 'up' as GrowthTrend,
-    badge: video.viralScore >= 85 ? 'Viral' : 'Trend' as BadgeType,
+    growthTrend: 'up',
+    badge: video.viralScore >= 85 ? 'Viral' : 'Trend',
     watchersCount: Math.round(video.viewCount / 1000),
     isExploding: video.viralScore >= 85,
-    createdAt: new Date().toISOString(),
-    relatedTrendIds: [],
     tags: [video.category],
-    region: 'global',
+    sourceUrl: video.url,
+    creatorTips: `Fais ta propre version de « ${video.title} » — reagis vite et ajoute ta touche.`,
     insight: {
       postNowProbability: 'high',
       timing: 'now',
       bestPlatform: ['TikTok', 'YouTube Shorts'],
       bestFormat: 'reaction',
-      whyItWorks: `Cette video fait le buzz avec ${video.viewCount.toLocaleString()} vues`,
-      reproductionIdea: `Fais ta propre version de "${video.title}"`,
-      timingLabel: { fr: 'Hot maintenant', en: 'Hot right now' },
+      timingLabel: fillLocaleStrings({ fr: 'Hot maintenant', en: 'Hot right now' }),
       postWindow: { status: 'optimal' },
-      tips: ['Reagis rapidement', 'Ajoute ta touche personnelle']
     },
+    sourceDistribution: [
+      { platform: 'YouTube', percentage: 65, momentum: 'high' },
+      { platform: 'TikTok', percentage: 35, momentum: 'medium' },
+    ],
     detectedAt: new Date().toISOString(),
-    contentMeta: {
-      url: video.url,
-      channelTitle: video.channelTitle
-    }
   }
 }
 
@@ -345,38 +337,37 @@ interface NewsData {
 }
 
 function transformNewsToContent(news: NewsData): Content {
+  const cat = (news.category as Category) || 'Actualite'
   return {
     id: news.id,
     title: news.title,
-    explanation: news.description,
+    explanation: [news.description, `Actualite chaude sur ${news.category}.`].filter(Boolean).join('\n\n'),
     thumbnail: news.urlToImage || '',
     viralScore: news.importanceScore,
-    category: news.category as Category || 'Actualite',
-    platform: news.source as Platform || 'News',
+    category: cat,
+    platform: 'News',
+    country: 'FR',
+    language: 'fr',
     growthRate: 60,
-    growthTrend: 'up' as GrowthTrend,
-    badge: news.importanceScore >= 85 ? 'Breaking' : 'Trend' as BadgeType,
+    growthTrend: 'up',
+    badge: news.importanceScore >= 85 ? 'Breaking' : 'Trend',
     watchersCount: Math.round(news.importanceScore * 50),
     isExploding: news.importanceScore >= 85,
-    createdAt: new Date().toISOString(),
-    relatedTrendIds: [],
     tags: [news.category],
-    region: 'global',
+    sourceUrl: news.url,
+    creatorTips: `Donne ton analyse sur « ${news.title} » — reste factuel et cite tes sources.`,
     insight: {
       postNowProbability: news.importanceScore >= 80 ? 'high' : 'medium',
       timing: 'now',
       bestPlatform: ['Twitter', 'TikTok'],
       bestFormat: 'news',
-      whyItWorks: `Actualite chaude sur ${news.category}`,
-      reproductionIdea: `Donne ton analyse sur "${news.title}"`,
-      timingLabel: { fr: 'Breaking news', en: 'Breaking news' },
+      timingLabel: fillLocaleStrings({ fr: 'Breaking news', en: 'Breaking news' }),
       postWindow: { status: 'optimal' },
-      tips: ['Sois factuel', 'Cite tes sources', 'Ajoute du contexte']
     },
+    sourceDistribution: [
+      { platform: 'Twitter', percentage: 55, momentum: 'high' },
+      { platform: 'TikTok', percentage: 45, momentum: 'medium' },
+    ],
     detectedAt: new Date().toISOString(),
-    contentMeta: {
-      url: news.url,
-      source: news.source
-    }
   }
 }

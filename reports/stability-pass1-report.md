@@ -39,9 +39,10 @@
   - 94 tests passed
 
 ## Non-auto-corrected items (safe-only hold)
+*(TypeScript / `ignoreBuildErrors` / gate `lint:strict` : voir **Addendum** en bas de fichier — état actuel du repo.)*
 - Security hardening not auto-applied:
   - `middleware.ts` CSP still allows `'unsafe-inline'` and `'unsafe-eval'`.
-  - `next.config.ts` uses `typescript.ignoreBuildErrors: true`.
+  - ~~`next.config.ts` uses `typescript.ignoreBuildErrors: true`.~~ *(obsolète — `false` + typecheck dans `verify:release`, voir addendum)*
 - Remaining lint errors require broader refactors or content updates:
   - hook purity/immutability and content/entity cleanup are still present as warnings
   - selected TypeScript strictness findings remain warnings for this pass (`no-explicit-any`, `no-require-imports`)
@@ -56,3 +57,16 @@
 - Platform:
   - run autopilot quick check on PRs and nightly full scan.
   - store reports as CI artifacts and alert on regressions.
+
+---
+
+## Addendum (état repo après durcissement TS / ESLint)
+
+Les points ci-dessous **ne sont plus** au statut décrit dans « Non-auto-corrected » pour la partie compilation / ESLint gate :
+
+- **`next.config.ts`** : `typescript.ignoreBuildErrors: false` — le `next build` exécute la vérification TypeScript.
+- **`npm run verify:release`** inclut **`npm run typecheck`**, **`npm run lint:strict`**, puis tests et build (voir `package.json`).
+- La CI n’exécute plus un `typecheck` séparé en `continue-on-error` : le gate `verify:release` / `verify:full` suffit.
+- La recommandation phase 2 « passer la CI en `lint:strict` » est **faite** pour le gate `verify:release` ; le script `npm run lint` (max 400 warnings) reste disponible pour itération locale rapide.
+
+*(Le rapport « Pass 1 » ci-dessus reste un historique de session ; la checklist qualitative à jour est `docs/ALGO_RELEASE_READINESS.md`.)*

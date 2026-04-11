@@ -29,7 +29,7 @@ const signalIcons = {
 
 export default function AlgorithmPage() {
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen text-[var(--color-text-primary)]">
       {/* Background */}
       <LiveCurve growthRate={10} className="fixed inset-0 opacity-40" />
       
@@ -55,7 +55,7 @@ export default function AlgorithmPage() {
           
           <p className="text-lg text-white/50 max-w-2xl mx-auto">
             Nous documentons la logique du score « radar » présentée sur cette page. D’autres écrans (analyseur viral,
-            intelligence) peuvent utiliser des pondérations différentes — voir{' '}
+            intelligence) peuvent utiliser des pondérations différentes · voir{' '}
             <Link href="/transparency" className="text-cyan-400/90 hover:underline">
               transparence
             </Link>
@@ -192,7 +192,7 @@ Decay = Score × (1 - 0.02)^heures_apres_6h`}
           <div className="p-6 rounded-xl bg-gradient-to-br from-violet-500/10 to-pink-500/10 border border-violet-500/20">
             <p className="text-white/70 leading-relaxed mb-4">
               Lorsque les clés et modules sont activés, des modèles peuvent produire textes et suggestions à partir des
-              mêmes signaux — toujours à valider humainement :
+              mêmes signaux · toujours à valider humainement :
             </p>
 
             <ul className="space-y-3">
@@ -201,7 +201,7 @@ Decay = Score × (1 - 0.02)^heures_apres_6h`}
                 'Idées créateur pour tester un format (pas une recette de succès garanti)',
                 'Lecture du risque (fenêtre / saturation possible)',
                 'Contexte culturel plausible, à croiser avec vos sources',
-                'Hypothèses d’audience et de format — à expérimenter',
+                'Hypothèses d’audience et de format · à expérimenter',
                 'Indicateurs de fenêtre temporelle, pas une date de pic certaine',
               ].map((item, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm text-white/60">
@@ -248,7 +248,7 @@ Decay = Score × (1 - 0.02)^heures_apres_6h`}
         
         {/* Footer */}
         <footer className="text-center text-sm text-[var(--color-text-muted)] pt-8 border-t border-[var(--color-border)]">
-          <p>Transparence : le détail des pondérations ci-dessus reflète une couche du produit — le dépôt source fait foi.</p>
+          <p>Transparence : le détail des pondérations ci-dessus reflète une couche du produit · le dépôt source fait foi.</p>
           <p className="mt-2">
             Contact : utiliser l’adresse configurée pour votre déploiement (
             <code className="text-[10px] text-white/40">NEXT_PUBLIC_CONTACT_EMAIL</code>

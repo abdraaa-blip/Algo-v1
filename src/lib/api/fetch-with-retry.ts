@@ -7,7 +7,8 @@ interface FetchWithRetryOptions extends RequestInit {
   retries?: number
   retryDelay?: number
   timeout?: number
-  cache?: boolean
+  /** Cache mémoire interne (ne pas confondre avec `RequestInit.cache`). */
+  useMemoryCache?: boolean
   cacheTTL?: number
 }
 
@@ -32,7 +33,7 @@ export async function fetchWithRetry<T = unknown>(
     retries = 3,
     retryDelay = 1000,
     timeout = 10000,
-    cache: useCache = true,
+    useMemoryCache: useCache = true,
     cacheTTL = 60000, // 1 minute default
     ...fetchOptions
   } = options
@@ -157,7 +158,7 @@ export function getCacheStats(): { size: number; keys: string[] } {
  */
 export async function prefetch(url: string, options?: FetchWithRetryOptions): Promise<void> {
   try {
-    await fetchWithRetry(url, { ...options, cache: true })
+    await fetchWithRetry(url, { ...options, useMemoryCache: true })
   } catch {
     // Silent fail for prefetch
   }

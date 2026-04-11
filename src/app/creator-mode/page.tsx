@@ -5,7 +5,11 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { LiveCurve } from '@/components/algo/LiveCurve'
 import { ContentCard } from '@/components/algo/ContentCard'
-import { InsightPanel } from '@/components/algo/InsightPanel'
+import { InsightPanel } from '@/components/ui/InsightPanel'
+import {
+  CREATOR_MODE_INSIGHT_LABELS,
+  adaptCreatorPageInsightToFull,
+} from '@/lib/creator-mode/creator-insight-panel'
 import { ViralScoreRing } from '@/components/algo/ViralScoreRing'
 import { Badge } from '@/components/algo/Badge'
 import { AlgoLoader } from '@/components/algo/AlgoLoader'
@@ -210,7 +214,7 @@ export default function CreatorModePage() {
   }, [mutate])
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)]">
+    <main className="min-h-screen pb-20">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={80} color="green" opacity={0.08} />
         <div className="relative max-w-7xl mx-auto px-4 pt-8 pb-6">
@@ -225,13 +229,13 @@ export default function CreatorModePage() {
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)]">
             Signaux agrégés depuis plusieurs flux : les scores sont des <strong className="font-semibold text-white/70">indicateurs</strong> pour
-            prioriser et tester — pas une garantie d’audience. Export et partage pour documenter ta veille.
+            prioriser et tester · pas une garantie d’audience. Export et partage pour documenter ta veille.
           </p>
           <p className="text-xs mt-2 text-[var(--color-text-tertiary)]">
             <Link href="/intelligence#algo-core" className="text-[var(--color-violet)] hover:underline">
               Core Intelligence
             </Link>{' '}
-            — analyse multi-facteurs, simulations et priorités sur les flux live (radar).
+            · analyse multi-facteurs, simulations et priorités sur les flux live (radar).
           </p>
         </div>
       </section>
@@ -287,7 +291,7 @@ export default function CreatorModePage() {
           <div className="grid lg:grid-cols-2 gap-6">
             <div>
               <h2 className="text-sm font-bold mb-4 text-[var(--color-text-secondary)]">
-                Contenus tendance ({content.length}) — MAJ toutes les 5 min
+                Contenus tendance ({content.length}) · MAJ toutes les 5 min
               </h2>
               <div className="grid gap-3 max-h-[60vh] overflow-y-auto pr-2">
                 {content.map(item => (
@@ -362,14 +366,15 @@ export default function CreatorModePage() {
                       headline={selectedContent.title}
                       score={selectedContent.viralScore || selectedContent.score || 70}
                       badgeLabel={selectedContent.badge || selectedContent.platform || 'ALGO'}
-                      subtitle="Mode créateur — score indicatif ALGO sur ce flux (voir transparence pour les autres écrans)."
+                      subtitle="Mode créateur · score indicatif ALGO sur ce flux (voir transparence pour les autres écrans)."
                     />
                   </div>
 
                   {selectedContent.insight && (
-                    <InsightPanel 
-                      insight={selectedContent.insight}
+                    <InsightPanel
+                      insight={adaptCreatorPageInsightToFull(selectedContent.insight)}
                       watchersCount={Math.floor((selectedContent.views || 0) / 100)}
+                      labels={CREATOR_MODE_INSIGHT_LABELS}
                     />
                   )}
                   

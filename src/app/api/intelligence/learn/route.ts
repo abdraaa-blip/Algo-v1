@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { getAutonomyCounters } from '@/lib/autonomy/telemetry'
 import { getAutonomyPolicy, updateAutonomyPolicy } from '@/lib/autonomy/policy'
 import {
@@ -9,8 +10,16 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-export async function POST(_request: NextRequest) {
-  void _request
+export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-learn:${identifier}`, { limit: 30, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const counters = getAutonomyCounters()
   const policy = getAutonomyPolicy()
   const totalFeedback = counters.feedbackHelpful + counters.feedbackWrong + counters.feedbackNeutral

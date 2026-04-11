@@ -11,11 +11,30 @@ const sizeCfg: Record<Size, { ring: number; stroke: number; fontSize: string; fo
   lg: { ring: 72,  stroke: 4,   fontSize: '18px', fontWeight: 900 },
 }
 
+/** Diamètre extérieur en px (chemins legacy `@/components/algo/ViralScoreRing`). */
+function dimensionsFromPixelRing(pixelRing: number): {
+  ring: number
+  stroke: number
+  fontSize: string
+  fontWeight: number
+} {
+  const ring = Math.min(160, Math.max(24, Math.round(pixelRing)))
+  const stroke = Math.min(5, Math.max(2, (ring * 3.5) / 52))
+  const fsPx = Math.min(22, Math.max(8, Math.round(ring * 0.22)))
+  return {
+    ring,
+    stroke,
+    fontSize: `${fsPx}px`,
+    fontWeight: ring >= 56 ? 900 : 800,
+  }
+}
+
 interface ViralScoreRingProps {
   value?:      number
   score?:      number // Alternative prop name for consistency
   trend?:      GrowthTrend
-  size?:       Size
+  /** Preset taille, **ou** nombre = diamètre extérieur du ring en px (legacy algo). */
+  size?:       Size | number
   showLabel?:  boolean
   className?:  string
   'aria-label'?: string
@@ -34,8 +53,10 @@ export function ViralScoreRing({
   void showLabel
   // Support both 'value' and 'score' prop names
   const actualValue = value ?? score ?? 0
-  // Fallback to 'md' if size is not in config
-  const config = sizeCfg[size as Size] || sizeCfg.md
+  const config =
+    typeof size === 'number' && !Number.isNaN(size)
+      ? dimensionsFromPixelRing(size)
+      : sizeCfg[(size as Size) in sizeCfg ? (size as Size) : 'md'] || sizeCfg.md
   const { ring, stroke, fontSize, fontWeight } = config
   
   // Ensure ring dimensions are valid numbers
@@ -92,7 +113,7 @@ export function ViralScoreRing({
           }}
         />
 
-        {/* Outer rotating arc — visible uniquement si score ≥ 70 */}
+        {/* Outer rotating arc · visible uniquement si score ≥ 70 */}
         {clamped >= 70 && (
           <circle
             cx={center} cy={center}

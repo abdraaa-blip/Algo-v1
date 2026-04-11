@@ -5,11 +5,13 @@
  * Stores in Supabase for audit trail
  */
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/logger'
 
-export const runtime = 'edge'
+/** Node : cookies Supabase + rate-limiter mémoire (évite Edge + `setInterval`). */
+export const runtime = 'nodejs'
 
 interface MonitoringEvent {
   type: string
@@ -40,9 +42,14 @@ export async function POST(request: Request) {
 
     // Log critical events immediately
     validEvents
-      .filter(e => e.severity === 'critical')
-      .forEach(e => {
-        logger.error('[CRITICAL]', e)
+      .filter((e) => e.severity === 'critical')
+      .forEach((e) => {
+        logger.error('[CRITICAL]', new Error(`${e.type}: ${e.message}`), {
+          severity: e.severity,
+          timestamp: e.timestamp,
+          context: e.context,
+          stack: e.stack,
+        })
       })
 
     // In production, store to Supabase for audit trail
@@ -70,7 +77,10 @@ export async function POST(request: Request) {
         // Suppress unused variable warning
         void supabase
       } catch (dbError) {
-        logger.error('[Monitoring] Failed to store events', dbError)
+        logger.error(
+          '[Monitoring] Failed to store events',
+          dbError instanceof Error ? dbError : new Error(String(dbError))
+        )
       }
     }
 
@@ -79,13 +89,24 @@ export async function POST(request: Request) {
       received: validEvents.length 
     })
   } catch (error) {
-    logger.error('[Monitoring API] Error:', error)
+    logger.error(
+      '[Monitoring API] Error:',
+      error instanceof Error ? error : new Error(String(error))
+    )
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
 
-export async function GET() {
-  // Return monitoring health status
+export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-monitoring-events-get:${identifier}`, { limit: 120, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
   
   return NextResponse.json({

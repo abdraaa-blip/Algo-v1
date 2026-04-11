@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import {
   addKnowledgeMemory,
   getDurableKnowledgeMemory,
@@ -8,6 +9,15 @@ import {
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-memory-get:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const limit = Number(searchParams.get('limit') || 100)
   const domain = searchParams.get('domain') as
@@ -26,6 +36,15 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-memory-post:${identifier}`, { limit: 30, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const body = (await request.json()) as {
       region: string

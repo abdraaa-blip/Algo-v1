@@ -58,7 +58,7 @@ export interface ImageWithFallbackProps {
   sizes?: string
   quality?: number
   // Fallback configuration
-  fallbackType?: 'avatar' | 'thumbnail' | 'cover' | 'platform'
+  fallbackType?: 'avatar' | 'thumbnail' | 'cover' | 'platform' | 'news'
   platform?: string
   userName?: string
   showPlayButton?: boolean

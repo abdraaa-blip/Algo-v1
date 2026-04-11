@@ -1,6 +1,6 @@
 /**
  * Construit des entrées RawContentInput à partir des flux ALGO (tendances + news).
- * Utilisé par GET /api/intelligence/core — pas d’appel HTTP interne.
+ * Utilisé par GET /api/intelligence/core · pas d’appel HTTP interne.
  */
 
 import type { RawContentInput } from '@/lib/algo-engine'

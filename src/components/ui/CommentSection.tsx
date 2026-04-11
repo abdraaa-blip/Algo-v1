@@ -169,7 +169,11 @@ export function CommentSection({ contentId, className }: CommentSectionProps) {
         <form onSubmit={(e) => handleSubmit(e)} className="relative">
           <div className="flex gap-3">
             <AvatarWithFallback
-              src={user?.user_metadata?.avatar_url}
+              src={
+                typeof user?.user_metadata?.avatar_url === 'string'
+                  ? user.user_metadata.avatar_url
+                  : undefined
+              }
               name={user?.email || 'User'}
               size={32}
               className="shrink-0"

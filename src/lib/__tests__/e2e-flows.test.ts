@@ -136,7 +136,9 @@ describe('Critical User Flows', () => {
     it('should persist favorites across sessions', async () => {
       // Simulate localStorage persistence
       const localStorage = {
-        getItem: vi.fn(() => JSON.stringify(['video-1', 'video-2'])),
+        getItem: vi.fn((key: string) =>
+          key === 'algo_favorites' ? JSON.stringify(['video-1', 'video-2']) : null
+        ),
         setItem: vi.fn(),
       }
       

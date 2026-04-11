@@ -291,7 +291,7 @@ export default function HomePage() {
   }, [dailyHook, news, content])
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)]">
+    <div className="min-h-screen">
       {/* Signal Sweep - once per session violet line scan effect */}
       <SignalSweep />
       
@@ -331,7 +331,7 @@ export default function HomePage() {
             className="algo-s3"
             signals={briefingSignals}
             action={{
-              label: 'Passer à l’action — mode créateur',
+              label: 'Passer à l’action · mode créateur',
               href: '/creator-mode',
             }}
           />

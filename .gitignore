@@ -6,12 +6,19 @@ __v0_jsx-dev-runtime.ts
 # Common ignores
 node_modules
 .next/
+coverage/
 .env*.local
 .env.local.txt
 .DS_Store
 
+# Sorties debug locale TypeScript (ne pas versionner)
+tsc-errors.txt
+tsc-out.txt
+
 # ALGO Autopilot reports (except .gitkeep)
 reports/*.json
 reports/*.log
+# Généré par `npm run report:daily` / `verify:full`
+reports/daily-system-report.md
 !reports/.gitkeep
 .vercel

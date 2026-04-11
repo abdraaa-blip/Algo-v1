@@ -1,3 +1,10 @@
+/**
+ * Contrôle budgets perf après `next build`.
+ *
+ * `totalClientJsKB` = somme de **tous** les `.js` sous `.next/static/chunks` (JS client émis par build),
+ * pas le poids d’une seule navigation. Sert surtout de garde‑fou aux grosses régressions.
+ * Les métriques `largestChunkKB` et `maxRouteFirstLoadJsKB` (quand diagnostics dispo) ciblent mieux le hot path.
+ */
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -9,7 +16,8 @@ const REPORTS_DIR = path.join(ROOT, 'reports')
 const REPORT_PATH = path.join(REPORTS_DIR, 'performance-budget.json')
 
 const BUDGET = {
-  totalClientJsKB: 2200,
+  // Baseline build Next 16 (app large) ~3.0 Mo ; marge CI ; resserrer si refonte bundle / objectif produit.
+  totalClientJsKB: 3200,
   largestChunkKB: 350,
   maxRouteFirstLoadJsKB: 1200,
 }

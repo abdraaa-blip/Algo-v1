@@ -7,7 +7,7 @@ function clamp(value: number, min = 0, max = 100): number {
 export type GlobalIntelligenceSnapshot = Awaited<ReturnType<typeof buildGlobalIntelligence>>
 
 /**
- * Même logique que GET /api/intelligence/predictive (hors cache HTTP) — utilisée par le cron radar.
+ * Même logique que GET /api/intelligence/predictive (hors cache HTTP) · utilisée par le cron radar.
  */
 export async function buildPredictiveIntelligenceBundle(input: { region: string; locale: string }): Promise<{
   snapshot: GlobalIntelligenceSnapshot

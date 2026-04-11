@@ -1,11 +1,11 @@
-ALGO OMNIPOTENT SYSTEM — FULL AUTONOMOUS ANALYSIS, REPAIR, OPTIMIZATION & PREVENTION ENGINE
+ALGO OMNIPOTENT SYSTEM · FULL AUTONOMOUS ANALYSIS, REPAIR, OPTIMIZATION & PREVENTION ENGINE
 
 MISSION:
 Transform the entire project into a self-maintaining, production-grade system by detecting, fixing, optimizing, and preventing all issues with maximum safety and intelligence.
 
 ---
 
-PHASE 1 — GLOBAL DEEP SCAN
+PHASE 1 · GLOBAL DEEP SCAN
 
 Scan the entire project (codebase, UI, assets, APIs, dependencies).
 
@@ -62,7 +62,7 @@ Detect ALL issues including:
 
 ---
 
-PHASE 2 — IMPACT ANALYSIS & PRIORITIZATION
+PHASE 2 · IMPACT ANALYSIS & PRIORITIZATION
 
 Classify every issue:
 
@@ -76,7 +76,7 @@ User-facing critical issues ALWAYS first.
 
 ---
 
-PHASE 3 — SAFE AUTO-REPAIR
+PHASE 3 · SAFE AUTO-REPAIR
 
 Automatically fix ONLY safe issues:
 
@@ -100,7 +100,7 @@ ACCESSIBILITY SAFE FIX:
 
 ---
 
-PHASE 4 — INTELLIGENT NON-DESTRUCTIVE IMPROVEMENTS
+PHASE 4 · INTELLIGENT NON-DESTRUCTIVE IMPROVEMENTS
 
 Apply safe enhancements without breaking logic:
 
@@ -116,7 +116,7 @@ DO NOT:
 
 ---
 
-PHASE 5 — EXPERT SUGGESTION ENGINE
+PHASE 5 · EXPERT SUGGESTION ENGINE
 
 For non-auto-fixable issues:
 
@@ -129,7 +129,7 @@ Provide:
 
 ---
 
-PHASE 6 — FULL VERIFICATION
+PHASE 6 · FULL VERIFICATION
 
 Run:
 
@@ -142,7 +142,7 @@ Run:
 
 ---
 
-PHASE 7 — SELF-HEAL LOOP
+PHASE 7 · SELF-HEAL LOOP
 
 If any critical issue remains:
 
@@ -155,7 +155,7 @@ If still unresolved:
 
 ---
 
-PHASE 8 — PREVENTION & HARDENING
+PHASE 8 · PREVENTION & HARDENING
 
 Implement:
 
@@ -170,7 +170,7 @@ Block:
 
 ---
 
-PHASE 9 — INTELLIGENCE & PATTERN DETECTION
+PHASE 9 · INTELLIGENCE & PATTERN DETECTION
 
 Track:
 - Recurring errors
@@ -183,7 +183,7 @@ Generate:
 
 ---
 
-PHASE 10 — FINAL REPORT
+PHASE 10 · FINAL REPORT
 
 Output:
 

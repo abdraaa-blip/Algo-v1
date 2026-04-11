@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import type { Category, UserProfileType, Locale } from '@/types'
 
 const ONBOARDING_KEY = 'algo_onboarding_done'
-const CATEGORIES: Category[] = ['Drole','Insolite','Buzz','Emotion','Drama','Lifestyle','Culture','Actu','Autre']
+const CATEGORIES: Category[] = ['Drôle', 'Insolite', 'Buzz', 'Émotion', 'Drama', 'Lifestyle', 'Culture', 'Actu', 'Autre']
 
 const LANGS: { code: Locale; label: string; flag: string }[] = [
   { code: 'fr', label: 'Francais', flag: '🇫🇷' },

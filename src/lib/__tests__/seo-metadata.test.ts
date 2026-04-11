@@ -28,8 +28,12 @@ describe('buildPageMetadata', () => {
       keywords: ['a', 'b'],
     })
     expect(m.title).toContain('Test Page')
-    expect(m.openGraph?.images?.length).toBeGreaterThan(0)
-    expect(m.twitter?.images?.length).toBeGreaterThan(0)
+    const ogImages = m.openGraph?.images
+    const twImages = m.twitter?.images
+    const ogCount = Array.isArray(ogImages) ? ogImages.length : ogImages ? 1 : 0
+    const twCount = Array.isArray(twImages) ? twImages.length : twImages ? 1 : 0
+    expect(ogCount).toBeGreaterThan(0)
+    expect(twCount).toBeGreaterThan(0)
     expect(m.robots).toEqual({ index: true, follow: true })
   })
 

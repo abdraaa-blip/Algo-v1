@@ -92,6 +92,6 @@ export function SkeletonLoader({ shape = 'card', variant, lines = 3, count = 1, 
     )
   }
 
-  // rect — fallback
+  // rect · fallback
   return <Bone className={cn('h-20 rounded-xl', className)} aria-hidden />
 }

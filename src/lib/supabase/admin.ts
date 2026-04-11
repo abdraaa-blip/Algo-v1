@@ -2,7 +2,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { getSupabaseSecretApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys'
 
 /**
- * Client Supabase **service role** — réservé aux routes serveur (jamais exposé au navigateur).
+ * Client Supabase **service role** · réservé aux routes serveur (jamais exposé au navigateur).
  * Requis pour tables avec RLS « deny by default » (snapshots écosystème).
  * Accepte `SUPABASE_SERVICE_ROLE_KEY` (JWT) ou `SUPABASE_SECRET_KEY` (sb_secret_…).
  */

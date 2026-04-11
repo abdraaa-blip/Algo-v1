@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — trendService
+// ALGO V1 · trendService
 // Fonctions pures. Aucun effet de bord. Aucune dépendance UI.
 // =============================================================================
 
@@ -36,7 +36,7 @@ export function getTrends(
 
     case 'week':
     case 'month':
-      // En V1 : même logique que today — différenciée en V2 avec vraies données
+      // En V1 : même logique que today · différenciée en V2 avec vraies données
       results = sortTrendsByMomentum(results)
       break
 

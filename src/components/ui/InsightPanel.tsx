@@ -2,11 +2,11 @@ import { Zap, Clock, Monitor, Clapperboard, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Insight } from '@/types'
 
-// ─── Config locale embarquée — les textes sont passés par le parent via props ─
+// ─── Config locale embarquée · les textes sont passés par le parent via props ─
 // Le composant n'appelle pas useTranslations() directement pour rester
 // utilisable en mode SSR et en dehors d'un contexte next-intl.
 
-interface InsightLabels {
+export interface InsightLabels {
   title:       string
   postNow:     Record<'high' | 'medium' | 'low', string>
   timing:      Record<'now' | 'too_late' | 'too_early', string>
@@ -47,7 +47,7 @@ export function InsightPanel({
   const probLabel = labels.postNow[insight.postNowProbability]
   const timeLabel = labels.timing[insight.timing]
 
-  // ─── Mode condensé — affiché sur les cartes au hover ─────────────────────
+  // ─── Mode condensé · affiché sur les cartes au hover ─────────────────────
   if (condensed) {
     return (
       <div className={cn('flex items-center gap-2 flex-wrap', className)}>

@@ -3,7 +3,7 @@ export const CONSENT_VERSION = 1
 
 export type ConsentState = {
   version: number
-  /** Strictement nécessaire — toujours vrai */
+  /** Strictement nécessaire · toujours vrai */
   necessary: true
   /** Mesure d’audience anonymisée (ex. Plausible) */
   analytics: boolean

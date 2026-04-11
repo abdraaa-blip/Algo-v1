@@ -20,7 +20,7 @@ interface AlgoStatusProps {
 }
 
 /**
- * AlgoStatus — Affiche le statut global de l'algorithme ALGO
+ * AlgoStatus · Affiche le statut global de l'algorithme ALGO
  * 
  * Montre:
  * - Statut de connexion en temps réel
@@ -43,6 +43,7 @@ export function AlgoStatus({ className, compact = false }: AlgoStatusProps) {
       const timer = setTimeout(() => setPulseActive(false), 500)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [meta, loading])
   
   // Derived stats
@@ -215,7 +216,7 @@ function StatCell({
 }
 
 /**
- * MiniAlgoStatus — Version minimale pour la navbar
+ * MiniAlgoStatus · Version minimale pour la navbar
  */
 export function MiniAlgoStatus({ className }: { className?: string }) {
   const { meta, loading, isStale } = useRealTimeTrends({

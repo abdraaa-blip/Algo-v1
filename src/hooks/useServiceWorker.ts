@@ -1,7 +1,7 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — useServiceWorker
+// ALGO V1 · useServiceWorker
 // Hook pour enregistrer le service worker et gerer les notifications push.
 // =============================================================================
 

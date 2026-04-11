@@ -46,7 +46,7 @@ export function AlgoLoader({ message, size = 'md', fullScreen, className }: Algo
         ))}
       </div>
 
-      {/* Message i18n — fourni par le parent */}
+      {/* Message i18n · fourni par le parent */}
       {message && (
         <p className={cn('mt-3 text-white/35 font-medium tracking-wide', text)}>
           {message}

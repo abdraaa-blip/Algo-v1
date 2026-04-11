@@ -1,7 +1,7 @@
 // =============================================================================
-// ALGO V1 — favoritesService
+// ALGO V1 · favoritesService
 // Persistance localStorage en V1.
-// En V2 : remplacer par des appels Supabase — signature identique.
+// En V2 : remplacer par des appels Supabase · signature identique.
 // =============================================================================
 
 import { mockContent } from '@/data/mock-content'
@@ -27,7 +27,7 @@ function writeIds(ids: string[]): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
   } catch {
-    // ignore — storage indisponible
+    // ignore · storage indisponible
   }
 }
 

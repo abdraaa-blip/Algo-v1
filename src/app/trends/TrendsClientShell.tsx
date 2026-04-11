@@ -1,6 +1,6 @@
 'use client'
 // REBUILD_REQUIRED: 2026-04-05T06:25 - This file does NOT use getTrends
-// All trends come from useRealTimeTrends hook, displayTrends variable
+// All trends come from useRealTimeTrends hook; legacy list uses initialTrends only.
 import { useState, useMemo } from 'react'
 import { TrendingUp, Users, Activity, Zap, Timer } from 'lucide-react'
 import { BackButton }       from '@/components/ui/BackButton'
@@ -83,10 +83,7 @@ export function TrendsClientShell({ initialTrends, locale, labels }: TrendsClien
     enabled: isLoaded
   })
 
-  // Use real-time trends data (no more legacy mock data)
-  const displayTrends = trends.length > 0 ? trends : initialTrends
-
-  const scopeLabel = scope.type === 'global' ? '' : ` — ${scope.name || ''}`
+  const scopeLabel = scope.type === 'global' ? '' : ` · ${scope.name || ''}`
 
   const filterOptions: FilterOption[] = (
     ['today','week','month','mostViewed','mostPlayed','mostCopied','emerging'] as TrendTab[]
@@ -270,7 +267,7 @@ export function TrendsClientShell({ initialTrends, locale, labels }: TrendsClien
       
       {/* List View */}
       {trends.length > 0 && viewMode === 'list' && (
-        <div className="space-y-2" role="list" aria-label={`Trends — ${labels.tabLabels[activeTab]}`}>
+        <div className="space-y-2" role="list" aria-label={`Trends · ${labels.tabLabels[activeTab]}`}>
           {trends.map((trend, i) => (
             <RealTimeTrendCard
               key={trend.keyword || `trend-${i}`}
@@ -296,7 +293,7 @@ export function TrendsClientShell({ initialTrends, locale, labels }: TrendsClien
       {/* ═══════════════════════════════════════════════════════════════════
           LEGACY TRENDS (for comparison/fallback)
       ═══════════════════════════════════════════════════════════════════ */}
-      {displayTrends.length > 0 && (
+      {initialTrends.length > 0 && (
         <div className="pt-8 border-t border-[var(--color-border)]">
           <SectionHeader
             title="Trends classiques"
@@ -305,7 +302,7 @@ export function TrendsClientShell({ initialTrends, locale, labels }: TrendsClien
           />
           
           <div className="space-y-3" role="list">
-            {displayTrends.slice(0, 5).map((trend, i) => (
+            {initialTrends.slice(0, 5).map((trend, i) => (
               <TrendRow
                 key={trend.id || `legacy-trend-${i}`}
                 trend={trend}

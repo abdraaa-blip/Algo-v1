@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { WifiOff, RefreshCw, Check, AlertCircle } from 'lucide-react'
 
 // =============================================================================
-// ALGO V1 — Live Connection Status Component  
+// ALGO V1 · Live Connection Status Component  
 // Shows real-time connection status to data sources
 // =============================================================================
 

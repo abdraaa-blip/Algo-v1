@@ -83,7 +83,7 @@ export default function FailLabPage() {
   }, [])
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
       {/* Header */}
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={30} color="blue" opacity={0.06} />

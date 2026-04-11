@@ -5,7 +5,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Classements musique',
-  description: 'Classements et tendances musicales (Last.fm) — découverte et momentum des titres qui montent.',
+  description: 'Classements et tendances musicales (Last.fm) · découverte et momentum des titres qui montent.',
   path: '/music',
   keywords: ['musique', 'charts', 'last.fm', 'tendances', 'ALGO'],
 })

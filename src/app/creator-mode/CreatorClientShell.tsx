@@ -14,7 +14,8 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SkeletonLoader } from '@/components/ui/SkeletonLoader'
 import { track }         from '@/services/analyticsService'
 import { cn }            from '@/lib/utils'
-import type { Content }  from '@/types'
+import type { Content, Platform } from '@/types'
+import { fillLocaleStrings } from '@/types'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -38,6 +39,17 @@ interface CreatorClientShellProps {
 }
 
 // ─── Composant ────────────────────────────────────────────────────────────────
+
+function normalizeCreatorPlatform(raw: string): Platform {
+  const r = raw.toLowerCase()
+  if (r.includes('tiktok')) return 'TikTok'
+  if (r.includes('instagram')) return 'Instagram'
+  if (r.includes('youtube')) return 'YouTube'
+  if (r.includes('twitter') || r === 'x') return 'Twitter'
+  if (r.includes('reddit')) return 'Reddit'
+  if (r.includes('news')) return 'Other'
+  return 'YouTube'
+}
 
 // Transform live API data to Content format for the creator mode
 function transformToContent(item: Record<string, unknown>, index: number): Content {
@@ -66,33 +78,36 @@ function transformToContent(item: Record<string, unknown>, index: number): Conte
     if (hnId) contentId = `hn_${hnId}`
   }
   
+  const platform = normalizeCreatorPlatform(String(item.source || item.platform || 'youtube'))
+  const explanation = String(item.description || item.overview || '')
+
   return {
     id: contentId,
-    title: String(item.title || item.name || 'Untitled'),
-    description: String(item.description || item.overview || ''),
-    category: 'viral' as const,
-    platform: (item.source || item.platform || 'youtube') as 'tiktok' | 'instagram' | 'youtube' | 'twitter' | 'reddit' | 'news',
-    badge: 'early' as const,
+    title: String(item.title || item.name || 'Sans titre'),
+    category: 'Viral',
+    platform,
+    country: 'FR',
+    language: 'fr',
     viralScore: Number(item.viral_score || item.viralScore || 70),
+    badge: 'Early',
     growthRate: Number(item.growth_rate || 15),
-    growthTrend: 'up' as const,
-    isExploding: Boolean(item.is_exploding || item.momentum === 'exploding'),
-    publishedAt: new Date(String(item.publishedAt || item.published_at || Date.now())),
-    detectedAt: new Date(),
-    thumbnailUrl: String(item.thumbnail || item.thumbnailUrl || item.poster || '/placeholder.jpg'),
-    sourceUrl: String(item.url || item.sourceUrl || '#'),
-    countries: ['FR', 'US'],
+    growthTrend: 'up',
+    detectedAt: new Date().toISOString(),
+    thumbnail: String(item.thumbnail || item.thumbnailUrl || item.poster || ''),
+    sourceUrl: sourceUrl,
+    explanation: explanation || 'Signal tendance agrégé.',
+    creatorTips: 'Crée du contenu authentique et engageant.',
     insight: {
-      postNow: 'high' as const,
-      timing: 'now' as const,
-      bestPlatform: 'tiktok' as const,
-      bestFormat: 'face_cam' as const,
-      postWindow: 'optimal' as const,
+      postNowProbability: 'high',
+      timing: 'now',
+      bestPlatform: [platform],
+      bestFormat: 'face_cam',
+      timingLabel: fillLocaleStrings({ fr: 'Maintenant', en: 'Now' }),
+      postWindow: { status: 'optimal' },
     },
+    sourceDistribution: [{ platform, percentage: 60, momentum: 'high' }],
     watchersCount: Number(item.views || item.listeners || 1000),
-    creatorTips: 'Creez du contenu authentique et engageant',
-    whyItWorks: 'Ce contenu resonne avec les tendances actuelles',
-    relatedAssets: [],
+    isExploding: Boolean(item.is_exploding || item.momentum === 'exploding'),
   }
 }
 
@@ -192,7 +207,7 @@ export function CreatorClientShell({
 
       <div className="grid lg:grid-cols-[1fr_400px] gap-6">
 
-        {/* ── Colonne gauche — sélecteur de contenus ── */}
+        {/* ── Colonne gauche · sélecteur de contenus ── */}
         <div className="space-y-3">
           <p className="text-[10px] font-bold text-white/28 uppercase tracking-widest">
             {labels.selectHint}
@@ -245,7 +260,7 @@ export function CreatorClientShell({
           </div>
         </div>
 
-        {/* ── Colonne droite — analyse ── */}
+        {/* ── Colonne droite · analyse ── */}
         <div
           className="relative rounded-2xl border border-[var(--color-border)] overflow-hidden"
           aria-live="polite"
@@ -292,7 +307,7 @@ export function CreatorClientShell({
               </p>
             </div>
 
-            {/* Bouton Reproduire — expand avec explication */}
+            {/* Bouton Reproduire · expand avec explication */}
             <button
               onClick={() => setExpanded((e) => !e)}
               aria-expanded={expanded}
@@ -315,7 +330,7 @@ export function CreatorClientShell({
               />
             </button>
 
-            {/* Expansion — analyse complète */}
+            {/* Expansion · analyse complète */}
             {expanded && (
               <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 space-y-3 algo-s1">
                 <div>

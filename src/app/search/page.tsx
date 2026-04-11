@@ -133,7 +133,7 @@ export default function SearchPage() {
   }
 
   return (
-    <main className="min-h-screen pb-20 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <main className="min-h-screen pb-20 text-[var(--color-text-primary)]">
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={60} color="blue" opacity={0.06} />
         <div className="relative max-w-4xl mx-auto px-4 pt-8 pb-6">

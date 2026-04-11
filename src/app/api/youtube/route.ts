@@ -9,6 +9,7 @@
  * - Proper error handling
  */
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { resilientFetch } from '@/services/Resilience'
 import { buildDemoHomeYoutubeItems } from '@/lib/data/offline-media-demos'
 
@@ -82,6 +83,15 @@ function transformYouTubeData(data: YouTubeResponse, regionCode: string) {
 }
 
 export async function GET(req: NextRequest) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-youtube:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || 'FR'
   const regionCode = country === 'global' ? 'FR' : country.toUpperCase()

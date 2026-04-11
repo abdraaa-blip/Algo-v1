@@ -1,4 +1,4 @@
-# Nouveau projet Supabase — checklist courte
+# Nouveau projet Supabase · checklist courte
 
 Tu repars de zéro : **aucune ancienne clé**. Suis l’ordre.
 

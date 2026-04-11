@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Donnees pays et regions pour le Country Scope System
+// ALGO V1 · Donnees pays et regions pour le Country Scope System
 // Les noms sont localises via le type Country.name[Locale].
 // Cette liste pilote le ScopeSelector et les donnees mock.
 // =============================================================================
@@ -118,6 +118,9 @@ export const availableCountries: Country[] = [
     flag: '🇨🇮',
   },
 ]
+
+/** Alias historique pour imports `COUNTRIES` (geo, filtres). */
+export const COUNTRIES = availableCountries
 
 /**
  * Retourne un pays par son code ISO.

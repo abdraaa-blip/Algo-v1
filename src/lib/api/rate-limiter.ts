@@ -32,6 +32,8 @@ export interface RateLimitResult {
   remaining: number
   resetAt: number
   retryAfter?: number
+  /** Plafond effectif pour cette fenêtre (en-têtes `X-RateLimit-*`). */
+  limit: number
 }
 
 const DEFAULT_CONFIG: RateLimitConfig = {
@@ -44,8 +46,13 @@ const DEFAULT_CONFIG: RateLimitConfig = {
  */
 export function checkRateLimit(
   identifier: string,
-  config: RateLimitConfig = DEFAULT_CONFIG
+  config?: Partial<RateLimitConfig>
 ): RateLimitResult {
+  const cfg = config ?? {}
+  const merged: RateLimitConfig = {
+    limit: cfg.limit ?? DEFAULT_CONFIG.limit,
+    windowMs: cfg.windowMs ?? DEFAULT_CONFIG.windowMs,
+  }
   const now = Date.now()
   const key = `rate:${identifier}`
   
@@ -55,28 +62,30 @@ export function checkRateLimit(
   if (!entry || entry.resetAt < now) {
     entry = {
       count: 0,
-      resetAt: now + config.windowMs
+      resetAt: now + merged.windowMs
     }
   }
   
   entry.count++
   rateLimitMap.set(key, entry)
   
-  const remaining = Math.max(0, config.limit - entry.count)
+  const remaining = Math.max(0, merged.limit - entry.count)
   
-  if (entry.count > config.limit) {
+  if (entry.count > merged.limit) {
     return {
       success: false,
       remaining: 0,
       resetAt: entry.resetAt,
-      retryAfter: Math.ceil((entry.resetAt - now) / 1000)
+      retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+      limit: merged.limit,
     }
   }
   
   return {
     success: true,
     remaining,
-    resetAt: entry.resetAt
+    resetAt: entry.resetAt,
+    limit: merged.limit,
   }
 }
 
@@ -102,7 +111,7 @@ export function getClientIdentifier(request: Request): string {
  */
 export function createRateLimitHeaders(result: RateLimitResult): HeadersInit {
   return {
-    'X-RateLimit-Limit': String(DEFAULT_CONFIG.limit),
+    'X-RateLimit-Limit': String(result.limit),
     'X-RateLimit-Remaining': String(result.remaining),
     'X-RateLimit-Reset': String(Math.ceil(result.resetAt / 1000)),
     ...(result.retryAfter && { 'Retry-After': String(result.retryAfter) })

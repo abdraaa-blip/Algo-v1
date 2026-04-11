@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Unified API Services
+// ALGO V1 · Unified API Services
 // Professional service layer for all external data sources
 // =============================================================================
 

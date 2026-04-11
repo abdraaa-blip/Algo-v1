@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertTriangle, RefreshCw, WifiOff, Inbox } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { ALGO_UI_EMPTY, ALGO_UI_ERROR, ALGO_UI_LOADING, ALGO_UI_OFFLINE } from '@/lib/copy/ui-strings'
 
 interface LoadingStateProps {

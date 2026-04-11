@@ -14,6 +14,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { LivingPulse } from '@/components/ui/LivingPulse'
 import { LiveCurve } from '@/components/ui/LiveCurve'
 import { useScope } from '@/hooks/useScope'
+import { scopeToCountryCode } from '@/types'
 
 // Interface synchronisee avec l'API
 interface RisingStar {
@@ -139,8 +140,9 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
       if (category && category !== 'all') {
         params.set('category', category)
       }
-      if (scope.code && scope.code !== 'global') {
-        params.set('country', scope.code)
+      const countryCode = scopeToCountryCode(scope)
+      if (countryCode) {
+        params.set('country', countryCode)
       }
       params.set('sort', sortBy)
       params.set('limit', '20')
@@ -175,7 +177,7 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
       setLoading(false)
       setRefreshing(false)
     }
-  }, [category, sortBy, scope.code])
+  }, [category, sortBy, scope])
 
   useEffect(() => {
     fetchStars()
@@ -218,7 +220,7 @@ export default function RisingStarsClientShell({ i18n }: RisingStarsClientShellP
           <div className="flex items-center gap-3">
             <div className="relative">
               <Sparkles size={24} className="text-violet-400" />
-              <LivingPulse size="sm" intensity="high" className="absolute -inset-1" />
+              <LivingPulse intensity={75} compact className="absolute -inset-1" />
             </div>
             <h1 className="text-white font-black text-2xl tracking-tight">{i18n.title}</h1>
             {stars.length > 0 && (

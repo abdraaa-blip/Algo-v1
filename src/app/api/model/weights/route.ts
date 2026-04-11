@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { BASE_WEIGHTS, computeAdaptiveWeights } from '@/lib/ai/adaptive-weighting'
 
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,15 @@ function readHistory() {
 }
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-model-weights:${identifier}`, { limit: 90, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const engagementRate = Number(searchParams.get('engagementRate'))
   const frictionRate = Number(searchParams.get('frictionRate'))

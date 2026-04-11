@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { fetchTrendingPeople, type RealCelebrity } from '@/lib/api/tmdb-service'
 
 // Force dynamic - no caching, always fresh data
@@ -66,6 +67,15 @@ function transformToRisingStar(person: RealCelebrity) {
 }
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-rising-stars:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const category = searchParams.get('category')
   const sortBy = searchParams.get('sort') || 'viral_score'

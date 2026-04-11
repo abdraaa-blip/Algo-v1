@@ -67,6 +67,27 @@ export const ALGO_DATA_RELIABILITY_PANEL = {
 } as const
 
 /** Radar « opportunités produit » : signaux dérivés des tendances, pas de commerce sur ALGO. */
+/** Monétisation : valeur (temps, décisions, avance) — pas de promesses de résultats. */
+export const ALGO_BILLING = {
+  sectionTitle: 'ALGO Pro',
+  valuePitch:
+    'L’idée : te faire gagner du temps, des décisions plus claires et un peu d’avance sur le signal — pas empiler des boutons inutiles.',
+  freeLabel: 'Offre actuelle : accès gratuit',
+  proPitch:
+    'Pro regroupera analyse plus poussée, historiques utiles et IA moins bridée quand le paiement sera relié à ton compte (Stripe + statut serveur).',
+  checkoutCta: 'Voir le paiement Stripe',
+  checkoutUnavailable: 'Paiement : en attente de configuration côté serveur (clés Stripe + prix).',
+  checkoutRequiresLogin: 'Connecte-toi (compte ALGO) pour ouvrir le paiement Stripe.',
+  checkoutError: 'Impossible d’ouvrir le paiement pour l’instant. Réessaie plus tard.',
+  planLabelFree: 'Plan actuel : gratuit',
+  planLabelPro: 'Plan actuel : Pro (Stripe)',
+  proCheckoutDone: 'Ton abonnement est actif côté profil. Renouvellement et factures : portail Stripe (lien e-mail ou dashboard Stripe).',
+  portalCta: 'Gérer l’abonnement (Stripe)',
+  portalError: 'Impossible d’ouvrir le portail pour l’instant. Réessaie plus tard.',
+  successNote: 'Paiement initié ou réussi côté Stripe : le passage en Pro dans l’app suivra la connexion webhook (à brancher).',
+  cancelNote: 'Paiement annulé. Tu restes sur l’offre gratuite.',
+} as const
+
 export const ALGO_PRODUCT_RADAR = {
   cardTitle: 'Radar produit',
   cardIntro:

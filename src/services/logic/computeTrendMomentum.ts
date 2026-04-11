@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — computeTrendMomentum (Logic Layer)
+// ALGO V1 · computeTrendMomentum (Logic Layer)
 // Fonctions pures. Aucun appel API. Aucune dépendance UI.
 // En V1 : opère sur les données mock. En V2 : branche sur les signaux temps réel.
 // =============================================================================
@@ -14,7 +14,7 @@ export interface MomentumScore {
 
 /**
  * Calcule le momentum d'une trend à partir de ses métriques.
- * Formule V1 simplifiée — sera calibrée avec de vraies données en V2.
+ * Formule V1 simplifiée · sera calibrée avec de vraies données en V2.
  */
 export function computeTrendMomentum(trend: Trend): MomentumScore {
   const growthComponent    = Math.min(Math.max(trend.growthRate, -100), 500) / 5  // 0–100 normalisé

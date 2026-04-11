@@ -1,12 +1,12 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — useScope
+// ALGO V1 · useScope
 // State global du Country Scope System.
 // Règles :
 //   - Scope persisté en localStorage entre sessions.
 //   - Changement instantané, sans rechargement (state global, pas de navigation).
-//   - Pas de routes par pays — ce hook est le seul point de vérité du scope.
+//   - Pas de routes par pays · ce hook est le seul point de vérité du scope.
 // =============================================================================
 
 import { useState, useCallback } from 'react'
@@ -40,7 +40,7 @@ function writeStoredScope(scope: AppScope): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(scope))
   } catch {
-    // ignore — storage peut être indisponible (mode privé, quota)
+    // ignore · storage peut être indisponible (mode privé, quota)
   }
 }
 

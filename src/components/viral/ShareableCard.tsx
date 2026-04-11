@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { Share2, Download, Twitter, Copy, Check, Sparkles } from 'lucide-react'
+import { Share2, Download, Copy, Check, Sparkles, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useHaptic } from '@/hooks/useHaptic'
 
@@ -76,7 +76,7 @@ export function ShareableCard({ type, data, className }: ShareableCardProps) {
     }
   }
 
-  const handleTwitterShare = () => {
+  const handleXShare = () => {
     trigger('light')
     const text = encodeURIComponent(getShareText())
     const url = encodeURIComponent('https://algo.app')
@@ -194,15 +194,15 @@ export function ShareableCard({ type, data, className }: ShareableCardProps) {
         </button>
 
         <button
-          onClick={handleTwitterShare}
+          onClick={handleXShare}
           className={cn(
             'size-10 flex items-center justify-center rounded-xl',
             'bg-[#1DA1F2]/20 hover:bg-[#1DA1F2]/30 text-[#1DA1F2]',
             'transition-colors duration-200'
           )}
-          aria-label="Share on Twitter"
+          aria-label="Partager sur X"
         >
-          <Twitter size={18} />
+          <X size={18} />
         </button>
 
         <button

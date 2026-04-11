@@ -123,12 +123,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   const handleEnableNotifications = async () => {
     trigger('medium')
-    const granted = await requestNotificationPermission()
-    setNotificationsEnabled(granted)
+    const permission = await requestNotificationPermission()
+    setNotificationsEnabled(permission === 'granted')
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0f] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-[var(--color-bg-primary)] flex flex-col">
       {/* Progress bar */}
       <div className="h-1 bg-white/5">
         <div 

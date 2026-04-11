@@ -1,7 +1,7 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — GeolocationPrompt
+// ALGO V1 · GeolocationPrompt
 // Shows a friendly location permission request on first visit.
 // Rules:
 //   - Only shows once per device (stored in localStorage)
@@ -111,12 +111,12 @@ export function GeolocationPrompt() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-md bg-[#0f0f18] border border-white/10 rounded-3xl p-6 shadow-2xl"
+              className="relative w-full max-w-md bg-[var(--color-bg-secondary)] border border-[var(--color-border)] rounded-3xl p-6 shadow-2xl"
             >
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 p-2 rounded-full text-white/40 hover:text-white/80 hover:bg-white/5 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-white/5 transition-colors"
                 aria-label={t('misc.close')}
               >
                 <X className="w-5 h-5" />
@@ -125,17 +125,17 @@ export function GeolocationPrompt() {
               {/* Icon */}
               <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500/20 to-pink-500/20 border border-violet-500/30 flex items-center justify-center">
-                  <MapPin className="w-8 h-8 text-violet-400" />
+                  <MapPin className="w-8 h-8 text-[var(--color-violet)]" />
                 </div>
               </div>
 
               {/* Title */}
-              <h2 className="text-2xl font-bold text-white text-center mb-3">
+              <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-3">
                 {t('onboarding.step2.title')}
               </h2>
 
               {/* Subtitle */}
-              <p className="text-white/60 text-center mb-8">
+              <p className="text-[var(--color-text-secondary)] text-center mb-8">
                 {t('onboarding.step2.subtitle')}
               </p>
 
@@ -145,11 +145,7 @@ export function GeolocationPrompt() {
                 <button
                   onClick={handleAccept}
                   disabled={status === 'requesting'}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-white transition-all disabled:opacity-50"
-                  style={{
-                    background: 'linear-gradient(135deg, #7B61FF 0%, #a855f7 100%)',
-                    boxShadow: '0 0 30px rgba(123,97,255,0.3)'
-                  }}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-white transition-all disabled:opacity-50 bg-gradient-to-r from-[var(--color-violet)] to-purple-600 shadow-[0_0_30px_rgba(123,97,255,0.3)]"
                 >
                   {status === 'requesting' ? (
                     <>
@@ -168,7 +164,7 @@ export function GeolocationPrompt() {
                 <button
                   onClick={handleRefuse}
                   disabled={status === 'requesting'}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-white/70 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-[var(--color-text-secondary)] bg-white/5 border border-[var(--color-border)] hover:bg-white/10 hover:text-[var(--color-text-primary)] transition-all disabled:opacity-50"
                 >
                   <Globe className="w-5 h-5" />
                   <span>{t('onboarding.step2.global')}</span>
@@ -176,10 +172,10 @@ export function GeolocationPrompt() {
               </div>
 
               {/* Privacy note */}
-              <p className="text-xs text-white/30 text-center mt-6">
+              <p className="text-xs text-[var(--color-text-muted)] text-center mt-6">
                 {locale === 'en' 
                   ? "Your location is only used to show relevant content. We never store or share it."
-                  : "Ta localisation sert uniquement a afficher du contenu pertinent. Nous ne la stockons ni ne la partageons."}
+                  : "Ta localisation sert uniquement à afficher du contenu pertinent. Nous ne la stockons ni ne la partageons."}
               </p>
             </motion.div>
           </motion.div>
@@ -195,9 +191,9 @@ export function GeolocationPrompt() {
             exit={{ opacity: 0, y: 50 }}
             className="fixed bottom-24 left-4 right-4 z-[100] flex justify-center"
           >
-            <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#0f0f18] border border-white/10 shadow-xl">
-              <Globe className="w-5 h-5 text-violet-400" />
-              <span className="text-sm text-white/80">{t('state.geolocRefused')}</span>
+            <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] shadow-xl">
+              <Globe className="w-5 h-5 text-[var(--color-violet)]" />
+              <span className="text-sm text-[var(--color-text-secondary)]">{t('state.geolocRefused')}</span>
             </div>
           </motion.div>
         )}

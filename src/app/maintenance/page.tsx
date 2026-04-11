@@ -7,7 +7,7 @@ import Link from 'next/link'
  */
 export default function MaintenancePage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 bg-[#0A0A0B]">
+    <main className="min-h-dvh flex items-center justify-center p-6 bg-[var(--color-bg-primary)]">
       <div className="max-w-md w-full text-center space-y-8">
         {/* Animated Icon */}
         <div className="relative">

@@ -70,18 +70,18 @@ export async function showBrowserNotification(notification: AlgoNotification): P
   try {
     const registration = await navigator.serviceWorker.ready
     
-    await registration.showNotification(notification.title, {
+    const notifOptions = {
       body: notification.body,
       icon: notification.icon || '/icon-192.png',
       badge: '/badge-72.png',
       tag: notification.id,
       data: notification.data,
-      vibrate: [200, 100, 200],
       actions: [
         { action: 'view', title: 'Voir' },
         { action: 'dismiss', title: 'Ignorer' }
-      ]
-    })
+      ],
+    } as NotificationOptions & { actions?: ReadonlyArray<{ action: string; title: string }> }
+    await registration.showNotification(notification.title, notifOptions)
     
     return true
   } catch (error) {

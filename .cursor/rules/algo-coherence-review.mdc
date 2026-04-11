@@ -1,0 +1,73 @@
+---
+description: Rituel cohérence ALGO — audit / pré-prod / nettoyage ciblé (optionnel, ne remplace pas le QA gate)
+alwaysApply: false
+---
+
+# Rituel cohérence ALGO
+
+À utiliser quand on demande un **audit de cohérence**, une **revue pré-prod** ou un **nettoyage ciblé** — ou en invoquant cette règle (`@algo-coherence-review`).
+
+## Périmètre (obligatoire)
+
+- Fixer **ce qui est dans le scope** (fichiers, route, feature, PR) et **ce qui ne l’est pas**.
+- Fixer un **critère de sortie** (ex. « au plus 5 actions », « shippable sans refonte transversale »).
+
+## Références (ne pas remplacer)
+
+- Doctrine & preuves : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md` · GTM / positionnement brouillon : `docs/ALGO_GTM_NOTES.md` (ne remplace pas la doctrine)
+- Voix & copy : `src/lib/copy/algo-voice.ts`, `src/lib/copy/ui-strings.ts`, `src/lib/copy/forbidden-ui-copy-scan.ts`
+- Design : `config/algo-system-rules.ts` · UX charte `docs/ALGO_UX_CHARTER.md` · audit cognitif `docs/ALGO_UX_COGNITIVE_AUDIT.md`
+- QA automatisable : `config/algo-qa-gate.ts`, règle `.cursor/rules/algo-qa-intelligent.mdc`, `npm run verify:release`
+- Pile agent : `AGENTS.md`
+
+Guide humain complémentaire : `docs/ALGO_COHERENCE_RITUAL.md`.
+
+## Questions courtes (ordre)
+
+1. **Valeur** : est-ce que ça aide l’utilisateur à décider, gagner du temps ou lire le signal (sans promesse creuse) ?
+2. **Doublon** : existe-t-il déjà une route, un module ou un wording équivalent ?
+3. **Voix** : textes alignés doctrine + scan copy interdit ?
+4. **Simplicité** : peut-on livrer moins pour la même utilité ?
+5. **Parcours / charge cognitive** : intention principale lisible, pas d’intentions concurrentes au même poids, scroll et états OK ? (voir `docs/ALGO_UX_COGNITIVE_AUDIT.md`)
+6. **Preuves** : faut-il mettre à jour la checklist preuves ou un test Vitest ?
+
+## Format de réponse
+
+- **Forces** (bref)
+- **Écarts** (chemins fichiers + constat factuel)
+- **Actions** (priorisées, **corrections minimales**)
+- **Hors scope** (ce qu’on ne touche pas)
+
+## Anti-patterns
+
+- Refonte large « parce que ce n’est pas parfait » sans besoin mesuré.
+- Deuxième constitution qui contredit doctrine / QA gate.
+- Promesses magiques, ton agressif, ou complexité UI sans gain utilisateur.
+
+Philosophie : **cohérence et utilité, pas perfection absolue** — le système doit rester **shippable** et **maintenable**.
+
+## « Self evolution » / auto-analyse
+
+- **Ne pas** proposer d’enchaîner un second LLM sur chaque sortie du Core ni d’`autoPatch` runtime : voir **`docs/ALGO_OFFLINE_EVOLUTION.md`**.
+- Préférer : `verify:release`, observabilité, scripts offline, PRs humaines.
+
+## Mémoire persistante / boucle « consciente »
+
+- **Ne pas** proposer un `memoryStore` global en RAM dans `src/core/` + écriture systématique sur chaque Q&R pour nourrir une viz ou une « conscience » (fuite données, faux sens, non persistant).
+- **Préférer** : `src/lib/autonomy/knowledge-memory.ts`, `learning-history`, routes `/api/intelligence/*`, analytics consenties — aligné **`docs/ALGO_OFFLINE_EVOLUTION.md`** (section mémoire & feedback).
+
+## Cockpit « live conscient » / 3D + timeline
+
+- **Ne pas** proposer un dashboard qui **poll** `fetchAlgo` / routes IA lourdes toutes les quelques secondes pour animer un cerveau 3D ou un champ `consciousness`.
+- **Ne pas** afficher des **morceaux de prompts** utilisateur comme « souvenirs » lumineux sans cadre légal / produit explicite — voir **`docs/ALGO_OFFLINE_EVOLUTION.md`** (lignes cockpit live + mémoire visuelle).
+- **Contrat `/control-room`** : **`docs/ALGO_CONTROL_ROOM.md`** (deux mondes, layout figé vs contenu, pas d’`evolutionLayer` dans `core/` pour l’UI).
+
+## Duplication « production ready » (API / scores)
+
+- **Ne pas** proposer un second chemin **`pages/api/algo`** ou un `processRequest` parallèle dans `core/` : l’entrée documentée est **`POST` `src/app/api/algo/route.ts`** → `processAlgoAiRequest`.
+- **Ne pas** ajouter un **`computeViralScore`** local qui rivalise avec le score canonique — **`docs/ALGO_OFFLINE_EVOLUTION.md`** + `src/lib/ai/canonical-viral-score.ts`.
+
+## Directives Cursor / playbooks parallèles
+
+- **Ne pas** traiter un long pavé « tu es le design guard + QA + deploy + observability + self-healing » comme nouvelle loi : le repo a déjà `algo-system-rules`, `algo-qa-gate`, `deploy-gate`, observabilité.
+- **Préférer** : **`docs/ALGO_OPERATIONS_PLAYBOOK.md`** comme point d’entrée unique (sections **Arbitrage** et **Blueprints externes**) + **`docs/ALGO_OFFLINE_EVOLUTION.md`** (anti-pattern auto-réparation / constitutions parallèles).

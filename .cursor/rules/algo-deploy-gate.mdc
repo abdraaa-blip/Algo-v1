@@ -1,0 +1,17 @@
+---
+description: Garde pré-déploiement ALGO (CI/CD, Vercel, workflows)
+globs: "**/.github/workflows/**"
+alwaysApply: false
+---
+
+# Pré-déploiement ALGO
+
+Avant de **valider** un merge vers production ou de modifier les **workflows CI** :
+
+1. Lire **`config/algo-deploy-gate.ts`** (`ALGO_DEPLOY_CHECKLIST`, `ALGO_DEPLOY_BLOCK_POLICY`, `ALGO_DEPLOY_COMMANDS`).
+2. Croiser **`config/algo-qa-gate.ts`**, **`config/algo-system-rules.ts`**, et la rubrique qualitative **`docs/ALGO_RELEASE_READINESS.md`** (pas de score global LLM — CI + ce fichier font foi).
+3. La CI principale doit passer **`npm run verify:release`** (inclut **`verify:api-guards`**, **`npm run typecheck`**, **`npm run lint:strict`**, tests, build). **`next.config.ts`** : `typescript.ignoreBuildErrors: false` — le build Next échoue sur les erreurs TS (`docs/ALGO_RELEASE_READINESS.md`, dimension 1).
+
+Si une étape échoue : **bloquer** le déploiement, expliquer, proposer un **patch minimal** — jamais promouvoir un build instable ou incohérent.
+
+Pour Vercel : aligner preview/production sur la même gate que la CI (**`verify:release`** / **`verify:full`** sur release gate) — pas d’étape typecheck « informationnelle » séparée.

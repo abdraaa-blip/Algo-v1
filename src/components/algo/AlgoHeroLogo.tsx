@@ -78,7 +78,7 @@ const TAGLINES = [
       { text: 'au-dessus', color: 'text-violet-400' },
     ],
     connector: ' ',
-    ending: ' des feeds — pas une copie, une couche au-dessus.'
+    ending: ' des feeds · pas une copie, une couche au-dessus.'
   },
   {
     text: 'Lis',
@@ -99,7 +99,7 @@ const markStyle = {
 } as const
 
 /**
- * AlgoHeroLogo — page d'accueil.
+ * AlgoHeroLogo · page d'accueil.
  * `full` : grand logo + taglines rotatives (h1 = ALGO).
  * `mark` : petit marqueur sous le hero texte (pas de h1, accessibilité : le titre principal est ailleurs).
  */

@@ -74,7 +74,7 @@ export function IdeaGenerator({ onSelectIdea, className }: IdeaGeneratorProps) {
             : selectedFormat,
           platform,
           hashtags: generateHashtags(trend.keyword),
-          estimatedScore: Math.round(trend.score.total * (0.8 + Math.random() * 0.2)),
+          estimatedScore: Math.round(trend.score.overall * (0.8 + Math.random() * 0.2)),
           basedOn: trend.keyword,
           timing: trend.prediction.recommendedAction === 'post_now' 
             ? 'Maintenant'
@@ -106,7 +106,7 @@ export function IdeaGenerator({ onSelectIdea, className }: IdeaGeneratorProps) {
             <p className="text-[10px] text-white/40">Base sur les dernieres tendances</p>
           </div>
         </div>
-        <LiveIndicator size="sm" />
+        <LiveIndicator className="scale-90" />
       </div>
       
       {/* Filters */}

@@ -1,7 +1,7 @@
 'use client'
 
 // =============================================================================
-// ALGO V1 — ServiceWorkerRegister
+// ALGO V1 · ServiceWorkerRegister
 // Composant silencieux qui enregistre le SW au montage de l'app.
 // =============================================================================
 
@@ -29,7 +29,7 @@ export function ServiceWorkerRegister() {
       // Register fresh service worker after clearing
       return navigator.serviceWorker.register('/sw.js')
     }).catch(() => {
-      // Silently fail — SW is optional enhancement
+      // Silently fail · SW is optional enhancement
     })
   }, [])
 

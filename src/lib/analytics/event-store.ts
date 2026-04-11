@@ -10,7 +10,7 @@ export interface UserEvent {
 
 export const MAX_ANALYTICS_EVENTS = 10000
 
-/** Mémoire process — partagé entre routes analytics et `/api/v1/ingest`. */
+/** Mémoire process · partagé entre routes analytics et `/api/v1/ingest`. */
 export const analyticsEventStore: UserEvent[] = []
 
 function getSupabaseClient(): SupabaseClient | null {

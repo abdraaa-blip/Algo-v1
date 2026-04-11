@@ -23,14 +23,13 @@ export function AchievementUnlock({ achievement, onClose }: AchievementUnlockPro
   )
   
   useEffect(() => {
-    if (achievement) {
-      setIsVisible(true)
-      const timer = setTimeout(() => {
-        setIsVisible(false)
-        setTimeout(onClose, 500)
-      }, 5000)
-      return () => clearTimeout(timer)
-    }
+    if (!achievement) return undefined
+    setIsVisible(true)
+    const timer = setTimeout(() => {
+      setIsVisible(false)
+      setTimeout(onClose, 500)
+    }, 5000)
+    return () => clearTimeout(timer)
   }, [achievement, onClose])
   
   if (!achievement) return null

@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Types stricts centralisés
+// ALGO V1 · Types stricts centralisés
 // Source de vérité absolue. Aucun any. Aucun objet non typé.
 // =============================================================================
 
@@ -9,10 +9,15 @@ export type Platform =
   | 'TikTok'
   | 'Instagram'
   | 'YouTube'
+  | 'YouTube Shorts'
   | 'Twitter'
   | 'Snapchat'
   | 'Reddit'
   | 'Other'
+  | 'News'
+  | 'TMDB'
+  | 'GitHub'
+  | 'HackerNews'
 
 export type Category =
   | 'Drôle'
@@ -24,6 +29,18 @@ export type Category =
   | 'Culture'
   | 'Actu'
   | 'Autre'
+  | 'Films'
+  | 'Series'
+  | 'Discussion'
+  | 'Tech'
+  | 'Video'
+  | 'Cinema'
+  | 'Musique'
+  | 'Sport'
+  | 'Politique'
+  | 'Gaming'
+  | 'Actualite'
+  | 'Viral'
 
 export type BadgeType =
   | 'Viral'
@@ -45,6 +62,8 @@ export type ContentFormat =
   | 'narration'
   | 'duet'
   | 'reaction'
+  | 'news'
+  | 'screen record'
 
 export type UserProfileType = 'creator' | 'spectator'
 
@@ -56,7 +75,7 @@ export type Locale = 'fr' | 'en' | 'es' | 'de' | 'ar'
 
 // ─── Country Scope System ─────────────────────────────────────────────────────
 // Couche centrale du produit. Pilote NOW, Trends, Videos, News, Search, Watchlist.
-// Pas de routes par pays — filtrage via state global uniquement.
+// Pas de routes par pays · filtrage via state global uniquement.
 
 export type AppScope =
   | { type: 'global' }
@@ -108,12 +127,14 @@ export interface Content {
   title: string
   category: Category
   platform: Platform
-  country: string        // code ISO — ex: 'FR'
-  language: string       // code IETF — ex: 'fr'
+  country: string        // code ISO · ex: 'FR'
+  language: string       // code IETF · ex: 'fr'
+  /** Mots-cles pour le moteur viral / clustering (optionnel). */
+  tags?: string[]
   viralScore: number     // 0–100
   badge: BadgeType
   views?: number
-  growthRate: number     // % de croissance — peut être négatif
+  growthRate: number     // % de croissance · peut être négatif
   growthTrend: GrowthTrend
   detectedAt: string     // ISO 8601
   thumbnail?: string
@@ -204,6 +225,7 @@ export type TrackEvent =
   | 'trend_unfollowed'
   | 'content_liked'
   | 'content_saved'
+  | 'content_unsaved'
   | 'creator_mode_opened'
   | 'early_signal_clicked'
   | 'insight_viewed'
@@ -213,6 +235,7 @@ export type TrackEvent =
   | 'geoloc_granted'
   | 'geoloc_refused'
   | 'onboarding_completed'
+  | 'hook_copied'
 
 export interface TrackPayload {
   event: TrackEvent
@@ -253,3 +276,22 @@ export type UXState =
   | 'offline'
   | 'auth_required'
   | 'geoloc_refused'
+
+/** Texte localise sur toutes les locales supportees (remplit es/de/ar depuis en si absent). */
+export function fillLocaleStrings(
+  partial: { fr: string; en: string } & Partial<Pick<Record<Locale, string>, 'es' | 'de' | 'ar'>>
+): Record<Locale, string> {
+  return {
+    fr: partial.fr,
+    en: partial.en,
+    es: partial.es ?? partial.en,
+    de: partial.de ?? partial.en,
+    ar: partial.ar ?? partial.en,
+  }
+}
+
+/** Code pays pour filtrage API quand le scope n'est pas global. */
+export function scopeToCountryCode(scope: AppScope): string | null {
+  if (scope.type === 'country' || scope.type === 'region') return scope.code
+  return null
+}

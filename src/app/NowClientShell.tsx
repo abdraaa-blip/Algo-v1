@@ -103,7 +103,7 @@ export function NowClientShell({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false)
   
-  // REAL-TIME TRENDS — L'algorithme vivant
+  // REAL-TIME TRENDS · L'algorithme vivant
   const { 
     trends, 
     meta, 
@@ -200,7 +200,7 @@ export function NowClientShell({
       <div className="relative z-10 max-w-7xl mx-auto px-4 pb-12 space-y-8">
         
         {/* ══════════════════════════════════════════════════════════════════
-            ALGO HEADER — Le coeur battant de l'algorithme (MAJ periodiques)
+            ALGO HEADER · Le coeur battant de l'algorithme (MAJ periodiques)
         ══════════════════════════════════════════════════════════════════ */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c0c14]/90 via-[#0f0f1a]/90 to-[#0a0a12]/90 backdrop-blur-xl border border-white/5 p-6 md:p-8">
           {/* Static background - no animations to prevent CLS */}
@@ -259,7 +259,7 @@ export function NowClientShell({
                 >
                   <div className="flex items-center gap-2 text-[10px] text-yellow-400 uppercase tracking-widest mb-2">
                     <Sparkles size={12} />
-                    <span>Signal #1 — Tier {topTrend.score.tier}</span>
+                    <span>Signal #1 · Tier {topTrend.score.tier}</span>
                     <span className="ml-auto text-white/40 group-hover:text-white/60">Voir details →</span>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-1">{topTrend.keyword}</h3>
@@ -495,7 +495,7 @@ export function NowClientShell({
             <>
               <SectionHeader
                 title="Opportunites POST NOW"
-                subtitle="Ces signaux explosent — agis maintenant"
+                subtitle="Ces signaux explosent · agis maintenant"
                 className="mb-4"
                 trailing={
                   <span className="text-[10px] font-bold text-orange-400 bg-orange-500/20 px-2 py-1 rounded-full animate-pulse">
@@ -519,7 +519,7 @@ export function NowClientShell({
         </section>
         
         {/* ══════════════════════════════════════════════════════════════════
-            DATA TRANSPARENCY FOOTER — Honest about data sources
+            DATA TRANSPARENCY FOOTER · Honest about data sources
         ══════════════════════════════════════════════════════════════════ */}
         <section className="mt-8 pt-6 border-t border-white/5">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/30">

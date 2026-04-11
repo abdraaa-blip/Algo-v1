@@ -1,0 +1,41 @@
+.wrap {
+  width: min(96vw, 420px);
+  margin-inline: auto;
+}
+
+.edge {
+  fill: none;
+  stroke: url(#crGraphStroke);
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-dasharray: 5 9;
+  animation: crGraphDash linear infinite;
+  animation-duration: calc(3.1s - var(--cr-flow, 0.35) * 2.4s);
+}
+
+.wrap[data-reduce-motion='true'] .edge {
+  animation: none;
+  stroke-dasharray: none;
+  opacity: 0.55;
+}
+
+.nodeDisk {
+  transition: opacity 0.2s var(--ease-default, ease-out);
+}
+
+.label {
+  font-size: 8px;
+  letter-spacing: 0.02em;
+  fill: var(--color-text-tertiary, rgba(240, 240, 248, 0.42));
+}
+
+.caption {
+  font-size: 9px;
+  fill: var(--color-text-muted, rgba(240, 240, 248, 0.22));
+}
+
+@keyframes crGraphDash {
+  to {
+    stroke-dashoffset: -80;
+  }
+}

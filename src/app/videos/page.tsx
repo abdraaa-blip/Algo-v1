@@ -6,7 +6,7 @@ import { ALGO_UI_LOADING } from '@/lib/copy/ui-strings'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Vidéos virales',
   description:
-    'Tendances YouTube en direct — France, US, UK, Nigeria. ALGO agrège les signaux viraux pour créateurs et curieux.',
+    'Tendances YouTube en direct · France, US, UK, Nigeria. ALGO agrège les signaux viraux pour créateurs et curieux.',
   path: '/videos',
   keywords: ['youtube', 'vidéos virales', 'tendances', 'shorts', 'créateurs', 'ALGO'],
 })

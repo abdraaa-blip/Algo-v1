@@ -317,7 +317,7 @@ export default function TrendsPage() {
                 Cinema: `Les communautes de fans sont actives et partagent massivement.`,
                 Tech: `Sujet d'actualite qui interesse un large public curieux.`,
                 Musique: `Le contenu musical est hautement viral et facile a reproduire.`,
-                Finance: `FOMO et émotions fortes autour de l’argent peuvent pousser l’engagement — reste un signal indicatif.`,
+                Finance: `FOMO et émotions fortes autour de l’argent peuvent pousser l’engagement · reste un signal indicatif.`,
                 People: `Les dramas generent des reactions fortes et du partage viral.`,
                 Politique: `Sujet de debat qui pousse aux reactions et commentaires.`,
                 default: `Tendance montante qui capte l'attention du public.`
@@ -449,7 +449,7 @@ export default function TrendsPage() {
   const followedTrends = trends.filter(t => following.has(t.id))
 
   return (
-    <div className="min-h-screen pb-20 bg-[var(--color-bg-primary)]">
+    <div className="min-h-screen pb-20">
       {/* Header */}
       <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <LiveCurve rate={60} color="violet" opacity={0.06} />
@@ -843,7 +843,7 @@ function TrendDetailModalNew({
                 headline={trend.name}
                 score={trend.score}
                 badgeLabel={`${trend.platform} · ${trend.category}`}
-                subtitle={trend.explanation?.slice(0, 100) || 'Tendance radar ALGO — avant saturation du feed.'}
+                subtitle={trend.explanation?.slice(0, 100) || 'Tendance radar ALGO · avant saturation du feed.'}
               />
             </div>
           </>

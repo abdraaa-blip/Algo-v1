@@ -47,7 +47,7 @@
   "dailyHook": {
     "shouldHaveSeen": "Lo que deberías haber visto hoy",
     "goingNow": "Lo que está despegando ahora",
-    "watchSignals": "Vigila esto — señal temprana"
+    "watchSignals": "Vigila esto · señal temprana"
   },
 
   "badge": {
@@ -84,16 +84,16 @@
     "timing": {
       "now": "Publica ahora",
       "too_late": "Demasiado tarde",
-      "too_early": "Muy pronto — vigila"
+      "too_early": "Muy pronto · vigila"
     },
     "bestPlatform": "Plataforma ideal",
     "bestFormat": "Formato recomendado",
     "watchers": "{count} personas vigilando esta señal",
     "crossPlatform": "Señal detectada en múltiples plataformas",
     "postWindow": {
-      "optimal": "Ventana abierta — momento ideal",
-      "saturated": "Trend saturada — visibilidad reducida",
-      "fading": "La señal se apaga — demasiado tarde"
+      "optimal": "Ventana abierta · momento ideal",
+      "saturated": "Trend saturada · visibilidad reducida",
+      "fading": "La señal se apaga · demasiado tarde"
     }
   },
 
@@ -290,8 +290,8 @@
       "retry": "Reintentar",
       "generic": "No podemos cargar esto ahora. Vuelve a intentarlo en un momento."
     },
-    "offline": "Conexión perdida — mostrando últimas señales.",
-    "geolocRefused": "Ubicación desactivada — mostrando tendencias globales.",
+    "offline": "Conexión perdida · mostrando últimas señales.",
+    "geolocRefused": "Ubicación desactivada · mostrando tendencias globales.",
     "authRequired": "Inicia sesión para acceder a esta función."
   },
 

@@ -3,6 +3,7 @@
  * No external imports from real-data-service to avoid Turbopack module resolution issues
  */
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { buildDemoLiveVideos } from '@/lib/data/offline-media-demos'
 
 export const dynamic = 'force-dynamic'
@@ -150,6 +151,15 @@ async function fetchYouTubeVideos(country: string): Promise<VideoData[]> {
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-live-videos:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || 'FR'
   const all = searchParams.get('all') === 'true'

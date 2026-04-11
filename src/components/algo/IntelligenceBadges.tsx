@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * Intelligence Badges — Visual indicators for ALGO Engine analysis
+ * Intelligence Badges · Visual indicators for ALGO Engine analysis
  * 
  * Displays: Viral Score, Emotion Tag, Freshness, Early Signal
  */

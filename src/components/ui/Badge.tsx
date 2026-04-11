@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import type { BadgeType } from '@/types'
 
-// Mapping vers les classes Tailwind — couleurs issues des tokens via @theme
+// Mapping vers les classes Tailwind · couleurs issues des tokens via @theme
 const cfg: Record<BadgeType | 'coolOff' | 'exploding', {
   base:  string
   dot?:  string

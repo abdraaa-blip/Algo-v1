@@ -38,7 +38,8 @@ export function generateAIAnalysis(
   const { prediction } = scoreBreakdown
   const source = item.source
   const category = item.category || 'general'
-  const ageHours = (Date.now() - item.publishedAt) / (1000 * 60 * 60)
+  const publishedAt = item.publishedAt ?? Date.now()
+  const ageHours = Math.max((Date.now() - publishedAt) / (1000 * 60 * 60), 0.01)
   
   // Generate explanation based on signals
   const explanation = generateExplanation(item, scoreBreakdown, ageHours)
@@ -81,7 +82,7 @@ function generateExplanation(
   ageHours: number
 ): string {
   const { tier, momentum, isEarlySignal, viewVelocity, engagementRate } = score
-  const views = item.metrics.views || 0
+  const views = item.metrics?.views || 0
   const source = item.source
   
   // Early signal explanation
@@ -321,13 +322,14 @@ export function generateDailyBriefing(
   
   // Extract emerging trends from titles
   const keywords = items
-    .flatMap(i => i.tags || [])
-    .reduce((acc, tag) => {
+    .flatMap((i) => i.tags || [])
+    .reduce((acc: Map<string, number>, tag: string) => {
       acc.set(tag, (acc.get(tag) || 0) + 1)
       return acc
     }, new Map<string, number>())
-  
-  const emergingTrends = Array.from(keywords.entries())
+
+  const pairs: [string, number][] = Array.from(keywords.entries())
+  const emergingTrends = pairs
     .filter(([, count]) => count >= 3)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
@@ -346,7 +348,7 @@ export function generateDailyBriefing(
   // Personal recommendations based on interests
   const personalRecommendations = userInterests.length > 0
     ? items
-        .filter(i => i.tags?.some(t => userInterests.includes(t.toLowerCase())))
+        .filter((i) => i.tags?.some((t: string) => userInterests.includes(t.toLowerCase())))
         .slice(0, 3)
         .map(i => i.title)
     : ['Connectez-vous pour des recommandations personnalisees']

@@ -1,7 +1,7 @@
 // =============================================================================
-// ALGO V1 — watchlistService
+// ALGO V1 · watchlistService
 // Persistance localStorage en V1.
-// En V2 : remplacer par des appels Supabase — la signature des fonctions ne change pas.
+// En V2 : remplacer par des appels Supabase · la signature des fonctions ne change pas.
 // =============================================================================
 
 import { mockTrends } from '@/data/mock-trends'
@@ -27,7 +27,7 @@ function writeIds(ids: string[]): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
   } catch {
-    // Storage indisponible (mode privé, quota atteint) — on ignore silencieusement
+    // Storage indisponible (mode privé, quota atteint) · on ignore silencieusement
   }
 }
 

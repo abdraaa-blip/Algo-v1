@@ -66,7 +66,9 @@ interface ContentCardProps {
 
 export function ContentCard({ content, onClick }: ContentCardProps) {
   const router = useRouter()
-  const isExploding = content.isExploding || (content.growthRate && content.growthRate > 200)
+  const isExploding =
+    content.isExploding === true ||
+    (typeof content.growthRate === 'number' && content.growthRate > 200)
   
   const handleClick = () => {
     if (onClick) {

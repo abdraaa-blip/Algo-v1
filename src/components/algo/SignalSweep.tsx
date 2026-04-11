@@ -31,6 +31,7 @@ export function SignalSweep() {
 
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [])
 
   if (hasPlayed || !shouldShow) return null

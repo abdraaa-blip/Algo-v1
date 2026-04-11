@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — TrendService
+// ALGO V1 · TrendService
 // Service unifie pour les tendances multi-sources
 // Agrege: Google Trends, News, YouTube, Social Media
 // =============================================================================
@@ -147,7 +147,7 @@ async function fetchTrendsFromAPI(country: string = 'FR'): Promise<TrendAPIRespo
 // ─── Transform Functions ──────────────────────────────────────────────────────
 
 function transformNewsToTrend(news: Array<{ title: string; url: string; publishedAt: string; source: string }>): TrendItem[] {
-  return news.slice(0, 10).map((item, index) => {
+  return news.slice(0, 10).map((item, index): TrendItem => {
     const isRecent = (Date.now() - new Date(item.publishedAt).getTime()) < 3600000
     const growthRate = Math.max(20, 150 - index * 10)
     const volume = Math.round(100000 / (index + 1))
@@ -169,11 +169,11 @@ function transformNewsToTrend(news: Array<{ title: string; url: string; publishe
       detectedAt: item.publishedAt,
       url: item.url
     }
-  }).map(t => ({ ...t, explanation: generateExplanation(t) }))
+  }).map((t): TrendItem => ({ ...t, explanation: generateExplanation(t) }))
 }
 
 function transformYouTubeToTrend(videos: Array<{ title: string; viewCount: number; url: string; thumbnail: string }>): TrendItem[] {
-  return videos.slice(0, 8).map((item, index) => {
+  return videos.slice(0, 8).map((item, index): TrendItem => {
     const views = Number(item.viewCount) || 0
     const growthRate = Math.max(30, 200 - index * 15)
     
@@ -195,11 +195,11 @@ function transformYouTubeToTrend(videos: Array<{ title: string; viewCount: numbe
       url: item.url,
       thumbnail: item.thumbnail
     }
-  }).map(t => ({ ...t, explanation: generateExplanation(t) }))
+  }).map((t): TrendItem => ({ ...t, explanation: generateExplanation(t) }))
 }
 
 function transformRedditToTrend(posts: Array<{ title: string; score: number; url: string; subreddit: string }>): TrendItem[] {
-  return posts.slice(0, 6).map((item, index) => {
+  return posts.slice(0, 6).map((item, index): TrendItem => {
     const score = Number(item.score) || 0
     const growthRate = Math.max(25, 180 - index * 20)
     
@@ -220,11 +220,11 @@ function transformRedditToTrend(posts: Array<{ title: string; score: number; url
       detectedAt: new Date().toISOString(),
       url: item.url
     }
-  }).map(t => ({ ...t, explanation: generateExplanation(t) }))
+  }).map((t): TrendItem => ({ ...t, explanation: generateExplanation(t) }))
 }
 
 function transformGitHubToTrend(repos: Array<{ name: string; stars: number; url: string; description: string }>): TrendItem[] {
-  return repos.slice(0, 5).map((item, index) => {
+  return repos.slice(0, 5).map((item, index): TrendItem => {
     const stars = Number(item.stars) || 0
     const growthRate = Math.max(40, 250 - index * 30)
     
@@ -245,7 +245,7 @@ function transformGitHubToTrend(repos: Array<{ name: string; stars: number; url:
       detectedAt: new Date().toISOString(),
       url: item.url
     }
-  }).map(t => ({ ...t, explanation: t.explanation || generateExplanation(t) }))
+  }).map((t): TrendItem => ({ ...t, explanation: t.explanation || generateExplanation(t) }))
 }
 
 // ─── Service Methods ──────────────────────────────────────────────────────────

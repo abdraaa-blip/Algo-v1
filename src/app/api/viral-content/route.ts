@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { 
   fetchAllViralContent,
   fetchYouTubeTrending,
@@ -19,6 +20,15 @@ import {
 export const revalidate = 300 // Cache for 5 minutes
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-viral-content:${identifier}`, { limit: 50, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const country = searchParams.get('country') || 'US'
   const type = searchParams.get('type') as 'all' | 'video' | 'article' | 'post' | null

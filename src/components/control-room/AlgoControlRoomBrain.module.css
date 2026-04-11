@@ -1,0 +1,138 @@
+/* Animations désactivées côté composant quand prefers-reduced-motion */
+
+.root {
+  --cr-intensity: 0.35;
+  --cr-flow: 0.35;
+  width: min(72vw, 420px);
+  height: min(72vw, 420px);
+  margin-inline: auto;
+}
+
+.shell {
+  transform-origin: 50% 50%;
+  opacity: calc(0.35 + var(--cr-intensity) * 0.45);
+}
+
+.root[data-mode='idle'] .shell {
+  animation: crBreathe 3.6s var(--ease-in-out-soft, ease-in-out) infinite;
+}
+
+.root[data-mode='analyzing'] .shell {
+  animation: crPulse 1.15s var(--ease-default, ease-in-out) infinite;
+}
+
+.root[data-mode='predicting'] .shell {
+  animation: crForward 2.1s linear infinite;
+}
+
+.root[data-mode='syncing'] .shell {
+  animation: crBreathe 2.8s var(--ease-in-out-soft, ease-in-out) infinite;
+}
+
+.root[data-mode='alert'] .shell {
+  animation: crPulse 0.82s var(--ease-default, ease-in-out) infinite;
+}
+
+.root[data-reduce-motion='true'] .shell {
+  animation: none;
+  opacity: calc(0.55 + var(--cr-intensity) * 0.25);
+}
+
+.flow {
+  stroke-dasharray: 8 14;
+  animation-name: crDash;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: calc(3.35s - var(--cr-flow) * 2.55s);
+}
+
+.root[data-mode='analyzing'] .flow {
+  animation-duration: calc(1.35s - var(--cr-flow) * 0.55s);
+}
+
+.root[data-mode='predicting'] .flow {
+  animation-duration: 0.72s;
+}
+
+.root[data-mode='syncing'] .flow {
+  animation-duration: calc(2.6s - var(--cr-flow) * 1.4s);
+}
+
+.root[data-mode='alert'] .flow {
+  animation-duration: calc(1.05s - var(--cr-flow) * 0.35s);
+}
+
+.root[data-reduce-motion='true'] .flow {
+  animation: none;
+  stroke-dasharray: none;
+}
+
+.node {
+  animation: crNode 2.4s ease-in-out infinite;
+}
+
+.root[data-mode='analyzing'] .node {
+  animation-duration: 0.85s;
+}
+
+.root[data-mode='alert'] .node {
+  animation-duration: 0.55s;
+}
+
+.root[data-mode='syncing'] .node {
+  animation-duration: 1.4s;
+}
+
+.root[data-reduce-motion='true'] .node {
+  animation: none;
+}
+
+@keyframes crBreathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: calc(0.32 + var(--cr-intensity) * 0.35);
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: calc(0.5 + var(--cr-intensity) * 0.45);
+  }
+}
+
+@keyframes crPulse {
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes crForward {
+  0% {
+    transform: scale(0.99) translateX(0);
+  }
+  50% {
+    transform: scale(1.04) translateX(2px);
+  }
+  100% {
+    transform: scale(0.99) translateX(0);
+  }
+}
+
+@keyframes crDash {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes crNode {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}

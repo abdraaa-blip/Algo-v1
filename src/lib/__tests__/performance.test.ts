@@ -196,8 +196,8 @@ describe('Memory Management', () => {
     const addToCache = (key: string, value: unknown) => {
       if (cache.size >= MAX_CACHE_SIZE) {
         // Remove oldest entry (LRU)
-        const firstKey = cache.keys().next().value
-        cache.delete(firstKey)
+        const firstKey = cache.keys().next().value as string | undefined
+        if (firstKey !== undefined) cache.delete(firstKey)
       }
       cache.set(key, value)
     }

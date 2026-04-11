@@ -50,8 +50,14 @@ export interface RealVideo {
   id: string
   title: string
   channel: string
+  /** Alias UI (YouTube API) — préférer `channel` si les deux sont présents. */
+  channelTitle?: string
   thumbnail: string
   views: number
+  /** Alias numérique brut pour stats détaillées. */
+  viewCount?: number
+  likeCount?: number
+  commentCount?: number
   viewsFormatted: string
   publishedAt: string
   publishedAtFormatted: string
@@ -409,14 +415,15 @@ async function fetchGoogleNewsRSS(country: string): Promise<CachedData<RealNewsA
     }
     
     // Clean HTML from title and description
+    if (!title || !link) continue
     const cleanTitle = title.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
     const cleanDesc = description.replace(/<[^>]*>/g, '').slice(0, 200)
     
-    if (cleanTitle && link) {
+    if (cleanTitle) {
       items.push({
         id: `gnews_${country}_${index}_${Date.now()}`,
         title: cleanTitle,
-        description: cleanDesc || null,
+        description: cleanDesc || '',
         url: link,
         urlToImage: imageUrl,
         publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
@@ -599,7 +606,12 @@ async function fetchRealNewsInternal(country: string, cached: CachedData<RealNew
     if (response.status === 429) {
       setRateLimited('newsApi')
       if (cached) return { ...cached, source: 'fallback' }
-      return { data: FALLBACK_NEWS, fetchedAt: new Date().toISOString(), expiresAt: new Date().toISOString(), source: 'fallback' }
+      return {
+        data: getFallbackNews(),
+        fetchedAt: new Date().toISOString(),
+        expiresAt: new Date().toISOString(),
+        source: 'fallback',
+      }
     }
     
     if (!response.ok) {
@@ -656,10 +668,10 @@ export async function fetchAllNews(): Promise<CachedData<RealNewsArticle>> {
   // If rate limited, don't even try - return fallback immediately
   if (isRateLimited('newsApi')) {
     return {
-      data: FALLBACK_NEWS,
+      data: getFallbackNews(),
       fetchedAt: new Date().toISOString(),
       expiresAt: new Date().toISOString(),
-      source: 'fallback'
+      source: 'fallback',
     }
   }
   
@@ -676,7 +688,7 @@ export async function fetchAllNews(): Promise<CachedData<RealNewsArticle>> {
   const now = new Date()
   
   return {
-    data: allNews.length > 0 ? allNews : FALLBACK_NEWS,
+    data: allNews.length > 0 ? allNews : getFallbackNews(),
     fetchedAt: now.toISOString(),
     expiresAt: new Date(now.getTime() + CACHE_DURATION_MS).toISOString(),
     source: results.some(r => r.source === 'live') ? 'live' : results.length > 0 ? 'cached' : 'fallback'
@@ -1119,5 +1131,3 @@ export function parseDuration(isoDuration: string): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-// Re-export for explicit module resolution
-export type { RealVideo, RealTrend, RealNewsArticle, CachedData }

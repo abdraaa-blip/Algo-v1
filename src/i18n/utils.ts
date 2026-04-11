@@ -1,6 +1,6 @@
 // =============================================================================
-// ALGO V1 — Utilitaires de formatage localisé
-// Utilise uniquement les APIs natives Intl — zéro dépendance externe.
+// ALGO V1 · Utilitaires de formatage localisé
+// Utilise uniquement les APIs natives Intl · zéro dépendance externe.
 // =============================================================================
 
 /**
@@ -48,7 +48,7 @@ export function formatGrowthRate(rate: number, locale: string): string {
 
 /**
  * Formate un score entier (Viral Score, Importance Score…).
- * Toujours tabular-nums — la mise en forme typographique est gérée côté CSS.
+ * Toujours tabular-nums · la mise en forme typographique est gérée côté CSS.
  */
 export function formatScore(score: number): string {
   return Math.round(Math.max(0, Math.min(100, score))).toString()

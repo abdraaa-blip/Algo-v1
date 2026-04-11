@@ -1,5 +1,6 @@
 import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { computeCanonicalViralScore } from '@/lib/ai/canonical-viral-score'
 import { persistViralScoreSnapshot } from '@/lib/ecosystem/snapshot-store'
 import { supabaseServiceRoleConfigured } from '@/lib/supabase/admin'
@@ -74,6 +75,15 @@ const PLATFORM_FORMATS = {
 }
 
 export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-viral-analyzer:${identifier}`, { limit: 18, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const formData = await request.formData()
     
@@ -96,27 +106,17 @@ export async function POST(request: NextRequest) {
     
     // Publish signal if high potential early trend detected
     if (result.potential === 'high' && result.timingScore >= 80) {
-      AlgoEventBus.publish({
-        type: 'signal:early',
-        payload: {
-          topic: contentData.topic,
-          score: result.overallScore,
-          source: 'viral-analyzer',
-        },
-        timestamp: Date.now(),
+      AlgoEventBus.publish('signal:early', {
+        item: { topic: contentData.topic, score: result.overallScore },
+        detectedAt: new Date().toISOString(),
         source: 'viral-analyzer',
       })
     }
 
-    AlgoEventBus.publish({
-      type: 'score:weights',
-      payload: {
-        topic: contentData.topic,
-        overallScore: result.overallScore,
-        modelTelemetry: result.modelTelemetry,
-      },
-      timestamp: Date.now(),
-      source: 'viral-analyzer',
+    AlgoEventBus.publish('score:weights', {
+      topic: contentData.topic,
+      overallScore: result.overallScore,
+      modelTelemetry: result.modelTelemetry,
     })
 
     if (supabaseServiceRoleConfigured()) {
@@ -361,13 +361,14 @@ interface TrendData {
 
 async function getTrendData(locale: string): Promise<TrendData> {
   const country = locale === 'fr' ? 'FR' : 'US'
-  
-  // Try to get from cache first
-  const cachedTrends = AlgoCache.get<{ keywords: string[] }>(`trends_${country}`)
-  const cachedNews = AlgoCache.get<{ keywords: string[] }>(`news_keywords_${country}`)
-  
-  const googleTrends = cachedTrends?.keywords || []
-  const newsKeywords = cachedNews?.keywords || []
+
+  const [cachedTrends, cachedNews] = await Promise.all([
+    AlgoCache.get<{ keywords: string[] }>('trends', country),
+    AlgoCache.get<{ keywords: string[] }>('news', `keywords_${country}`),
+  ])
+
+  const googleTrends = cachedTrends.data?.keywords ?? []
+  const newsKeywords = cachedNews.data?.keywords ?? []
   
   // Fetch fresh YouTube searches
   let youtubeSearches: string[] = []

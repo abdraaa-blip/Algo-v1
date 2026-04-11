@@ -7,7 +7,7 @@ import { ScopeSelector } from './ScopeSelector'
 import { AlgoHeartbeat } from '@/components/algo/AlgoHeartbeat'
 import { useScopeContext } from '@/contexts/ScopeContext'
 import { getDateLocaleForCountry, getScopeCountryCode, getTimeZoneForCountry } from '@/lib/geo/country-profile'
-import { Flame, TrendingUp, Play, Newspaper, Film, Music, Sparkles, Search, Bell, User, Info, BrainCircuit, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Flame, TrendingUp, Play, Newspaper, Film, Music, Sparkles, Search, Bell, User, Info, BrainCircuit, Activity, ChevronRight, ChevronLeft, LayoutDashboard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -19,6 +19,8 @@ const NAV_ITEMS = [
   { href: '/music', label: 'Musique', icon: Music },
   { href: '/creator-mode', label: 'Createur', icon: Sparkles },
   { href: '/ai', label: 'ALGO AI', icon: BrainCircuit },
+  { href: '/intelligence', label: 'Intelligence', icon: Activity },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/about', label: 'A propos', icon: Info },
 ] as const
 

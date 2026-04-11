@@ -12,7 +12,7 @@ interface LivingPulseProps {
 }
 
 /**
- * LivingPulse — Un indicateur visuel que l'algorithme est actif et connecté au monde
+ * LivingPulse · Un indicateur visuel que l'algorithme est actif et connecté au monde
  * Uses pure CSS animations to avoid hydration mismatches
  */
 export function LivingPulse({ 

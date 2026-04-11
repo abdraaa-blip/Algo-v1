@@ -4,7 +4,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 
 export const metadata: Metadata = buildPageMetadata({
   title: 'Vidéos tendance YouTube',
-  description: 'Classement des vidéos YouTube qui montent — mise à jour fréquente, multi-régions.',
+  description: 'Classement des vidéos YouTube qui montent · mise à jour fréquente, multi-régions.',
   path: '/trending',
   keywords: ['youtube', 'trending', 'vidéos', 'viral', 'ALGO'],
 })

@@ -35,7 +35,7 @@ interface LiveCurveProps {
 
 /**
  * Genere un path SVG style ECG/trading a partir d'une amplitude.
- * Amplitude pilotee par growthRate — plus le contenu monte, plus la courbe pulse.
+ * Amplitude pilotee par growthRate · plus le contenu monte, plus la courbe pulse.
  */
 function buildPath(w: number, h: number, amplitude: number, phaseShift: number = 0): string {
   const mid = h / 2
@@ -261,7 +261,7 @@ export function LiveCurve({
           />
         </path>
 
-        {/* Courbe secondaire — opacite reduite */}
+        {/* Courbe secondaire · opacite reduite */}
         <path
           d={path2}
           fill="none"

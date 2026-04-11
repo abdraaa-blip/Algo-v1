@@ -47,7 +47,7 @@ export function HomeFirstMoments({
 }: {
   trendTitle: string
   trendScore: number
-  /** false tant que les flux home n'ont pas répondu — évite les puces vides */
+  /** false tant que les flux home n'ont pas répondu · évite les puces vides */
   dataReady: boolean
 }) {
   const [url, setUrl] = useState('')
@@ -57,7 +57,7 @@ export function HomeFirstMoments({
   const [error, setError] = useState<string | null>(null)
   const resultRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
-  const scoreIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const scoreIntervalRef = useRef<number | null>(null)
 
   const clearScoreAnim = useCallback(() => {
     if (scoreIntervalRef.current) {
@@ -94,7 +94,7 @@ export function HomeFirstMoments({
     list.push({
       label: 'Idée : 60s + 3 erreurs',
       description:
-        'Vidéo 60s : les 3 erreurs les plus fréquentes sur ce type de sujet — format vertical, sous-titres, CTA simple.',
+        'Vidéo 60s : les 3 erreurs les plus fréquentes sur ce type de sujet, format vertical, sous-titres, CTA simple.',
       platform: 'tiktok',
     })
     return list
@@ -160,7 +160,7 @@ export function HomeFirstMoments({
         }
       } catch (e) {
         if (e instanceof Error && e.name === 'AbortError') return
-        setError('Impossible d’analyser tout de suite — vérifie le lien ou ouvre l’analyseur complet.')
+        setError('Impossible d’analyser tout de suite. Vérifie le lien ou ouvre l’analyseur complet.')
       } finally {
         setBusy(false)
       }
@@ -177,7 +177,7 @@ export function HomeFirstMoments({
   const algoTip = useMemo(() => {
     if (!result) return null
     if (result.overallScore >= 75) {
-      return 'ALGO : fenêtre favorable — enchaîne avec un format plus court pour tester le hook.'
+      return 'ALGO : fenêtre favorable, enchaîne avec un format plus court pour tester le hook.'
     }
     if (result.overallScore >= 55) {
       return 'ALGO : teste deux hooks différents avant de scaler la prod.'
@@ -200,11 +200,11 @@ export function HomeFirstMoments({
 
       <div className="relative text-center max-w-2xl mx-auto">
         <h1 className="text-[1.35rem] sm:text-2xl md:text-3xl lg:text-[1.75rem] font-bold tracking-tight leading-snug text-[var(--color-text-primary)] px-1 text-balance">
-          Comprends ce qui va devenir viral. Avant les autres.
+          Comprends ce qui va devenir viral avant les autres.
         </h1>
         <p className="mt-3 text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed max-w-md mx-auto">
           <span className="text-[var(--color-text-secondary)]">L&apos;appli silencieuse qui parle à tout le monde.</span>{' '}
-          ALGO lit les signaux publics — tendances, formats, timing — pour que tu décides en secondes, pas au hasard.
+          ALGO lit les signaux publics : tendances, formats, timing. Tu décides en secondes, pas au hasard.
         </p>
 
         <AlgoHeroLogo variant="mark" />
@@ -236,7 +236,7 @@ export function HomeFirstMoments({
           id="scan-rapide-hint"
           className="text-center text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-3"
         >
-          Premier test — 10 à 20 secondes
+          Premier test, 10 à 20 secondes
         </p>
         <form
           aria-busy={busy}
@@ -334,7 +334,7 @@ export function HomeFirstMoments({
                 </p>
                 <p className="text-sm text-[var(--color-text-secondary)]">
                   <span className="text-[var(--color-text-tertiary)] font-semibold">Pourquoi :</span>{' '}
-                  hook {result.hookScore}, alignement tendance {result.trendScore} —{' '}
+                  hook {result.hookScore}, alignement tendance {result.trendScore}.{' '}
                   {result.recommendations.hook.slice(0, 140)}
                   {result.recommendations.hook.length > 140 ? '…' : ''}
                 </p>
@@ -375,7 +375,7 @@ export function HomeFirstMoments({
                   href="/ai"
                   className="text-xs font-semibold px-3 py-2 rounded-lg bg-[var(--color-card)] text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:bg-[var(--color-card-hover)]"
                 >
-                  ALGO AI — angle & plan
+                  ALGO AI, angle et plan
                 </Link>
               </div>
             </div>
@@ -385,7 +385,7 @@ export function HomeFirstMoments({
 
       {trendScore > 0 && dataReady ? (
         <p className="relative text-center text-[10px] text-[var(--color-text-muted)] mt-6">
-          Signal live du jour ~ score tendance {Math.round(trendScore)} — croise avec ton analyse ci-dessus.
+          Signal live du jour ~ score tendance {Math.round(trendScore)}. Croise avec ton analyse ci-dessus.
         </p>
       ) : null}
     </div>

@@ -109,11 +109,11 @@ async function main() {
       await client.query(st + ';')
       n++
       const preview = st.split(/\s+/).slice(0, 4).join(' ')
-      console.log(`  [${n}] OK — ${preview}…`)
+      console.log(`  [${n}] OK · ${preview}…`)
     }
   }
   await client.end()
-  console.log(`[db:apply-ecosystem] Terminé — ${n} instruction(s) sur ${migrationFiles.length} fichier(s).`)
+  console.log(`[db:apply-ecosystem] Terminé · ${n} instruction(s) sur ${migrationFiles.length} fichier(s).`)
   console.log('Prochaines étapes : coller SUPABASE_SERVICE_ROLE_KEY (Settings → API) dans Vercel + .env.local serveur.')
 }
 

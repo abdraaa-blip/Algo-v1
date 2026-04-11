@@ -19,7 +19,7 @@ function enc(s: string) {
  * TikTok / Instagram n’exposent pas d’URL web de partage universel ; le snippet sert de copier-coller.
  */
 export function ShareStrip({ url, title, snippet, className }: Props) {
-  const text = snippet || `${title} — ${url}`
+  const text = snippet || `${title} · ${url}`
   const onNativeShare = async () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {

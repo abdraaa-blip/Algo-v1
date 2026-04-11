@@ -2,11 +2,21 @@
  * ALGO API Status
  * Tests connectivity to all data sources
  */
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-status:${identifier}`, { limit: 24, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const newsKey = process.env.NEWSAPI_KEY || process.env.NEWS_API_KEY
   const youtubeKey = process.env.YOUTUBE_API_KEY
   
@@ -16,12 +26,10 @@ export async function GET() {
     apis: {
       newsapi: {
         configured: !!newsKey,
-        keyPreview: newsKey ? `${newsKey.slice(0, 8)}...` : null,
         test: null as { success: boolean; count: number; source: string; error?: string } | null
       },
       youtube: {
         configured: !!youtubeKey,
-        keyPreview: youtubeKey ? `${youtubeKey.slice(0, 8)}...` : null,
         test: null as { success: boolean; count: number; source: string; error?: string } | null
       }
     }

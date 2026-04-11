@@ -1,8 +1,8 @@
 /**
- * Design Token System — ALGO (calme, précis, lisible)
+ * Design Token System · ALGO (calme, précis, lisible)
  *
  * Reflet TS des variables CSS dans `globals.css` (@theme + data-algo-view).
- * Rôles : lecture, hiérarchie, émotion mesurée — pas de saturation agressive.
+ * Rôles : lecture, hiérarchie, émotion mesurée · pas de saturation agressive.
  */
 
 // ============================================================================
@@ -203,7 +203,7 @@ export const animation = {
     easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
     easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
     easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    /** Sortie douce — transitions de page / panneaux */
+    /** Sortie douce · transitions de page / panneaux */
     easeOutSoft: 'cubic-bezier(0.16, 1, 0.3, 1)',
     easeInOutSoft: 'cubic-bezier(0.45, 0, 0.55, 1)',
     spring: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',

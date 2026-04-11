@@ -8,7 +8,7 @@ export const revalidate = 0
 /**
  * GET /api/meta/data-reliability
  * Carte statique des sources data : routes, fallbacks, baseline de confiance, limites (FR).
- * Données non sensibles — utile transparence / monitor / intégrations.
+ * Données non sensibles · utile transparence / monitor / intégrations.
  */
 export async function GET(request: NextRequest) {
   const identifier = getClientIdentifier(request)

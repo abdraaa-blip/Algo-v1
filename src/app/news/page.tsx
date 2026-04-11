@@ -5,7 +5,7 @@ import { buildPageMetadata } from '@/lib/seo/build-metadata'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Actualités',
   description:
-    'Actualités tendance France et monde — agrégation et lecture ALGO des signaux qui comptent pour les créateurs.',
+    'Actualités tendance France et monde · agrégation et lecture ALGO des signaux qui comptent pour les créateurs.',
   path: '/news',
   keywords: ['actualités', 'news', 'breaking', 'veille', 'ALGO'],
 })

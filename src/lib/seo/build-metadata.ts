@@ -38,8 +38,8 @@ function truncate(s: string, n: number): string {
 export function buildPageMetadata(input: BuildPageMetadataInput): Metadata {
   const base = getSiteBaseUrl()
   const path = input.path.startsWith('/') ? input.path : `/${input.path}`
-  const fullTitle = input.rawTitle ? input.title : `${input.title} — ${SITE_NAME}`
-  const desc = truncate(input.description || `${SITE_NAME} — tendances, radar et intelligence culturelle.`, 160)
+  const fullTitle = input.rawTitle ? input.title : `${input.title} · ${SITE_NAME}`
+  const desc = truncate(input.description || `${SITE_NAME} · tendances, radar et intelligence culturelle.`, 160)
 
   let ogImageUrl: string
   if (input.ogImage) {
@@ -86,8 +86,8 @@ export function buildPageMetadata(input: BuildPageMetadataInput): Metadata {
 /** Root layout metadata (home, defaults). */
 export function buildRootMetadata(): Metadata {
   const base = getSiteBaseUrl()
-  const defaultTitle = `ALGO — ${SITE_TAGLINE}`
-  const defaultDesc = `${SITE_SILENT_SLOGAN} ALGO structure les signaux publics — tendances, formats, timing — pour décider vite. Des indicateurs, pas du bruit ni des certitudes magiques.`
+  const defaultTitle = `ALGO · ${SITE_TAGLINE}`
+  const defaultDesc = `${SITE_SILENT_SLOGAN} ALGO structure les signaux publics : tendances, formats, timing, pour décider vite. Des indicateurs, pas du bruit ni des certitudes magiques.`
 
   const ogImageUrl = absoluteUrl(DEFAULT_OG_IMAGE_PATH)
 

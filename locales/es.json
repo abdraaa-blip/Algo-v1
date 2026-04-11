@@ -84,7 +84,7 @@
     "timing": {
       "now":       "Poste maintenant ✅",
       "too_late":  "Trop tard ❌",
-      "too_early": "Trop tôt — surveille ⏳"
+      "too_early": "Demasiado pronto : vigila ⏳"
     },
     "bestPlatform":  "Plateforme idéale",
     "bestFormat":    "Format recommandé",

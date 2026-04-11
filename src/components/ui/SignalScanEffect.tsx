@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-// Clé sessionStorage — la ligne ne traverse l'écran qu'une seule fois par session.
+// Clé sessionStorage · la ligne ne traverse l'écran qu'une seule fois par session.
 const SESSION_KEY = 'algo_signal_scan_done'
 
 export function SignalScanEffect() {

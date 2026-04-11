@@ -68,7 +68,9 @@ export function ProfileClientShell({ labels }: { labels: ProfileLabels }) {
           {isAuthenticated ? (
             <>
               <p className="text-white font-bold text-lg">
-                {user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Utilisateur'}
+                {typeof user?.user_metadata?.display_name === 'string' && user.user_metadata.display_name.trim()
+                  ? user.user_metadata.display_name
+                  : user?.email?.split('@')[0] || 'Utilisateur'}
               </p>
               <p className="text-white/32 text-xs mt-0.5">{user?.email}</p>
               <p className="text-[#00D1FF]/60 text-[10px] mt-1 font-semibold uppercase tracking-wider">

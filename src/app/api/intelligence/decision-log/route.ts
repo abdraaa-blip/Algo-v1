@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { createHash } from 'node:crypto'
 import { getSupabasePublicApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys'
 
@@ -31,6 +32,9 @@ interface SealedDecisionLogEntry extends DecisionLogEntry {
   entryHash: string
   prevHash: string
 }
+
+/** Row `properties` may use legacy `capturedAt` instead of `at`. */
+type DurableDecisionProperties = Partial<SealedDecisionLogEntry> & { capturedAt?: string }
 
 interface DecisionLogPayload {
   source?: string
@@ -139,6 +143,15 @@ function computeIntegrityHash(entries: SealedDecisionLogEntry[]): string {
 }
 
 export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-decision-log-post:${identifier}`, { limit: 25, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const body = (await request.json()) as DecisionLogPayload
     const entries = Array.isArray(body?.entries) ? body.entries.slice(0, MAX_BATCH_SIZE) : []
@@ -228,7 +241,7 @@ async function loadDurableEntries(limit: number): Promise<SealedDecisionLogEntry
     .limit(limit)
   if (!Array.isArray(data)) return []
   const parsed = data
-    .map((row) => (row as { properties?: unknown }).properties as Partial<SealedDecisionLogEntry> | undefined)
+    .map((row) => (row as { properties?: unknown }).properties as DurableDecisionProperties | undefined)
     .filter(Boolean)
     .map((props) => ({
       at: String(props?.at || props?.capturedAt || ''),
@@ -250,6 +263,15 @@ async function loadDurableEntries(limit: number): Promise<SealedDecisionLogEntry
 export async function GET(request: NextRequest) {
   const unauthorized = requireOpsToken(request)
   if (unauthorized) return unauthorized
+
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-decision-log-get:${identifier}`, { limit: 120, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
 
   pruneMemoryStoreByTime()
 
@@ -309,6 +331,15 @@ export async function DELETE(request: NextRequest) {
   const unauthorized = requireOpsToken(request)
   if (unauthorized) return unauthorized
 
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-decision-log-delete:${identifier}`, { limit: 20, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   pruneMemoryStoreByTime()
   const before = memoryStore.length
   memoryStore.splice(0, memoryStore.length)
@@ -318,6 +349,16 @@ export async function DELETE(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const unauthorized = requireOpsToken(request)
   if (unauthorized) return unauthorized
+
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-decision-log-patch:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const body = (await request.json()) as {
       at: string

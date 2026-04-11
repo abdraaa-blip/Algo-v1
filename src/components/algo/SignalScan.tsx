@@ -16,6 +16,7 @@ export function SignalScan() {
       const timer = setTimeout(() => setShowScan(false), 1000)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [])
   
   if (!showScan) return null

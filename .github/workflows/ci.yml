@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key-for-ci-build-only
     steps:
       - uses: actions/checkout@v4
 
@@ -20,17 +23,6 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Ecosystem check
-        run: npm run ecosystem:check
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm run test:run
-
-      - name: Build
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key-for-ci-build-only
+      # Aligné sur `config/algo-deploy-gate.ts` · même gate que `npm run verify:release` (local).
+      - name: Pre-deploy gate (verify release)
+        run: npm run verify:release

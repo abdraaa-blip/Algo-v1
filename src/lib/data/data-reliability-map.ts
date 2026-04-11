@@ -19,7 +19,7 @@ export const DATA_RELIABILITY_MAP: readonly DataReliabilityEntry[] = [
     fallbacksFr: ['Réponse cache / source secondaire dans real-data-service', 'Payload vide + message côté client'],
     baselineReliability: 0.72,
     limitsFr:
-      'Google Trends via flux RSS agrégé — délai de rafraîchissement, quotas implicites, couverture variable par pays.',
+      'Google Trends via flux RSS agrégé · délai de rafraîchissement, quotas implicites, couverture variable par pays.',
   },
   {
     id: 'youtube',
@@ -40,14 +40,19 @@ export const DATA_RELIABILITY_MAP: readonly DataReliabilityEntry[] = [
     primaryRoute: '/api/live-music',
     fallbacksFr: ['Charts en cache', 'Dégradation soft'],
     baselineReliability: 0.65,
-    limitsFr: 'Last.fm / agrégats — pas synchronisé seconde par seconde.',
+    limitsFr: 'Last.fm / agrégats · pas synchronisé seconde par seconde.',
   },
   {
     id: 'ai_context',
-    primaryRoute: 'POST /api/ai/ask (enrichissement tendances)',
-    fallbacksFr: ['Requête sans enrichissement si fetch live échoue', 'Réponse modèle avec contexte minimal'],
+    primaryRoute: 'POST /api/ai/ask (processAlgoAiRequest · enrichissement tendances)',
+    fallbacksFr: [
+      'Requête sans enrichissement si fetch live échoue',
+      'Réponse modèle avec contexte minimal',
+      'Route / confiance système = heuristiques transparence, pas une mesure terrain',
+    ],
     baselineReliability: 0.78,
-    limitsFr: 'Le modèle ne remplace pas une source : si les tendances tombent, la réponse reste prudente.',
+    limitsFr:
+      'Le modèle ne remplace pas une source : si les tendances tombent, la réponse reste prudente. La route TRENDS/VIRAL/STRATEGY est dérivée des mots-clés, pas d’un classifieur profond.',
   },
   {
     id: 'intelligence_radar',

@@ -5,7 +5,7 @@ import { ConsentManageLink } from '@/components/growth/ConsentBanner'
 import { SITE_TRANSPARENCY_AI_CALIBRATION_HREF } from '@/lib/seo/site'
 
 /**
- * Liens transverses : légal, découverte (RSS), consentement — discret pour ne pas polluer l’UI.
+ * Liens transverses : légal, découverte (RSS), consentement · discret pour ne pas polluer l’UI.
  */
 export function SiteFooter() {
   return (

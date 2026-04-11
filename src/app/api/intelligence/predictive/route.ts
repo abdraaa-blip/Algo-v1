@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { generateAutonomyProposals } from '@/lib/autonomy/reasoner'
 import { evaluatePolicy, getAutonomyPolicy } from '@/lib/autonomy/policy'
 import {
@@ -64,6 +65,15 @@ const PREDICTIVE_CACHE_TTL_MS = 30_000
 const predictiveCache = new Map<string, PredictiveCacheEntry>()
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(identifier, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const region = searchParams.get('region') || 'FR'
   const locale = searchParams.get('locale') || 'fr'

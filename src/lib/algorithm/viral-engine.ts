@@ -1,5 +1,5 @@
 /**
- * ALGO VIRAL ENGINE — The Algorithm of Algorithms
+ * ALGO VIRAL ENGINE · The Algorithm of Algorithms
  * 
  * Un moteur de détection virale de classe mondiale basé sur:
  * - Velocity Detection (accélération du momentum)
@@ -51,7 +51,7 @@ export interface TrendPrediction {
 }
 
 // ============================================================================
-// VELOCITY DETECTION — Détection de l'accélération virale
+// VELOCITY DETECTION · Détection de l'accélération virale
 // ============================================================================
 
 export function calculateVelocity(
@@ -94,7 +94,7 @@ export function calculateVelocity(
 }
 
 // ============================================================================
-// VIRAL SCORE ALGORITHM — L'algorithme de scoring viral
+// VIRAL SCORE ALGORITHM · L'algorithme de scoring viral
 // ============================================================================
 
 const WEIGHTS = {
@@ -121,29 +121,29 @@ export function computeViralScore(signals: ViralSignal[]): ViralScore {
     }
   }
   
-  // 1. VELOCITY SCORE — Croissance rapide = viral
+  // 1. VELOCITY SCORE · Croissance rapide = viral
   const maxVelocity = Math.max(...signals.map(s => s.velocity))
   const avgVelocity = signals.reduce((acc, s) => acc + s.velocity, 0) / signals.length
   const velocityScore = Math.min(100, (avgVelocity / 1000) * 100 + (maxVelocity > 5000 ? 20 : 0))
   
-  // 2. ACCELERATION SCORE — Accélération = explosion imminente
+  // 2. ACCELERATION SCORE · Accélération = explosion imminente
   const avgAcceleration = signals.reduce((acc, s) => acc + s.acceleration, 0) / signals.length
   const accelerationBonus = avgAcceleration > 0 ? Math.min(30, avgAcceleration / 100) : 0
   
-  // 3. CROSS-PLATFORM SCORE — Multi-plateforme = viral confirmé
+  // 3. CROSS-PLATFORM SCORE · Multi-plateforme = viral confirmé
   const platforms = new Set(signals.map(s => s.source))
   const crossPlatformScore = Math.min(100, (platforms.size / 7) * 100 + (platforms.size >= 4 ? 20 : 0))
   
-  // 4. SENTIMENT SCORE — Émotions fortes = engagement
+  // 4. SENTIMENT SCORE · Émotions fortes = engagement
   const avgSentiment = signals.reduce((acc, s) => acc + Math.abs(s.sentiment), 0) / signals.length
   const avgIntensity = signals.reduce((acc, s) => acc + s.emotionalIntensity, 0) / signals.length
   const sentimentScore = (avgSentiment * 50) + (avgIntensity * 50)
   
-  // 5. GEOGRAPHIC SPREAD — Propagation mondiale = mega-viral
+  // 5. GEOGRAPHIC SPREAD · Propagation mondiale = mega-viral
   const allCountries = new Set(signals.flatMap(s => s.geographicSpread))
   const geoScore = Math.min(100, (allCountries.size / 50) * 100)
   
-  // 6. RECENCY SCORE — Plus récent = plus pertinent
+  // 6. RECENCY SCORE · Plus récent = plus pertinent
   const now = Date.now()
   const avgAge = signals.reduce((acc, s) => acc + (now - s.timestamp), 0) / signals.length
   const recencyScore = Math.max(0, 100 - (avgAge / (60 * 60 * 1000)) * 10) // -10 par heure
@@ -195,7 +195,7 @@ export function computeViralScore(signals: ViralSignal[]): ViralScore {
 }
 
 // ============================================================================
-// TREND PREDICTION — Prédiction du potentiel viral
+// TREND PREDICTION · Prédiction du potentiel viral
 // ============================================================================
 
 export function predictViralPotential(
@@ -262,13 +262,18 @@ export function predictViralPotential(
 }
 
 // ============================================================================
-// CONTENT RANKING — Classement des contenus
+// CONTENT RANKING · Classement des contenus
 // ============================================================================
+
+export type RankedViralContent = Omit<Content, 'viralScore'> & {
+  viralScore: ViralScore
+  prediction: TrendPrediction
+}
 
 export function rankContentByViralPotential(
   contents: Content[],
   signalsByKeyword: Map<string, ViralSignal[]>
-): (Content & { viralScore: ViralScore; prediction: TrendPrediction })[] {
+): RankedViralContent[] {
   return contents
     .map(content => {
       // Trouver les signaux liés à ce contenu (par tags, titre, etc.)
@@ -297,7 +302,7 @@ export function rankContentByViralPotential(
 }
 
 // ============================================================================
-// REAL-TIME SIGNAL AGGREGATOR — Agrégation des signaux en temps réel
+// REAL-TIME SIGNAL AGGREGATOR · Agrégation des signaux en temps réel
 // ============================================================================
 
 export class SignalAggregator {

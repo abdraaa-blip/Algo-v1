@@ -97,7 +97,7 @@ export function captureError(
   }
 
   addToBuffer(event)
-  logger.error(`[Monitoring] Error captured: ${errorObj.message}`, context)
+  logger.error(`[Monitoring] Error captured: ${errorObj.message}`, errorObj, context)
 }
 
 /**
@@ -143,7 +143,11 @@ export function captureRLSViolation(
   }
 
   addToBuffer(event)
-  logger.error(`[Monitoring] RLS violation: ${operation} on ${table}`, context)
+  logger.error(
+    `[Monitoring] RLS violation: ${operation} on ${table}`,
+    new Error(`RLS: ${operation} on ${table}`),
+    context
+  )
   
   // Trigger immediate alert for RLS violations
   triggerAlert(event)
@@ -309,13 +313,16 @@ async function flushEventBuffer(): Promise<void> {
  */
 function triggerAlert(event: MonitoringEvent): void {
   // In production, this would send to PagerDuty, Slack, etc.
-  logger.error('[ALERT]', {
-    type: event.type,
-    message: event.message,
-    severity: event.severity,
-    timestamp: event.timestamp,
-    context: event.context,
-  })
+  logger.error(
+    `[ALERT] ${event.message}`,
+    new Error(event.message),
+    {
+      alertType: event.type,
+      severity: event.severity,
+      timestamp: event.timestamp,
+      ...event.context,
+    }
+  )
 }
 
 /**

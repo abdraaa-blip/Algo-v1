@@ -1,5 +1,6 @@
 import { generateText, Output } from 'ai'
 import { z } from 'zod'
+import { buildAlgoAskFallbackResponse } from '@/lib/ai/algo-ask-fallback'
 import type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
 import {
   algoAskResponseSchema,
@@ -7,7 +8,6 @@ import {
 } from '@/lib/ai/algo-ask-contract'
 import type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
 import {
-  ALGO_FALLBACK_ASK,
   TASK_ANALYZE_VIRAL_CONTENT,
   TASK_ASK_OPEN,
   TASK_CLUSTER_TRENDS,
@@ -20,6 +20,7 @@ import {
   FALLBACK_BRIEFING_STRINGS,
   FALLBACK_PREDICTION,
 } from '@/lib/ai/algo-persona'
+import type { AlgoAskRoute } from '@/core/router'
 
 export type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
 export type { AlgoAskStructured } from '@/lib/ai/algo-ask-contract'
@@ -90,7 +91,7 @@ const dailyBriefingSchema = z.object({
     category: z.string(),
     viralScore: z.number(),
     whyImportant: z.string(),
-  })).describe('Jusqu’à 5 signaux du jour — textes en français'),
+  })).describe('Jusqu’à 5 signaux du jour · textes en français'),
   emergingTrends: z.array(z.string()).describe('Tendances émergentes (français)'),
   predictedBreakouts: z.array(z.string()).describe('Breakouts plausibles 24-48h (français), formulés avec prudence'),
   creatorOpportunities: z.array(z.string()).describe('Opportunités créateur concrètes (français)'),
@@ -245,7 +246,7 @@ Pays: ${params.userCountry}
 Contenu du jour (extrait):
 ${contentList}
 
-Construis un briefing utile: signaux clés, émergences, breakouts prudents, opportunités créateur, insights personnalisés — sans verbosité.`
+Construis un briefing utile: signaux clés, émergences, breakouts prudents, opportunités créateur, insights personnalisés · sans verbosité.`
 
   try {
     const { output } = await generateText({
@@ -273,7 +274,7 @@ Construis un briefing utile: signaux clés, émergences, breakouts prudents, opp
         title: c.title,
         category: c.category,
         viralScore: c.viralScore,
-        whyImportant: `${fb.whyPrefix} ${c.platform} — détail IA indisponible, croise avec /trends.`,
+        whyImportant: `${fb.whyPrefix} ${c.platform} · détail IA indisponible, croise avec /trends.`,
       })),
       emergingTrends: [...fb.emerging],
       predictedBreakouts: [...fb.breakouts],
@@ -288,24 +289,34 @@ Construis un briefing utile: signaux clés, émergences, breakouts prudents, opp
 }
 
 /**
- * Réponses ouvertes — personnalité ALGO AI, contexte tendances, historique optionnel.
+ * Réponses ouvertes · personnalité ALGO AI, contexte tendances, historique optionnel.
  */
 export async function askAlgo(
   question: string,
   context?: {
     currentTrends?: string[]
     userCountry?: string
+    algoAskRoute?: AlgoAskRoute
+    routeHintLines?: string[]
   },
   options?: {
     expertiseLevel?: AlgoExpertiseLevel
     conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>
   }
 ): Promise<{ answer: string; structured?: AlgoAskStructured }> {
+  const routeHints =
+    context?.algoAskRoute || (context?.routeHintLines && context.routeHintLines.length)
+      ? `
+- Intention route (système): ${context?.algoAskRoute || 'GENERAL'}
+${(context?.routeHintLines ?? []).map((h) => `- Indication: ${h}`).join('\n')}
+`
+      : ''
+
   const contextInfo = context
     ? `
 Contexte ALGO (ne pas inventer de données hors de ce bloc):
 - Tendances (titres): ${context.currentTrends?.join(' · ') || 'non fourni'}
-- Pays / région: ${context.userCountry || 'global'}
+- Pays / région: ${context.userCountry || 'global'}${routeHints}
 `
     : ''
 
@@ -346,10 +357,22 @@ Réponds avec la présence ALGO AI: conclusion et préférence claire si plusieu
         maxOutputTokens: 900,
         temperature: 0.68,
       })
-      return { answer: text?.trim() || ALGO_FALLBACK_ASK }
+      return {
+        answer:
+          text?.trim() ||
+          buildAlgoAskFallbackResponse(question, {
+            userCountry: context?.userCountry,
+            firstTrendTitle: context?.currentTrends?.[0],
+          }),
+      }
     } catch (e2) {
       console.error('[ALGO AI] Question answering (plain) failed:', e2)
-      return { answer: ALGO_FALLBACK_ASK }
+      return {
+        answer: buildAlgoAskFallbackResponse(question, {
+          userCountry: context?.userCountry,
+          firstTrendTitle: context?.currentTrends?.[0],
+        }),
+      }
     }
   }
 }

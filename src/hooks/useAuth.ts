@@ -17,6 +17,9 @@ interface Profile {
   preferred_language: string
   email_notifications: boolean
   push_notifications: boolean
+  /** free | pro — colonnes optionnelles selon migration billing. */
+  billing_plan?: string | null
+  billing_current_period_end?: string | null
 }
 
 export interface UseAuthReturn {
@@ -44,44 +47,44 @@ export function useAuth(): UseAuthReturn {
 
   useEffect(() => {
     let mounted = true
-    
-    async function init() {
+    let unsubscribe: (() => void) | undefined
+
+    void (async () => {
       try {
         const supabase = await getSupabaseClient()
-        
+
         if (supabase) {
           const { data: { user: currentUser } } = await supabase.auth.getUser()
-          
+
           if (mounted && currentUser) {
             setUser(currentUser as MinimalUser)
-            
-            // Fetch profile
+
             const { data: profileData } = await supabase
               .from('profiles')
               .select('*')
               .eq('id', currentUser.id)
               .single()
-            
+
             if (mounted && profileData) {
               setProfile(profileData as Profile)
             }
           }
-          
+
           if (mounted) setLoading(false)
-          
+
           const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (_event, session) => {
               if (mounted) {
                 const newUser = session?.user as MinimalUser | null ?? null
                 setUser(newUser)
-                
+
                 if (newUser) {
                   const { data: profileData } = await supabase
                     .from('profiles')
                     .select('*')
                     .eq('id', newUser.id)
                     .single()
-                  
+
                   if (mounted) setProfile(profileData as Profile | null)
                 } else {
                   setProfile(null)
@@ -89,18 +92,20 @@ export function useAuth(): UseAuthReturn {
               }
             }
           )
-          
-          return () => { subscription.unsubscribe() }
+
+          unsubscribe = () => subscription.unsubscribe()
         }
       } catch {
         console.warn('[useAuth] Supabase not available')
       }
-      
+
       if (mounted) setLoading(false)
+    })()
+
+    return () => {
+      mounted = false
+      unsubscribe?.()
     }
-    
-    init()
-    return () => { mounted = false }
   }, [])
 
   const signOut = useCallback(async () => {

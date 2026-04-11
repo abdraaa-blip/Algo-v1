@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { fetchTopTracks, fetchTopArtists, fetchAllMusicCharts } from '@/lib/api/lastfm-service'
 import { EXTENDED_MUSIC_COUNTRIES } from '@/lib/geo/global-presets'
 
@@ -33,6 +34,15 @@ const COUNTRY_MAP: Record<string, string> = {
 void EXTENDED_MUSIC_COUNTRIES
 
 export async function GET(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`api-live-music:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const type = searchParams.get('type') || 'all' // tracks, artists, all
   const countryCode = searchParams.get('country')

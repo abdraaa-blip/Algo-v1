@@ -1,0 +1,16 @@
+---
+description: Design system ALGO · UI/UX, couleurs, animations, layout
+globs: "**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Design system ALGO (mémoire centralisée)
+
+Avant d’ajouter ou modifier du **style**, des **couleurs**, des **animations** ou une **structure de layout** :
+
+1. Lire **`config/algo-system-rules.ts`** (`ALGO_SYSTEM_RULES`, `ALGO_DESIGN_SOURCES`, réexport `tokens`) · **`docs/ALGO_UX_CHARTER.md`** (principes + section *Alignement cognitif* pour copy / structure) · **`docs/ALGO_UX_COGNITIVE_AUDIT.md`** (revue par écran : intention, fatigue, scroll).
+2. Ne **pas** dupliquer des palettes ou durées : étendre **`src/design-system/tokens.ts`** et, si besoin, **`src/app/globals.css`** (`@theme`).
+3. Préférer **`var(--color-*)`** et les classes **`algo-surface`** / **`algo-interactive`** dans le JSX.
+4. Copy UI : **`src/lib/copy/algo-voice.ts`**, **`src/lib/copy/ui-strings.ts`**, scan **`forbidden-ui-copy-scan.ts`**.
+
+Après stabilisation d’un module UI : vérifier la cohérence avec ce fichier ; proposer une mise à jour de **`config/algo-system-rules.ts`** si une nouvelle règle transverse apparaît.

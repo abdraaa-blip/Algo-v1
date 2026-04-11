@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { getIncidents, persistIncident, pushIncident } from '@/lib/intelligence/ops-incidents'
 
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,14 @@ export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
   }
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-ops-incidents-get:${identifier}`, { limit: 120, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
   const { searchParams } = new URL(request.url)
   const limit = Number(searchParams.get('limit') || 100)
   return NextResponse.json({ success: true, data: getIncidents(limit) })
@@ -25,6 +34,14 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  }
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-ops-incidents-post:${identifier}`, { limit: 40, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
   }
   try {
     const body = (await request.json()) as {

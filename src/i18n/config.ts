@@ -1,5 +1,5 @@
 // =============================================================================
-// ALGO V1 — Configuration i18n
+// ALGO V1 · Configuration i18n
 // next-intl est la seule librairie i18n autorisée.
 // Aucune autre librairie sans validation explicite.
 // =============================================================================

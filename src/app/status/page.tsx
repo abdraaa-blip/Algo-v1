@@ -9,12 +9,10 @@ interface ApiStatus {
   apis: {
     newsapi: {
       configured: boolean
-      keyPreview: string | null
       test: { success: boolean; count: number; source: string; error?: string } | null
     }
     youtube: {
       configured: boolean
-      keyPreview: string | null
       test: { success: boolean; count: number; source: string; error?: string } | null
     }
   }
@@ -78,7 +76,7 @@ export default function StatusPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] p-6">
+    <div className="min-h-screen text-[var(--color-text-primary)] p-6">
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div>
@@ -118,7 +116,6 @@ export default function StatusPage() {
               title="NewsAPI"
               icon={Newspaper}
               configured={status.apis.newsapi.configured}
-              keyPreview={status.apis.newsapi.keyPreview}
               test={status.apis.newsapi.test}
               description="Real-time news headlines from France, US, UK, Nigeria"
             />
@@ -128,7 +125,6 @@ export default function StatusPage() {
               title="YouTube Data API v3"
               icon={Video}
               configured={status.apis.youtube.configured}
-              keyPreview={status.apis.youtube.keyPreview}
               test={status.apis.youtube.test}
               description="Trending videos from YouTube by country"
             />
@@ -194,7 +190,7 @@ export default function StatusPage() {
                 </div>
                 {modelWeights.runtimeSignals && (
                   <div className="mt-3 text-xs text-[var(--color-text-secondary)]">
-                    Signals — engagement: {(modelWeights.runtimeSignals.engagementRate * 100).toFixed(2)}% · friction: {(modelWeights.runtimeSignals.frictionRate * 100).toFixed(2)}%
+                    Signals · engagement: {(modelWeights.runtimeSignals.engagementRate * 100).toFixed(2)}% · friction: {(modelWeights.runtimeSignals.frictionRate * 100).toFixed(2)}%
                   </div>
                 )}
                 {modelWeights.notes?.length > 0 && (
@@ -217,14 +213,12 @@ function StatusCard({
   title,
   icon: Icon,
   configured,
-  keyPreview,
   test,
   description
 }: {
   title: string
   icon: React.ElementType
   configured: boolean
-  keyPreview: string | null
   test: { success: boolean; count: number; source: string; error?: string } | null
   description: string
 }) {
@@ -268,7 +262,7 @@ function StatusCard({
                 'font-mono text-xs',
                 configured ? 'text-green-400' : 'text-red-400'
               )}>
-                {configured ? keyPreview || 'Configured' : 'Not configured'}
+                {configured ? 'Présente (non affichée)' : 'Non configurée'}
               </p>
             </div>
 

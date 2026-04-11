@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Play, X } from 'lucide-react'
 
 // =============================================================================
-// TrailerModal — Click-to-play trailer overlay for films/series
+// TrailerModal · Click-to-play trailer overlay for films/series
 // =============================================================================
 
 interface TrailerModalProps {

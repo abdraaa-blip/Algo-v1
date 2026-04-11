@@ -12,7 +12,7 @@ import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { Badge } from '@/components/ui/Badge'
 
 // =============================================================================
-// ALGO V1 — Star/Celebrity Profile Page
+// ALGO V1 · Star/Celebrity Profile Page
 // Shows full profile for actors, directors, and other celebrities from TMDB
 // =============================================================================
 
@@ -151,7 +151,7 @@ export default async function StarPage({ params }: Props) {
   if (star.instagramId) sameAs.push(`https://www.instagram.com/${star.instagramId}`)
 
   const shareUrl = absoluteUrl(`/star/${id}`)
-  const shareSnippet = `${star.name} — profil & œuvres en tendance (ALGO)`
+  const shareSnippet = `${star.name} · profil & œuvres en tendance (ALGO)`
 
   const knownForLabel = {
     Acting: 'Acteur/Actrice',

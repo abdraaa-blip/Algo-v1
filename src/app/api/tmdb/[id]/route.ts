@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 // =============================================================================
-// ALGO V1 — TMDB Detail API
+// ALGO V1 · TMDB Detail API
 // Fetches full movie/series details including trailer, cast, and similar content
 // =============================================================================
 
@@ -9,6 +10,15 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-tmdb-id:${identifier}`, { limit: 90, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { id } = await params
   const tmdbId = id.replace('tmdb-', '')
   const apiKey = process.env.TMDB_API_KEY

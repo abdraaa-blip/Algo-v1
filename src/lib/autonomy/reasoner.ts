@@ -22,7 +22,9 @@ function clamp01(value: number) {
   return Math.max(0, Math.min(1, value))
 }
 
-function buildProposal(partial: Omit<ActionProposal, 'id'> & { idHint: string }): ActionProposal {
+function buildProposal(
+  partial: Omit<ActionProposal, 'id' | 'requiresApproval'> & { idHint: string }
+): ActionProposal {
   return {
     id: `${partial.idHint}-${Date.now()}`,
     type: partial.type,

@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen text-[var(--color-text-primary)]">
       <div className="max-w-2xl mx-auto px-4 py-12 pb-24">
         <p className="text-xs text-white/40 mb-6">
           <Link href="/" className="hover:text-white/70">
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
         </p>
         <h1 className="text-2xl font-bold mb-2">Politique de confidentialité</h1>
         <p className="text-sm text-white/55 mb-10">
-          Dernière mise à jour : avril 2026. Cette page décrit comment ALGO traite les données — sans marketing, pour
+          Dernière mise à jour : avril 2026. Cette page décrit comment ALGO traite les données · sans marketing, pour
           rester aligné avec ce que le site fait réellement.
         </p>
 
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
             <li>
               <strong className="text-white/85">Analytics (optionnel)</strong> : si vous acceptez via le bandeau, une
               mesure d’audience peut être activée (ex. Plausible, configurée par{' '}
-              <code className="text-xs text-cyan-200/80">NEXT_PUBLIC_PLAUSIBLE_DOMAIN</code>) — visée anonymisée, sans
+              <code className="text-xs text-cyan-200/80">NEXT_PUBLIC_PLAUSIBLE_DOMAIN</code>) · visée anonymisée, sans
               publicité ciblée par défaut dans ce modèle.
             </li>
             <li>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
           <h2 className="text-base font-semibold text-white">4. Durée de conservation</h2>
           <p>
             Les préférences cookies restent jusqu’à ce que vous les modifiiez. Les logs et métriques dépendent de votre
-            hébergeur et de l’outil d’analytics — à documenter précisément en production.
+            hébergeur et de l’outil d’analytics · à documenter précisément en production.
           </p>
         </section>
 
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
           <h2 className="text-base font-semibold text-white">7. Scores et « intelligence »</h2>
           <p>
             Les scores et analyses affichés sont des <strong className="text-white/85">indicateurs estimés</strong>,
-            basés sur des signaux publics et des modèles — pas des garanties de performance, d’audience ou de viralité
+            basés sur des signaux publics et des modèles · pas des garanties de performance, d’audience ou de viralité
             réelle. Voir aussi{' '}
             <Link href="/transparency" className="text-cyan-300 hover:underline">
               Transparence des données

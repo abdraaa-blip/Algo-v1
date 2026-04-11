@@ -21,7 +21,7 @@ const icons = {
 } as const
 
 /**
- * Briefing « 3 signaux + 1 action » — boucle valeur rapide sans refetch.
+ * Briefing « 3 signaux + 1 action » · boucle valeur rapide sans refetch.
  */
 export function MorningBriefingCard({
   signals,
@@ -47,7 +47,7 @@ export function MorningBriefingCard({
             Briefing signal
           </p>
           <p className="text-xs sm:text-sm font-semibold text-white/85 mt-0.5">
-            3 lectures — avant que le feed ne décide pour toi
+            3 lectures · avant que le feed ne décide pour toi
           </p>
         </div>
         <Link

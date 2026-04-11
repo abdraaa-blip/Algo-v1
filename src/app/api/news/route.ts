@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 interface NewsAPIArticle {
   title?: string
@@ -10,6 +11,15 @@ interface NewsAPIArticle {
 }
 
 export async function GET(req: NextRequest) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-news:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || searchParams.get('scopeCode') || 'fr'
   const category = searchParams.get('category')

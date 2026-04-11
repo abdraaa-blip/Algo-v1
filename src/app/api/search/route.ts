@@ -1,12 +1,116 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import type { Content, Trend, NewsItem, Category, Platform, ContentFormat } from '@/types'
+import type {
+  Content,
+  Trend,
+  NewsItem,
+  Category,
+  Platform,
+  Insight,
+  PostProbability,
+} from '@/types'
+import { fillLocaleStrings } from '@/types'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders } from '@/lib/api/rate-limiter'
 import { sanitizeInput } from '@/lib/security'
 
-// Arrays matching the strict Category, Platform, and ContentFormat types from @/types
 const CATEGORIES: Category[] = ['Drôle', 'Insolite', 'Buzz', 'Émotion', 'Drama', 'Lifestyle', 'Culture', 'Actu', 'Autre']
 const PLATFORMS: Platform[] = ['YouTube', 'TikTok', 'Twitter', 'Instagram', 'Snapchat', 'Reddit', 'Other']
-const FORMATS: ContentFormat[] = ['face_cam', 'text', 'montage', 'narration', 'reaction', 'duet']
+function insightForScore(viralScore: number): Insight {
+  const postNow: PostProbability = viralScore >= 80 ? 'high' : viralScore >= 55 ? 'medium' : 'low'
+  return {
+    postNowProbability: postNow,
+    timing: 'now',
+    bestPlatform: ['YouTube'],
+    bestFormat: 'reaction',
+    timingLabel: fillLocaleStrings({ fr: 'Fenêtre actuelle', en: 'Current window' }),
+    postWindow: { status: 'optimal' },
+  }
+}
+
+function buildContent(params: {
+  id: string
+  title: string
+  category: Category
+  platform: Platform
+  country: string
+  sourceUrl: string
+  viralScore: number
+  thumbnail?: string
+  detectedAt: string
+}): Content {
+  return {
+    id: params.id,
+    title: params.title,
+    category: params.category,
+    platform: params.platform,
+    country: params.country,
+    language: 'fr',
+    viralScore: params.viralScore,
+    badge: 'Trend',
+    views: Math.floor(10000 + Math.random() * 900000),
+    growthRate: 12,
+    growthTrend: 'up',
+    detectedAt: params.detectedAt,
+    thumbnail: params.thumbnail,
+    sourceUrl: params.sourceUrl,
+    explanation: '',
+    creatorTips: '',
+    insight: insightForScore(params.viralScore),
+    sourceDistribution: [{ platform: params.platform, percentage: 60, momentum: 'high' }],
+    watchersCount: Math.floor(100 + Math.random() * 5000),
+    isExploding: params.viralScore >= 85,
+  }
+}
+
+function buildNewsItem(params: {
+  id: string
+  title: string
+  summary: string
+  sourceUrl: string
+  country: string
+  detectedAt: string
+  thumb?: string
+}): NewsItem {
+  return {
+    id: params.id,
+    title: params.title,
+    summary: params.summary,
+    importanceScore: Math.floor(60 + Math.random() * 35),
+    speedScore: Math.floor(50 + Math.random() * 40),
+    tags: [],
+    sourceUrl: params.sourceUrl,
+    detectedAt: params.detectedAt,
+    country: params.country,
+    language: 'fr',
+    relatedContentIds: [],
+    thumbnail: params.thumb,
+  }
+}
+
+function buildTrend(params: {
+  id: string
+  name: string
+  category: Category
+  country: string
+  score: number
+  isExploding: boolean
+}): Trend {
+  return {
+    id: params.id,
+    name: params.name,
+    platform: 'YouTube',
+    category: params.category,
+    growthRate: Math.floor(20 + Math.random() * 80),
+    growthTrend: 'up',
+    score: params.score,
+    relatedContentIds: [],
+    explanation: '',
+    recommendedFormat: ['reaction'],
+    country: params.country,
+    language: 'fr',
+    watchersCount: Math.floor(500 + Math.random() * 8000),
+    isExploding: params.isExploding,
+  }
+}
 
 /**
  * GET /api/search
@@ -14,10 +118,9 @@ const FORMATS: ContentFormat[] = ['face_cam', 'text', 'montage', 'narration', 'r
  * Rate limited: 30 requests per minute per IP
  */
 export async function GET(request: NextRequest) {
-  // Rate limiting
   const identifier = getClientIdentifier(request)
   const rateLimit = checkRateLimit(identifier, { limit: 30, windowMs: 60000 })
-  
+
   if (!rateLimit.success) {
     return NextResponse.json(
       { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
@@ -28,10 +131,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const rawQuery = searchParams.get('q') || ''
   const query = sanitizeInput(rawQuery).toLowerCase()
-  const type = searchParams.get('type') // 'content' | 'trends' | 'news' | 'all'
+  const type = searchParams.get('type')
   const country = sanitizeInput(searchParams.get('country') || 'FR').toUpperCase()
-  const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 50) // Max 50 results
-  
+  const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 50)
+
   if (!query || query.length < 2) {
     return NextResponse.json({ content: [], trends: [], news: [] }, { headers: createRateLimitHeaders(rateLimit) })
   }
@@ -40,44 +143,31 @@ export async function GET(request: NextRequest) {
   const trends: Trend[] = []
   const news: NewsItem[] = []
 
-  // Fetch from YouTube API
   if ((type === 'all' || type === 'content' || !type) && process.env.YOUTUBE_API_KEY) {
     try {
       const ytRes = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=8&regionCode=${country}&key=${process.env.YOUTUBE_API_KEY}`,
         { next: { revalidate: 300 } }
       )
-      
+
       if (ytRes.ok) {
         const ytData = await ytRes.json()
-        
         for (const item of ytData.items || []) {
           const videoId = item.id?.videoId
           if (!videoId) continue
-          
-          content.push({
-            id: `yt-${videoId}`,
-            type: 'video',
-            title: item.snippet?.title || '',
-            description: item.snippet?.description?.slice(0, 200) || '',
-            thumbnail: item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url || '',
-            sourceUrl: `https://youtube.com/watch?v=${videoId}`,
-            platform: 'YouTube',
-            category: CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
-            viralScore: Math.floor(70 + Math.random() * 25),
-            momentum: 'rising',
-            detectedAt: item.snippet?.publishedAt || new Date().toISOString(),
-            viewCount: Math.floor(10000 + Math.random() * 900000),
-            engagementRate: Math.floor(5 + Math.random() * 15),
-            suggestedFormat: 'reaction',
-            insights: {
-              whyViral: ['Trending search', 'High relevance'],
-              peakWindow: 'now',
-              bestPlatform: 'YouTube',
-              competitorCount: Math.floor(Math.random() * 30),
-              audienceOverlap: Math.floor(60 + Math.random() * 40),
-            },
-          })
+          content.push(
+            buildContent({
+              id: `yt-${videoId}`,
+              title: item.snippet?.title || '',
+              category: CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
+              platform: 'YouTube',
+              country,
+              sourceUrl: `https://youtube.com/watch?v=${videoId}`,
+              viralScore: Math.floor(70 + Math.random() * 25),
+              thumbnail: item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url,
+              detectedAt: item.snippet?.publishedAt || new Date().toISOString(),
+            })
+          )
         }
       }
     } catch (e) {
@@ -85,30 +175,27 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Fetch from NewsAPI
   if ((type === 'all' || type === 'news' || !type) && process.env.NEWS_API_KEY) {
     try {
       const newsRes = await fetch(
         `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=fr&sortBy=relevancy&pageSize=8&apiKey=${process.env.NEWS_API_KEY}`,
         { next: { revalidate: 300 } }
       )
-      
+
       if (newsRes.ok) {
         const newsData = await newsRes.json()
-        
         for (const [i, article] of (newsData.articles || []).entries()) {
-          news.push({
-            id: `news-${i}-${Date.now()}`,
-            title: article.title || '',
-            summary: article.description || '',
-            sourceUrl: article.url || '',
-            sourceName: article.source?.name || 'News',
-            imageUrl: article.urlToImage || '',
-            publishedAt: article.publishedAt || new Date().toISOString(),
-            category: CATEGORIES[i % CATEGORIES.length],
-            viralScore: Math.floor(60 + Math.random() * 35),
-            relatedTrendIds: [],
-          })
+          news.push(
+            buildNewsItem({
+              id: `news-${i}-${Date.now()}`,
+              title: article.title || '',
+              summary: article.description || '',
+              sourceUrl: article.url || '',
+              country,
+              detectedAt: article.publishedAt || new Date().toISOString(),
+              thumb: article.urlToImage || undefined,
+            })
+          )
         }
       }
     } catch (e) {
@@ -116,84 +203,67 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Generate mock trends based on query
   if (type === 'all' || type === 'trends' || !type) {
     const trendSuffixes = ['Trend', 'Viral', 'Challenge', 'Update', 'News']
-    
     for (let i = 0; i < 5; i++) {
-      trends.push({
-        id: `trend-${query}-${i}`,
-        name: `#${query.replace(/\s+/g, '')}${trendSuffixes[i]}`,
-        displayName: `${query} ${trendSuffixes[i]}`,
-        category: CATEGORIES[i % CATEGORIES.length],
-        volume: Math.floor(10000 + Math.random() * 500000),
-        volumeLabel: `${Math.floor(10 + Math.random() * 490)}K`,
-        growth: Math.floor(50 + Math.random() * 400),
-        momentum: (['exploding', 'rising', 'stable'] as const)[i % 3],
-        rank: i + 1,
-        previousRank: i + 2,
-        startedAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
-        peakAt: null,
-        relatedHashtags: [`#${query}`, '#Trending', '#Viral'],
-        curveData: Array.from({ length: 24 }, () => Math.random() * 100),
-      })
+      trends.push(
+        buildTrend({
+          id: `trend-${query}-${i}`,
+          name: `#${query.replace(/\s+/g, '')}${trendSuffixes[i]}`,
+          category: CATEGORIES[i % CATEGORIES.length],
+          country,
+          score: 90 - i * 8,
+          isExploding: i < 2,
+        })
+      )
     }
   }
 
-  // Fallback mock content if no real results
   if (content.length === 0 && (type === 'all' || type === 'content' || !type)) {
     for (let i = 0; i < 6; i++) {
-      content.push({
-        id: `mock-content-${i}`,
-        type: 'video',
-        title: `${query.charAt(0).toUpperCase() + query.slice(1)} - ${['Latest', 'Viral', 'Breaking', 'Trending'][i % 4]}`,
-        description: `Content about "${query}" - trending now.`,
-        thumbnail: `https://images.unsplash.com/photo-${1500000000000 + i * 100000}?w=640&h=360&fit=crop`,
-        sourceUrl: `https://example.com/search/${i}`,
-        platform: PLATFORMS[i % PLATFORMS.length],
-        category: CATEGORIES[i % CATEGORIES.length],
-        viralScore: Math.floor(70 + Math.random() * 30),
-        momentum: (['rising', 'peak', 'stable'] as const)[i % 3],
-        detectedAt: new Date(Date.now() - Math.random() * 48 * 60 * 60 * 1000).toISOString(),
-        viewCount: Math.floor(10000 + Math.random() * 900000),
-        engagementRate: Math.floor(5 + Math.random() * 15),
-        suggestedFormat: FORMATS[i % FORMATS.length],
-        insights: {
-          whyViral: ['High engagement', 'Trending topic'],
-          peakWindow: 'now',
-          bestPlatform: PLATFORMS[i % PLATFORMS.length],
-          competitorCount: Math.floor(Math.random() * 30),
-          audienceOverlap: Math.floor(60 + Math.random() * 40),
-        },
-      })
+      content.push(
+        buildContent({
+          id: `mock-content-${i}`,
+          title: `${query.charAt(0).toUpperCase() + query.slice(1)} - ${['Latest', 'Viral', 'Breaking', 'Trending'][i % 4]}`,
+          category: CATEGORIES[i % CATEGORIES.length],
+          platform: PLATFORMS[i % PLATFORMS.length],
+          country,
+          sourceUrl: `https://example.com/search/${i}`,
+          viralScore: Math.floor(70 + Math.random() * 30),
+          thumbnail: `https://images.unsplash.com/photo-${1500000000000 + i * 100000}?w=640&h=360&fit=crop`,
+          detectedAt: new Date(Date.now() - Math.random() * 48 * 60 * 60 * 1000).toISOString(),
+        })
+      )
     }
   }
 
-  // Fallback mock news if no real results
   if (news.length === 0 && (type === 'all' || type === 'news' || !type)) {
-    const sources = ['TechCrunch', 'The Verge', 'BBC', 'Reuters', 'Le Monde']
-    
     for (let i = 0; i < 5; i++) {
-      news.push({
-        id: `mock-news-${i}`,
-        title: `${query.charAt(0).toUpperCase() + query.slice(1)}: ${['Breaking', 'Latest', 'Analysis', 'Update', 'Report'][i]}`,
-        summary: `News about ${query} - comprehensive coverage.`,
-        sourceUrl: `https://news.example.com/${query}/${i}`,
-        sourceName: sources[i],
-        imageUrl: `https://images.unsplash.com/photo-${1600000000000 + i * 100000}?w=800&h=450&fit=crop`,
-        publishedAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
-        category: CATEGORIES[i % CATEGORIES.length],
-        viralScore: Math.floor(60 + Math.random() * 40),
-        relatedTrendIds: [],
-      })
+      news.push(
+        buildNewsItem({
+          id: `mock-news-${i}`,
+          title: `${query.charAt(0).toUpperCase() + query.slice(1)}: ${['Breaking', 'Latest', 'Analysis', 'Update', 'Report'][i]}`,
+          summary: `News about ${query} - comprehensive coverage.`,
+          sourceUrl: `https://news.example.com/${query}/${i}`,
+          country,
+          detectedAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
+          thumb: `https://images.unsplash.com/photo-${1600000000000 + i * 100000}?w=800&h=450&fit=crop`,
+        })
+      )
     }
   }
 
-  const response: { content?: Content[], trends?: Trend[], news?: NewsItem[], query: string, timestamp: string } = {
+  const response: {
+    content?: Content[]
+    trends?: Trend[]
+    news?: NewsItem[]
+    query: string
+    timestamp: string
+  } = {
     query,
     timestamp: new Date().toISOString(),
   }
-  
+
   if (type === 'all' || type === 'content' || !type) {
     response.content = content.slice(0, limit)
   }
@@ -204,5 +274,5 @@ export async function GET(request: NextRequest) {
     response.news = news.slice(0, limit)
   }
 
-  return NextResponse.json(response)
+  return NextResponse.json(response, { headers: createRateLimitHeaders(rateLimit) })
 }

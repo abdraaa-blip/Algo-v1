@@ -29,7 +29,8 @@ import { absoluteUrl } from '@/lib/seo/site'
 
 import { getContentById, getAllContentIds } from '@/services/contentService'
 import { cn } from '@/lib/utils'
-import type { BadgeType, Content } from '@/types'
+import type { BadgeType, Category, Content, Platform } from '@/types'
+import { fillLocaleStrings } from '@/types'
 
 // ─── Fetch Real API Content ───────────────────────────────────────────────────
 
@@ -74,7 +75,7 @@ async function fetchYouTubeContent(videoId: string): Promise<Content | null> {
         timing: 'now',
         bestPlatform: ['YouTube', 'TikTok'],
         bestFormat: 'reaction',
-        timingLabel: { fr: 'Fenetre active', en: 'Active window' },
+        timingLabel: fillLocaleStrings({ fr: 'Fenetre active', en: 'Active window' }),
         postWindow: { status: 'optimal' },
       },
       sourceDistribution: [
@@ -153,13 +154,13 @@ async function fetchTMDBContent(tmdbId: string, type: 'movie' | 'tv' = 'movie'):
       backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/w1280${item.backdrop_path}` : undefined,
       sourceUrl: `https://www.themoviedb.org/${type}/${tmdbId}`,
       explanation: item.overview || 'Contenu tendance cette semaine.',
-      creatorTips: `Fais une reaction ou une analyse de "${item.title || item.name}" — ce contenu est dans toutes les conversations.`,
+      creatorTips: `Fais une reaction ou une analyse de "${item.title || item.name}" · ce contenu est dans toutes les conversations.`,
       insight: {
         postNowProbability: item.popularity > 200 ? 'high' : 'medium',
         timing: 'now',
         bestPlatform: ['YouTube', 'TikTok', 'Instagram'],
         bestFormat: 'reaction',
-        timingLabel: { fr: 'Tendance cette semaine', en: 'Trending this week' },
+        timingLabel: fillLocaleStrings({ fr: 'Tendance cette semaine', en: 'Trending this week' }),
         postWindow: { status: item.popularity > 500 ? 'saturated' : 'optimal' },
       },
       sourceDistribution: [
@@ -234,7 +235,7 @@ async function fetchRedditContent(postId: string): Promise<Content | null> {
         timing: 'now',
         bestPlatform: ['Twitter', 'TikTok'],
         bestFormat: 'text',
-        timingLabel: { fr: 'Discussion active', en: 'Active discussion' },
+        timingLabel: fillLocaleStrings({ fr: 'Discussion active', en: 'Active discussion' }),
         postWindow: { status: 'optimal' },
       },
       sourceDistribution: [
@@ -288,7 +289,7 @@ async function fetchGitHubContent(repoName: string): Promise<Content | null> {
         timing: 'now',
         bestPlatform: ['YouTube', 'Twitter'],
         bestFormat: 'screen record',
-        timingLabel: { fr: 'Projet tendance', en: 'Trending project' },
+        timingLabel: fillLocaleStrings({ fr: 'Projet tendance', en: 'Trending project' }),
         postWindow: { status: 'optimal' },
       },
       sourceDistribution: [
@@ -340,7 +341,7 @@ async function fetchHackerNewsContent(storyId: string): Promise<Content | null> 
         timing: 'now',
         bestPlatform: ['Twitter', 'YouTube'],
         bestFormat: 'text',
-        timingLabel: { fr: 'Discussion tech', en: 'Tech discussion' },
+        timingLabel: fillLocaleStrings({ fr: 'Discussion tech', en: 'Tech discussion' }),
         postWindow: { status: 'optimal' },
       },
       sourceDistribution: [
@@ -357,11 +358,11 @@ async function fetchHackerNewsContent(storyId: string): Promise<Content | null> 
 
 // Generate a fallback content when API fails but we know the source
 function generateFallbackContent(id: string): Content | null {
-  const platformMap: Record<string, { platform: string; category: string; url: string }> = {
-    'youtube': { platform: 'YouTube', category: 'Video', url: `https://youtube.com/watch?v=${id.replace('youtube-', '')}` },
-    'hn': { platform: 'HackerNews', category: 'Tech', url: `https://news.ycombinator.com/item?id=${id.replace('hn_', '')}` },
-    'gh': { platform: 'GitHub', category: 'Tech', url: `https://github.com/${id.replace('gh_', '').replace('_', '/')}` },
-    'reddit': { platform: 'Reddit', category: 'Discussion', url: `https://reddit.com/comments/${id.replace('reddit_', '')}` },
+  const platformMap: Record<string, { platform: Platform; category: Category; url: string }> = {
+    youtube: { platform: 'YouTube', category: 'Video', url: `https://youtube.com/watch?v=${id.replace('youtube-', '')}` },
+    hn: { platform: 'HackerNews', category: 'Tech', url: `https://news.ycombinator.com/item?id=${id.replace('hn_', '')}` },
+    gh: { platform: 'GitHub', category: 'Tech', url: `https://github.com/${id.replace('gh_', '').replace('_', '/')}` },
+    reddit: { platform: 'Reddit', category: 'Discussion', url: `https://reddit.com/comments/${id.replace('reddit_', '')}` },
   }
   
   const prefix = id.split(/[-_]/)[0]
@@ -390,7 +391,7 @@ function generateFallbackContent(id: string): Content | null {
       timing: 'now',
       bestPlatform: [config.platform],
       bestFormat: 'reaction',
-      timingLabel: { fr: 'Disponible', en: 'Available' },
+      timingLabel: fillLocaleStrings({ fr: 'Disponible', en: 'Available' }),
       postWindow: { status: 'optimal' },
     },
     sourceDistribution: [
@@ -532,6 +533,8 @@ export default async function ContentPage({ params }: Props) {
   const content = await getContentByIdAsync(id)
   if (!content) notFound()
 
+  const extended = content as Content & Partial<TMDBExtras>
+
   const isCooling = content.growthTrend === 'down'
 
   const badgeType: BadgeType | 'coolOff' | 'exploding' =
@@ -564,6 +567,14 @@ export default async function ContentPage({ params }: Props) {
 
   const isCrossPlat = content.sourceDistribution.length >= 2
 
+  const scoreHistoryAnchorMs = new Date(content.detectedAt).getTime()
+  const scoreHistoryData = [
+    { timestamp: new Date(scoreHistoryAnchorMs - 5 * 86400000), score: Math.max(0, content.viralScore - 14) },
+    { timestamp: new Date(scoreHistoryAnchorMs - 3 * 86400000), score: Math.max(0, content.viralScore - 9) },
+    { timestamp: new Date(scoreHistoryAnchorMs - 86400000), score: Math.max(0, content.viralScore - 4) },
+    { timestamp: new Date(scoreHistoryAnchorMs), score: content.viralScore },
+  ]
+
   return (
     <>
       <Script
@@ -592,7 +603,7 @@ export default async function ContentPage({ params }: Props) {
         />
         <div className="flex items-center gap-2">
           <ShareButton title={content.title} text={content.explanation} />
-          <ReportButton contentId={id} contentType="content" />
+          <ReportButton contentId={id} contentType="video" />
         </div>
       </div>
 
@@ -613,9 +624,9 @@ export default async function ContentPage({ params }: Props) {
     <Badge type={badgeType} label={badgeLabel} size="md" />
   </div>
   {/* Trailer button for TMDB content */}
-  {'trailerKey' in content && content.trailerKey && (
-    <TrailerModal trailerKey={content.trailerKey} title={content.title} />
-  )}
+  {extended.trailerKey ? (
+    <TrailerModal trailerKey={extended.trailerKey} title={content.title} />
+  ) : null}
 </div>
 
       <div className="space-y-3">
@@ -644,7 +655,7 @@ export default async function ContentPage({ params }: Props) {
           className="mt-4"
           url={absoluteUrl(`/content/${id}`)}
           title={content.title}
-          snippet={`Signal ALGO · score ${content.viralScore} — ${content.title.slice(0, 80)}${content.title.length > 80 ? '…' : ''}`}
+          snippet={`Signal ALGO · score ${content.viralScore} · ${content.title.slice(0, 80)}${content.title.length > 80 ? '…' : ''}`}
         />
 
         <div className="mt-4 rounded-xl border border-violet-500/20 bg-violet-950/20 p-3">
@@ -655,7 +666,7 @@ export default async function ContentPage({ params }: Props) {
             headline={content.title}
             score={content.viralScore}
             badgeLabel={badgeLabel}
-            subtitle={content.explanation?.slice(0, 120) || 'Meta-radar ALGO — partage ton avantage.'}
+            subtitle={content.explanation?.slice(0, 120) || 'Meta-radar ALGO · partage ton avantage.'}
           />
         </div>
       </div>
@@ -707,21 +718,19 @@ export default async function ContentPage({ params }: Props) {
 )}
 
 {/* Cast section for TMDB content */}
-{'cast' in content && content.cast && content.cast.length > 0 && (
-  <CastSection cast={content.cast} />
-)}
+{extended.cast && extended.cast.length > 0 ? <CastSection cast={extended.cast} /> : null}
 
 {/* Similar content for TMDB */}
-{'similar' in content && content.similar && content.similar.length > 0 && (
-  <SimilarContent 
-    items={content.similar} 
+{extended.similar && extended.similar.length > 0 ? (
+  <SimilarContent
+    items={extended.similar}
     type="film"
     title="Contenus similaires en tendance"
   />
-)}
+) : null}
 
 {/* TMDB rating and details */}
-{'rating' in content && content.rating && (
+{typeof extended.rating === 'number' ? (
   <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-4">
     <h3 className="text-[11px] font-bold text-white/40 uppercase tracking-widest mb-3 flex items-center gap-2">
       <span>⭐</span>
@@ -730,41 +739,41 @@ export default async function ContentPage({ params }: Props) {
     <div className="grid grid-cols-2 gap-3 text-sm">
       <div>
         <p className="text-white/35 text-xs">Note TMDB</p>
-        <p className="text-amber-400 font-bold">{content.rating.toFixed(1)}/10</p>
+        <p className="text-amber-400 font-bold">{extended.rating.toFixed(1)}/10</p>
       </div>
-      {'voteCount' in content && content.voteCount && (
+      {extended.voteCount ? (
         <div>
           <p className="text-white/35 text-xs">Votes</p>
-          <p className="text-white/70 font-semibold">{content.voteCount.toLocaleString('fr-FR')}</p>
+          <p className="text-white/70 font-semibold">{extended.voteCount.toLocaleString('fr-FR')}</p>
         </div>
-      )}
-      {'releaseDate' in content && content.releaseDate && (
+      ) : null}
+      {extended.releaseDate ? (
         <div>
           <p className="text-white/35 text-xs">Date de sortie</p>
-          <p className="text-white/70 font-semibold">{new Date(content.releaseDate).toLocaleDateString('fr-FR')}</p>
+          <p className="text-white/70 font-semibold">{new Date(extended.releaseDate).toLocaleDateString('fr-FR')}</p>
         </div>
-      )}
-      {'runtime' in content && content.runtime && (
+      ) : null}
+      {extended.runtime ? (
         <div>
           <p className="text-white/35 text-xs">Duree</p>
-          <p className="text-white/70 font-semibold">{content.runtime} min</p>
+          <p className="text-white/70 font-semibold">{extended.runtime} min</p>
         </div>
-      )}
-      {'genres' in content && content.genres && content.genres.length > 0 && (
+      ) : null}
+      {extended.genres && extended.genres.length > 0 ? (
         <div className="col-span-2">
           <p className="text-white/35 text-xs mb-1">Genres</p>
           <div className="flex flex-wrap gap-1.5">
-            {content.genres.map((g: string) => (
+            {extended.genres.map((g: string) => (
               <span key={g} className="px-2 py-0.5 rounded-full bg-[var(--color-card-hover)] text-[10px] text-[var(--color-text-secondary)] font-medium border border-[var(--color-border)]">
                 {g}
               </span>
             ))}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   </section>
-)}
+) : null}
 
 {content.sourceDistribution.length > 0 && (
         <section>
@@ -804,7 +813,11 @@ export default async function ContentPage({ params }: Props) {
 
       <section>
         <SectionHeader title="Evolution du score" className="mb-4" />
-        <ScoreHistoryChart contentId={id} currentScore={content.viralScore} className="h-48" />
+        <ScoreHistoryChart
+          data={scoreHistoryData}
+          className="h-48"
+          height={192}
+        />
       </section>
 
       <a

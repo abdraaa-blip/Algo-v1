@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 
 interface LastFMTrack {
   name?: string
@@ -15,6 +16,15 @@ const COUNTRY_NAMES: Record<string, string> = {
 }
 
 export async function GET(req: NextRequest) {
+  const identifier = getClientIdentifier(req)
+  const rateLimit = checkRateLimit(`api-lastfm:${identifier}`, { limit: 60, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   const { searchParams } = new URL(req.url)
   const country = searchParams.get('country') || 'FR'
   const countryName = COUNTRY_NAMES[country.toUpperCase()] || 'France'
@@ -35,7 +45,7 @@ export async function GET(req: NextRequest) {
       
       return {
         id: `lastfm-${i}`,
-        title: `${track.name} — ${track.artist?.name || 'Artiste'}`,
+        title: `${track.name} · ${track.artist?.name || 'Artiste'}`,
         category: 'Culture',
         platform: 'YouTube',
         country,
@@ -48,7 +58,7 @@ export async function GET(req: NextRequest) {
         detectedAt: new Date().toISOString(),
         thumbnail: track.image?.[3]?.['#text'] || '',
         sourceUrl: track.url || '',
-        explanation: `Top ${i+1} en ${countryName} — ${listeners.toLocaleString('fr-FR')} auditeurs actifs.`,
+        explanation: `Top ${i+1} en ${countryName} · ${listeners.toLocaleString('fr-FR')} auditeurs actifs.`,
         creatorTips: 'Utilise ce son dans ton prochain contenu pour booster ta portée organique.',
         insight: {
           postNowProbability: i < 5 ? 'high' : 'medium',

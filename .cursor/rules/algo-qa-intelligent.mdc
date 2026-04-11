@@ -1,0 +1,33 @@
+---
+description: QA intelligent ALGO avant validation, build ou fin de session
+alwaysApply: true
+---
+
+# Portail QA ALGO (agents Cursor)
+
+Avant de **valider** une tâche, un module ou une PR, ou de dire « c’est terminé » :
+
+1. **Auto-audit** sur le périmètre modifié : technique, UI/UX, logique système, perf (voir `config/algo-qa-gate.ts` → `ALGO_QA_CHECKLIST`).
+2. **Référence design obligatoire** : `config/algo-system-rules.ts` (`ALGO_SYSTEM_RULES`, `ALGO_DESIGN_SOURCES`) · cadrage UX : `docs/ALGO_UX_CHARTER.md` · audit cognitif / parcours : `docs/ALGO_UX_COGNITIVE_AUDIT.md`.
+3. **Cohérence produit** : `docs/algo-doctrine.md`, `docs/ALGO_CHECKLIST_PROOFS.md`, `docs/ALGO_PRODUCTION_BOUNDARIES.md` (sketchs « prod ready »), `AGENTS.md` · messages / GTM brouillon : `docs/ALGO_GTM_NOTES.md` (sous doctrine, pas source code).
+4. **Opérations / déploiement / anti-pavés de directives** : `docs/ALGO_OPERATIONS_PLAYBOOK.md` (point d’entrée unique vers QA gate, deploy gate, offline evolution) · maturité release qualitative : `docs/ALGO_RELEASE_READINESS.md` · index `docs/` : `docs/README.md`.
+
+## Audit cohérence plus large (optionnel)
+
+- Guide : `docs/ALGO_COHERENCE_RITUAL.md` · règle dédiée : `.cursor/rules/algo-coherence-review.mdc` (**alwaysApply: false** — invoquer pour un rituel cadré : périmètre, critère d’arrêt, pas de refonte « perfection »).
+
+## Si anomalie (visuelle, duplication, conflit, surcharge, doctrine)
+
+- Signaler **clairement** ; proposer **correction minimale** ; ne pas valider un état **cassé** ou **incohérent** avec ALGO.
+- Ne pas **réécrire tout le système** ; préserver l’existant sauf nécessité démontrée.
+
+## Avant merge / release sensible
+
+- Lancer ou demander **`npm run verify:release`** (`package.json` : ecosystem, i18n, **`verify:api-guards`**, **`typecheck`**, **`lint:strict`**, tests, build).
+- Typage : **`next.config.ts`** → `typescript.ignoreBuildErrors: false` ; le **`next build`** valide aussi le TS. Pour un retour rapide seul : **`npm run typecheck`**. Aller plus loin : `ALGO_QA_RELEASE_COMMANDS.optionalDeeper` dans `config/algo-qa-gate.ts` (`verify:full`, `lint:strict`, …).
+
+## Avant déploiement production (Vercel / CD)
+
+- Consulter **`config/algo-deploy-gate.ts`** (checklist build, archi, UI, perf, sécurité, smoke, cohérence) · PR vers branches protégées : workflow **`ALGO Release Gate`** (`verify:full`).
+
+Philosophie : **ALGO peut évoluer, pas se fragmenter** (`ALGO_QA_PHILOSOPHY` dans `config/algo-qa-gate.ts`). Déploiement : **`ALGO_DEPLOY_PHILOSOPHY`** dans `config/algo-deploy-gate.ts`.

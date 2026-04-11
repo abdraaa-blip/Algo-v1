@@ -6,13 +6,13 @@
 import type { AskOrchestrationMeta } from '@/lib/ai/algo-ask-orchestrate'
 import type { AlgoExpertiseLevel } from '@/lib/ai/algo-persona'
 
-/** Affiché sous chaque réponse assistant — limites honnêtes du modèle. */
+/** Affiché sous chaque réponse assistant · limites honnêtes du modèle. */
 export const AI_TRANSPARENCY_LIMITS_FR =
   'Les scores et prédictions sont des indicateurs, pas des garanties. Le modèle ne parcourt pas le web en temps réel : il s’appuie sur ce que tu envoies et sur le contexte tendances au moment de l’appel.'
 
 export const AI_TRANSPARENCY_ANALYZE_LINES_FR = [
   'Entrées envoyées : titre, description (optionnel), plateforme, catégorie, métriques.',
-  'Sortie structurée : lecture « pourquoi ça peut performer », risque de cycle, formats suggérés — à croiser avec ton terrain.',
+  'Sortie structurée : lecture « pourquoi ça peut performer », risque de cycle, formats suggérés · à croiser avec ton terrain.',
 ]
 
 export const AI_TRANSPARENCY_PREDICT_LINES_FR = [
@@ -40,7 +40,7 @@ export function buildAskTransparencyLines(meta: AskOrchestrationMeta): string[] 
 }
 
 export function expertiseTransparencyLineFr(level: AlgoExpertiseLevel): string {
-  if (level === 'novice') return 'Niveau de réponse : débutant — vocabulaire guidé, moins de jargon.'
-  if (level === 'advanced') return 'Niveau de réponse : expert — réponse plus dense et directe.'
-  return 'Niveau de réponse : standard — équilibre clarté et profondeur.'
+  if (level === 'novice') return 'Niveau de réponse : débutant · vocabulaire guidé, moins de jargon.'
+  if (level === 'advanced') return 'Niveau de réponse : expert · réponse plus dense et directe.'
+  return 'Niveau de réponse : standard · équilibre clarté et profondeur.'
 }

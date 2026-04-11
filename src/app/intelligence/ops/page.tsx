@@ -73,14 +73,20 @@ export default function IntelligenceOpsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] p-4 sm:p-6">
+    <div className="min-h-screen text-[var(--color-text-primary)] p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Ops Center</h1>
             <p className="text-[var(--color-text-secondary)] text-sm">Unified alerts, runbook execution, and incident log</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-end">
+            <Link
+              href="/intelligence/viral-control"
+              className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"
+            >
+              Viral Control
+            </Link>
             <Link
               href="/intelligence"
               className="text-xs px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] transition-colors"

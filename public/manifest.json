@@ -1,7 +1,7 @@
 {
-  "name": "ALGO — L'algorithme des algorithmes",
+  "name": "ALGO · L'algorithme des algorithmes",
   "short_name": "ALGO",
-  "description": "L'appli silencieuse qui parle à tout le monde. Signaux, tendances et indicateurs pour décider vite — sans promesses creuses.",
+  "description": "L'appli silencieuse qui parle à tout le monde. Signaux, tendances et indicateurs pour décider vite, sans promesses creuses.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#07070f",

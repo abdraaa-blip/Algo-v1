@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import { buildGlobalIntelligence } from '@/lib/intelligence/global-intelligence'
 import { runWhatIfSimulation } from '@/lib/autonomy/what-if'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
+  const identifier = getClientIdentifier(request)
+  const rateLimit = checkRateLimit(`intelligence-simulate:${identifier}`, { limit: 25, windowMs: 60_000 })
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { success: false, error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter },
+      { status: 429, headers: createRateLimitHeaders(rateLimit) }
+    )
+  }
+
   try {
     const body = (await request.json()) as {
       region?: string

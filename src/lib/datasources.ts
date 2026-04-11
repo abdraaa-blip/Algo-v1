@@ -2,7 +2,7 @@
  * ALGO Data Sources - External API Connectors
  */
 
-interface SourceStatus {
+export interface SourceStatus {
   name: string
   status: 'live' | 'cached' | 'error' | 'offline'
   lastUpdate: number

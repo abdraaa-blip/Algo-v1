@@ -62,7 +62,7 @@ export default function SignUpPage() {
   const passwordColor = password.length >= 8 ? 'text-green-400' : password.length >= 6 ? 'text-yellow-400' : 'text-red-400'
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] flex items-center justify-center p-6 text-[var(--color-text-primary)]">
+    <div className="min-h-screen flex items-center justify-center p-6 text-[var(--color-text-primary)]">
       <div className="w-full max-w-md">
         {/* ALGO Logo */}
         <div className="text-center mb-8">
