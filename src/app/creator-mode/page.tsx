@@ -119,24 +119,24 @@ function transformToContent(item: Record<string, unknown>, source: string, index
     timing === 'now' ? 'optimal' : timing === 'too_early' ? 'optimal' : 'fading'
   
   const whyItWorksTemplates = [
-    `Ce contenu ${categoryGuess === 'Tech' ? 'tech' : 'sur ' + categoryGuess} capte l'attention car il repond a une tendance forte du moment.`,
-    `Le titre accrocheur et le sujet ${categoryGuess.toLowerCase()} sont actuellement tres recherches.`,
-    `L'engagement eleve (${views > 1000 ? (views / 1000).toFixed(0) + 'K' : views} vues) prouve l'interet du public.`,
-    `Ce type de contenu performe bien car il combine actualite et valeur ajoutee.`
+    `Ce contenu ${categoryGuess === 'Tech' ? 'tech' : 'sur ' + categoryGuess} capte l'attention car il répond à une tendance forte du moment.`,
+    `Le titre accrocheur et le sujet ${categoryGuess.toLowerCase()} sont actuellement très recherchés.`,
+    `L'engagement élevé (${views > 1000 ? (views / 1000).toFixed(0) + 'K' : views} vues) prouve l'intérêt du public.`,
+    `Ce type de contenu performe bien car il combine actualité et valeur ajoutée.`
   ]
   
   const reproductionTemplates = [
-    `Cree ta propre version en ajoutant ton angle unique sur ${categoryGuess.toLowerCase()}.`,
-    `Reagis a ce contenu et ajoute ton analyse personnelle.`,
-    `Utilise ce sujet comme base et adapte-le a ton audience.`,
-    `Cree une serie de contenus sur ce theme pour capitaliser sur la tendance.`
+    `Crée ta propre version en ajoutant ton angle unique sur ${categoryGuess.toLowerCase()}.`,
+    `Réagis à ce contenu et ajoute ton analyse personnelle.`,
+    `Utilise ce sujet comme base et adapte-le à ton audience.`,
+    `Crée une série de contenus sur ce thème pour capitaliser sur la tendance.`
   ]
   
   const tipsPerCategory: Record<string, string[]> = {
-    Tech: ['Explique les concepts simplement', 'Montre des demos visuelles', 'Compare avec les alternatives'],
-    Cinema: ['Reagis authentiquement', 'Ajoute des theories', 'Evite les spoilers majeurs'],
-    Musique: ['Utilise des extraits audio', 'Partage ton ressenti', 'Lie a l\'actualite de l\'artiste'],
-    Discussion: ['Donne ton opinion tranchee', 'Invite au debat', 'Reste respectueux'],
+    Tech: ['Explique les concepts simplement', 'Montre des démos visuelles', 'Compare avec les alternatives'],
+    Cinema: ['Réagis authentiquement', 'Ajoute des théories', 'Évite les spoilers majeurs'],
+    Musique: ['Utilise des extraits audio', 'Partage ton ressenti', 'Lie à l\'actualité de l\'artiste'],
+    Discussion: ['Donne ton opinion tranchée', 'Invite au débat', 'Reste respectueux'],
     Actualite: ['Sois factuel', 'Ajoute du contexte', 'Cite tes sources']
   }
   

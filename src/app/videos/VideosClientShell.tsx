@@ -68,6 +68,13 @@ interface Labels {
   emptyTitle: string
   emptySub: string
   filterAll: string
+  featuredSectionTitle: string
+  featuredSectionSubtitle: string
+  allSectionTitle: string
+  ariaRefresh: string
+  ariaFilterRegions: string
+  statsTotalViewsLabel: string
+  statsVideosLabel: string
   filters: {
     time: FilterOption[]
     category: FilterOption[]
@@ -212,7 +219,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
               onClick={handleRefresh}
               disabled={refreshing}
               className="p-2 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] hover:bg-[var(--color-card-hover)] transition-colors disabled:opacity-50"
-              aria-label="Refresh"
+              aria-label={labels.ariaRefresh}
             >
               <RefreshCw size={16} className={cn('text-[var(--color-text-secondary)]', refreshing && 'animate-spin')} />
             </button>
@@ -222,11 +229,11 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
           <div className="flex items-center gap-4 text-xs text-[var(--color-text-tertiary)]">
             <span className="flex items-center gap-1">
               <Eye size={12} />
-              {videos.reduce((sum, v) => sum + (v.views || 0), 0).toLocaleString()} total views
+              {videos.reduce((sum, v) => sum + (v.views || 0), 0).toLocaleString()} {labels.statsTotalViewsLabel}
             </span>
             <span className="flex items-center gap-1">
               <Video size={12} />
-              {videos.length} videos
+              {videos.length} {labels.statsVideosLabel}
             </span>
           </div>
           <div className="mt-3">
@@ -247,7 +254,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
           filters={regionFilters}
           active={activeRegion}
           onChange={setActiveRegion}
-          ariaLabel="Filter by region"
+          ariaLabel={labels.ariaFilterRegions}
         />
       </div>
 
@@ -274,8 +281,8 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       {!loading && filtered.length > 0 && (
         <section>
           <SectionHeader 
-            title="Top Trending" 
-            subtitle="Most watched video right now"
+            title={labels.featuredSectionTitle} 
+            subtitle={labels.featuredSectionSubtitle}
             className="mb-4"
           />
           
@@ -368,7 +375,7 @@ export function VideosClientShell({ locale, labels }: VideosClientShellProps) {
       {!loading && filtered.length > 5 && (
         <section>
           <SectionHeader 
-            title="All Trending Videos" 
+            title={labels.allSectionTitle} 
             className="mb-4"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

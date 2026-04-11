@@ -294,7 +294,7 @@ function transformVideoToContent(video: VideoData): Content {
   return {
     id: video.id,
     title: video.title,
-    explanation: `Video de ${video.channelTitle} avec ${video.viewCount.toLocaleString()} vues. Cette video fait le buzz.`,
+    explanation: `Vidéo de ${video.channelTitle} avec ${video.viewCount.toLocaleString()} vues. Cette vidéo fait le buzz.`,
     thumbnail: video.thumbnail,
     viralScore: video.viralScore,
     category: cat,
@@ -308,7 +308,7 @@ function transformVideoToContent(video: VideoData): Content {
     isExploding: video.viralScore >= 85,
     tags: [video.category],
     sourceUrl: video.url,
-    creatorTips: `Fais ta propre version de « ${video.title} » — reagis vite et ajoute ta touche.`,
+    creatorTips: `Fais ta propre version de « ${video.title} » — réagis vite et ajoute ta touche.`,
     insight: {
       postNowProbability: 'high',
       timing: 'now',

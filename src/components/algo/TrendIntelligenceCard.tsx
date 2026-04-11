@@ -728,7 +728,7 @@ export function generateTrendIntelligence(basicTrend: {
         peakPrediction: saturation === 'early' ? 'Dans 2-4 jours' : saturation === 'rising' ? 'Dans 12-24h' : 'Atteint ou depasse',
       },
       content: {
-        bestFormats: ['Video courte', 'Reaction', 'Thread explicatif'],
+        bestFormats: ['Vidéo courte', 'Réaction', 'Thread explicatif'],
         recommendedLength: basicTrend.platform === 'TikTok' ? '15-30 secondes' : '30-60 secondes',
         keyElements: ['Hook fort', 'Visuel impactant', 'Call-to-action'],
         avoidList: ['Contenu trop long', 'Manque de contexte', 'Clickbait excessif'],
@@ -738,13 +738,13 @@ export function generateTrendIntelligence(basicTrend: {
     actions: [
       {
         type: 'video',
-        action: `Cree une video ${basicTrend.platform === 'TikTok' ? '15-30s' : '30-60s'}`,
+        action: `Crée une vidéo ${basicTrend.platform === 'TikTok' ? '15-30s' : '30-60s'}`,
         urgency: saturation === 'peak' ? 'immediate' : saturation === 'rising' ? 'soon' : 'flexible',
         angle: basicTrend.contentIdeas?.[0] || `Mon analyse de "${basicTrend.name}"`,
       },
       {
         type: 'reaction',
-        action: 'Fais une video reaction',
+        action: 'Fais une vidéo réaction',
         urgency: 'soon',
         angle: `Ce que je pense de "${basicTrend.name}"`,
       },
@@ -752,19 +752,19 @@ export function generateTrendIntelligence(basicTrend: {
         type: 'analysis',
         action: 'Positionne-toi en expert',
         urgency: 'flexible',
-        angle: `Explication complete de "${basicTrend.name}"`,
+        angle: `Explication complète de "${basicTrend.name}"`,
       },
     ],
     
     semantics: {
-      whyItWorks: basicTrend.explanation || 'Cette tendance capte l\'attention par son actualite et son potentiel de partage.',
-      psychologicalBias: 'Biais de confirmation + effet de nouveaute',
-      storytellingStructure: 'Conflit → Resolution → Transformation',
-      emotionalHook: 'Sentiment d\'urgence et de decouverte',
+      whyItWorks: basicTrend.explanation || 'Cette tendance capte l\'attention par son actualité et son potentiel de partage.',
+      psychologicalBias: 'Biais de confirmation + effet de nouveauté',
+      storytellingStructure: 'Conflit → Résolution → Transformation',
+      emotionalHook: 'Sentiment d\'urgence et de découverte',
       conflictElement: 'Opposition entre ancienne et nouvelle vision',
-      noveltyFactor: 'Angle inedit sur un sujet connu',
-      relatability: 'Experience partagee par la majorite',
-      statusSignaling: 'Etre a jour, informé, dans la tendance',
+      noveltyFactor: 'Angle inédit sur un sujet connu',
+      relatability: 'Expérience partagée par la majorité',
+      statusSignaling: 'Être à jour, informé, dans la tendance',
     },
     
     heatmap: {
@@ -781,8 +781,8 @@ export function generateTrendIntelligence(basicTrend: {
         { name: '45+ ans', percentage: 10 },
       ],
       formats: [
-        { name: 'Video courte', percentage: 50 },
-        { name: 'Image/Meme', percentage: 25 },
+        { name: 'Vidéo courte', percentage: 50 },
+        { name: 'Image / mème', percentage: 25 },
         { name: 'Thread/Texte', percentage: 15 },
         { name: 'Audio', percentage: 10 },
       ],

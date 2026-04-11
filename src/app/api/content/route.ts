@@ -35,10 +35,10 @@ function generateViralContent(scope: AppScope): Content[] {
     },
     'Buzz': {
       titles: [
-        'La video qui explose tous les records',
-        'Tout le monde parle de ca',
-        'Le phenomene viral du moment',
-        'Cette tendance envahit les reseaux',
+        'La vidéo qui explose tous les records',
+        'Tout le monde parle de ça',
+        'Le phénomène viral du moment',
+        'Cette tendance envahit les réseaux',
       ],
       platforms: ['TikTok', 'Instagram', 'YouTube'],
       formats: ['face_cam', 'duet', 'montage'],
@@ -47,17 +47,17 @@ function generateViralContent(scope: AppScope): Content[] {
       titles: [
         'Les retrouvailles qui font pleurer internet',
         'Ce moment touchant devient viral',
-        'La surprise qui a emu des millions',
-        'Histoire inspirante a partager',
+        'La surprise qui a ému des millions',
+        'Histoire inspirante à partager',
       ],
       platforms: ['YouTube', 'Instagram', 'TikTok'],
       formats: ['face_cam', 'narration', 'montage'],
     },
     'Drama': {
       titles: [
-        'La polemique qui enflamme les reseaux',
-        'Clash en direct sur les reseaux',
-        'Les revelations choc de la star',
+        'La polémique qui enflamme les réseaux',
+        'Clash en direct sur les réseaux',
+        'Les révélations choc de la star',
         'Affaire qui divise internet',
       ],
       platforms: ['Twitter', 'YouTube', 'TikTok'],
@@ -66,9 +66,9 @@ function generateViralContent(scope: AppScope): Content[] {
     'Lifestyle': {
       titles: [
         'Astuce lifestyle qui change tout',
-        'Routine matinale qui fait rever',
+        'Routine matinale qui fait rêver',
         'Transformation incroyable en 30 jours',
-        'Le secret des influenceurs revele',
+        'Le secret des influenceurs révélé',
       ],
       platforms: ['Instagram', 'TikTok', 'YouTube'],
       formats: ['face_cam', 'montage', 'narration'],
@@ -76,9 +76,9 @@ function generateViralContent(scope: AppScope): Content[] {
     'Culture': {
       titles: [
         'Le film dont tout le monde parle',
-        'Cette serie bat tous les records',
+        'Cette série bat tous les records',
         'Concert historique devient viral',
-        'Oeuvre artistique qui bouleverse',
+        'Œuvre artistique qui bouleverse',
       ],
       platforms: ['YouTube', 'Twitter', 'Instagram'],
       formats: ['reaction', 'narration', 'montage'],
@@ -96,9 +96,9 @@ function generateViralContent(scope: AppScope): Content[] {
     'Autre': {
       titles: [
         'Contenu viral inclassable',
-        'La video qui defie les categories',
-        'Phenomene unique sur internet',
-        'Tendance inedite a decouvrir',
+        'La vidéo qui défie les catégories',
+        'Phénomène unique sur internet',
+        'Tendance inédite à découvrir',
       ],
       platforms: ['TikTok', 'YouTube', 'Instagram'],
       formats: ['face_cam', 'montage', 'reaction'],

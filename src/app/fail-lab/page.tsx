@@ -38,8 +38,8 @@ const FAILED_CONTENT: FailedContent[] = [
     category: 'Reaction',
     score: 38,
     views: 3400,
-    whyFailed: 'Le trailer etait deja analyse par 50 autres createurs. L\'audience avait deja vu les memes theories partout.',
-    lesson: 'Dans le format reaction, le timing est roi. Mieux vaut une video rapide et imparfaite qu\'une video parfaite en retard.'
+    whyFailed: 'Le trailer était déjà analysé par 50 autres créateurs. L\'audience avait déjà vu les mêmes théories partout.',
+    lesson: 'Dans le format réaction, le timing est roi. Mieux vaut une vidéo rapide et imparfaite qu\'une vidéo parfaite en retard.'
   },
   {
     id: '3',
@@ -53,13 +53,13 @@ const FAILED_CONTENT: FailedContent[] = [
   },
   {
     id: '4',
-    title: 'Meme qui ciblait le mauvais public',
+    title: 'Mème qui ciblait le mauvais public',
     platform: 'Instagram',
     category: 'Humour',
     score: 29,
     views: 450,
-    whyFailed: 'L\'humour etait trop niche et referencait des elements que l\'audience de la page ne connaissait pas.',
-    lesson: 'Connais ton audience. Un meme drole pour toi peut etre incomprehensible pour tes followers.'
+    whyFailed: 'L\'humour était trop niche et référencait des éléments que l\'audience de la page ne connaissait pas.',
+    lesson: 'Connais ton audience. Un mème drôle pour toi peut être incompréhensible pour tes followers.'
   },
   {
     id: '5',

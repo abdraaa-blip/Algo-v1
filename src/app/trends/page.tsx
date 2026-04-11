@@ -637,17 +637,17 @@ function trendToActionData(trend: Trend) {
   
   // Build why it works with context
   const whyItWorks = trend.whyItWorks || trend.explanation || 
-    `Cette tendance capte l'attention avec un score de ${trend.score} et une croissance de +${trend.growthRate}%. Ideal pour le format ${trend.format || 'video'}.`
+    `Cette tendance capte l'attention avec un score de ${trend.score} et une croissance de +${trend.growthRate} %. Idéal pour le format ${trend.format || 'vidéo'}.`
   
   // Build actionable hook
   const actionHook = trend.actionHook || 
-    `${trend.name} - voici ce que vous devez savoir`
+    `${trend.name} — voici ce que tu dois savoir`
   
   // Build task based on platform
   const videoLength = trend.platform === 'TikTok' ? '15-30s' : 
                       trend.platform === 'YouTube' ? '60-90s' : '30-60s'
   const actionTask = trend.actionTask || 
-    `Cree une video ${videoLength} en format ${trend.format || 'face cam'}`
+    `Crée une vidéo ${videoLength} en format ${trend.format || 'face cam'}`
   
   // Build deadline based on urgency
   const now = new Date()

@@ -13,12 +13,19 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default function VideosPage() {
   const labels = {
-    title: 'Videos Virales',
+    title: 'Vidéos virales',
     subtitle: 'Tendances YouTube (MAJ toutes les 30 min)',
     loading: ALGO_UI_LOADING.videos,
-    emptyTitle: 'Aucune video',
-    emptySub: 'Aucune video disponible pour ce filtre.',
+    emptyTitle: 'Aucune vidéo',
+    emptySub: 'Aucune vidéo disponible pour ce filtre.',
     filterAll: 'Tout',
+    featuredSectionTitle: 'En tête du flux',
+    featuredSectionSubtitle: 'Vidéo la plus consultée dans cette sélection pour l\'instant.',
+    allSectionTitle: 'Autres tendances',
+    ariaRefresh: 'Actualiser la liste',
+    ariaFilterRegions: 'Filtrer par région',
+    statsTotalViewsLabel: 'vues cumulées',
+    statsVideosLabel: 'vidéos',
     filters: {
       time: [
         { id: 'all', label: 'Tout', value: 'all' },
