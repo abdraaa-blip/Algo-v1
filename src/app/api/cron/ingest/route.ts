@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getSupabaseSecretApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys'
+import {
+  businessLevelErrorFromJson,
+  normalizeIngestPayload,
+} from '@/lib/cron/ingest-payload'
 
 /**
  * Automated Data Ingestion Pipeline
@@ -8,7 +12,9 @@ import { getSupabaseSecretApiKey, getSupabaseUrl } from '@/lib/supabase/env-keys
  * Auth entrante : `Authorization: Bearer ${CRON_SECRET}` (Vercel l’ajoute si CRON_SECRET est défini).
  *
  * Note : cette route agrège surtout des métriques / logs. Les réponses des APIs internes
- * n’ont pas toutes un champ `data` : normalisation ci-dessous.
+ * n’ont pas toutes un champ `data` : normalisation dans `src/lib/cron/ingest-payload.ts`.
+ * Si une route renvoie **HTTP 200** avec **`success: false`** (ex. Spotify dégradé), le
+ * payload `data` est quand même normalisé et **`error`** remonte pour `total_errors`.
  */
 
 // Initialize Supabase client
@@ -46,32 +52,6 @@ function getInternalBaseUrl(req: NextRequest): string {
   return new URL(req.url).origin
 }
 
-/** Les routes `/api/*` ne renvoient pas toutes `{ data: [] }`. */
-function normalizeIngestPayload(json: unknown, sourceName: string): unknown[] {
-  if (!json || typeof json !== 'object') return []
-  const o = json as Record<string, unknown>
-  if (Array.isArray(o.data)) return o.data
-
-  if (sourceName === 'Music') {
-    const tracks = o.tracks
-    const artists = o.artists
-    return [
-      ...(Array.isArray(tracks) ? tracks : []),
-      ...(Array.isArray(artists) ? artists : []),
-    ]
-  }
-
-  if (sourceName === 'Movies') {
-    return [
-      ...(Array.isArray(o.movies) ? o.movies : []),
-      ...(Array.isArray(o.tvShows) ? o.tvShows : []),
-      ...(Array.isArray(o.celebrities) ? o.celebrities : []),
-    ]
-  }
-
-  return []
-}
-
 async function fetchFromSource(
   sourceUrl: string,
   sourceName: string,
@@ -92,7 +72,9 @@ async function fetchFromSource(
     }
 
     const json: unknown = await response.json()
-    return { data: normalizeIngestPayload(json, sourceName) }
+    const data = normalizeIngestPayload(json, sourceName)
+    const businessErr = businessLevelErrorFromJson(json)
+    return { data, error: businessErr }
   } catch (error) {
     console.error(`[ALGO Cron] Failed to fetch ${sourceName}:`, error)
     return { data: [], error: String(error) }
