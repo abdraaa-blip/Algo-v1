@@ -1,4 +1,5 @@
 import type { LiveTrendsPayload } from '@/lib/api/live-trends-query'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { ALGO_ECOSYSTEM_API_VERSION } from '@/lib/ecosystem/constants'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
 
@@ -45,8 +46,7 @@ export function parseSnapshotQuery(searchParams: URLSearchParams):
     types = [...SNAPSHOT_ENTITY_TYPES]
   }
 
-  const lim = parseInt(searchParams.get('limit') || '100', 10)
-  const limitPerType = Number.isNaN(lim) ? 100 : Math.min(500, Math.max(1, lim))
+  const limitPerType = parseDefaultedListLimit(searchParams.get('limit'), 100, 500)
 
   return { ok: true, value: { since, types, limitPerType } }
 }

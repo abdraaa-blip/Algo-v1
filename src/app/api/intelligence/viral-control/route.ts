@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { buildPredictiveIntelligenceBundle } from '@/lib/intelligence/predictive-intelligence-bundle'
 import { buildViralControlCockpitPayload } from '@/lib/intelligence/viral-control-cockpit'
 import { resolveYoutubeForViralControl } from '@/lib/intelligence/viral-control-youtube'
@@ -35,8 +36,7 @@ export async function GET(request: NextRequest) {
     )
   }
   const locale = (searchParams.get('locale') || 'fr').toLowerCase()
-  const daysRaw = Number(searchParams.get('days') || '7')
-  const days = Number.isFinite(daysRaw) ? Math.min(30, Math.max(1, Math.floor(daysRaw))) : 7
+  const days = parseDefaultedListLimit(searchParams.get('days'), 7, 30)
   const videoUrl = searchParams.get('videoUrl')?.trim() || searchParams.get('youtubeUrl')?.trim() || undefined
 
   const cacheKey = `${region}:${locale}:${days}:${videoUrl ?? ''}`

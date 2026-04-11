@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { getRadarHistoryCombined } from '@/lib/intelligence/radar-snapshot-store'
 import { supabaseServiceRoleConfigured } from '@/lib/supabase/admin'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
@@ -30,8 +31,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const daysRaw = Number(searchParams.get('days') || '7')
-  const days = Number.isFinite(daysRaw) ? Math.min(30, Math.max(1, Math.floor(daysRaw))) : 7
+  const days = parseDefaultedListLimit(searchParams.get('days'), 7, 30)
 
   const { points, sources } = await getRadarHistoryCombined(region, days)
 

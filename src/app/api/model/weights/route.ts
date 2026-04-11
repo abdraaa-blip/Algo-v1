@@ -29,10 +29,15 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const engagementRate = Number(searchParams.get('engagementRate'))
-  const frictionRate = Number(searchParams.get('frictionRate'))
+  const rawE = searchParams.get('engagementRate')
+  const rawF = searchParams.get('frictionRate')
+  const engagementRate =
+    rawE !== null && rawE !== '' ? Number.parseFloat(rawE) : Number.NaN
+  const frictionRate =
+    rawF !== null && rawF !== '' ? Number.parseFloat(rawF) : Number.NaN
 
-  const hasSignals = !Number.isNaN(engagementRate) && !Number.isNaN(frictionRate)
+  /** `Number(null) === 0` : sans query explicite, on reste en baseline (pas « 0,0 » adaptatif). */
+  const hasSignals = Number.isFinite(engagementRate) && Number.isFinite(frictionRate)
   const adaptive = hasSignals
     ? computeAdaptiveWeights({ engagementRate, frictionRate })
     : computeAdaptiveWeights()

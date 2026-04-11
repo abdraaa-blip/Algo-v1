@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { parseDefaultedListLimit } from '@/lib/api/query-limit'
 import { checkRateLimit, createRateLimitHeaders, getClientIdentifier } from '@/lib/api/rate-limiter'
 import {
   analyticsEventStore,
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const hours = parseInt(searchParams.get('hours') || '24')
+  const hours = parseDefaultedListLimit(searchParams.get('hours'), 24, 168)
   const cutoff = Date.now() - hours * 60 * 60 * 1000
 
   const recentEvents = analyticsEventStore.filter((e) => e.timestamp > cutoff)
